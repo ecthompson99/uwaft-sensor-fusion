@@ -1,0 +1,6 @@
+devel_space: /home/ieisw/kaiROS/devel
+install: false
+install_space: /home/ieisw/kaiROS/install
+profile: default
+source_space: /home/ieisw/kaiROS/src
+workspace: /home/ieisw/kaiROS

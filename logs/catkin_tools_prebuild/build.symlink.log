@@ -1,0 +1,8 @@
+Symlinking /home/ieisw/kaiROS/devel/./setup.sh
+Symlinking /home/ieisw/kaiROS/devel/./setup.zsh
+Symlinking /home/ieisw/kaiROS/devel/./_setup_util.py
+Symlinking /home/ieisw/kaiROS/devel/./setup.bash
+Symlinking /home/ieisw/kaiROS/devel/./env.sh
+Symlinking /home/ieisw/kaiROS/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig.cmake
+Symlinking /home/ieisw/kaiROS/devel/share/catkin_tools_prebuild/cmake/catkin_tools_prebuildConfig-version.cmake
+Symlinking /home/ieisw/kaiROS/devel/lib/pkgconfig/catkin_tools_prebuild.pc
