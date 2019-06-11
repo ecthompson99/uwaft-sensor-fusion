@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ieisw/kaiROS/devel/.private/my_first_package/setup.sh
