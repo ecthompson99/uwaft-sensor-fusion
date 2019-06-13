@@ -25,6 +25,14 @@ The same info is available on [Confluence](https://wiki.uwaterloo.ca/display/UWA
 ## Clone the repo
 In terminal, change directory to where you want to store this repo locally using 'cd'.
 
+Before the next step, make sure you have SSH key set up for your GitHub account.
+
+If you have not, please follow these two links to do so: 
+
+https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account
+
 Run
 
     git clone git@github.com:uwaft/kaiROS.git
