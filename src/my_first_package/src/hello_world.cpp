@@ -1,11 +1,10 @@
 #include "ros/ros.h"
 
-int main(int argc, 
-char **argv) {
+int main(int argc, char **argv) {
   ros::init(argc, argv, "hello_world");
-  ros::NodeHandle     nh;
+  ros::NodeHandle nh;
 
   std::string greeting = "Hello";
-  ROS_INFO_STREAM(greeting << ", World!");    
+  ROS_INFO_STREAM(greeting << ", World!");
   ros::spin();
 }
