@@ -5,6 +5,6 @@ int main(int argc, char **argv) {
   ros::NodeHandle nh;
 
   std::string greeting = "Hello";
-  ROS_INFO_STREAM(greeting << ", world!");
+  ROS_INFO_STREAM(greeting << ", worssssld!");
   ros::spin();
 }
