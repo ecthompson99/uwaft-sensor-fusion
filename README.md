@@ -27,7 +27,7 @@ In terminal, change directory to where you want to store this repo locally using
 
 Run
 
-    git clone https://github.com/uwaft/kaiROS.git
+    git clone git@github.com:uwaft/kaiROS.git
 
 ## Build and run
 Change directory into the cloned kaiROS folder by 'cd'.
@@ -36,12 +36,16 @@ Execute
 
     catkin build
 
-To test if ROS is running properly, execute both lines in the same terminal.
+To test if ROS is running properly, Execute in terminal:
 
-    ./kaiROS/devel/lib/my_first_package/hello_world
     roscore
 
-Open a new terminal and execute
+Open a new terminal, then run
+
+    ./kaiROS/devel/lib/my_first_package/hello_world
+    
+
+Open another new terminal and execute
 
     rosnode list
 
