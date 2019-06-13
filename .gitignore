@@ -33,3 +33,8 @@
 
 # Build files
 *.bin
+
+# Build directories
+build/*
+devel/*
+logs/*
