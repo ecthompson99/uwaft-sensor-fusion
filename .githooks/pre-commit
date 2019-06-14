@@ -320,7 +320,6 @@ echo
 
 echo "You can:"
 echo " [a]: Apply the patch"
-echo " [f]: Force and commit anyway (not recommended!)"
 echo " [c]: Cancel the commit"
 echo " [?]: Show help"
 echo
@@ -328,7 +327,7 @@ echo
 readonly tty=${PRE_COMMIT_HOOK_TTY:-/dev/tty}
 
 while true; do
-    echo -n "What would you like to do? [a/f/c/?] "
+    echo -n "What would you like to do? [a/c/?] "
     read -r answer < "$tty"
     case "$answer" in
 
@@ -346,16 +345,6 @@ while true; do
                 $'you need to stage or reset changes manually.'
             ;;
 
-        [fF] )
-            echo
-            echo "Will commit anyway!"
-            echo "You can always abort by quitting your editor with no commit message."
-            echo
-            echo -n "Press return to continue."
-            read -r < "$tty"
-            exit 0
-            ;;
-
         [cC] )
             error_exit "Commit aborted as requested."
             ;;
@@ -368,7 +357,7 @@ while true; do
             ;;
 
         * )
-            echo 'Invalid answer. Type "a", "f" or "c".'
+            echo 'Invalid answer. Type "a", "c" or "?".'
             echo
             continue
 
