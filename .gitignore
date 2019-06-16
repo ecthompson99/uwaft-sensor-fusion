@@ -33,3 +33,9 @@
 
 # Build files
 *.bin
+
+# Build directories
+build/*
+devel/*
+logs/*
+.catkin_tools/*

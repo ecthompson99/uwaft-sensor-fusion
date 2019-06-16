@@ -1,8 +1,0 @@
-prefix=/home/ieisw/kaiROS/install
-
-Name: my_first_package
-Description: Description of my_first_package
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/ieisw/kaiROS/install/lib 
-Requires: 
