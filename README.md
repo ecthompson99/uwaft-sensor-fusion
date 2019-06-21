@@ -4,8 +4,8 @@ CAV system repo. This is the main software that will run on the Tank.
 
 
 
-# Instruction: From clone to build and run
-## Install ROS on your local machine
+## Instruction: From clone to build and run
+### Install ROS on your local machine
 Execute the following one by one in your terminal.
 
 
@@ -22,7 +22,7 @@ Execute the following one by one in your terminal.
 
 The same info is available on [Confluence](https://wiki.uwaterloo.ca/display/UWAFT/Intro+to+ROS).
 
-## Clone the repo
+### Clone the repo
 In terminal, change directory to where you want to store this repo locally using 'cd'.
 
 Before the next step, make sure you have SSH key set up for your GitHub account.
@@ -37,14 +37,14 @@ Run
 
     git clone git@github.com:uwaft/kaiROS.git
 
-## Build and run
+### Build and run
 Change directory into the cloned kaiROS folder by 'cd'.
 
 Execute 
 
     catkin build
 
-To test if ROS is running properly, Execute in terminal:
+To test if ROS is running properly, Execute in terminal (It could take a while):
 
     roscore
 
