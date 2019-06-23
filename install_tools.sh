@@ -12,18 +12,21 @@ toInstall=("ros-kinetic-desktop-full" "python-rosinstall"
     "python-rosinstall-generator" "python-wstool" "build-essential" 
     "python-catkin-tools")
 
-notInstalled=()
-installed=()
+notInstalled=("" "" "" "" "" "")
+installed=("" "" "" "" "" "")
 
 softwareCount="0"
+totalCount=${#toInstall[@]}
 
-while [ $softwareCount -lt ${#toInstall[@]} ]
+while [ softwareCount -lt totalCount ]
 do
-    if [ -n 'which' $toInstall(softwareCount)]; then
-        installed(softwareCount)=${toInstall(softwareCount)}
+    if [ -n ' which "${toInstall[softwareCount]}" ' ]; then
+        installed[softwareCount]="${toInstall[softwareCount]}"
     else
-        notInstalled(softwareCount)=${toInstall(softwareCount)}
+        notInstalled[softwareCount]="${toInstall[softwareCount]}"
     fi
-softwareCount=$[$softwareCount+1]
+softwareCount=$[softwareCount+1]
 done
 
+echo "${installed[@]}"
+echo "${notInstalled[@]}"
