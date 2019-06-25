@@ -15,4 +15,4 @@ bool aebOverride
 bool lcValid
 float64 wheelAngle
 
-float64 aliveROllingCounter
+uint64 aliveRollingCounter
