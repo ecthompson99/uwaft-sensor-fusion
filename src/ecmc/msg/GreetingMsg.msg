@@ -1,0 +1,2 @@
+string greeting
+int32 num_greetings_sent
