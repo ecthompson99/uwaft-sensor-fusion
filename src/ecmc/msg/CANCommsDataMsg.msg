@@ -1,8 +1,8 @@
 Header header
 
-bool AccSwitch
-bool AebSwitch 
-bool LcSwitch
+bool AccSwitchStatus
+bool AebSwitchStatus
+bool LcSwitchStatus
 
 float64 targetAccel
 bool accValid
