@@ -5,9 +5,10 @@
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "CAN_TX_RX");
-  ros::NodeHandle nh;
+  ros::NodeHandle CAN_TX_RX_handle;
 
-  ros::Publisher pub = nh.advertise<sensor_diag_dummy::SensorDiagnosticDataMsg>("CANmsg", 1000);
+  ros::Publisher pub = CAN_TX_RX_handle.advertise<
+                    sensor_diag_dummy::SensorDiagnosticDataMsg>("CANmsg", 1000);
 
   ros::Rate rate(1)
 
