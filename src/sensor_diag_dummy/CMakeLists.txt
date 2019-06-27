@@ -49,15 +49,8 @@ find_package(catkin REQUIRED COMPONENTS
 # Generate messages in the 'msg' folder
 add_message_files(
    FILES
-   CANCommsDataMsg.msg
-   DriveCtrlInputMsg.msg
-   FusedObjectDataMsg.msg
-   GreetingMsg.msg
-   SensorDiagnositcFlagMsg.msg
-   RawSensorObjectDataMsg.msg
+#   SensorDiagnositcFlagMsg.msg
    SensorDiagnosticDataMsg.msg
-   SudoDriverInputMsg.msg
-
  )
 
 ## Generate services in the 'srv' folder
@@ -142,8 +135,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/ecmc_node.cpp)
-add_executable(hello_world_publisher src/hello_world_pub.cpp)
-add_executable(hello_world_subscriber src/hello_world_sub.cpp)
+add_executable(CAN_TX_RX src/CAN_TX_RX.cpp)
+add_executable(sensor_diagnostic src/sensor_diag.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,15 +147,15 @@ add_executable(hello_world_subscriber src/hello_world_sub.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(hello_world_publisher ${catkin_EXPORTED_TARGETS})
-add_dependencies(hello_world_subscriber ${catkin_EXPORTED_TARGETS})
+add_dependencies(CAN_TX_RX ${catkin_EXPORTED_TARGETS})
+add_dependencies(sensor_diagnostic ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(hello_world_publisher ${catkin_LIBRARIES})
-target_link_libraries(hello_world_subscriber ${catkin_LIBRARIES})
+target_link_libraries(CAN_TX_RX ${catkin_LIBRARIES})
+target_link_libraries(sensor_diagnostic ${catkin_LIBRARIES})
 
 #############
 ## Install ##
