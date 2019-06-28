@@ -1,15 +1,19 @@
 #include "ros/ros.h"
 #include "ecmc/RawSensorObjectDataMsg.h"
  
-void greetingCallback(const ecmc::RawSensorObjectDataMsg& msg) {
-    ROS_INFO_STREAM(msg.greeting << "\n" << "Greetings sent: " << msg.num_greetings_sent);
+void dataCallback(const ecmc::RawSensorObjectDataMsg& msg) {
+    int radarNum = msg.radarNum;
+    int numObjects = msg.numObjects;
+    for(int i = 0; i < numObjects; i++){
+        ROS_INFO_STREAM(radarNum << "\n");
+    }
 }
  
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "hello_world_sub");
+    ros::init(argc, argv, "data_sub_node");
     ros::NodeHandle nh;
-    ros::Subscriber greeting_sub = nh.subscribe("Greetings", 1000, greetingCallback);  
+    ros::Subscriber data_sub = nh.subscribe("Greetings", 1000, dataCallback);  
   
     ros::spin();
 }

@@ -3,9 +3,10 @@
  
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "data_pub");
+    ros::init(argc, argv, "data_pub_node");
     ros::NodeHandle nh;
       
+    // Change name of topic from greetings
     ros::Publisher data_pub = nh.advertise<ecmc::RawSensorObjectDataMsg>("Greetings", 1000);  
   
     ecmc::RawSensorObjectDataMsg msgArray[5];
@@ -19,7 +20,7 @@ int main(int argc, char **argv)
             msgArray[i].pos_x[j] = 32;
             msgArray[i].pos_y[j] = 32;
             msgArray[i].existProb[j] = 100;
-            msgArray[i].valid = true;
+            msgArray[i].valid[j] = 1;
         }
     }
 
