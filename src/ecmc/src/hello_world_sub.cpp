@@ -5,7 +5,7 @@ void dataCallback(const ecmc::RawSensorObjectDataMsg& msg) {
     int radarNum = msg.radarNum;
     int numObjects = msg.numObjects;
     for(int i = 0; i < numObjects; i++){
-        ROS_INFO_STREAM(radarNum << "\n");
+        ROS_INFO_STREAM(msg.radarNum << "\n");
     }
 }
  
