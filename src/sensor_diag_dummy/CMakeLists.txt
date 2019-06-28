@@ -9,7 +9,7 @@ project(sensor_diag_dummy)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  std_msgs
+#  std_msgs
   message_generation
 )
 
