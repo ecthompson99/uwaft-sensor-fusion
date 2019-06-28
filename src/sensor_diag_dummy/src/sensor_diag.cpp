@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
   ros::Rate rate(1);
   
     while (ros::ok()) {
-    sensor_diag_dummy::SensorDiagnosticDataMsg radarMsg;
+    sensor_diag_dummy::SensorDiagnosticFlagMsg radarMsg;
 
     radarMsg.radarReliability[0] = 98;
     radarMsg.radarReliability[1] = 134;

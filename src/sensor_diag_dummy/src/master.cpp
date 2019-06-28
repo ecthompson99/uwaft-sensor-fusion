@@ -4,7 +4,7 @@
 #include "ros/ros.h"
 
 void diagCallback(const sensor_diag_dummy::SensorDiagnosticFlagMsg& radarMsg) {
-  ROS_INFO_STREAM(<< "\n" << "Radar 1: " << radarMsg.radarReliability[0]
+  ROS_INFO_STREAM("start" << "\n" << "Radar 1: " << radarMsg.radarReliability[0]
                   << "\n" << "Radar 2: " << radarMsg.radarReliability[1]
                   << "\n" << "Radar 3: " << radarMsg.radarReliability[2]
                   << "\n" << "Radar 4: " << radarMsg.radarReliability[3]
