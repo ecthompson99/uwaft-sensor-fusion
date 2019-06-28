@@ -1,7 +1,7 @@
 #include "ros/ros.h"
-#include "ecmc/GreetingMsg.h"
+#include "ecmc/RawSensorObjectDataMsg.h"
  
-void greetingCallback(const ecmc::GreetingMsg& msg) {
+void greetingCallback(const ecmc::RawSensorObjectDataMsg& msg) {
     ROS_INFO_STREAM(msg.greeting << "\n" << "Greetings sent: " << msg.num_greetings_sent);
 }
  
