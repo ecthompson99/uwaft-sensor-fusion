@@ -137,6 +137,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/sensor_diag_node.cpp)
 add_executable(CAN_TX_RX src/CAN_TX_RX.cpp)
 add_executable(sensor_diagnostic src/sensor_diag.cpp)
+add_executable(master src/master.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -149,6 +150,7 @@ add_executable(sensor_diagnostic src/sensor_diag.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(CAN_TX_RX ${catkin_EXPORTED_TARGETS})
 add_dependencies(sensor_diagnostic ${catkin_EXPORTED_TARGETS})
+add_dependencies(master ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
@@ -156,6 +158,7 @@ add_dependencies(sensor_diagnostic ${catkin_EXPORTED_TARGETS})
 # )
 target_link_libraries(CAN_TX_RX ${catkin_LIBRARIES})
 target_link_libraries(sensor_diagnostic ${catkin_LIBRARIES})
+target_link_libraries(master ${catkin_LIBRARIES})
 
 #############
 ## Install ##

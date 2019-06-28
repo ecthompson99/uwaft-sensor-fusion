@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
   ros::Publisher pub = CAN_TX_RX_handle.advertise<
                     sensor_diag_dummy::SensorDiagnosticDataMsg>("CANmsg", 1000);
 
-  ros::Rate rate(1)
+  ros::Rate rate(1);
 
   double starterConsistency, timeStamp, enderConsistency, counter,
               checkSum, horizontalMisalign, absorbBlind, distortBlind;
