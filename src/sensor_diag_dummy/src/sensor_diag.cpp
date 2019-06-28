@@ -30,17 +30,13 @@ int main(int argc, char** argv) {
   ros:: Publisher pub = sensor_diag_handle.advertise<
                   sensor_diag_dummy::SensorDiagnosticFlagMsg>("ReliabilityMsg", 1000);
 
-  int radarReliability[6] = {0,0,0,0,0,0};
 
   ros::Rate rate(1);
   
     while (ros::ok()) {
     sensor_diag_dummy::SensorDiagnosticFlagMsg radarMsg;
 
-    for (int i = 0; i < 6; i++)
-		{
-			radarMsg.radarReliability.push_back(rand() % 255);
-		}
+    radarMsg.radarReliability = {0,5,15,100,200,255};
       
     pub.publish(radarMsg);
     ros::spinOnce();
