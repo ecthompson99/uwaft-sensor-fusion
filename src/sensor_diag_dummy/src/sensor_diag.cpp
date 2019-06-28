@@ -5,7 +5,7 @@
 #include "ros/ros.h"
 
 void CANcallback(const sensor_diag_dummy::SensorDiagnosticDataMsg& message) {
-  ROS_INFO_STREAM("start"
+  ROS_INFO_STREAM("\n"
             << "starterConsistency %f " << message.starterConsistency << "\n"
             << "timeStamp %f " << message.timeStamp << "\n"
             << "enderConsistency %f " << message.enderConsistency << "\n"
@@ -37,12 +37,10 @@ int main(int argc, char** argv) {
     while (ros::ok()) {
     sensor_diag_dummy::SensorDiagnosticFlagMsg radarMsg;
 
-    radarMsg.radarReliability[0] = 98;
-    radarMsg.radarReliability[1] = 134;
-    radarMsg.radarReliability[2] = 255;
-    radarMsg.radarReliability[3] = 255;
-    radarMsg.radarReliability[4] = 0;
-    radarMsg.radarReliability[5] = 15;
+    for (int i = 0; i < 6; i++)
+		{
+			radarMsg.radarReliability.push_back(rand() % 255);
+		}
       
     pub.publish(radarMsg);
     ros::spinOnce();
