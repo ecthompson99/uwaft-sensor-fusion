@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <sstream>
 #include "sensor_diag_dummy/SensorDiagnosticDataMsg.h"
-//#include "sensor_diag_dummy/SensorDiagnosticFlagMsg.h"
+#include "sensor_diag_dummy/SensorDiagnosticFlagMsg.h"
 #include "ros/ros.h"
 
-void CANcallback(const sensor_diag_dummy::SensorDiagnosticFlagMsg& message) {
+void CANcallback(const sensor_diag_dummy::SensorDiagnosticDataMsg& message) {
   ROS_INFO_STREAM(
             << "starterConsistency %f" << message.starterConsistency << "\n"
             << "timeStamp %f" << message.timeStamp << "\n"
@@ -27,5 +27,25 @@ int main(int argc, char** argv) {
 
   ros::Subscriber sub = sensor_diag_handle.subscribe("CANmsg", 1000, CANcallback);
 
-  ros::spin();
+  ros:: Publisher pub = sensor_diag_handle.advertise<
+                  sensor_diag_dummy::SensorDiagnosticFlagMsg>("ReliabilityMsg", 1000);
+
+  uint8_t radarReliability[6] = [0 0 0 0 0 0]
+
+  ros::Rate rate(1);
+  
+    while (ros::ok()) {
+    sensor_diag_dummy::SensorDiagnosticDataMsg radarMsg;
+
+    radarMsg.radarReliability[0] = 98;
+    radarMsg.radarReliability[1] = 134;
+    radarMsg.radarReliability[2] = 255;
+    radarMsg.radarReliability[3] = 255;
+    radarMsg.radarReliability[4] = 0;
+    radarMsg.radarReliability[5] = 15;
+      
+    pub.publish(radarMsg);
+    rate.sleep();
+    ros::spinOnce();
+  }
 }

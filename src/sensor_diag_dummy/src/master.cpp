@@ -1,15 +1,22 @@
-#include "ecmc/GreetingMsg.h"
+#include <stdio.h>
+#include <sstream>
+#include "sensor_diag_dummy/SensorDiagnosticFlagMsg.h"
 #include "ros/ros.h"
 
-void greetingCallback(const ecmc::GreetingMsg& msg) {
-  ROS_INFO_STREAM(msg.greeting << "\n"
-                               << "Greetings sent: " << msg.num_greetings_sent);
+void diagCallback(const sensor_diag_dummy::SensorDiagnosticFlagMsg& radarMsg) {
+  ROS_INFO_STREAM(<< "\n" << "Radar 1: " << radarMsg.radarReliability[0]
+                  << "\n" << "Radar 2: " << radarMsg.radarReliability[1]
+                  << "\n" << "Radar 3: " << radarMsg.radarReliability[2]
+                  << "\n" << "Radar 4: " << radarMsg.radarReliability[3]
+                  << "\n" << "Radar 5: " << radarMsg.radarReliability[4]
+                  << "\n" << "Radar 6: " << radarMsg.radarReliability[5]
+  );
 }
 
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "hello_world_sub");
-  ros::NodeHandle nh;
-  ros::Subscriber greeting_sub = nh.subscribe("Greetings", 1000, greetingCallback);
+  ros::init(argc, argv, "master");
+  ros::NodeHandle master;
+  ros::Subscriber greeting_sub = master.subscribe("ReliabilityMsg", 1000, diagCallback);
 
   ros::spin();
 }
