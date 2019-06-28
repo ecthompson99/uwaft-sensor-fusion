@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sstream>
-#include "sensor_diag_dummy/SensorDiagnosticDataMsg.h"
-#include "sensor_diag_dummy/SensorDiagnosticFlagMsg.h"
+#include "sensor_diag_dummy/msg/SensorDiagnosticDataMsg.h"
+#include "sensor_diag_dummy/msg/SensorDiagnosticFlagMsg.h"
 #include "ros/ros.h"
 
 void CANcallback(const sensor_diag_dummy::SensorDiagnosticDataMsg& message) {
