@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sstream>
 #include "sensor_diag_dummy/SensorDiagnosticDataMsg.h"
-#include "ros/ros.h"
+#include "ros.h"
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "CAN_TX_RX");

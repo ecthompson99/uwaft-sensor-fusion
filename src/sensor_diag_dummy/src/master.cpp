@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <sstream>
 #include "sensor_diag_dummy/SensorDiagnosticFlagMsg.h"
-#include "ros/ros.h"
+#include "ros.h"
 
 
 void diagCallback(const sensor_diag_dummy::SensorDiagnosticFlagMsg& radarMsg) {

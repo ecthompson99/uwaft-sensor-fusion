@@ -2,7 +2,7 @@
 #include <sstream>
 #include "sensor_diag_dummy/SensorDiagnosticDataMsg.h"
 #include "sensor_diag_dummy/SensorDiagnosticFlagMsg.h"
-#include "ros/ros.h"
+#include "ros.h"
 
 void CANcallback(const sensor_diag_dummy::SensorDiagnosticDataMsg& message) {
   ROS_INFO_STREAM("\n"
