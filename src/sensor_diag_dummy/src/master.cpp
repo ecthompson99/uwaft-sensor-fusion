@@ -3,7 +3,6 @@
 #include "sensor_diag_dummy/SensorDiagnosticFlagMsg.h"
 #include "ros/ros.h"
 
-int radarReliability[6];
 
 void diagCallback(const sensor_diag_dummy::SensorDiagnosticFlagMsg& radarMsg) {
   ROS_INFO_STREAM("\n"  << "Radar 1: %d " << radarMsg.radarReliability[0]
