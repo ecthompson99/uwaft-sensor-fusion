@@ -2,23 +2,23 @@
 #include <sstream>
 #include "sensor_diag_dummy/SensorDiagnosticDataMsg.h"
 #include "sensor_diag_dummy/SensorDiagnosticFlagMsg.h"
-#include "ros.h"
+#include "ros/ros.h"
 
 void CANcallback(const sensor_diag_dummy::SensorDiagnosticDataMsg& message) {
   ROS_INFO_STREAM("\n"
-            << "starterConsistency %f " << message.starterConsistency << "\n"
-            << "timeStamp %f " << message.timeStamp << "\n"
-            << "enderConsistency %f " << message.enderConsistency << "\n"
-            << "counter %f " << message.counter << "\n"
-            << "checkSum %f " << message.checkSum << "\n"
-            << "horizontalMisalign %f " << message.horizontalMisalign << "\n"
-            << "absorbBlind %f " << message.absorbBlind << "\n"
-            << "distortBlind %f " << message.distortBlind << "\n"
-            << "ITCinfo %d " << message.ITCinfo << "\n"
-            << "HWfail %d " << message.HWfail << "\n"
-            << "SGUFail %d " << message.SGUFail << "\n"
-            << "messageCounter %d " << message.messageCounter << "\n"
-            << "messageCRC %d " << message.messageCRC << "\n");
+            << "starterConsistency " << message.starterConsistency << "\n"
+            << "timeStamp " << message.timeStamp << "\n"
+            << "enderConsistency " << message.enderConsistency << "\n"
+            << "counter " << message.counter << "\n"
+            << "checkSum " << message.checkSum << "\n"
+            << "horizontalMisalign " << message.horizontalMisalign << "\n"
+            << "absorbBlind " << message.absorbBlind << "\n"
+            << "distortBlind " << message.distortBlind << "\n"
+            << "ITCinfo " << message.ITCinfo << "\n"
+            << "HWfail " << message.HWfail << "\n"
+            << "SGUFail " << message.SGUFail << "\n"
+            << "messageCounter " << message.messageCounter << "\n"
+            << "messageCRC " << message.messageCRC << "\n");
 }
 
 int main(int argc, char** argv) {
