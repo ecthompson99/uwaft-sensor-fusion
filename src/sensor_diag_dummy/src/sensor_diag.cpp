@@ -1,24 +1,24 @@
 #include <stdio.h>
 #include <sstream>
-#include "sensor_diag_dummy/msg/SensorDiagnosticDataMsg.h"
-#include "sensor_diag_dummy/msg/SensorDiagnosticFlagMsg.h"
+#include "sensor_diag_dummy/SensorDiagnosticDataMsg.h"
+#include "sensor_diag_dummy/SensorDiagnosticFlagMsg.h"
 #include "ros/ros.h"
 
 void CANcallback(const sensor_diag_dummy::SensorDiagnosticDataMsg& message) {
   ROS_INFO_STREAM("start"
-            << "starterConsistency %f" << message.starterConsistency << "\n"
-            << "timeStamp %f" << message.timeStamp << "\n"
-            << "enderConsistency %f" << message.enderConsistency << "\n"
-            << "counter %f" << message.counter << "\n"
-            << "checkSum %f" << message.checkSum << "\n"
-            << "horizontalMisalign %f" << message.horizontalMisalign << "\n"
-            << "absorbBlind %f" << message.absorbBlind << "\n"
-            << "distortBlind %f" << message.distortBlind << "\n"
-            << "ITCinfo %d" << message.ITCinfo << "\n"
-            << "HWfail %d" << message.HWfail << "\n"
-            << "SGUFail %d" << message.SGUFail << "\n"
-            << "messageCounter %d" << message.messageCounter << "\n"
-            << "messageCRC %d" << message.messageCRC << "\n");
+            << "starterConsistency %f " << message.starterConsistency << "\n"
+            << "timeStamp %f " << message.timeStamp << "\n"
+            << "enderConsistency %f " << message.enderConsistency << "\n"
+            << "counter %f " << message.counter << "\n"
+            << "checkSum %f " << message.checkSum << "\n"
+            << "horizontalMisalign %f " << message.horizontalMisalign << "\n"
+            << "absorbBlind %f " << message.absorbBlind << "\n"
+            << "distortBlind %f " << message.distortBlind << "\n"
+            << "ITCinfo %d " << message.ITCinfo << "\n"
+            << "HWfail %d " << message.HWfail << "\n"
+            << "SGUFail %d " << message.SGUFail << "\n"
+            << "messageCounter %d " << message.messageCounter << "\n"
+            << "messageCRC %d " << message.messageCRC << "\n");
 }
 
 int main(int argc, char** argv) {
@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
   ros:: Publisher pub = sensor_diag_handle.advertise<
                   sensor_diag_dummy::SensorDiagnosticFlagMsg>("ReliabilityMsg", 1000);
 
-  uint8_t radarReliability[6] = {0,0,0,0,0,0};
+  int radarReliability[6] = {0,0,0,0,0,0};
 
   ros::Rate rate(1);
   
