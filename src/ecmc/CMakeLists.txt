@@ -53,7 +53,7 @@ add_message_files(
    DriveCtrlInputMsg.msg
    FusedObjectDataMsg.msg
    GreetingMsg.msg
-   SensorDiagnositcFlagMsg.msg
+   SensorDiagnosticFlagMsg.msg
    RawSensorObjectDataMsg.msg
    SensorDiagnosticDataMsg.msg
    SudoDriverInputMsg.msg
