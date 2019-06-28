@@ -5,6 +5,11 @@
 #include "ros/ros.h"
 
 void CANcallback(const sensor_diag_dummy::SensorDiagnosticDataMsg& message) {
+  bool HardwareFail = message.HWfail;
+  bool SGUFailure = message.SGUFail;
+  int msgCounter = message.messageCounter;
+  int msgCRC = message.messageCRC;
+
   ROS_INFO_STREAM("\n"
             << "starterConsistency " << message.starterConsistency << "\n"
             << "timeStamp " << message.timeStamp << "\n"
@@ -15,10 +20,10 @@ void CANcallback(const sensor_diag_dummy::SensorDiagnosticDataMsg& message) {
             << "absorbBlind " << message.absorbBlind << "\n"
             << "distortBlind " << message.distortBlind << "\n"
             << "ITCinfo " << message.ITCinfo << "\n"
-//            << "HWfail " << message.HWfail << "\n"
-//            << "SGUFail " << message.SGUFail << "\n"
-            << "messageCounter " << message.messageCounter << "\n"
-            << "messageCRC " << message.messageCRC << "\n");
+            << "HWfail " << HardwareFail << "\n"
+            << "SGUFail " << SGUFailure << "\n"
+            << "messageCounter " << msgCounter << "\n"
+            << "messageCRC " << msgCRC << "\n");
 }
 
 int main(int argc, char** argv) {
@@ -32,9 +37,7 @@ int main(int argc, char** argv) {
 
   sensor_diag_dummy::SensorDiagnosticFlagMsg radarMsg; 
   radarMsg.radarReliability = {0,5,15,100,200,255};
-  
-  ros::Rate rate(1);
-  
+
     while (ros::ok()) {  
     pub.publish(radarMsg);
     ros::spinOnce();

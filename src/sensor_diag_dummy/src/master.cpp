@@ -6,7 +6,8 @@
 void diagCallback(const sensor_diag_dummy::SensorDiagnosticFlagMsg& radarMsg) {
   
   for(int i = 0; i < 6; i++ ){
-      ROS_INFO_STREAM("\n" << "Radar " << i << ": " << radarMsg.radarReliability[i]);
+      int a = radarMsg.radarReliability[i];
+      ROS_INFO_STREAM("\n" << "Radar " << i << ": " << a);
   }
   
 }
@@ -16,5 +17,5 @@ int main(int argc, char** argv) {
   ros::NodeHandle master;
   ros::Subscriber sub = master.subscribe("ReliabilityMsg", 1000, diagCallback);
 
-  ros::spinOnce();
+  ros::spin();
 }
