@@ -15,8 +15,8 @@ void CANcallback(const sensor_diag_dummy::SensorDiagnosticDataMsg& message) {
             << "absorbBlind " << message.absorbBlind << "\n"
             << "distortBlind " << message.distortBlind << "\n"
             << "ITCinfo " << message.ITCinfo << "\n"
-            << "HWfail " << message.HWfail << "\n"
-            << "SGUFail " << message.SGUFail << "\n"
+//            << "HWfail " << message.HWfail << "\n"
+//            << "SGUFail " << message.SGUFail << "\n"
             << "messageCounter " << message.messageCounter << "\n"
             << "messageCRC " << message.messageCRC << "\n");
 }
@@ -30,14 +30,12 @@ int main(int argc, char** argv) {
   ros:: Publisher pub = sensor_diag_handle.advertise<
                   sensor_diag_dummy::SensorDiagnosticFlagMsg>("ReliabilityMsg", 1000);
 
-
+  sensor_diag_dummy::SensorDiagnosticFlagMsg radarMsg; 
+  radarMsg.radarReliability = {0,5,15,100,200,255};
+  
   ros::Rate rate(1);
   
-    while (ros::ok()) {
-    sensor_diag_dummy::SensorDiagnosticFlagMsg radarMsg;
-
-    radarMsg.radarReliability = {0,5,15,100,200,255};
-      
+    while (ros::ok()) {  
     pub.publish(radarMsg);
     ros::spinOnce();
   }

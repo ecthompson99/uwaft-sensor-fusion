@@ -25,8 +25,8 @@ int main(int argc, char **argv) {
     message.distortBlind = 16848918.1;
     message.ITCinfo = 1;
   
-    message.HWfail = 0;
-    message.SGUFail = 1;
+    message.HWfail = false;
+    message.SGUFail = false;
 
     message.messageCounter = 15;
     message.messageCRC = 90;

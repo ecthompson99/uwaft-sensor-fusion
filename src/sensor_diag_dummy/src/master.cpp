@@ -4,7 +4,11 @@
 #include "ros/ros.h"
 
 void diagCallback(const sensor_diag_dummy::SensorDiagnosticFlagMsg& radarMsg) {
-  ROS_INFO_STREAM("\n"  << "Radar " << radarMsg.radarReliability[5]);
+  
+  for(int i = 0; i < 6; i++ ){
+      ROS_INFO_STREAM("\n" << "Radar " << i << ": " << radarMsg.radarReliability[i]);
+  }
+  
 }
 
 int main(int argc, char** argv) {
@@ -12,5 +16,5 @@ int main(int argc, char** argv) {
   ros::NodeHandle master;
   ros::Subscriber sub = master.subscribe("ReliabilityMsg", 1000, diagCallback);
 
-  ros::spin();
+  ros::spinOnce();
 }
