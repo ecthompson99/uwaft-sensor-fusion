@@ -1,16 +1,21 @@
 #include "ros/ros.h"
-#include "ecmc/RawSensorObjectDataMsg.h"
+
+#include "ecmc/raw_sensor_object_data_msg.h"
  
+// Constants
+const int PUB_BUFFER_SIZE = 100;
+
 int main(int argc, char **argv)
 {
+    // Initialize ros and create node handle
     ros::init(argc, argv, "data_pub_node");
-    ros::NodeHandle nh;
+    ros::NodeHandle test_data_pub_nh;
       
-    // Change name of topic from greetings
-    ros::Publisher data_pub = nh.advertise<ecmc::RawSensorObjectDataMsg>("raw_data_test", 1000);  
+    // Create publisher
+    ros::Publisher test_data_pub = test_data_pub_nh.advertise<ecmc::raw_sensor_object_data_msg>("raw_data_test", PUB_BUFFER_SIZE);  
 
-    // Single message
-    ecmc::RawSensorObjectDataMsg msg;
+    // Create single message
+    ecmc::raw_sensor_object_data_msg msg;
 
     msg.radarNum = 5;
     msg.numObjects = 3;
@@ -20,14 +25,10 @@ int main(int argc, char **argv)
     msg.pos_y = {1,2,3};
     msg.existProb = {1,2,3};
     msg.valid = {1,1,1};
-
-    int count = 0;
  
-    // With each iteration change some values of the message (what delays the loop speed)
+    // Publish 'msg' at each iteration
     while(ros::ok()) {
-        data_pub.publish(msg);
-        count++;
-        count = count%5;
+        test_data_pub.publish(msg);
         ros::spinOnce();
         ros::Duration(0.5).sleep();
     }
