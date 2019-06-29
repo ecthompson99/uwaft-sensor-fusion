@@ -14,14 +14,14 @@ void dataCallback(const ecmc::raw_sensor_object_data_msg& msg) {
     ROS_INFO_STREAM(numObjects << " OBJECTS FROM RADAR " << radarNum);
 
     // Iterate through message, print each object
-    for(int i = 0; i < numObjects; i++){
-        ROS_INFO_STREAM("OBJECT " << i << ":" "\n"
-            << "Accelerations_x: " << msg.accel_x[i] << " "
-            << "Velocities_x: " << msg.vel_x[i] << " "
-            << "Positions_x: " << msg.pos_x[i] << " " 
-            << "Positions_y: " << msg.pos_y[i] << " "
-            << "Exist Prob: " << msg.existProb[i] << " "
-            << "Valid: " << msg.valid[i] << "\n");
+    for(int object_number = 0; object_number < numObjects; object_number++){
+        ROS_INFO_STREAM("OBJECT " << object_number << ":" "\n"
+            << "Accelerations_x: " << msg.accel_x[object_number] << " "
+            << "Velocities_x: " << msg.vel_x[object_number] << " "
+            << "Positions_x: " << msg.pos_x[object_number] << " "
+            << "Positions_y: " << msg.pos_y[object_number] << " "
+            << "Exist Prob: " << msg.existProb[object_number] << " "
+            << "Valid: " << msg.valid[object_number] << "\n");
     }
 }
  
