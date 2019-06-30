@@ -3,7 +3,7 @@
 #include "ecmc/raw_sensor_object_data_msg.h"
  
 // Constants
-const int PUB_BUFFER_SIZE = 100;
+static const int PUB_BUFFER_SIZE = 100;
 
 int main(int argc, char **argv)
 {

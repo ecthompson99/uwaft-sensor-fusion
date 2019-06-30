@@ -3,7 +3,7 @@
 #include "ecmc/raw_sensor_object_data_msg.h"
  
 // Constants
-const int SUB_BUFFER_SIZE = 100;
+static const int SUB_BUFFER_SIZE = 100;
 
 // Callback for when raw test data is received from topic
 void dataCallback(const ecmc::raw_sensor_object_data_msg& msg) {
