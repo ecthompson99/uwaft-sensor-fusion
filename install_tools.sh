@@ -1,7 +1,29 @@
 sudo add-apt-repository ppa:git-core/ppa
 sudo apt-get update
 
-sudo apt-get install git
+if (echo a version 2.20.0; git --version) | sort -Vk3 | tail -1 | grep -q git
+then
+    echo "Git does not need to be updated"
+else
+	read -p "Git is not up-to-date. Would you like to install the latest version?(y/n) " -n 1 -r 
+	echo
+	if [[ ! "$Reply" =~ ^[Yy]$ ]]; then
+		sudo apt-get remove git
+		sudo apt-get install dh-autoreconf libcurl4-gnutls-dev libexpat1-dev \
+ 			 gettext libz-dev libssl-dev
+		sudo apt-get install asciidoc xmlto docbook2x
+		sudo apt-get install install-info
+		cd ~/Downloads
+		sudo wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.22.0.tar.gz
+		tar -zxf git-2.22.0.tar.gz
+		cd git-2.22.0
+		make configure
+		./configure --prefix=/usr
+		make all doc info
+		sudo make install install-doc install-html install-info
+	fi
+fi
+
 git config core.hooksPath .githooks
 sudo apt install clang-format
 
@@ -39,7 +61,7 @@ if [ "${#notInstalled[@]}" -gt "0" ]; then
 	read -p "Do you want to install them now (y/n)? " -n 1 -r 
 	echo
 	if [[ ! "$Reply" =~ ^[Yy]$ ]]; then
-    		sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+    	sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 		sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 		sudo apt-get update
 		sudo apt-get install ros-kinetic-desktop-full
