@@ -20,16 +20,22 @@ https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account
 
 Run
 
+```
 git clone git@github.com:uwaft/kaiROS.git
+```
 
 ### Install ROS on your local machine
 Change directory into the kaiROS folder by
 
+```
 cd kaiROS/
+```
 
 Execute the 'install_tools.sh' by running the following:
 
+```
 ./install_tools.sh
+```
 
 This will install all the ROS related packages, along with the latest version of Git and Clang for you automatically.
 
@@ -41,19 +47,21 @@ Change directory into the cloned kaiROS folder by 'cd'.
 
 Execute
 
+```
 catkin build
+```
 
 To test if ROS is running properly, Execute in terminal (It could take a while):
-
+```
 roscore
-
+```
 Open a new terminal, then run
-
-./kaiROS/devel/lib/my_first_package/hello_world
-
+```
+rosrun ecmc hello_world_publisher
+```
 
 Open another new terminal and execute
-
+```
 rosnode list
-
-in the new terminal. You should see hello_world running as a node.
+```
+in the new terminal. You should see hello_world_publisher running as a node.
