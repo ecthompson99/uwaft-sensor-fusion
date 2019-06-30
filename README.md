@@ -23,11 +23,15 @@ Run
 git clone git@github.com:uwaft/kaiROS.git
 
 ### Install ROS on your local machine
+Change directory into the kaiROS folder by
+
+cd kaiROS/
+
 Execute the 'install_tools.sh' by running the following:
 
 ./install_tools.sh
 
-This will install all the ROS related packages, along with Clang for you automatically.
+This will install all the ROS related packages, along with the latest version of Git and Clang for you automatically.
 
 The same info is available on [Confluence](https://wiki.uwaterloo.ca/display/UWAFT/Intro+to+ROS).
 
