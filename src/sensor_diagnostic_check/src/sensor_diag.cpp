@@ -9,7 +9,7 @@
 #include "sensor_diag_dummy/sensor_diagnostic_flag_msg.h"
 
 //ROS will buffer up a max of 1000 messages before beginning to throw away old ones.
-int max_messages = 1000;
+static const int SUB_BUFFER_SIZE = 1000;
 
 //callback function for the subscriber
 void CAN_callback(const sensor_diag_dummy::sensor_diagnostic_data_msg& message) {
@@ -17,8 +17,8 @@ void CAN_callback(const sensor_diag_dummy::sensor_diagnostic_data_msg& message) 
 //temporary workaround for int and bool as the values in them do not get properly printed using ROS_INFO_STREAM  
   bool hardware_failure = message.hardware_fail;
   bool SGU_failure = message.SGU_fail;
-  int msg_counter = message.message_counter;
-  int msg_CRC = message.message_CRC;
+  uint8_t msg_counter = message.message_counter;
+  uint8_t msg_CRC = message.message_CRC;
 
 //output and log every variable in the message from the topic this node subscribes too. Output messages will need to be worked on.
   ROS_INFO_STREAM("\n"
@@ -45,11 +45,11 @@ int main(int argc, char** argv) {
   ros::NodeHandle sensor_diag_handle;
 
   //sub to the topic CAN_TX_RX
-  ros::Subscriber sensor_diag_sub = sensor_diag_handle.subscribe("CANmsg", max_messages, CAN_callback);
+  ros::Subscriber sensor_diag_sub = sensor_diag_handle.subscribe("CANmsg", SUB_BUFFER_SIZE, CAN_callback);
 
   //pub to topic Sensor Diagnostic Flag
   ros:: Publisher sensor_diag_pub = sensor_diag_handle.advertise<
-                  sensor_diag_dummy::sensor_diagnostic_flag_msg>("ReliabilityMsg", max_messages);
+                  sensor_diag_dummy::sensor_diagnostic_flag_msg>("ReliabilityMsg", SUB_BUFFER_SIZE);
 
   //define message object
   sensor_diag_dummy::sensor_diagnostic_flag_msg radar_msg; 
