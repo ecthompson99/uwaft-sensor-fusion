@@ -16,7 +16,7 @@ void can_callback(const sensor_diag_dummy::sensor_diagnostic_data_msg& message) 
 
 //temporary workaround for int and bool as the values in them do not get properly printed using ROS_INFO_STREAM  
   bool hardware_failure = message.hardware_fail;
-  bool src_failure = message.sgu_fail;
+  bool sgu_failure = message.sgu_fail;
   uint8_t msg_counter = message.message_counter;
   uint8_t msg_crc = message.message_crc;
 
