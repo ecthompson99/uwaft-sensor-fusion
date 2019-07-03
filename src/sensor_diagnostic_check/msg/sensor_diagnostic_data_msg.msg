@@ -1,17 +1,17 @@
 Header Header
 
-float64 starterConsistency
+float64 starter_consistency
 
-float64 timeStamp
-float64 enderConsistency
+float64 time_stamp
+float64 ender_consistency
 float64 counter
-float64 checkSum
+float64 check_sum
 
-uint16 ITCinfo
-bool HWfail
-bool SGUFail
-float64 horizontalMisalign
-float64 absorbBlind
-float64 distortBlind
-uint8 messageCounter
-uint8 messageCRC
+uint16 ITC_info
+bool hardware_fail
+bool SGU_fail
+float64 horizontal_misalign
+float64 absorb_blind
+float64 distort_blind
+uint8 message_counter
+uint8 message_CRC
