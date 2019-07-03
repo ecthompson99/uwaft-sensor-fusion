@@ -12,13 +12,13 @@
 static const int SUB_BUFFER_SIZE = 1000;
 
 //callback function for the subscriber
-void CAN_callback(const sensor_diag_dummy::sensor_diagnostic_data_msg& message) {
+void can_callback(const sensor_diag_dummy::sensor_diagnostic_data_msg& message) {
 
 //temporary workaround for int and bool as the values in them do not get properly printed using ROS_INFO_STREAM  
   bool hardware_failure = message.hardware_fail;
-  bool SGU_failure = message.SGU_fail;
+  bool src_failure = message.sgu_fail;
   uint8_t msg_counter = message.message_counter;
-  uint8_t msg_CRC = message.message_CRC;
+  uint8_t msg_crc = message.message_crc;
 
 //output and log every variable in the message from the topic this node subscribes too. Output messages will need to be worked on.
   ROS_INFO_STREAM("\n"
@@ -30,11 +30,11 @@ void CAN_callback(const sensor_diag_dummy::sensor_diagnostic_data_msg& message) 
             << "horizontalMisalign " << message.horizontal_misalign << "\n"
             << "absorbBlind " << message.absorb_blind << "\n"
             << "distortBlind " << message.distort_blind << "\n"
-            << "ITCinfo " << message.ITC_info << "\n"
+            << "ITCinfo " << message.itc_info << "\n"
             << "HWfail " << hardware_failure << "\n"
-            << "SGUFail " << SGU_failure << "\n"
+            << "SGUFail " << sgu_failure << "\n"
             << "messageCounter " << msg_counter << "\n"
-            << "messageCRC " << msg_CRC << "\n");
+            << "messageCRC " << msg_crc << "\n");
 }
 
 int main(int argc, char** argv) {
@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
   ros::NodeHandle sensor_diag_handle;
 
   //sub to the topic CAN_TX_RX
-  ros::Subscriber sensor_diag_sub = sensor_diag_handle.subscribe("sensor_diagnostic_data", SUB_BUFFER_SIZE, CAN_callback);
+  ros::Subscriber sensor_diag_sub = sensor_diag_handle.subscribe("sensor_diagnostic_data", SUB_BUFFER_SIZE, can_callback);
 
   //pub to topic Sensor Diagnostic Flag
   ros:: Publisher sensor_diag_pub = sensor_diag_handle.advertise<
