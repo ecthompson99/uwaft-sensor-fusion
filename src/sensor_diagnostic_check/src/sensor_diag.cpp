@@ -45,11 +45,11 @@ int main(int argc, char** argv) {
   ros::NodeHandle sensor_diag_handle;
 
   //sub to the topic CAN_TX_RX
-  ros::Subscriber sensor_diag_sub = sensor_diag_handle.subscribe("CANmsg", SUB_BUFFER_SIZE, CAN_callback);
+  ros::Subscriber sensor_diag_sub = sensor_diag_handle.subscribe("sensor_diagnostic_data", SUB_BUFFER_SIZE, CAN_callback);
 
   //pub to topic Sensor Diagnostic Flag
   ros:: Publisher sensor_diag_pub = sensor_diag_handle.advertise<
-                  sensor_diag_dummy::sensor_diagnostic_flag_msg>("ReliabilityMsg", SUB_BUFFER_SIZE);
+                  sensor_diag_dummy::sensor_diagnostic_flag_msg>("sensor_diagnostic_flags", SUB_BUFFER_SIZE);
 
   //define message object
   sensor_diag_dummy::sensor_diagnostic_flag_msg radar_msg; 
