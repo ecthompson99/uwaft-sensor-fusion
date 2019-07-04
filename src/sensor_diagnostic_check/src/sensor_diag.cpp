@@ -6,7 +6,7 @@
 #include "sensor_diag_dummy/sensor_diagnostic_data_msg.h"
 #include "sensor_diag_dummy/sensor_diagnostic_flag_msg.h"
 
-static const int TX_RX_MESSAGE_BUFFER_SIZE = 1000;
+static const uint8_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
 
 void can_msg_callback(const sensor_diag_dummy::sensor_diagnostic_data_msg& message) {
 
