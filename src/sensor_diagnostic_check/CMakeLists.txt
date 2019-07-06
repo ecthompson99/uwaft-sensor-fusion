@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ecmc)
+project(sensor_diagnostic_check)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -46,19 +46,12 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
-# Generate messages in the 'msg' folder
+## Generate messages in the 'msg' folder
 add_message_files(
-   FILES
-   CANCommsDataMsg.msg
-   DriveCtrlInputMsg.msg
-   FusedObjectDataMsg.msg
-   GreetingMsg.msg
-   SensorDiagnosticFlagMsg.msg
-   RawSensorObjectDataMsg.msg
-   SensorDiagnosticDataMsg.msg
-   SudoDriverInputMsg.msg
-
- )
+  FILES
+  sensor_diagnostic_flag_msg.msg #publish to this topic
+  sensor_diagnostic_data_msg.msg #subscribe to this topic
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -74,11 +67,11 @@ add_message_files(
 #   Action2.action
 # )
 
-# Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs  # Or other packages containing msgs
- )
+## Generate added messages and services with any dependencies listed here
+generate_messages(
+  DEPENDENCIES
+  std_msgs  # Or other packages containing msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -110,10 +103,9 @@ add_message_files(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  CATKIN_DEPENDS roscpp message_runtime std_msgs
 #  INCLUDE_DIRS include
-#  LIBRARIES ecmc
-#  CATKIN_DEPENDS roscpp
+#  LIBRARIES sensor_diagnostic_check
+   CATKIN_DEPENDS roscpp message_runtime std_msgs
 #  DEPENDS system_lib
 )
 
@@ -130,7 +122,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/ecmc.cpp
+#   src/${PROJECT_NAME}/sensor_diagnostic_check.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -141,9 +133,8 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/ecmc_node.cpp)
-add_executable(hello_world_publisher src/hello_world_pub.cpp)
-add_executable(hello_world_subscriber src/hello_world_sub.cpp)
+# add_executable(${PROJECT_NAME}_node src/sensor_diagnostic_check_node.cpp)
+add_executable(sensor_diagnostic src/sensor_diag.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,15 +145,13 @@ add_executable(hello_world_subscriber src/hello_world_sub.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(hello_world_publisher ${catkin_EXPORTED_TARGETS})
-add_dependencies(hello_world_subscriber ${catkin_EXPORTED_TARGETS})
+add_dependencies(sensor_diagnostic ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(hello_world_publisher ${catkin_LIBRARIES})
-target_link_libraries(hello_world_subscriber ${catkin_LIBRARIES})
+target_link_libraries(sensor_diagnostic ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -204,13 +193,10 @@ target_link_libraries(hello_world_subscriber ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_ecmc.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_sensor_diagnostic_check.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-
-
-
