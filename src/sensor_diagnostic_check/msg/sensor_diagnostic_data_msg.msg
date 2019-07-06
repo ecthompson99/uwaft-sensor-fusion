@@ -14,4 +14,4 @@ float64 horizontal_misalign
 float64 absorb_blind
 float64 distort_blind
 uint8 message_counter
-uint8 message_crc
+uint32 message_crc
