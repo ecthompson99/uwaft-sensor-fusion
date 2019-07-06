@@ -10,7 +10,7 @@
 
 static const uint8_t MASTER_MESSAGE_BUFFER_SIZE = 1000;
 
-void drive_ctrl_msg_callback(const master_task::drive_ctrl_input_msg& drive_ctrl_msg) {
+void drive_ctrl_msg_callback(const master_task::drive_ctrl_input_msg& drive_ctrl_msg){
 
     bool is_acc_enabled = drive_ctrl_msg.acc_enable;
     bool is_aeb_enabled = drive_ctrl_msg.aeb_enable;
@@ -45,6 +45,7 @@ void sudo_driver_input_msg_callback(const master_task::sudo_driver_input_msg& in
         << "AEB override " << aeb_or << "\n" 
         << "Target Acceleration " << input_msg.target_accel << "\n" 
         << "Wheel angle " << input_msg.wheel_angle << "\n" 
+    );
 }
 
 int main(int argc, char** argv) {
