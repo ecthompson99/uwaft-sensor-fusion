@@ -1,8 +1,8 @@
 Header header
 
-bool ACCEnable
-bool AEBEnable
-bool LCEnable
+bool acc_enable
+bool aeb_enable
+bool lc_enable
 
-float64 ACCSpeedSetPoint
-float64 ACCDistSetPoint
+float64 acc_speed_setpoint
+float64 acc_dist_setpoint

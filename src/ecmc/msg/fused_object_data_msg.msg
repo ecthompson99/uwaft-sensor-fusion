@@ -1,6 +1,6 @@
 Header header
 
-float64 longAccel
-float64 longVel
-float64 longPos
-float64 latDist
+float64 accel_x
+float64 vel_x
+float64 pos_x
+float64 pos_y

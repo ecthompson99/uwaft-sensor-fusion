@@ -1,3 +1,3 @@
 Header header
 
-uint8[6] radarReliability
+uint8[6] radar_reliability

@@ -1,5 +1,5 @@
 Header header
 
-float64 targetAccel
-float64 wheelAngle
-bool AEBOverride
+float64 target_accel
+float64 wheel_angle
+bool aeb_override

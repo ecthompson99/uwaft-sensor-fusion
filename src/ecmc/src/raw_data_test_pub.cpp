@@ -2,8 +2,7 @@
 
 #include "ecmc/raw_sensor_object_data_msg.h"
  
-// Constants
-static const int PUB_BUFFER_SIZE = 100;
+static const uint32_t pub_buffer_size = 100;
 
 int main(int argc, char **argv)
 {
@@ -11,22 +10,19 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "data_pub_node");
     ros::NodeHandle test_data_pub_nh;
       
-    // Create publisher
-    ros::Publisher test_data_pub = test_data_pub_nh.advertise<ecmc::raw_sensor_object_data_msg>("raw_data_test", PUB_BUFFER_SIZE);  
+    ros::Publisher test_data_pub = test_data_pub_nh.advertise<ecmc::raw_sensor_object_data_msg>("raw_data_test", pub_buffer_size);  
 
-    // Create single message
     ecmc::raw_sensor_object_data_msg msg;
 
-    msg.radarNum = 5;
-    msg.numObjects = 3;
+    msg.radar_num = 5;
+    msg.num_objects = 3;
     msg.accel_x = {1,2,3};
     msg.vel_x = {1,2,3};
     msg.pos_x = {1,2,3};
     msg.pos_y = {1,2,3};
-    msg.existProb = {1,2,3};
+    msg.exist_prob = {1,2,3};
     msg.valid = {1,1,1};
  
-    // Publish 'msg' at each iteration
     while(ros::ok()) {
         test_data_pub.publish(msg);
         ros::spinOnce();

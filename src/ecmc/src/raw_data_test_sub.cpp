@@ -2,36 +2,30 @@
 
 #include "ecmc/raw_sensor_object_data_msg.h"
  
-// Constants
-static const int SUB_BUFFER_SIZE = 100;
+static const int sub_buffer_size = 100;
 
-// Callback for when raw test data is received from topic
-void dataCallback(const ecmc::raw_sensor_object_data_msg& msg) {
-    int radarNum = msg.radarNum;
-    int numObjects = msg.numObjects;
+void raw_data_recv_callback(const ecmc::raw_sensor_object_data_msg& msg) {
+    uint8_t radar_num = msg.radar_num;
+    uint8_t num_objects = msg.num_objects;
     
-    // Print radar number and number of objects within message
-    ROS_INFO_STREAM(numObjects << " OBJECTS FROM RADAR " << radarNum);
+    ROS_INFO_STREAM(num_objects << " OBJECTS FROM RADAR " << radar_num << "\n");
 
-    // Iterate through message, print each object
-    for(int object_number = 0; object_number < numObjects; object_number++){
+    for(uint32_t object_number = 0; object_number < num_objects; object_number++){
         ROS_INFO_STREAM("OBJECT " << object_number << ":" "\n"
             << "Accelerations_x: " << msg.accel_x[object_number] << " "
             << "Velocities_x: " << msg.vel_x[object_number] << " "
             << "Positions_x: " << msg.pos_x[object_number] << " "
             << "Positions_y: " << msg.pos_y[object_number] << " "
-            << "Exist Prob: " << msg.existProb[object_number] << " "
+            << "Exist Prob: " << msg.exist_prob[object_number] << " "
             << "Valid: " << msg.valid[object_number] << "\n");
     }
 }
  
 int main(int argc, char **argv)
 {
-    // Initialize ros, create subscriber
     ros::init(argc, argv, "data_sub_node");
     ros::NodeHandle test_data_sub_nh;
-    ros::Subscriber test_data_sub = test_data_sub_nh.subscribe("raw_data_test", SUB_BUFFER_SIZE, dataCallback);  
+    ros::Subscriber test_data_sub = test_data_sub_nh.subscribe("raw_data_test", sub_buffer_size, raw_data_recv_callback);  
   
-    // Wait on publisher, call callbacks on messages
     ros::spin();
 }
