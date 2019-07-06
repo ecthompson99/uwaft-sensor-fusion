@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
     can_comms_msg.alive_rolling_counter = 16;
 
     while (ros::ok()) {    
-        can_comms_data_msg.publish(can_comms_msg);
+        master_task_pub.publish(can_comms_msg);
         ros::spinOnce();
     }
 }
