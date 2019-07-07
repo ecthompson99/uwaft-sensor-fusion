@@ -7,7 +7,7 @@ bool lc_switch_status
 float64 target_accel
 bool acc_valid
 bool hold_target_speed
-float64 speed_setPoint
+float64 speed_setpoint
 
 bool aeb_valid
 bool aeb_override

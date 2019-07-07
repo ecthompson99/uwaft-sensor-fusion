@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
         sudo_driver_input_msg_callback);
   
     ros::Publisher master_task_pub = master_task_handle.advertise<
-        master_task::can_comms_data_msg>("can_comm_msg", MASTER_MESSAGE_BUFFER_SIZE);
+        master_task::can_comms_data_msg>("can_comms_data", MASTER_MESSAGE_BUFFER_SIZE);
   
     master_task::can_comms_data_msg can_comms_msg; 
 
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
     can_comms_msg.target_accel = 12.5;
     can_comms_msg.acc_valid = 0;
     can_comms_msg.hold_target_speed = 0;
-    can_comms_msg.speed_setPoint = 151.45;
+    can_comms_msg.speed_setpoint = 151.45;
     can_comms_msg.aeb_valid = 0;
     can_comms_msg.aeb_override = 0;
     can_comms_msg.lc_valid = 0;
