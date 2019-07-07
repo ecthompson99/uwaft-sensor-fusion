@@ -49,15 +49,13 @@ find_package(catkin REQUIRED COMPONENTS
 # Generate messages in the 'msg' folder
 add_message_files(
    FILES
-   CANCommsDataMsg.msg
-   DriveCtrlInputMsg.msg
-   FusedObjectDataMsg.msg
-   GreetingMsg.msg
-   SensorDiagnosticFlagMsg.msg
-   RawSensorObjectDataMsg.msg
-   SensorDiagnosticDataMsg.msg
-   SudoDriverInputMsg.msg
-
+   can_comms_data_msg.msg
+   drive_control_input_msg.msg
+   fused_object_data_msg.msg
+   sensor_diagnostic_flag_msg.msg
+   raw_sensor_object_data_msg.msg
+   sensor_diagnostic_data_msg.msg
+   sudo_driver_input_msg.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -142,8 +140,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/ecmc_node.cpp)
-add_executable(hello_world_publisher src/hello_world_pub.cpp)
-add_executable(hello_world_subscriber src/hello_world_sub.cpp)
+add_executable(raw_data_publisher src/raw_data_test_pub.cpp)
+add_executable(raw_data_subscriber src/raw_data_test_sub.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,15 +152,15 @@ add_executable(hello_world_subscriber src/hello_world_sub.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(hello_world_publisher ${catkin_EXPORTED_TARGETS})
-add_dependencies(hello_world_subscriber ${catkin_EXPORTED_TARGETS})
+add_dependencies(raw_data_publisher ${catkin_EXPORTED_TARGETS})
+add_dependencies(raw_data_subscriber ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(hello_world_publisher ${catkin_LIBRARIES})
-target_link_libraries(hello_world_subscriber ${catkin_LIBRARIES})
+target_link_libraries(raw_data_publisher ${catkin_LIBRARIES})
+target_link_libraries(raw_data_subscriber ${catkin_LIBRARIES})
 
 #############
 ## Install ##
