@@ -42,9 +42,6 @@ int main(int argc, char** argv) {
   
     ros::Subscriber can_sub = subs_handle.subscribe("can_comms_data", MASTER_MESSAGE_BUFFER_SIZE,
         can_callback);
-
-    while (ros::ok()) {    
-        master_task_pub.publish(can_comms_msg);
-        ros::spinOnce();
-    }
+    
+    ros::spin();
 }
