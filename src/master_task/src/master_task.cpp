@@ -17,12 +17,11 @@ void drive_ctrl_msg_callback(const master_task::drive_ctrl_input_msg& drive_ctrl
     bool is_lc_enabled = drive_ctrl_msg.lc_enable;
 
     ROS_INFO_STREAM("\n"
-        << "ACC enabled? " << is_acc_enabled << "\n" 
-        << "AEB enabled? " << is_aeb_enabled << "\n"
-        << "LC enabled? " << is_lc_enabled << "\n"
-        << "ACC speed set point " << drive_ctrl_msg.acc_speed_set_point << "\n"
-        << "ACC dist set point " << drive_ctrl_msg.acc_dist_set_point << "\n"
-    );
+                    << "ACC enabled? " << is_acc_enabled << "\n"
+                    << "AEB enabled? " << is_aeb_enabled << "\n"
+                    << "LC enabled? " << is_lc_enabled << "\n"
+                    << "ACC speed set point " << drive_ctrl_msg.acc_speed_set_point << "\n"
+                    << "ACC dist set point " << drive_ctrl_msg.acc_dist_set_point << "\n");
 }
 
 void sensor_diag_flag_msg_callback(const master_task::sensor_diagnostic_flag_msg& sensor_msg) {
@@ -35,13 +34,12 @@ void sensor_diag_flag_msg_callback(const master_task::sensor_diagnostic_flag_msg
     int sixth = sensor_msg.radar_reliability[5];
 
     ROS_INFO_STREAM("\n"
-        << "1st sensor " << first << "\n" 
-        << "2nd sensor " << second << "\n" 
-        << "3rd sensor " << third << "\n" 
-        << "4th sensor " << fourth << "\n" 
-        << "5th sensor " << fifth << "\n" 
-        << "6th sensor " << sixth << "\n"       
-    );          
+                    << "1st sensor " << first << "\n"
+                    << "2nd sensor " << second << "\n"
+                    << "3rd sensor " << third << "\n"
+                    << "4th sensor " << fourth << "\n"
+                    << "5th sensor " << fifth << "\n"
+                    << "6th sensor " << sixth << "\n");
 }
 
 void sudo_driver_input_msg_callback(const master_task::sudo_driver_input_msg& input_msg) {
