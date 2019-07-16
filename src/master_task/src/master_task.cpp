@@ -49,10 +49,9 @@ void sudo_driver_input_msg_callback(const master_task::sudo_driver_input_msg& in
     bool aeb_or = input_msg.aeb_override;
 
     ROS_INFO_STREAM("\n"
-        << "AEB override " << aeb_or << "\n" 
-        << "Target Acceleration " << input_msg.target_accel << "\n" 
-        << "Wheel angle " << input_msg.wheel_angle << "\n" 
-    );
+                    << "AEB override " << aeb_or << "\n"
+                    << "Target Acceleration " << input_msg.target_accel << "\n"
+                    << "Wheel angle " << input_msg.wheel_angle << "\n");
 }
 
 int main(int argc, char** argv) {
