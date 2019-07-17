@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>sensor_diagnostic_check</name>
+  <name>master_task</name>
   <version>0.0.0</version>
-  <description>The sensor_diagnostic_check package</description>
+  <description>The master_task package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/sensor_diagnostic_check</url> -->
+  <!-- <url type="website">http://wiki.ros.org/master_task</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -58,7 +58,7 @@
   <exec_depend>message_runtime</exec_depend>
   <build_depend>std_msgs</build_depend>
   <exec_depend>std_msgs</exec_depend>
-
+  
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
