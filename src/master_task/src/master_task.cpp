@@ -1,3 +1,5 @@
+#include "master_task.h"
+
 #include <stdio.h>
 #include <sstream>
 

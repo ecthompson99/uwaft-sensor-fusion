@@ -105,7 +105,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+    INCLUDE_DIRS include
 #  LIBRARIES master_task
     CATKIN_DEPENDS roscpp message_runtime std_msgs
 #  DEPENDS system_lib
@@ -118,7 +118,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -147,7 +147,7 @@ add_executable(master_task src/master_task.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(master_task ${catkin_EXPORTED_TARGETS})
+add_dependencies(master_task ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
@@ -193,12 +193,20 @@ target_link_libraries(master_task ${catkin_LIBRARIES})
 #############
 ## Testing ##
 #############
-
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_master_task.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+if (CATKIN_ENABLE_TESTING)
+    ## Add gtest based cpp test target and link libraries
+    catkin_add_executable_with_gtest(
+        ${PROJECT_NAME}-test
+        test/test_master_task.cpp
+    )
+    if(TARGET ${PROJECT_NAME}-test)
+        target_link_libraries(
+        ${PROJECT_NAME}-test 
+        ${catkin_LIBRARIES}
+        )
+    endif() 
+    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
+endif() # CATKIN_ENABLE_TESTING
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
