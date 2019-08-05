@@ -1,14 +1,12 @@
-#include "../include/master_task.h"
+#include "helpers.h"
 
 #include <gtest/gtest.h>
 
-TEST(TestDriveDtrlMsgCallback, validData) { ASSERT_EQ(0, 0); }
-
-TEST(TestDriveDtrlMsgCallback, emptyData) { ASSERT_EQ(0, 0); }
-
-TEST(TestSensorDiagFlagMsgCallback, validData) { ASSERT_EQ(0, 0); }
-
-TEST(TestSudoDriverInputMsgCallback, validData) { ASSERT_EQ(0, 0); }
+TEST(add_one, validData) {
+  const int input = 1;
+  const int output_expected = 4;
+  ASSERT_EQ(add_one(input), output_expected);
+}
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);

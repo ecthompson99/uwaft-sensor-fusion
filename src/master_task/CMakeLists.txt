@@ -4,6 +4,12 @@ project(master_task)
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
 
+## Coverage flags
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -195,18 +201,19 @@ target_link_libraries(master_task ${catkin_LIBRARIES})
 #############
 if (CATKIN_ENABLE_TESTING)
     ## Add gtest based cpp test target and link libraries
-    catkin_add_executable_with_gtest(
+    catkin_add_gtest(
         ${PROJECT_NAME}-test
         test/test_master_task.cpp
+        src/helpers.cpp
     )
     if(TARGET ${PROJECT_NAME}-test)
         target_link_libraries(
-        ${PROJECT_NAME}-test 
-        ${catkin_LIBRARIES}
+            ${PROJECT_NAME}-test 
+            ${catkin_LIBRARIES}
         )
     endif() 
     add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
-endif() # CATKIN_ENABLE_TESTING
+endif(CATKIN_ENABLE_TESTING)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
