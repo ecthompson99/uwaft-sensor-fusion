@@ -25,9 +25,10 @@ packages=(
 
 for pkg in "${packages[@]}"; do 
     TEST_EXECUTABLE="${pkg}-test"
-    TEST_FILE="src/${pkg}/test/test_${pkg}.cpp"
+    TEST_SRC_DIR="src/${pkg}/test"
+    SRC_SRC_DIR="src/${pkg}/src"
     TEST_BUILD_DIR="build/${pkg}/CMakeFiles/${TEST_EXECUTABLE}.dir/test"
-    TEST_SRC_DIR="build/${pkg}/CMakeFiles/${TEST_EXECUTABLE}.dir/src"
+    SRC_BUILD_DIR="build/${pkg}/CMakeFiles/${TEST_EXECUTABLE}.dir/src"
     COVERAGE_DIR="build/${pkg}/coverage"
     COVERAGE_OUTPUT="${COVERAGE_DIR}/main_coverage.info"
     COVERAGE_HTML_FOLDER="${COVERAGE_DIR}/out"
@@ -49,8 +50,8 @@ for pkg in "${packages[@]}"; do
 
     [ ! -d $COVERAGE_DIR ] && mkdir $COVERAGE_DIR
 
-    lcov -c -d $TEST_BUILD_DIR -d $TEST_SRC_DIR -o $COVERAGE_OUTPUT >/dev/null
-    lcov --remove $COVERAGE_OUTPUT "/usr*" -o $COVERAGE_OUTPUT >/dev/null
+    lcov --no-external -c -d $TEST_SRC_DIR -d $SRC_SRC_DIR -d $TEST_BUILD_DIR -d $SRC_BUILD_DIR -o $COVERAGE_OUTPUT >/dev/null
+    lcov --remove $COVERAGE_OUTPUT "/usr*" "*/devel*" -o $COVERAGE_OUTPUT >/dev/null
     genhtml $COVERAGE_OUTPUT -o $COVERAGE_HTML_FOLDER >/dev/null
     echo "To view coverage: ${COVERAGE_HTML_FILE}"
 done

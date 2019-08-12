@@ -142,7 +142,11 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/master_task_node.cpp)
-add_executable(master_task src/master_task.cpp)
+add_executable(
+    master_task
+    src/master_task_main.cpp
+    src/master_task.cpp
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -159,7 +163,10 @@ add_dependencies(master_task ${${PROJECT_NAME}_EXPORTED_TARGETS})
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(master_task ${catkin_LIBRARIES})
+target_link_libraries(
+    master_task
+    ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##
@@ -204,14 +211,14 @@ if (CATKIN_ENABLE_TESTING)
     catkin_add_gtest(
         ${PROJECT_NAME}-test
         test/test_master_task.cpp
-        src/helpers.cpp
+        src/master_task.cpp
     )
     if(TARGET ${PROJECT_NAME}-test)
         target_link_libraries(
             ${PROJECT_NAME}-test 
             ${catkin_LIBRARIES}
         )
-    endif() 
+    endif()
     add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
 endif(CATKIN_ENABLE_TESTING)
 
