@@ -6,7 +6,7 @@
 #include "sensor_diagnostic_check/sensor_diagnostic_data_msg.h"
 #include "sensor_diagnostic_check/sensor_diagnostic_flag_msg.h"
 
-static const uint8_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
+static const uint16_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
 
 void can_msg_callback(const sensor_diagnostic_check::sensor_diagnostic_data_msg& message) {
 
@@ -17,19 +17,19 @@ void can_msg_callback(const sensor_diagnostic_check::sensor_diagnostic_data_msg&
     uint32_t msg_crc = message.message_crc;
 
     ROS_INFO_STREAM("\n"
-        << "starterConsistency " << message.starter_consistency << "\n" 
-        << "timeStamp " << message.time_stamp << "\n"
-        << "enderConsistency " << message.ender_consistency << "\n"
-        << "counter " << message.counter << "\n"
-        << "checkSum " << message.check_sum << "\n"
-        << "horizontalMisalign " << message.horizontal_misalign << "\n"
-        << "absorbBlind " << message.absorb_blind << "\n"
-        << "distortBlind " << message.distort_blind << "\n"
-        << "ITCinfo " << message.itc_info << "\n"
-        << "HWfail " << hardware_failure << "\n"
-        << "SGUFail " << sgu_failure << "\n"
-        << "messageCounter " << msg_counter << "\n"
-        << "messageCRC " << msg_crc << "\n");
+                    << "starterConsistency " << message.starter_consistency << "\n"
+                    << "timeStamp " << message.time_stamp << "\n"
+                    << "enderConsistency " << message.ender_consistency << "\n"
+                    << "counter " << message.counter << "\n"
+                    << "checkSum " << message.check_sum << "\n"
+                    << "horizontalMisalign " << message.horizontal_misalign << "\n"
+                    << "absorbBlind " << message.absorb_blind << "\n"
+                    << "distortBlind " << message.distort_blind << "\n"
+                    << "ITCinfo " << message.itc_info << "\n"
+                    << "HWfail " << hardware_failure << "\n"
+                    << "SGUFail " << sgu_failure << "\n"
+                    << "messageCounter " << unsigned(msg_counter) << "\n"
+                    << "messageCRC " << msg_crc << "\n");
 }
 
 int main(int argc, char** argv) {

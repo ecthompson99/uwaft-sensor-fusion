@@ -13,6 +13,7 @@ else
  			 gettext libz-dev libssl-dev
 		sudo apt-get install asciidoc xmlto docbook2x
 		sudo apt-get install install-info
+		sudo apt-get install lcov
 		cd ~/Downloads
 		sudo wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.22.0.tar.gz
 		tar -zxf git-2.22.0.tar.gz

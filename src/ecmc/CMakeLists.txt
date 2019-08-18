@@ -1,13 +1,33 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ecmc)
 
+## Verbosity level
+# ROSCONSOLE_SEVERITY_DEBUG
+# ROSCONSOLE_SEVERITY_INFO
+# ROSCONSOLE_SEVERITY_WARN
+# ROSCONSOLE_SEVERITY_ERROR
+# ROSCONSOLE_SEVERITY_FATAL
+# ROSCONSOLE_SEVERITY_NONE
+SET(RAW_DATA_PUB_VERBOSITY ROSCONSOLE_SEVERITY_DEBUG)
+SET(RAW_DATA_SUB_VERBOSITY ROSCONSOLE_SEVERITY_DEBUG)
+# SET(<ECMC TEST VERBOSITY> ROSCONSOLE_SEVERITY_WARN)
+
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+add_compile_options(
+  -std=c++11
+)
+
+## Coverage flags
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
+find_package(
+  catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
@@ -108,10 +128,9 @@ add_message_files(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  CATKIN_DEPENDS roscpp message_runtime std_msgs
-#  INCLUDE_DIRS include
+ INCLUDE_DIRS include
 #  LIBRARIES ecmc
-#  CATKIN_DEPENDS roscpp
+ CATKIN_DEPENDS roscpp message_runtime std_msgs
 #  DEPENDS system_lib
 )
 
@@ -122,7 +141,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -161,6 +180,17 @@ add_dependencies(raw_data_subscriber ${${PROJECT_NAME}_EXPORTED_TARGETS})
 # )
 target_link_libraries(raw_data_publisher ${catkin_LIBRARIES})
 target_link_libraries(raw_data_subscriber ${catkin_LIBRARIES})
+
+target_compile_definitions(
+    raw_data_publisher
+    PUBLIC
+    ROSCONSOLE_MIN_SEVERITY=${RAW_DATA_PUB_VERBOSITY}
+)
+target_compile_definitions(
+    raw_data_subscriber
+    PUBLIC
+    ROSCONSOLE_MIN_SEVERITY=${RAW_DATA_SUB_VERBOSITY}
+)
 
 #############
 ## Install ##
@@ -202,10 +232,26 @@ target_link_libraries(raw_data_subscriber ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_ecmc.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+# if (CATKIN_ENABLE_TESTING)
+#     ## Add gtest based cpp test target and link libraries
+#     catkin_add_gtest(
+#         ${PROJECT_NAME}-test
+#         test/<test file>.cpp
+#         src/<file you are writing tests for.cpp
+#     )
+#     if(TARGET ${PROJECT_NAME}-test)
+#         target_link_libraries(
+#             ${PROJECT_NAME}-test
+#             ${catkin_LIBRARIES}
+#         )
+#     endif()
+#     add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#     target_compile_definitions(
+#         ${PROJECT_NAME}-test
+#         PUBLIC
+#         ROSCONSOLE_MIN_SEVERITY=${<ECMC TEST VERBOSITY>}
+#     )
+# endif(CATKIN_ENABLE_TESTING)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
