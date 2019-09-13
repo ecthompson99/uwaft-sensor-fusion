@@ -1,13 +1,32 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(master_task)
 
+## Verbosity level
+# ROSCONSOLE_SEVERITY_DEBUG
+# ROSCONSOLE_SEVERITY_INFO
+# ROSCONSOLE_SEVERITY_WARN
+# ROSCONSOLE_SEVERITY_ERROR
+# ROSCONSOLE_SEVERITY_FATAL
+# ROSCONSOLE_SEVERITY_NONE
+SET(MASTER_TASK_VERBOSITY ROSCONSOLE_SEVERITY_DEBUG)
+SET(MASTER_TASK_TEST_VERBOSITY ROSCONSOLE_SEVERITY_WARN)
+
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+add_compile_options(
+    -std=c++11
+)
+
+## Coverage flags
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
+SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
+find_package(
+    catkin REQUIRED COMPONENTS
     roscpp
     std_msgs
     message_generation
@@ -105,8 +124,8 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES master_task
+    INCLUDE_DIRS include
+#  LIBRARIES ${PROJECT_NAME}
     CATKIN_DEPENDS roscpp message_runtime std_msgs
 #  DEPENDS system_lib
 )
@@ -118,13 +137,13 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/master_task.cpp
+#   src/${PROJECT_NAME}/${PROJECT_NAME}.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -135,8 +154,12 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/master_task_node.cpp)
-add_executable(master_task src/master_task.cpp)
+# add_executable(${PROJECT_NAME}_node src/${PROJECT_NAME}_node.cpp)
+add_executable(
+    ${PROJECT_NAME}
+    src/master_task_main.cpp
+    src/master_task.cpp
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -147,13 +170,25 @@ add_executable(master_task src/master_task.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(master_task ${catkin_EXPORTED_TARGETS})
+add_dependencies(
+    ${PROJECT_NAME}
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+)
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(master_task ${catkin_LIBRARIES})
+target_link_libraries(
+    ${PROJECT_NAME}
+    ${catkin_LIBRARIES}
+)
+
+target_compile_definitions(
+    ${PROJECT_NAME}
+    PUBLIC
+    ROSCONSOLE_MIN_SEVERITY=${MASTER_TASK_VERBOSITY}
+)
 
 #############
 ## Install ##
@@ -193,12 +228,26 @@ target_link_libraries(master_task ${catkin_LIBRARIES})
 #############
 ## Testing ##
 #############
-
-## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_master_task.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+if (CATKIN_ENABLE_TESTING)
+    ## Add gtest based cpp test target and link libraries
+    catkin_add_gtest(
+        ${PROJECT_NAME}-test
+        test/test_master_task.cpp
+        src/master_task.cpp
+    )
+    if(TARGET ${PROJECT_NAME}-test)
+        target_link_libraries(
+            ${PROJECT_NAME}-test
+            ${catkin_LIBRARIES}
+        )
+    endif()
+    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
+    target_compile_definitions(
+        ${PROJECT_NAME}-test
+        PUBLIC
+        ROSCONSOLE_MIN_SEVERITY=${MASTER_TASK_TEST_VERBOSITY}
+    )
+endif(CATKIN_ENABLE_TESTING)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

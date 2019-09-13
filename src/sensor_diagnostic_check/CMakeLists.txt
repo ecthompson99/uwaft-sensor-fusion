@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(sensor_diagnostic_check)
 
+## Verbosity level
+# ROSCONSOLE_SEVERITY_DEBUG
+# ROSCONSOLE_SEVERITY_INFO
+# ROSCONSOLE_SEVERITY_WARN
+# ROSCONSOLE_SEVERITY_ERROR
+# ROSCONSOLE_SEVERITY_FATAL
+# ROSCONSOLE_SEVERITY_NONE
+SET(SENSOR_DIAGNOSTIC_VERBOSITY ROSCONSOLE_SEVERITY_DEBUG)
+# SET(<SENSOR DIAG TEST VERBOSITY> ROSCONSOLE_SEVERITY_WARN)
+
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
 
@@ -103,9 +113,9 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS include
 #  LIBRARIES sensor_diagnostic_check
-   CATKIN_DEPENDS roscpp message_runtime std_msgs
+  CATKIN_DEPENDS roscpp message_runtime std_msgs
 #  DEPENDS system_lib
 )
 
@@ -116,7 +126,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -145,13 +155,19 @@ add_executable(sensor_diagnostic src/sensor_diag.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(sensor_diagnostic ${catkin_EXPORTED_TARGETS})
+add_dependencies(sensor_diagnostic ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(sensor_diagnostic ${catkin_LIBRARIES})
+
+target_compile_definitions(
+    sensor_diagnostic
+    PUBLIC
+    ROSCONSOLE_MIN_SEVERITY=${SENSOR_DIAGNOSTIC_VERBOSITY}
+)
 
 #############
 ## Install ##
@@ -193,10 +209,26 @@ target_link_libraries(sensor_diagnostic ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_sensor_diagnostic_check.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+# if (CATKIN_ENABLE_TESTING)
+#     ## Add gtest based cpp test target and link libraries
+#     catkin_add_gtest(
+#         ${PROJECT_NAME}-test
+#         test/<test file>.cpp
+#         src/<file you are writing tests for.cpp
+#     )
+#     if(TARGET ${PROJECT_NAME}-test)
+#         target_link_libraries(
+#             ${PROJECT_NAME}-test
+#             ${catkin_LIBRARIES}
+#         )
+#     endif()
+#     add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#     target_compile_definitions(
+#         ${PROJECT_NAME}-test
+#         PUBLIC
+#         ROSCONSOLE_MIN_SEVERITY=${<SENSOR DIAG TEST VERBOSITY>}
+#     )
+# endif(CATKIN_ENABLE_TESTING)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

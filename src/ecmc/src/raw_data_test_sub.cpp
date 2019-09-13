@@ -7,8 +7,8 @@ static const int sub_buffer_size = 100;
 void raw_data_recv_callback(const ecmc::raw_sensor_object_data_msg& msg) {
     uint8_t radar_num = msg.radar_num;
     uint8_t num_objects = msg.num_objects;
-    
-    ROS_INFO_STREAM(num_objects << " OBJECTS FROM RADAR " << radar_num << "\n");
+
+    ROS_INFO_STREAM(unsigned(num_objects) << " OBJECTS FROM RADAR " << unsigned(radar_num) << "\n");
 
     for(uint32_t object_number = 0; object_number < num_objects; object_number++){
         ROS_INFO_STREAM("OBJECT " << object_number << ":" "\n"
