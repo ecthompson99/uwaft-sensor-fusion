@@ -17,9 +17,11 @@ progress_wheel () {
 ECMC="ecmc"
 MASTER_TASK="master_task"
 SENSOR_DIAGNOSTIC_CHECK="sensor_diagnostic_check"
+SENSOR_FUSION="sensor_fusion"
 packages=(
     # $ECMC
     $MASTER_TASK
+    $SENSOR_FUSION
     # $SENSOR_DIAGNOSTIC_CHECK
 )
 
