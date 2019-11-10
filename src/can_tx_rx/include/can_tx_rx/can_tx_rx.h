@@ -7,7 +7,7 @@
 #include "can_tx_rx/sensor_diagnostic_data_msg.h"
 #include "can_tx_rx/raw_sensor_object_data_msg.h"
 
-static const uint8_t CAN_MESSAGE_BUFFER_SIZE = 10;
+static const uint8_t CAN_MESSAGE_BUFFER_SIZE = 100;
 
 class Can_Tx_Rx_Class {
  public:

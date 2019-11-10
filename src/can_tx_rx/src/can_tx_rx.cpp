@@ -1,6 +1,13 @@
 #include "ros/ros.h"
 #include "can_tx_rx/can_tx_rx.h"
 
+#include <stdio.h>
+#include <sstream>
+#include <canlib.h>
+
+#include "bosch_xgu_corner_radar.h"
+#include "xgu.h"
+
 Can_Tx_Rx_Class::Can_Tx_Rx_Class(ros::NodeHandle* nodeHandle) : can_tx_rx_node_handle(nodeHandle) {
   can_comms_sub =
   can_tx_rx_node_handle->subscribe("can_comms_data", CAN_MESSAGE_BUFFER_SIZE, &Can_Tx_Rx_Class::can_comms_msg_callback, this);
@@ -58,9 +65,9 @@ void Can_Tx_Rx_Class::publish_sensor_diag() {
   sensor_diag_msg.time_stamp = ros::Time::now().toSec();
   sensor_diag_msg.ender_consistency= 2.4;
   sensor_diag_msg.counter = counter;
-  sensor_diag_msg.checksum= 0.56;
+  sensor_diag_msg.check_sum= 0.56;
   sensor_diag_msg.itc_info= 17;
-  sensor_diag_msg.hw_fail = false;
+  sensor_diag_msg.hardware_fail = false;
   sensor_diag_msg.sgu_fail = true;
   sensor_diag_msg.horizontal_misalign = 1.5;
   sensor_diag_msg.absorb_blind = 5.1;
