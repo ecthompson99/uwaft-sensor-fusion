@@ -173,6 +173,7 @@ target_link_libraries(
     ${PROJECT_NAME}_feeder_test
     ${catkin_LIBRARIES}
 )
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} canlib)
 
 #############
 ## Install ##

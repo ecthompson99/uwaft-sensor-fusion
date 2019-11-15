@@ -1,5 +1,6 @@
-#include "ros/ros.h"
 #include "can_tx_rx/can_tx_rx.h"
+#include <canlib.h>
+#include "ros/ros.h"
 
 void get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n) {
   if (id == 1985 || id == 1958 || id == 1879 || id == 1957) {
@@ -73,7 +74,7 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "can_tx_rx");
   ros::NodeHandle can_tx_rx_feeder_handle;
   Can_Tx_Rx_Class Can_Tx_Rx_Class(&can_tx_rx_feeder_handle);
-    /*canHandle hnd_0;
+  canHandle hnd_0;
   canHandle hnd_1;
   canHandle hnd_2;
   canHandle hnd_3;
@@ -128,7 +129,7 @@ int main(int argc, char** argv) {
   canBusOn(hnd_1);
   canBusOn(hnd_2);
   canBusOn(hnd_3);
-*/
+
   uint8_t id;
   uint8_t can_data[8] = {0};
   unsigned int dlc;
@@ -183,9 +184,7 @@ int main(int argc, char** argv) {
     // raw_sensor_data_pub.publish(raw_object_msg);
     // drive_control_input_pub.publish(drive_ctrl_msg);
     // ROS_INFO_STREAM("\n" << data << "\n");
-    ros::spinOnce();
-  
-  /*
+
       canBusOff(hnd_0);
       canBusOff(hnd_1);
       canBusOff(hnd_2);
@@ -195,7 +194,7 @@ int main(int argc, char** argv) {
       canClose(hnd_1);
       canClose(hnd_2);
       canClose(hnd_3);
-      */
+
     Can_Tx_Rx_Class.publish_drive_ctrl_input();
     Can_Tx_Rx_Class.publish_raw_sensor_object();
     Can_Tx_Rx_Class.publish_sensor_diag();
