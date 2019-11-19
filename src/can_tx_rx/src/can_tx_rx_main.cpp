@@ -132,8 +132,7 @@ int main(int argc, char** argv) {
   canBusOn(hnd_2);
   canBusOn(hnd_3);
 
-  uint8_t id;
-  uint8_t can_data[8] = {0};
+  long int id;
   unsigned int dlc;
   unsigned int flag;
   unsigned long time;
@@ -142,61 +141,110 @@ int main(int argc, char** argv) {
   uint8_t frame_num = 0;           // 1 = Frame_A, 2 = Frame_B, 3 = general, other = error
   uint8_t obj_num = -1;            // 0 to 31 = valid
   uint8_t target_object_num = -1;  // 0 to 5 = valid
-  uint8_t unpack_return = -1;      // 0 is successful, negative error code
   uint8_t size_of_msg = 8;
+  uint8_t can_data[8] = {0};
 
-  double xgu_radar_diag_response = 0;
+  int unpack_return = -1;  // 0 is successful, negative error code
+
+  double xgu_radar_diag_decode_response = 0;
   bool xgu_radar_diag_is_in_range = 0;
   double xgu_radar_diag_request = 0;
   uint64_t xgu_radar_diag_request_encoded = 0;
 
+  double xgu_radar_timestamp_decoded = 0;
+  bool xgu_radar_timestamp_is_in_range = 0;
+  double tc_counter_decoded = 0;
+  bool tc_counter_is_in_range = 0;
+  double obj_ender_consist_bit_decoded = 0;
+  bool obj_ender_consist_bit_is_in_range = 0;
+  double packet_checksum_encoded = 0;
+  bool packet_checksum_is_in_range = 0;
+
   while (ros::ok()) {
-        /*  canStatus stat = canRead(hnd_0, &id, &can_data, &dlc, &flag, &time);
+    /*  canStatus stat = canRead(hnd_0, &id, &can_data, &dlc, &flag, &time);
 
-      if (canOK == stat) {
-        // MABx and Jetson
-      }
-
-      stat = canRead(hnd_1, &id, &can_data, &dlc, &flag, &time);
+    if (canOK == stat) {
+      // MABx and Jetson
+    }
     */
-    // if (canOK == stat) {
-    // Front radar = radar_1 and rear radar = radar_2
-        void *ptr = malloc(sizeof(xgu_radar1_obj00_a_t));
-        get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num);
-        switch (id) {
-          case 1:
-            if (id == 1985) {
-              xgu_radar1_diag_response_t dst_p;
-              unpack_return = xgu_radar1_diag_response_unpack(&dst_p, can_data, size_of_msg);
-              xgu_radar_diag_response = xgu_radar1_diag_response_r1_diag_response_decode(dst_p.r1_diag_response);
-              xgu_radar_diag_is_in_range =
-                  xgu_radar1_diag_response_r1_diag_response_is_in_range(dst_p.r1_diag_response);
-            } else if (id == 1958) {
-              // R2 diag response
-              xgu_radar2_diag_response_t dst_p;
-              unpack_return = xgu_radar2_diag_response_unpack(&dst_p, can_data, size_of_msg);
-              xgu_radar_diag_response = xgu_radar2_diag_response_r2_diag_response_decode(dst_p.r2_diag_response);
-              xgu_radar_diag_is_in_range =
-                  xgu_radar2_diag_response_r2_diag_response_is_in_range(dst_p.r2_diag_response);
-            } else if (id == 1879) {
-              // R1 diag request
-              xgu_radar_diag_request_encoded = xgu_radar1_diag_request_r1_diag_request_encode(xgu_radar_diag_request);
-            } else if (id == 1957) {
-              // R2 diag request
-              xgu_radar_diag_request_encoded = xgu_radar2_diag_request_r2_diag_request_encode(xgu_radar_diag_request);
-            }
-            break;
-          case 2:
-            break;
-          case 3:
-            break;
-          case 4:
-            break;
-          case 5:
-            break;
-          case 0:
-            break;
-        }
+
+    canStatus stat = canRead(hnd_1, &id, &can_data, &dlc, &flag, &time);
+
+    if (canOK == stat) {
+      // Front radar = radar_1 and rear radar = radar_2
+      get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num);
+      switch (case_num) {
+        case 1:
+          if (id == 1985) {
+            xgu_radar1_diag_response_t r1_diag_response_obj;
+            unpack_return = xgu_radar1_diag_response_unpack(&r1_diag_response_obj, can_data, size_of_msg);
+            xgu_radar_diag_decode_response =
+                xgu_radar1_diag_response_r1_diag_response_decode(r1_diag_response_obj.r1_diag_response);
+            xgu_radar_diag_is_in_range =
+                xgu_radar1_diag_response_r1_diag_response_is_in_range(r1_diag_response_obj.r1_diag_response);
+          } else if (id == 1958) {
+            xgu_radar2_diag_response_t r2_diag_response_obj;
+            unpack_return = xgu_radar2_diag_response_unpack(&r2_diag_response_obj, can_data, size_of_msg);
+            xgu_radar_diag_decode_response =
+                xgu_radar2_diag_response_r2_diag_response_decode(r2_diag_response_obj.r2_diag_response);
+            xgu_radar_diag_is_in_range =
+                xgu_radar2_diag_response_r2_diag_response_is_in_range(r2_diag_response_obj.r2_diag_response);
+          }
+          break;
+        case 2:
+
+          break;
+        case 3:
+          if (id == 1665) {
+            xgu_radar1_object_ender_t r1_obj_ender_obj;
+            unpack_return = xgu_radar1_object_ender_unpack(&r1_obj_ender_obj, can_data, size_of_msg);
+            xgu_radar_timestamp_decoded =
+                xgu_radar1_object_ender_radar1_timestamp_decode(r1_obj_ender_obj.radar1_timestamp);
+            xgu_radar_timestamp_is_in_range =
+                xgu_radar1_object_ender_radar1_timestamp_is_in_range(r1_obj_ender_obj.radar1_timestamp);
+            tc_counter_decoded = xgu_radar1_object_ender_radar1_tc_counter_decode(r1_obj_ender_obj.radar1_tc_counter);
+            tc_counter_is_in_range =
+                xgu_radar1_object_ender_radar1_tc_counter_is_in_range(r1_obj_ender_obj.radar1_tc_counter);
+            obj_ender_consist_bit_decoded = xgu_radar1_object_ender_radar1_mess_ender_consist_bit_decode(
+                r1_obj_ender_obj.radar1_mess_ender_consist_bit);
+            obj_ender_consist_bit_is_in_range = xgu_radar1_object_ender_radar1_mess_ender_consist_bit_is_in_range(
+                r1_obj_ender_obj.radar1_mess_ender_consist_bit);
+            packet_checksum_encoded =
+                xgu_radar1_object_ender_radar1_packet_checksum_decode(r1_obj_ender_obj.radar1_packet_checksum);
+            packet_checksum_is_in_range =
+                xgu_radar1_object_ender_radar1_packet_checksum_is_in_range(r1_obj_ender_obj.radar1_packet_checksum);
+          } else if (id == 1667) {
+            xgu_radar2_object_ender_t r2_obj_ender_obj;
+            unpack_return = xgu_radar2_object_ender_unpack(&r2_obj_ender_obj, can_data, size_of_msg);
+            xgu_radar_timestamp_decoded =
+                xgu_radar2_object_ender_radar2_object_timestamp_decode(r2_obj_ender_obj.radar2_object_timestamp);
+            xgu_radar_timestamp_is_in_range =
+                xgu_radar2_object_ender_radar2_object_timestamp_is_in_range(r2_obj_ender_obj.radar2_object_timestamp);
+            tc_counter_decoded = xgu_radar2_object_ender_radar2_tc_counter_decode(r2_obj_ender_obj.radar2_tc_counter);
+            tc_counter_is_in_range =
+                xgu_radar2_object_ender_radar2_tc_counter_is_in_range(r2_obj_ender_obj.radar2_tc_counter);
+            obj_ender_consist_bit_decoded = xgu_radar2_object_ender_radar2_mess_ender_consist_bit_decode(
+                r2_obj_ender_obj.radar2_mess_ender_consist_bit);
+            obj_ender_consist_bit_is_in_range = xgu_radar2_object_ender_radar2_mess_ender_consist_bit_is_in_range(
+                r2_obj_ender_obj.radar2_mess_ender_consist_bit);
+            packet_checksum_encoded =
+                xgu_radar2_object_ender_radar2_packet_checksum_decode(r2_obj_ender_obj.radar2_packet_checksum);
+            packet_checksum_is_in_range =
+                xgu_radar2_object_ender_radar2_packet_checksum_is_in_range(r2_obj_ender_obj.radar2_packet_checksum);
+          } else if (id == 1280) {
+          } else if (id == 1282) {
+          } else if (id == 1670) {
+          } else if (id == 1672) {
+          }
+          break;
+          // case 4:
+          //   break;
+          // case 5:
+          //   break;
+          // case 0:
+          break;
+      }
+    }
     }
     /*
           stat = canRead(hnd_2, &id, &can_data, &dlc, &flag, &time);
