@@ -232,6 +232,8 @@ int main(int argc, char** argv) {
             packet_checksum_is_in_range =
                 xgu_radar2_object_ender_radar2_packet_checksum_is_in_range(r2_obj_ender_obj.radar2_packet_checksum);
           } else if (id == 1280) {
+            xgu_radar1_object_starter_t r1_obj_starter_obj;
+            unpack_return = xgu_radar1_object_starter_unpack();
           } else if (id == 1282) {
           } else if (id == 1670) {
           } else if (id == 1672) {
