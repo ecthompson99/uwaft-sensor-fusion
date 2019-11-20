@@ -160,6 +160,17 @@ int main(int argc, char** argv) {
   double packet_checksum_encoded = 0;
   bool packet_checksum_is_in_range = 0;
 
+  double veh_psi_dt_decoded = 0;
+  bool veh_psi_dt_is_in_range = 0;
+  double veh_v_ego_decoded = 0;
+  bool veh_v_ego_is_in_range = 0;
+  double veh_a_ego_decoded = 0;
+  bool veh_a_ego_is_in_range = 0;
+  double veh_slip_angle_decoded = 0;
+  bool veh_slip_angle_is_in_range = 0;
+  double mess_starter_consist_bit_decoded = 0;
+  bool mess_starter_consist_bit_is_in_range = 0;
+
   while (ros::ok()) {
     /*  canStatus stat = canRead(hnd_0, &id, &can_data, &dlc, &flag, &time);
 
@@ -233,8 +244,48 @@ int main(int argc, char** argv) {
                 xgu_radar2_object_ender_radar2_packet_checksum_is_in_range(r2_obj_ender_obj.radar2_packet_checksum);
           } else if (id == 1280) {
             xgu_radar1_object_starter_t r1_obj_starter_obj;
-            unpack_return = xgu_radar1_object_starter_unpack();
+            unpack_return = xgu_radar1_object_starter_unpack(&r1_obj_starter_obj, can_data, size_of_msg);
+            veh_psi_dt_decoded =
+                xgu_radar1_object_starter_radar1_veh_psi_dt_decode(r1_obj_starter_obj.radar1_veh_psi_dt);
+            veh_psi_dt_is_in_range =
+                xgu_radar1_object_starter_radar1_veh_psi_dt_is_in_range(r1_obj_starter_obj.radar1_veh_psi_dt);
+            veh_v_ego_decoded = xgu_radar1_object_starter_radar1_veh_v_ego_decode(r1_obj_starter_obj.radar1_veh_v_ego);
+            veh_v_ego_is_in_range =
+                xgu_radar1_object_starter_radar1_veh_v_ego_is_in_range(r1_obj_starter_obj.radar1_veh_v_ego);
+            veh_a_ego_decoded = xgu_radar1_object_starter_radar1_veh_a_ego_decode(r1_obj_starter_obj.radar1_veh_a_ego);
+            veh_a_ego_is_in_range =
+                xgu_radar1_object_starter_radar1_veh_a_ego_is_in_range(r1_obj_starter_obj.radar1_veh_a_ego);
+            veh_slip_angle_decoded =
+                xgu_radar1_object_starter_radar1_veh_slip_angle_decode(r1_obj_starter_obj.radar1_veh_slip_angle);
+            veh_slip_angle_is_in_range =
+                xgu_radar1_object_starter_radar1_veh_slip_angle_is_in_range(r1_obj_starter_obj.radar1_veh_slip_angle);
+            mess_starter_consist_bit_decoded = xgu_radar1_object_starter_radar1_mess_starter_consist_bit_decode(
+                r1_obj_starter_obj.radar1_mess_starter_consist_bit);
+            mess_starter_consist_bit_is_in_range =
+                xgu_radar1_object_starter_radar1_mess_starter_consist_bit_is_in_range(
+                    r1_obj_starter_obj.radar1_mess_starter_consist_bit);
           } else if (id == 1282) {
+            xgu_radar2_object_starter_t r2_obj_starter_obj;
+            unpack_return = xgu_radar2_object_starter_unpack(&r2_obj_starter_obj, can_data, size_of_msg);
+            veh_psi_dt_decoded =
+                xgu_radar2_object_starter_radar2_veh_psi_dt_decode(r2_obj_starter_obj.radar2_veh_psi_dt);
+            veh_psi_dt_is_in_range =
+                xgu_radar2_object_starter_radar2_veh_psi_dt_is_in_range(r2_obj_starter_obj.radar2_veh_psi_dt);
+            veh_v_ego_decoded = xgu_radar2_object_starter_radar2_veh_v_ego_decode(r2_obj_starter_obj.radar2_veh_v_ego);
+            veh_v_ego_is_in_range =
+                xgu_radar2_object_starter_radar2_veh_v_ego_is_in_range(r2_obj_starter_obj.radar2_veh_v_ego);
+            veh_a_ego_decoded = xgu_radar2_object_starter_radar2_veh_a_ego_decode(r2_obj_starter_obj.radar2_veh_a_ego);
+            veh_a_ego_is_in_range =
+                xgu_radar2_object_starter_radar2_veh_a_ego_is_in_range(r2_obj_starter_obj.radar2_veh_a_ego);
+            veh_slip_angle_decoded =
+                xgu_radar2_object_starter_radar2_veh_slip_angle_decode(r2_obj_starter_obj.radar2_veh_slip_angle);
+            veh_slip_angle_is_in_range =
+                xgu_radar2_object_starter_radar2_veh_slip_angle_is_in_range(r2_obj_starter_obj.radar2_veh_slip_angle);
+            mess_starter_consist_bit_decoded = xgu_radar2_object_starter_radar2_mess_starter_consist_bit_decode(
+                r2_obj_starter_obj.radar2_mess_starter_consist_bit);
+            mess_starter_consist_bit_is_in_range =
+                xgu_radar2_object_starter_radar2_mess_starter_consist_bit_is_in_range(
+                    r2_obj_starter_obj.radar2_mess_starter_consist_bit);
           } else if (id == 1670) {
           } else if (id == 1672) {
           }
