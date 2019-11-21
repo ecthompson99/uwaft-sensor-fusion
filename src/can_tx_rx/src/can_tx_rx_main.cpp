@@ -171,6 +171,23 @@ int main(int argc, char** argv) {
   double mess_starter_consist_bit_decoded = 0;
   bool mess_starter_consist_bit_is_in_range = 0;
 
+  double itc_info_decoded = 0;
+  bool itc_info_is_in_range = 0;
+  double sgu_fail_decoded = 0;
+  bool sgu_fail_is_in_range = 0;
+  double hw_fail_decoded = 0;
+  bool hw_fail_is_in_range = 0;
+  double horizontal_misalignment_decoded = 0;
+  bool horizontal_misalignment_is_in_range = 0;
+  double absorption_blindness_decoded = 0;
+  bool absorption_blindness_is_in_range = 0;
+  double distortion_blindness_decoded = 0;
+  bool distortion_blindness_is_in_range = 0;
+  double mc_decoded = 0;
+  bool mc_is_in_range = 0;
+  double crc_decoded = 0;
+  bool crc_is_in_range = 0;
+
   while (ros::ok()) {
     /*  canStatus stat = canRead(hnd_0, &id, &can_data, &dlc, &flag, &time);
 
@@ -287,13 +304,64 @@ int main(int argc, char** argv) {
                 xgu_radar2_object_starter_radar2_mess_starter_consist_bit_is_in_range(
                     r2_obj_starter_obj.radar2_mess_starter_consist_bit);
           } else if (id == 1670) {
+            xgu_radar1_status_t r1_status;
+            unpack_return = xgu_radar1_status_unpack(&r1_status, can_data, size_of_msg);
+            itc_info_decoded = xgu_radar1_status_r1_stat_itc_info_decode(r1_status.r1_stat_itc_info);
+            itc_info_is_in_range = xgu_radar1_status_r1_stat_itc_info_is_in_range(r1_status.r1_stat_itc_info);
+            sgu_fail_decoded = xgu_radar1_status_r1_stat_sgu_fail_decode(r1_status.r1_stat_sgu_fail);
+            sgu_fail_is_in_range = xgu_radar1_status_r1_stat_sgu_fail_is_in_range(r1_status.r1_stat_sgu_fail);
+            hw_fail_decoded = xgu_radar1_status_r1_stat_hw_fail_decode(r1_status.r1_stat_hw_fail);
+            hw_fail_is_in_range = xgu_radar1_status_r1_stat_hw_fail_is_in_range(r1_status.r1_stat_hw_fail);
+            horizontal_misalignment_decoded =
+                xgu_radar1_status_r1_stat_horizontal_misalignment_decode(r1_status.r1_stat_horizontal_misalignment);
+            horizontal_misalignment_is_in_range = xgu_radar1_status_r1_stat_horizontal_misalignment_is_in_range(
+                r1_status.r1_stat_horizontal_misalignment);
+            absorption_blindness_decoded =
+                xgu_radar1_status_r1_stat_absorption_blindness_decode(r1_status.r1_stat_absorption_blindness);
+            absorption_blindness_is_in_range =
+                xgu_radar1_status_r1_stat_absorption_blindness_is_in_range(r1_status.r1_stat_absorption_blindness);
+            distortion_blindness_decoded =
+                xgu_radar1_status_r1_stat_distortion_blindness_decode(r1_status.r1_stat_distortion_blindness);
+            distortion_blindness_is_in_range =
+                xgu_radar1_status_r1_stat_distortion_blindness_is_in_range(r1_status.r1_stat_distortion_blindness);
+            mc_decoded = xgu_radar1_status_r1_stat_mc_decode(r1_status.r1_stat_mc);
+            mc_is_in_range = xgu_radar1_status_r1_stat_mc_is_in_range(r1_status.r1_stat_mc);
+            crc_decoded = xgu_radar1_status_r1_stat_crc_decode(r1_status.r1_stat_crc);
+            crc_is_in_range = xgu_radar1_status_r1_stat_crc_is_in_range(r1_status.r1_stat_crc);
           } else if (id == 1672) {
+            xgu_radar2_status_t r2_status;
+            unpack_return = xgu_radar2_status_unpack(&r2_status, can_data, size_of_msg);
+            itc_info_decoded = xgu_radar2_status_r2_stat_itc_info_decode(r2_status.r2_stat_itc_info);
+            itc_info_is_in_range = xgu_radar2_status_r2_stat_itc_info_is_in_range(r2_status.r2_stat_itc_info);
+            sgu_fail_decoded = xgu_radar2_status_r2_stat_sgu_fail_decode(r2_status.r2_stat_sgu_fail);
+            sgu_fail_is_in_range = xgu_radar2_status_r2_stat_sgu_fail_is_in_range(r2_status.r2_stat_sgu_fail);
+            hw_fail_decoded = xgu_radar2_status_r2_stat_hw_fail_decode(r2_status.r2_stat_hw_fail);
+            hw_fail_is_in_range = xgu_radar2_status_r2_stat_hw_fail_is_in_range(r2_status.r2_stat_hw_fail);
+            horizontal_misalignment_decoded =
+                xgu_radar2_status_r2_stat_horizontal_misalignment_decode(r2_status.r2_stat_horizontal_misalignment);
+            horizontal_misalignment_is_in_range = xgu_radar2_status_r2_stat_horizontal_misalignment_is_in_range(
+                r2_status.r2_stat_horizontal_misalignment);
+            absorption_blindness_decoded =
+                xgu_radar2_status_r2_stat_absorption_blindness_decode(r2_status.r2_stat_absorption_blindness);
+            absorption_blindness_is_in_range =
+                xgu_radar2_status_r2_stat_absorption_blindness_is_in_range(r2_status.r2_stat_absorption_blindness);
+            distortion_blindness_decoded =
+                xgu_radar2_status_r2_stat_distortion_blindness_decode(r2_status.r2_stat_distortion_blindness);
+            distortion_blindness_is_in_range =
+                xgu_radar2_status_r2_stat_distortion_blindness_is_in_range(r2_status.r2_stat_distortion_blindness);
+            mc_decoded = xgu_radar2_status_r2_stat_mc_decode(r2_status.r2_stat_mc);
+            mc_is_in_range = xgu_radar2_status_r2_stat_mc_is_in_range(r2_status.r2_stat_mc);
+            crc_decoded = xgu_radar2_status_r2_stat_crc_decode(r2_status.r2_stat_crc);
+            crc_is_in_range = xgu_radar2_status_r2_stat_crc_is_in_range(r2_status.r2_stat_crc);
           }
           break;
-          // case 4:
-          //   break;
-          // case 5:
-          //   break;
+
+        case 4:
+
+          break;
+
+        case 5:
+          break;
           // case 0:
           break;
       }
