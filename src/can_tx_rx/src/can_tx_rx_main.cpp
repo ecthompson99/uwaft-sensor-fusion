@@ -510,6 +510,11 @@ int main(int argc, char** argv) {
                       r1_target01_a_obj.radar1_target01_mess_aconsist_bit);
               break;
             case 1616:
+
+              break;
+            case 1617:
+              break;
+            case 1618:
               xgu_radar2_target01_b_t r2_target01_b_obj;
               unpack_return = xgu_radar2_target01_b_unpack(&r2_target01_b_obj, can_data, size_of_msg);
               target_vy_decoded = xgu_radar2_target02_b_radar2_target02_vy_decode(r2_target01_b_obj.radar2_target01_vy);
@@ -559,10 +564,6 @@ int main(int argc, char** argv) {
               target_mess_bconsist_bit_is_in_range =
                   xgu_radar2_target02_b_radar2_target02_mess_bconsist_bit_is_in_range(
                       r2_target01_b_obj.radar2_target01_mess_bconsist_bit);
-              break;
-            case 1617:
-              break;
-            case 1618:
               break;
             case 1625:
               xgu_radar1_target02_a_t r1_target02_a_obj;
@@ -910,6 +911,60 @@ int main(int argc, char** argv) {
                       r1_target05_a_obj.radar1_target05_mess_aconsist_bit);
               break;
             case 1656:
+              xgu_radar1_target05_b_t r1_target05_b_obj;
+              unpack_return = xgu_radar1_target05_b_unpack(&r1_target05_b_obj, can_data, size_of_msg);
+              target_vy_decoded = xgu_radar1_target05_b_radar1_target05_vy_decode(r1_target05_b_obj.radar1_target05_vy);
+              target_vy_is_in_range =
+                  xgu_radar1_target05_b_radar1_target05_vy_is_in_range(r1_target05_b_obj.radar1_target05_vy);
+              target_d_length_decoded =
+                  xgu_radar1_target05_b_radar1_target05_d_length_decode(r1_target05_b_obj.radar1_target05_d_length);
+              target_d_length_is_in_range = xgu_radar1_target05_b_radar1_target05_d_length_is_in_range(
+                  r1_target05_b_obj.radar1_target05_d_length);
+              target_dz_decoded = xgu_radar1_target05_b_radar1_target05_dz_decode(r1_target05_b_obj.radar1_target05_dz);
+              target_dz_is_in_range =
+                  xgu_radar1_target05_b_radar1_target05_dz_is_in_range(r1_target05_b_obj.radar1_target05_dz);
+              target_moving_state_decoded = xgu_radar1_target05_b_radar1_target05_moving_state_decode(
+                  r1_target05_b_obj.radar1_target05_moving_state);
+              target_moving_state_is_in_range = xgu_radar1_target05_b_radar1_target05_moving_state_is_in_range(
+                  r1_target05_b_obj.radar1_target05_moving_state);
+              target_dx_sigma_decoded =
+                  xgu_radar1_target05_b_radar1_target05_dx_sigma_decode(r1_target05_b_obj.radar1_target05_dx_sigma);
+              target_dx_sigma_is_in_range = xgu_radar1_target05_b_radar1_target05_dx_sigma_is_in_range(
+                  r1_target05_b_obj.radar1_target05_dx_sigma);
+              target_vx_sigma_decoded =
+                  xgu_radar1_target05_b_radar1_target05_vx_sigma_decode(r1_target05_b_obj.radar1_target05_vx_sigma);
+              target_vx_sigma_is_in_range = xgu_radar1_target05_b_radar1_target05_vx_sigma_is_in_range(
+                  r1_target05_b_obj.radar1_target05_vx_sigma);
+              target_ax_sigma_decoded =
+                  xgu_radar1_target05_b_radar1_target05_ax_sigma_decode(r1_target05_b_obj.radar1_target05_ax_sigma);
+              target_ax_sigma_is_in_range = xgu_radar1_target05_b_radar1_target05_ax_sigma_is_in_range(
+                  r1_target05_b_obj.radar1_target05_ax_sigma);
+              target_dy_sigma_decoded =
+                  xgu_radar1_target05_b_radar1_target05_dy_sigma_decode(r1_target05_b_obj.radar1_target05_dy_sigma);
+              target_dy_sigma_is_in_range = xgu_radar1_target05_b_radar1_target05_dy_sigma_is_in_range(
+                  r1_target05_b_obj.radar1_target05_dy_sigma);
+              target_w_class_decoded =
+                  xgu_radar1_target05_b_radar1_target05_w_class_decode(r1_target05_b_obj.radar1_target05_w_class);
+              target_w_class_is_in_range =
+                  xgu_radar1_target05_b_radar1_target05_w_class_is_in_range(r1_target05_b_obj.radar1_target05_w_class);
+              target_class_decoded =
+                  xgu_radar1_target05_b_radar1_target05_class_decode(r1_target05_b_obj.radar1_target05_class);
+              target_class_is_in_range =
+                  xgu_radar1_target05_b_radar1_target05_class_is_in_range(r1_target05_b_obj.radar1_target05_class);
+              target_dx_rear_end_loss_decoded = xgu_radar1_target05_b_radar1_target05_dx_rear_end_loss_decode(
+                  r1_target05_b_obj.radar1_target05_dx_rear_end_loss);
+              target_dx_rear_end_loss_is_in_range = xgu_radar1_target05_b_radar1_target05_dx_rear_end_loss_is_in_range(
+                  r1_target05_b_obj.radar1_target05_dx_rear_end_loss);
+              target_mess_bconsist_bit_decoded = xgu_radar1_target05_b_radar1_target05_mess_bconsist_bit_decode(
+                  r1_target05_b_obj.radar1_target05_mess_bconsist_bit);
+              target_mess_bconsist_bit_is_in_range =
+                  xgu_radar1_target05_b_radar1_target05_mess_bconsist_bit_is_in_range(
+                      r1_target05_b_obj.radar1_target05_mess_bconsist_bit);
+
+              break;
+            case 1657:
+              break;
+            case 1658:
               xgu_radar2_target05_b_t r2_target05_b_obj;
               unpack_return = xgu_radar2_target05_b_unpack(&r2_target05_b_obj, can_data, size_of_msg);
               target_vy_decoded = xgu_radar2_target05_b_radar2_target05_vy_decode(r2_target05_b_obj.radar2_target05_vy);
@@ -959,10 +1014,6 @@ int main(int argc, char** argv) {
               target_mess_bconsist_bit_is_in_range =
                   xgu_radar2_target05_b_radar2_target05_mess_bconsist_bit_is_in_range(
                       r2_target05_b_obj.radar2_target05_mess_bconsist_bit);
-              break;
-            case 1657:
-              break;
-            case 1658:
               break;
           }
           break;
