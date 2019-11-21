@@ -710,6 +710,49 @@ int main(int argc, char** argv) {
                       r1_target02_b_obj.radar1_target02_mess_bconsist_bit);
               break;
             case 1627:
+              xgu_radar2_target02_a_t r2_target02_a_obj;
+              unpack_return = xgu_radar2_target02_a_unpack(&r2_target02_a_obj, can_data, size_of_msg);
+              target_dx_decoded = xgu_radar2_target02_a_radar2_target02_dx_decode(r2_target02_a_obj.radar2_target02_dx);
+              target_dx_is_in_range =
+                  xgu_radar2_target02_a_radar2_target02_dx_is_in_range(r2_target02_a_obj.radar2_target02_dx);
+              target_vx_decode = xgu_radar2_target02_a_radar2_target02_vx_decode(r2_target02_a_obj.radar2_target02_vx);
+              target_vx_is_in_range =
+                  xgu_radar2_target02_a_radar2_target02_vx_is_in_range(r2_target02_a_obj.radar2_target02_vx);
+              target_dy_decode = xgu_radar2_target02_a_radar2_target02_dy_decode(r2_target02_a_obj.radar2_target02_dy);
+              target_dy_is_in_range =
+                  xgu_radar2_target02_a_radar2_target02_dy_is_in_range(r2_target02_a_obj.radar2_target02_dy);
+              target_w_exist_decode =
+                  xgu_radar2_target02_a_radar2_target02_w_exist_decode(r2_target02_a_obj.radar2_target02_w_exist);
+              target_w_exist_is_in_range =
+                  xgu_radar2_target02_a_radar2_target02_w_exist_is_in_range(r2_target02_a_obj.radar2_target02_w_exist);
+              target_ax_decode = xgu_radar2_target02_a_radar2_target02_ax_decode(r2_target02_a_obj.radar2_target02_ax);
+              target_ax_is_in_range =
+                  xgu_radar2_target02_a_radar2_target02_ax_is_in_range(r2_target02_a_obj.radar2_target02_ax);
+              target_w_obstacle_decode =
+                  xgu_radar2_target02_a_radar2_target02_w_obstacle_decode(r2_target02_a_obj.radar2_target02_w_obstacle);
+              target_w_obstacle_is_in_range = xgu_radar2_target02_a_radar2_target02_w_obstacle_is_in_range(
+                  r2_target02_a_obj.radar2_target02_w_obstacle);
+              target_flag_valid_decode =
+                  xgu_radar2_target02_a_radar2_target02_flag_valid_decode(r2_target02_a_obj.radar2_target02_flag_valid);
+              target_flag_valid_is_in_range = xgu_radar2_target02_a_radar2_target02_flag_valid_is_in_range(
+                  r2_target02_a_obj.radar2_target02_flag_valid);
+              target_w_non_obstacle_decode = xgu_radar2_target02_a_radar2_target02_w_non_obstacle_decode(
+                  r2_target02_a_obj.radar2_target02_w_non_obstacle);
+              target_w_non_obstacle_is_in_range = xgu_radar2_target02_a_radar2_target02_w_non_obstacle_is_in_range(
+                  r2_target02_a_obj.radar2_target02_w_non_obstacle);
+              target_flag_meas_decode =
+                  xgu_radar2_target02_a_radar2_target02_flag_meas_decode(r2_target02_a_obj.radar2_target02_flag_meas);
+              target_flag_meas_is_in_range = xgu_radar2_target02_a_radar2_target02_flag_meas_is_in_range(
+                  r2_target02_a_obj.radar2_target02_flag_meas);
+              target_flag_hist_decode =
+                  xgu_radar2_target02_a_radar2_target02_flag_hist_decode(r2_target02_a_obj.radar2_target02_flag_hist);
+              target_flag_hist_is_in_range = xgu_radar2_target02_a_radar2_target02_flag_hist_is_in_range(
+                  r2_target02_a_obj.radar2_target02_flag_hist);
+              target_mess_aconsist_bit_decode = xgu_radar2_target02_a_radar2_target02_mess_aconsist_bit_decode(
+                  r2_target02_a_obj.radar2_target02_mess_aconsist_bit);
+              target_mess_aconsist_bit_is_in_range =
+                  xgu_radar2_target02_a_radar2_target02_mess_aconsist_bit_is_in_range(
+                      r2_target02_a_obj.radar2_target02_mess_aconsist_bit);
               break;
             case 1628:
               xgu_radar2_target02_b_t r2_target02_b_obj;
@@ -859,6 +902,49 @@ int main(int argc, char** argv) {
                       r1_target03_b_obj.radar1_target03_mess_bconsist_bit);
               break;
             case 1637:
+              xgu_radar2_target03_a_t r2_target03_a_obj;
+              unpack_return = xgu_radar2_target03_a_unpack(&r2_target03_a_obj, can_data, size_of_msg);
+              target_dx_decoded = xgu_radar2_target03_a_radar2_target03_dx_decode(r2_target03_a_obj.radar2_target03_dx);
+              target_dx_is_in_range =
+                  xgu_radar2_target03_a_radar2_target03_dx_is_in_range(r2_target03_a_obj.radar2_target03_dx);
+              target_vx_decode = xgu_radar2_target03_a_radar2_target03_vx_decode(r2_target03_a_obj.radar2_target03_vx);
+              target_vx_is_in_range =
+                  xgu_radar2_target03_a_radar2_target03_vx_is_in_range(r2_target03_a_obj.radar2_target03_vx);
+              target_dy_decode = xgu_radar2_target03_a_radar2_target03_dy_decode(r2_target03_a_obj.radar2_target03_dy);
+              target_dy_is_in_range =
+                  xgu_radar2_target03_a_radar2_target03_dy_is_in_range(r2_target03_a_obj.radar2_target03_dy);
+              target_w_exist_decode =
+                  xgu_radar2_target03_a_radar2_target03_w_exist_decode(r2_target03_a_obj.radar2_target03_w_exist);
+              target_w_exist_is_in_range =
+                  xgu_radar2_target03_a_radar2_target03_w_exist_is_in_range(r2_target03_a_obj.radar2_target03_w_exist);
+              target_ax_decode = xgu_radar2_target03_a_radar2_target03_ax_decode(r2_target03_a_obj.radar2_target03_ax);
+              target_ax_is_in_range =
+                  xgu_radar2_target03_a_radar2_target03_ax_is_in_range(r2_target03_a_obj.radar2_target03_ax);
+              target_w_obstacle_decode =
+                  xgu_radar2_target03_a_radar2_target03_w_obstacle_decode(r2_target03_a_obj.radar2_target03_w_obstacle);
+              target_w_obstacle_is_in_range = xgu_radar2_target03_a_radar2_target03_w_obstacle_is_in_range(
+                  r2_target03_a_obj.radar2_target03_w_obstacle);
+              target_flag_valid_decode =
+                  xgu_radar2_target03_a_radar2_target03_flag_valid_decode(r2_target03_a_obj.radar2_target03_flag_valid);
+              target_flag_valid_is_in_range = xgu_radar2_target03_a_radar2_target03_flag_valid_is_in_range(
+                  r2_target03_a_obj.radar2_target03_flag_valid);
+              target_w_non_obstacle_decode = xgu_radar2_target03_a_radar2_target03_w_non_obstacle_decode(
+                  r2_target03_a_obj.radar2_target03_w_non_obstacle);
+              target_w_non_obstacle_is_in_range = xgu_radar2_target03_a_radar2_target03_w_non_obstacle_is_in_range(
+                  r2_target03_a_obj.radar2_target03_w_non_obstacle);
+              target_flag_meas_decode =
+                  xgu_radar2_target03_a_radar2_target03_flag_meas_decode(r2_target03_a_obj.radar2_target03_flag_meas);
+              target_flag_meas_is_in_range = xgu_radar2_target03_a_radar2_target03_flag_meas_is_in_range(
+                  r2_target03_a_obj.radar2_target03_flag_meas);
+              target_flag_hist_decode =
+                  xgu_radar2_target03_a_radar2_target03_flag_hist_decode(r2_target03_a_obj.radar2_target03_flag_hist);
+              target_flag_hist_is_in_range = xgu_radar2_target03_a_radar2_target03_flag_hist_is_in_range(
+                  r2_target03_a_obj.radar2_target03_flag_hist);
+              target_mess_aconsist_bit_decode = xgu_radar2_target03_a_radar2_target03_mess_aconsist_bit_decode(
+                  r2_target03_a_obj.radar2_target03_mess_aconsist_bit);
+              target_mess_aconsist_bit_is_in_range =
+                  xgu_radar2_target03_a_radar2_target03_mess_aconsist_bit_is_in_range(
+                      r2_target03_a_obj.radar2_target03_mess_aconsist_bit);
               break;
             case 1638:
 
@@ -1009,6 +1095,49 @@ int main(int argc, char** argv) {
                       r1_target04_b_obj.radar1_target04_mess_bconsist_bit);
               break;
             case 1647:
+              xgu_radar2_target04_a_t r2_target04_a_obj;
+              unpack_return = xgu_radar2_target04_a_unpack(&r2_target04_a_obj, can_data, size_of_msg);
+              target_dx_decoded = xgu_radar2_target04_a_radar2_target04_dx_decode(r2_target04_a_obj.radar2_target04_dx);
+              target_dx_is_in_range =
+                  xgu_radar2_target04_a_radar2_target04_dx_is_in_range(r2_target04_a_obj.radar2_target04_dx);
+              target_vx_decode = xgu_radar2_target04_a_radar2_target04_vx_decode(r2_target04_a_obj.radar2_target04_vx);
+              target_vx_is_in_range =
+                  xgu_radar2_target04_a_radar2_target04_vx_is_in_range(r2_target04_a_obj.radar2_target04_vx);
+              target_dy_decode = xgu_radar2_target04_a_radar2_target04_dy_decode(r2_target04_a_obj.radar2_target04_dy);
+              target_dy_is_in_range =
+                  xgu_radar2_target04_a_radar2_target04_dy_is_in_range(r2_target04_a_obj.radar2_target04_dy);
+              target_w_exist_decode =
+                  xgu_radar2_target04_a_radar2_target04_w_exist_decode(r2_target04_a_obj.radar2_target04_w_exist);
+              target_w_exist_is_in_range =
+                  xgu_radar2_target04_a_radar2_target04_w_exist_is_in_range(r2_target04_a_obj.radar2_target04_w_exist);
+              target_ax_decode = xgu_radar2_target04_a_radar2_target04_ax_decode(r2_target04_a_obj.radar2_target04_ax);
+              target_ax_is_in_range =
+                  xgu_radar2_target04_a_radar2_target04_ax_is_in_range(r2_target04_a_obj.radar2_target04_ax);
+              target_w_obstacle_decode =
+                  xgu_radar2_target04_a_radar2_target04_w_obstacle_decode(r2_target04_a_obj.radar2_target04_w_obstacle);
+              target_w_obstacle_is_in_range = xgu_radar2_target04_a_radar2_target04_w_obstacle_is_in_range(
+                  r2_target04_a_obj.radar2_target04_w_obstacle);
+              target_flag_valid_decode =
+                  xgu_radar2_target04_a_radar2_target04_flag_valid_decode(r2_target04_a_obj.radar2_target04_flag_valid);
+              target_flag_valid_is_in_range = xgu_radar2_target04_a_radar2_target04_flag_valid_is_in_range(
+                  r2_target04_a_obj.radar2_target04_flag_valid);
+              target_w_non_obstacle_decode = xgu_radar2_target04_a_radar2_target04_w_non_obstacle_decode(
+                  r2_target04_a_obj.radar2_target04_w_non_obstacle);
+              target_w_non_obstacle_is_in_range = xgu_radar2_target04_a_radar2_target04_w_non_obstacle_is_in_range(
+                  r2_target04_a_obj.radar2_target04_w_non_obstacle);
+              target_flag_meas_decode =
+                  xgu_radar2_target04_a_radar2_target04_flag_meas_decode(r2_target04_a_obj.radar2_target04_flag_meas);
+              target_flag_meas_is_in_range = xgu_radar2_target04_a_radar2_target04_flag_meas_is_in_range(
+                  r2_target04_a_obj.radar2_target04_flag_meas);
+              target_flag_hist_decode =
+                  xgu_radar2_target04_a_radar2_target04_flag_hist_decode(r2_target04_a_obj.radar2_target04_flag_hist);
+              target_flag_hist_is_in_range = xgu_radar2_target04_a_radar2_target04_flag_hist_is_in_range(
+                  r2_target04_a_obj.radar2_target04_flag_hist);
+              target_mess_aconsist_bit_decode = xgu_radar2_target04_a_radar2_target04_mess_aconsist_bit_decode(
+                  r2_target04_a_obj.radar2_target04_mess_aconsist_bit);
+              target_mess_aconsist_bit_is_in_range =
+                  xgu_radar2_target04_a_radar2_target04_mess_aconsist_bit_is_in_range(
+                      r2_target04_a_obj.radar2_target04_mess_aconsist_bit);
               break;
             case 1648:
               xgu_radar2_target04_b_t r2_target04_b_obj;
@@ -1159,6 +1288,49 @@ int main(int argc, char** argv) {
 
               break;
             case 1657:
+              xgu_radar2_target05_a_t r2_target05_a_obj;
+              unpack_return = xgu_radar2_target05_a_unpack(&r2_target05_a_obj, can_data, size_of_msg);
+              target_dx_decoded = xgu_radar2_target05_a_radar2_target05_dx_decode(r2_target05_a_obj.radar2_target05_dx);
+              target_dx_is_in_range =
+                  xgu_radar2_target05_a_radar2_target05_dx_is_in_range(r2_target05_a_obj.radar2_target05_dx);
+              target_vx_decode = xgu_radar2_target05_a_radar2_target05_vx_decode(r2_target05_a_obj.radar2_target05_vx);
+              target_vx_is_in_range =
+                  xgu_radar2_target05_a_radar2_target05_vx_is_in_range(r2_target05_a_obj.radar2_target05_vx);
+              target_dy_decode = xgu_radar2_target05_a_radar2_target05_dy_decode(r2_target05_a_obj.radar2_target05_dy);
+              target_dy_is_in_range =
+                  xgu_radar2_target05_a_radar2_target05_dy_is_in_range(r2_target05_a_obj.radar2_target05_dy);
+              target_w_exist_decode =
+                  xgu_radar2_target05_a_radar2_target05_w_exist_decode(r2_target05_a_obj.radar2_target05_w_exist);
+              target_w_exist_is_in_range =
+                  xgu_radar2_target05_a_radar2_target05_w_exist_is_in_range(r2_target05_a_obj.radar2_target05_w_exist);
+              target_ax_decode = xgu_radar2_target05_a_radar2_target05_ax_decode(r2_target05_a_obj.radar2_target05_ax);
+              target_ax_is_in_range =
+                  xgu_radar2_target05_a_radar2_target05_ax_is_in_range(r2_target05_a_obj.radar2_target05_ax);
+              target_w_obstacle_decode =
+                  xgu_radar2_target05_a_radar2_target05_w_obstacle_decode(r2_target05_a_obj.radar2_target05_w_obstacle);
+              target_w_obstacle_is_in_range = xgu_radar2_target05_a_radar2_target05_w_obstacle_is_in_range(
+                  r2_target05_a_obj.radar2_target05_w_obstacle);
+              target_flag_valid_decode =
+                  xgu_radar2_target05_a_radar2_target05_flag_valid_decode(r2_target05_a_obj.radar2_target05_flag_valid);
+              target_flag_valid_is_in_range = xgu_radar2_target05_a_radar2_target05_flag_valid_is_in_range(
+                  r2_target05_a_obj.radar2_target05_flag_valid);
+              target_w_non_obstacle_decode = xgu_radar2_target05_a_radar2_target05_w_non_obstacle_decode(
+                  r2_target05_a_obj.radar2_target05_w_non_obstacle);
+              target_w_non_obstacle_is_in_range = xgu_radar2_target05_a_radar2_target05_w_non_obstacle_is_in_range(
+                  r2_target05_a_obj.radar2_target05_w_non_obstacle);
+              target_flag_meas_decode =
+                  xgu_radar2_target05_a_radar2_target05_flag_meas_decode(r2_target05_a_obj.radar2_target05_flag_meas);
+              target_flag_meas_is_in_range = xgu_radar2_target05_a_radar2_target05_flag_meas_is_in_range(
+                  r2_target05_a_obj.radar2_target05_flag_meas);
+              target_flag_hist_decode =
+                  xgu_radar2_target05_a_radar2_target05_flag_hist_decode(r2_target05_a_obj.radar2_target05_flag_hist);
+              target_flag_hist_is_in_range = xgu_radar2_target05_a_radar2_target05_flag_hist_is_in_range(
+                  r2_target05_a_obj.radar2_target05_flag_hist);
+              target_mess_aconsist_bit_decode = xgu_radar2_target05_a_radar2_target05_mess_aconsist_bit_decode(
+                  r2_target05_a_obj.radar2_target05_mess_aconsist_bit);
+              target_mess_aconsist_bit_is_in_range =
+                  xgu_radar2_target05_a_radar2_target05_mess_aconsist_bit_is_in_range(
+                      r2_target05_a_obj.radar2_target05_mess_aconsist_bit);
               break;
             case 1658:
               xgu_radar2_target05_b_t r2_target05_b_obj;
