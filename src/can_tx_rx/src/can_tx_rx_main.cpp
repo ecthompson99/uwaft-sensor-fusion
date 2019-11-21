@@ -561,6 +561,49 @@ int main(int argc, char** argv) {
                       r1_target01_b_obj.radar1_target01_mess_bconsist_bit);
               break;
             case 1617:
+              xgu_radar2_target01_a_t r2_target01_a_obj;
+              unpack_return = xgu_radar2_target01_a_unpack(&r2_target01_a_obj, can_data, size_of_msg);
+              target_dx_decoded = xgu_radar2_target01_a_radar2_target01_dx_decode(r2_target01_a_obj.radar2_target01_dx);
+              target_dx_is_in_range =
+                  xgu_radar2_target01_a_radar2_target01_dx_is_in_range(r2_target01_a_obj.radar2_target01_dx);
+              target_vx_decode = xgu_radar2_target01_a_radar2_target01_vx_decode(r2_target01_a_obj.radar2_target01_vx);
+              target_vx_is_in_range =
+                  xgu_radar2_target01_a_radar2_target01_vx_is_in_range(r2_target01_a_obj.radar2_target01_vx);
+              target_dy_decode = xgu_radar2_target01_a_radar2_target01_dy_decode(r2_target01_a_obj.radar2_target01_dy);
+              target_dy_is_in_range =
+                  xgu_radar2_target01_a_radar2_target01_dy_is_in_range(r2_target01_a_obj.radar2_target01_dy);
+              target_w_exist_decode =
+                  xgu_radar2_target01_a_radar2_target01_w_exist_decode(r2_target01_a_obj.radar2_target01_w_exist);
+              target_w_exist_is_in_range =
+                  xgu_radar2_target01_a_radar2_target01_w_exist_is_in_range(r2_target01_a_obj.radar2_target01_w_exist);
+              target_ax_decode = xgu_radar2_target01_a_radar2_target01_ax_decode(r2_target01_a_obj.radar2_target01_ax);
+              target_ax_is_in_range =
+                  xgu_radar2_target01_a_radar2_target01_ax_is_in_range(r2_target01_a_obj.radar2_target01_ax);
+              target_w_obstacle_decode =
+                  xgu_radar2_target01_a_radar2_target01_w_obstacle_decode(r2_target01_a_obj.radar2_target01_w_obstacle);
+              target_w_obstacle_is_in_range = xgu_radar2_target01_a_radar2_target01_w_obstacle_is_in_range(
+                  r2_target01_a_obj.radar2_target01_w_obstacle);
+              target_flag_valid_decode =
+                  xgu_radar2_target01_a_radar2_target01_flag_valid_decode(r2_target01_a_obj.radar2_target01_flag_valid);
+              target_flag_valid_is_in_range = xgu_radar2_target01_a_radar2_target01_flag_valid_is_in_range(
+                  r2_target01_a_obj.radar2_target01_flag_valid);
+              target_w_non_obstacle_decode = xgu_radar2_target01_a_radar2_target01_w_non_obstacle_decode(
+                  r2_target01_a_obj.radar2_target01_w_non_obstacle);
+              target_w_non_obstacle_is_in_range = xgu_radar2_target01_a_radar2_target01_w_non_obstacle_is_in_range(
+                  r2_target01_a_obj.radar2_target01_w_non_obstacle);
+              target_flag_meas_decode =
+                  xgu_radar2_target01_a_radar2_target01_flag_meas_decode(r2_target01_a_obj.radar2_target01_flag_meas);
+              target_flag_meas_is_in_range = xgu_radar2_target01_a_radar2_target01_flag_meas_is_in_range(
+                  r2_target01_a_obj.radar2_target01_flag_meas);
+              target_flag_hist_decode =
+                  xgu_radar2_target01_a_radar2_target01_flag_hist_decode(r2_target01_a_obj.radar2_target01_flag_hist);
+              target_flag_hist_is_in_range = xgu_radar2_target01_a_radar2_target01_flag_hist_is_in_range(
+                  r2_target01_a_obj.radar2_target01_flag_hist);
+              target_mess_aconsist_bit_decode = xgu_radar2_target01_a_radar2_target01_mess_aconsist_bit_decode(
+                  r2_target01_a_obj.radar2_target01_mess_aconsist_bit);
+              target_mess_aconsist_bit_is_in_range =
+                  xgu_radar2_target01_a_radar2_target01_mess_aconsist_bit_is_in_range(
+                      r2_target01_a_obj.radar2_target01_mess_aconsist_bit);
               break;
             case 1618:
               xgu_radar2_target01_b_t r2_target01_b_obj;
@@ -947,7 +990,6 @@ int main(int argc, char** argv) {
                       r2_target03_a_obj.radar2_target03_mess_aconsist_bit);
               break;
             case 1638:
-
               xgu_radar2_target03_b_t r2_target03_b_obj;
               unpack_return = xgu_radar2_target03_b_unpack(&r2_target03_b_obj, can_data, size_of_msg);
               target_vy_decoded = xgu_radar2_target03_b_radar2_target03_vy_decode(r2_target03_b_obj.radar2_target03_vy);
