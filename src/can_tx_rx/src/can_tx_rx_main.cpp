@@ -259,6 +259,31 @@ int main(int argc, char** argv) {
   double mess_aconsist_bit_decoded = 0;
   bool mess_aconsist_bit_is_in_range = 0;
 
+  double vy_decoded = 0;
+  bool vy_is_in_range = 0;
+  double d_length_decoded = 0;
+  bool d_length_is_in_range = 0;
+  double dz_decoded = 0;
+  bool dz_is_in_range = 0;
+  double moving_state_decoded = 0;
+  bool moving_state_is_in_range = 0;
+  double dx_sigma_decoded = 0;
+  bool dx_sigma_is_in_range = 0;
+  double vx_sigma_decoded = 0;
+  bool vx_sigma_is_in_range = 0;
+  double ax_sigma_decoded = 0;
+  bool ax_sigma_is_in_range = 0;
+  double dy_sigma_decoded = 0;
+  bool dy_sigma_is_in_range = 0;
+  double w_class_decoded = 0;
+  bool w_class_is_in_range = 0;
+  double class_decoded = 0;
+  bool class_is_in_range = 0;
+  double dx_rear_end_loss_decoded = 0;
+  bool dx_rear_end_loss_is_in_range = 0;
+  double mess_bconsist_bit_decoded = 0;
+  bool mess_bconsist_bit_is_in_range = 0;
+
   while (ros::ok()) {
     /*  canStatus stat = canRead(hnd_0, &id, &can_data, &dlc, &flag, &time);
 
@@ -1596,8 +1621,81 @@ int main(int argc, char** argv) {
         case 4:
           switch (id) {
             case 1285:
+              xgu_radar1_obj00_a_t r1_obj00_a;
+              unpack_return = xgu_radar1_obj00_a_unpack(&r1_obj00_a, can_data, size_of_msg);
+              dx_decoded = xgu_radar1_obj00_a_radar1_obj00_dx_decode(r1_obj00_a.radar1_obj00_dx);
+              dx_is_in_range = xgu_radar1_obj00_a_radar1_obj00_dx_is_in_range(r1_obj00_a.radar1_obj00_dx);
+              vx_decoded = xgu_radar1_obj00_a_radar1_obj00_vx_decode(r1_obj00_a.radar1_obj00_vx);
+              vx_is_in_range = xgu_radar1_obj00_a_radar1_obj00_vx_is_in_range(r1_obj00_a.radar1_obj00_vx);
+              dy_decoded = xgu_radar1_obj00_a_radar1_obj00_dy_decode(r1_obj00_a.radar1_obj00_dy);
+              dy_is_in_range = xgu_radar1_obj00_a_radar1_obj00_dy_is_in_range(r1_obj00_a.radar1_obj00_dy);
+              w_exist_decoded = xgu_radar1_obj00_a_radar1_obj00_w_exist_decode(r1_obj00_a.radar1_obj00_w_exist);
+              w_exist_is_in_range =
+                  xgu_radar1_obj00_a_radar1_obj00_w_exist_is_in_range(r1_obj00_a.radar1_obj00_w_exist);
+              ax_decoded = xgu_radar1_obj00_a_radar1_obj00_ax_decode(r1_obj00_a.radar1_obj00_ax);
+              ax_is_in_range = xgu_radar1_obj00_a_radar1_obj00_ax_is_in_range(r1_obj00_a.radar1_obj00_ax);
+              w_obstacle_decoded =
+                  xgu_radar1_obj00_a_radar1_obj00_w_obstacle_decode(r1_obj00_a.radar1_obj00_w_obstacle);
+              w_obstacle_is_in_range =
+                  xgu_radar1_obj00_a_radar1_obj00_w_obstacle_is_in_range(r1_obj00_a.radar1_obj00_w_obstacle);
+              flag_valid_decoded =
+                  xgu_radar1_obj00_a_radar1_obj00_flag_valid_decode(r1_obj00_a.radar1_obj00_flag_valid);
+              flag_valid_is_in_range =
+                  xgu_radar1_obj00_a_radar1_obj00_flag_valid_is_in_range(r1_obj00_a.radar1_obj00_flag_valid);
+              w_non_obstacle_decoded =
+                  xgu_radar1_obj00_a_radar1_obj00_w_non_obstacle_decode(r1_obj00_a.radar1_obj00_w_non_obstacle);
+              w_non_obstacle_is_in_range =
+                  xgu_radar1_obj00_a_radar1_obj00_w_non_obstacle_is_in_range(r1_obj00_a.radar1_obj00_w_non_obstacle);
+              flag_meas_decoded = xgu_radar1_obj00_a_radar1_obj00_flag_meas_decode(r1_obj00_a.radar1_obj00_flag_meas);
+              flag_meas_is_in_range =
+                  xgu_radar1_obj00_a_radar1_obj00_flag_meas_is_in_range(r1_obj00_a.radar1_obj00_flag_meas);
+              flag_hist_decoded = xgu_radar1_obj00_a_radar1_obj00_flag_hist_decode(r1_obj00_a.radar1_obj00_flag_hist);
+              flag_hist_is_in_range =
+                  xgu_radar1_obj00_a_radar1_obj00_flag_hist_is_in_range(r1_obj00_a.radar1_obj00_flag_hist);
+              mess_aconsist_bit_decoded =
+                  xgu_radar1_obj00_a_radar1_obj00_mess_aconsist_bit_decode(r1_obj00_a.radar1_obj00_mess_aconsist_bit);
+              mess_aconsist_bit_is_in_range = xgu_radar1_obj00_a_radar1_obj00_mess_aconsist_bit_is_in_range(
+                  r1_obj00_a.radar1_obj00_mess_aconsist_bit);
               break;
             case 1286:
+              xgu_radar1_obj00_b_t r1_obj00_b;
+              unpack_return = xgu_radar1_obj00_b_unpack(&r1_obj00_b, can_data, size_of_msg);
+              vy_decoded = xgu_radar1_obj00_b_radar1_obj00_vy_decode(r1_obj00_b.radar1_obj00_vy);
+              vy_is_in_range = xgu_radar1_obj00_b_radar1_obj00_vy_is_in_range(r1_obj00_b.radar1_obj00_vy);
+              d_length_decoded = xgu_radar1_obj00_b_radar1_obj00_d_length_decode(r1_obj00_b.radar1_obj00_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_d_length_is_in_range(r1_obj00_b.radar1_obj00_d_length);
+              dz_decoded = xgu_radar1_obj00_b_radar1_obj00_dz_decode(r1_obj00_b.radar1_obj00_dz);
+              dz_is_in_range = xgu_radar1_obj00_b_radar1_obj00_dz_is_in_range(r1_obj00_b.radar1_obj00_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj00_b_radar1_obj00_moving_state_decode(r1_obj00_b.radar1_obj00_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_moving_state_is_in_range(r1_obj00_b.radar1_obj00_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj00_b_radar1_obj00_dx_sigma_decode(r1_obj00_b.radar1_obj00_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_dx_sigma_is_in_range(r1_obj00_b.radar1_obj00_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj00_b_radar1_obj00_vx_sigma_decode(r1_obj00_b.radar1_obj00_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_vx_sigma_is_in_range(r1_obj00_b.radar1_obj00_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj00_b_radar1_obj00_ax_sigma_decode(r1_obj00_b.radar1_obj00_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_ax_sigma_is_in_range(r1_obj00_b.radar1_obj00_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj00_b_radar1_obj00_dy_sigma_decode(r1_obj00_b.radar1_obj00_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_dy_sigma_is_in_range(r1_obj00_b.radar1_obj00_dy_sigma);
+              w_class_decoded = xgu_radar1_obj00_b_radar1_obj00_w_class_decode(r1_obj00_b.radar1_obj00_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_w_class_is_in_range(r1_obj00_b.radar1_obj00_w_class);
+              class_decoded = xgu_radar1_obj00_b_radar1_obj00_class_decode(r1_obj00_b.radar1_obj00_class);
+              class_is_in_range = xgu_radar1_obj00_b_radar1_obj00_class_is_in_range(r1_obj00_b.radar1_obj00_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj00_b_radar1_obj00_dx_rear_end_loss_decode(r1_obj00_b.radar1_obj00_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj00_b_radar1_obj00_dx_rear_end_loss_is_in_range(
+                  r1_obj00_b.radar1_obj00_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj00_b_radar1_obj00_mess_bconsist_bit_decode(r1_obj00_b.radar1_obj00_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj00_b_radar1_obj00_mess_bconsist_bit_is_in_range(
+                  r1_obj00_b.radar1_obj00_mess_bconsist_bit);
               break;
             case 1287:
               break;
