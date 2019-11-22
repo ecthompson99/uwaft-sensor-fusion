@@ -236,6 +236,29 @@ int main(int argc, char** argv) {
   double target_mess_bconsist_bit_decoded = 0;
   bool target_mess_bconsist_bit_is_in_range = 0;
 
+  double dx_decoded = 0;
+  bool dx_is_in_range = 0;
+  double vx_decoded = 0;
+  bool vx_is_in_range = 0;
+  double dy_decoded = 0;
+  bool dy_is_in_range = 0;
+  double w_exist_decoded = 0;
+  bool w_exist_is_in_range = 0;
+  double ax_decoded = 0;
+  bool ax_is_in_range = 0;
+  double w_obstacle_decoded = 0;
+  bool w_obstacle_is_in_range = 0;
+  double flag_valid_decoded = 0;
+  bool flag_valid_is_in_range = 0;
+  double w_non_obstacle_decoded = 0;
+  bool w_non_obstacle_is_in_range = 0;
+  double flag_meas_decoded = 0;
+  bool flag_meas_is_in_range = 0;
+  double flag_hist_decoded = 0;
+  bool flag_hist_is_in_range = 0;
+  double mess_aconsist_bit_decoded = 0;
+  bool mess_aconsist_bit_is_in_range = 0;
+
   while (ros::ok()) {
     /*  canStatus stat = canRead(hnd_0, &id, &can_data, &dlc, &flag, &time);
 
@@ -1571,9 +1594,265 @@ int main(int argc, char** argv) {
               break;
           }
         case 4:
-
+          switch (id) {
+            case 1285:
+              break;
+            case 1286:
+              break;
+            case 1287:
+              break;
+            case 1288:
+              break;
+            case 1295:
+              break;
+            case 1296:
+              break;
+            case 1297:
+              break;
+            case 1298:
+              break;
+            case 1305:
+              break;
+            case 1306:
+              break;
+            case 1307:
+              break;
+            case 1308:
+              break;
+            case 1315:
+              break;
+            case 1316:
+              break;
+            case 1317:
+              break;
+            case 1318:
+              break;
+            case 1325:
+              break;
+            case 1326:
+              break;
+            case 1327:
+              break;
+            case 1328:
+              break;
+            case 1335:
+              break;
+            case 1336:
+              break;
+            case 1337:
+              break;
+            case 1338:
+              break;
+            case 1345:
+              break;
+            case 1346:
+              break;
+            case 1347:
+              break;
+            case 1348:
+              break;
+            case 1355:
+              break;
+            case 1356:
+              break;
+            case 1357:
+              break;
+            case 1358:
+              break;
+            case 1365:
+              break;
+            case 1366:
+              break;
+            case 1367:
+              break;
+            case 1368:
+              break;
+            case 1375:
+              break;
+            case 1376:
+              break;
+            case 1377:
+              break;
+            case 1378:
+              break;
+            case 1385:
+              break;
+            case 1386:
+              break;
+            case 1387:
+              break;
+            case 1388:
+              break;
+            case 1395:
+              break;
+            case 1396:
+              break;
+            case 1397:
+              break;
+            case 1398:
+              break;
+            case 1405:
+              break;
+            case 1406:
+              break;
+            case 1407:
+              break;
+            case 1408:
+              break;
+            case 1415:
+              break;
+            case 1416:
+              break;
+            case 1417:
+              break;
+            case 1418:
+              break;
+            case 1425:
+              break;
+            case 1426:
+              break;
+            case 1427:
+              break;
+            case 1428:
+              break;
+            case 1435:
+              break;
+            case 1436:
+              break;
+            case 1437:
+              break;
+            case 1438:
+              break;
+            case 1445:
+              break;
+            case 1446:
+              break;
+            case 1447:
+              break;
+            case 1448:
+              break;
+            case 1455:
+              break;
+            case 1456:
+              break;
+            case 1457:
+              break;
+            case 1458:
+              break;
+            case 1465:
+              break;
+            case 1466:
+              break;
+            case 1467:
+              break;
+            case 1468:
+              break;
+            case 1475:
+              break;
+            case 1476:
+              break;
+            case 1477:
+              break;
+            case 1478:
+              break;
+            case 1485:
+              break;
+            case 1486:
+              break;
+            case 1487:
+              break;
+            case 1488:
+              break;
+            case 1495:
+              break;
+            case 1496:
+              break;
+            case 1497:
+              break;
+            case 1498:
+              break;
+            case 1505:
+              break;
+            case 1506:
+              break;
+            case 1507:
+              break;
+            case 1508:
+              break;
+            case 1515:
+              break;
+            case 1516:
+              break;
+            case 1517:
+              break;
+            case 1518:
+              break;
+            case 1525:
+              break;
+            case 1526:
+              break;
+            case 1527:
+              break;
+            case 1528:
+              break;
+            case 1535:
+              break;
+            case 1536:
+              break;
+            case 1537:
+              break;
+            case 1538:
+              break;
+            case 1545:
+              break;
+            case 1546:
+              break;
+            case 1547:
+              break;
+            case 1548:
+              break;
+            case 1555:
+              break;
+            case 1556:
+              break;
+            case 1557:
+              break;
+            case 1558:
+              break;
+            case 1565:
+              break;
+            case 1566:
+              break;
+            case 1567:
+              break;
+            case 1568:
+              break;
+            case 1575:
+              break;
+            case 1576:
+              break;
+            case 1577:
+              break;
+            case 1578:
+              break;
+            case 1585:
+              break;
+            case 1586:
+              break;
+            case 1587:
+              break;
+            case 1588:
+              break;
+            case 1595:
+              break;
+            case 1596:
+              break;
+            case 1597:
+              break;
+            case 1598:
+              break;
+          }
           break;
-
         case 5:
           break;
           // case 0:
