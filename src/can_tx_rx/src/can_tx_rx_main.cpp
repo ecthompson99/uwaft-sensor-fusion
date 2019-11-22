@@ -2804,6 +2804,1253 @@ int main(int argc, char** argv) {
               mess_aconsist_bit_is_in_range = xgu_radar1_obj31_a_radar1_obj31_mess_aconsist_bit_is_in_range(
                   r1_obj31_a.radar1_obj31_mess_aconsist_bit);
               break;
+            case 1286:
+              xgu_radar1_obj00_b_t r1_obj00_b;
+              vy_decoded = xgu_radar1_obj00_b_radar1_obj00_vy_decode(r1_obj00_b.radar1_obj00_vy);
+              vy_is_in_range = xgu_radar1_obj00_b_radar1_obj00_vy_is_in_range(r1_obj00_b.radar1_obj00_vy);
+              d_length_decoded = xgu_radar1_obj00_b_radar1_obj00_d_length_decode(r1_obj00_b.radar1_obj00_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_d_length_is_in_range(r1_obj00_b.radar1_obj00_d_length);
+              dz_decoded = xgu_radar1_obj00_b_radar1_obj00_dz_decode(r1_obj00_b.radar1_obj00_dz);
+              dz_is_in_range = xgu_radar1_obj00_b_radar1_obj00_dz_is_in_range(r1_obj00_b.radar1_obj00_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj00_b_radar1_obj00_moving_state_decode(r1_obj00_b.radar1_obj00_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_moving_state_is_in_range(r1_obj00_b.radar1_obj00_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj00_b_radar1_obj00_dx_sigma_decode(r1_obj00_b.radar1_obj00_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_dx_sigma_is_in_range(r1_obj00_b.radar1_obj00_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj00_b_radar1_obj00_vx_sigma_decode(r1_obj00_b.radar1_obj00_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_vx_sigma_is_in_range(r1_obj00_b.radar1_obj00_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj00_b_radar1_obj00_ax_sigma_decode(r1_obj00_b.radar1_obj00_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_ax_sigma_is_in_range(r1_obj00_b.radar1_obj00_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj00_b_radar1_obj00_dy_sigma_decode(r1_obj00_b.radar1_obj00_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_dy_sigma_is_in_range(r1_obj00_b.radar1_obj00_dy_sigma);
+              w_class_decoded = xgu_radar1_obj00_b_radar1_obj00_w_class_decode(r1_obj00_b.radar1_obj00_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj00_b_radar1_obj00_w_class_is_in_range(r1_obj00_b.radar1_obj00_w_class);
+              class_decoded = xgu_radar1_obj00_b_radar1_obj00_class_decode(r1_obj00_b.radar1_obj00_class);
+              class_is_in_range = xgu_radar1_obj00_b_radar1_obj00_class_is_in_range(r1_obj00_b.radar1_obj00_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj00_b_radar1_obj00_dx_rear_end_loss_decode(r1_obj00_b.radar1_obj00_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj00_b_radar1_obj00_dx_rear_end_loss_is_in_range(
+                  r1_obj00_b.radar1_obj00_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj00_b_radar1_obj00_mess_bconsist_bit_encode(r1_obj00_b.radar1_obj00_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj00_b_radar1_obj00_mess_bconsist_bit_is_in_range(
+                  r1_obj00_b.radar1_obj00_mess_bconsist_bit);
+              break;
+            case 1296:
+              xgu_radar1_obj01_b_t r1_obj01_b;
+              vy_decoded = xgu_radar1_obj01_b_radar1_obj01_vy_decode(r1_obj01_b.radar1_obj01_vy);
+              vy_is_in_range = xgu_radar1_obj01_b_radar1_obj01_vy_is_in_range(r1_obj01_b.radar1_obj01_vy);
+              d_length_decoded = xgu_radar1_obj01_b_radar1_obj01_d_length_decode(r1_obj01_b.radar1_obj01_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj01_b_radar1_obj01_d_length_is_in_range(r1_obj01_b.radar1_obj01_d_length);
+              dz_decoded = xgu_radar1_obj01_b_radar1_obj01_dz_decode(r1_obj01_b.radar1_obj01_dz);
+              dz_is_in_range = xgu_radar1_obj01_b_radar1_obj01_dz_is_in_range(r1_obj01_b.radar1_obj01_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj01_b_radar1_obj01_moving_state_decode(r1_obj01_b.radar1_obj01_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj01_b_radar1_obj01_moving_state_is_in_range(r1_obj01_b.radar1_obj01_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj01_b_radar1_obj01_dx_sigma_decode(r1_obj01_b.radar1_obj01_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj01_b_radar1_obj01_dx_sigma_is_in_range(r1_obj01_b.radar1_obj01_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj01_b_radar1_obj01_vx_sigma_decode(r1_obj01_b.radar1_obj01_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj01_b_radar1_obj01_vx_sigma_is_in_range(r1_obj01_b.radar1_obj01_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj01_b_radar1_obj01_ax_sigma_decode(r1_obj01_b.radar1_obj01_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj01_b_radar1_obj01_ax_sigma_is_in_range(r1_obj01_b.radar1_obj01_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj01_b_radar1_obj01_dy_sigma_decode(r1_obj01_b.radar1_obj01_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj01_b_radar1_obj01_dy_sigma_is_in_range(r1_obj01_b.radar1_obj01_dy_sigma);
+              w_class_decoded = xgu_radar1_obj01_b_radar1_obj01_w_class_decode(r1_obj01_b.radar1_obj01_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj01_b_radar1_obj01_w_class_is_in_range(r1_obj01_b.radar1_obj01_w_class);
+              class_decoded = xgu_radar1_obj01_b_radar1_obj01_class_decode(r1_obj01_b.radar1_obj01_class);
+              class_is_in_range = xgu_radar1_obj01_b_radar1_obj01_class_is_in_range(r1_obj01_b.radar1_obj01_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj01_b_radar1_obj01_dx_rear_end_loss_decode(r1_obj01_b.radar1_obj01_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj01_b_radar1_obj01_dx_rear_end_loss_is_in_range(
+                  r1_obj01_b.radar1_obj01_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj01_b_radar1_obj01_mess_bconsist_bit_encode(r1_obj01_b.radar1_obj01_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj01_b_radar1_obj01_mess_bconsist_bit_is_in_range(
+                  r1_obj01_b.radar1_obj01_mess_bconsist_bit);
+              break;
+            case 1306:
+              xgu_radar1_obj02_b_t r1_obj02_b;
+              vy_decoded = xgu_radar1_obj02_b_radar1_obj02_vy_decode(r1_obj02_b.radar1_obj02_vy);
+              vy_is_in_range = xgu_radar1_obj02_b_radar1_obj02_vy_is_in_range(r1_obj02_b.radar1_obj02_vy);
+              d_length_decoded = xgu_radar1_obj02_b_radar1_obj02_d_length_decode(r1_obj02_b.radar1_obj02_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj02_b_radar1_obj02_d_length_is_in_range(r1_obj02_b.radar1_obj02_d_length);
+              dz_decoded = xgu_radar1_obj02_b_radar1_obj02_dz_decode(r1_obj02_b.radar1_obj02_dz);
+              dz_is_in_range = xgu_radar1_obj02_b_radar1_obj02_dz_is_in_range(r1_obj02_b.radar1_obj02_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj02_b_radar1_obj02_moving_state_decode(r1_obj02_b.radar1_obj02_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj02_b_radar1_obj02_moving_state_is_in_range(r1_obj02_b.radar1_obj02_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj02_b_radar1_obj02_dx_sigma_decode(r1_obj02_b.radar1_obj02_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj02_b_radar1_obj02_dx_sigma_is_in_range(r1_obj02_b.radar1_obj02_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj02_b_radar1_obj02_vx_sigma_decode(r1_obj02_b.radar1_obj02_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj02_b_radar1_obj02_vx_sigma_is_in_range(r1_obj02_b.radar1_obj02_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj02_b_radar1_obj02_ax_sigma_decode(r1_obj02_b.radar1_obj02_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj02_b_radar1_obj02_ax_sigma_is_in_range(r1_obj02_b.radar1_obj02_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj02_b_radar1_obj02_dy_sigma_decode(r1_obj02_b.radar1_obj02_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj02_b_radar1_obj02_dy_sigma_is_in_range(r1_obj02_b.radar1_obj02_dy_sigma);
+              w_class_decoded = xgu_radar1_obj02_b_radar1_obj02_w_class_decode(r1_obj02_b.radar1_obj02_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj02_b_radar1_obj02_w_class_is_in_range(r1_obj02_b.radar1_obj02_w_class);
+              class_decoded = xgu_radar1_obj02_b_radar1_obj02_class_decode(r1_obj02_b.radar1_obj02_class);
+              class_is_in_range = xgu_radar1_obj02_b_radar1_obj02_class_is_in_range(r1_obj02_b.radar1_obj02_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj02_b_radar1_obj02_dx_rear_end_loss_decode(r1_obj02_b.radar1_obj02_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj02_b_radar1_obj02_dx_rear_end_loss_is_in_range(
+                  r1_obj02_b.radar1_obj02_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj02_b_radar1_obj02_mess_bconsist_bit_encode(r1_obj02_b.radar1_obj02_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj02_b_radar1_obj02_mess_bconsist_bit_is_in_range(
+                  r1_obj02_b.radar1_obj02_mess_bconsist_bit);
+              break;
+            case 1316:
+              xgu_radar1_obj03_b_t r1_obj03_b;
+              vy_decoded = xgu_radar1_obj03_b_radar1_obj03_vy_decode(r1_obj03_b.radar1_obj03_vy);
+              vy_is_in_range = xgu_radar1_obj03_b_radar1_obj03_vy_is_in_range(r1_obj03_b.radar1_obj03_vy);
+              d_length_decoded = xgu_radar1_obj03_b_radar1_obj03_d_length_decode(r1_obj03_b.radar1_obj03_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj03_b_radar1_obj03_d_length_is_in_range(r1_obj03_b.radar1_obj03_d_length);
+              dz_decoded = xgu_radar1_obj03_b_radar1_obj03_dz_decode(r1_obj03_b.radar1_obj03_dz);
+              dz_is_in_range = xgu_radar1_obj03_b_radar1_obj03_dz_is_in_range(r1_obj03_b.radar1_obj03_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj03_b_radar1_obj03_moving_state_decode(r1_obj03_b.radar1_obj03_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj03_b_radar1_obj03_moving_state_is_in_range(r1_obj03_b.radar1_obj03_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj03_b_radar1_obj03_dx_sigma_decode(r1_obj03_b.radar1_obj03_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj03_b_radar1_obj03_dx_sigma_is_in_range(r1_obj03_b.radar1_obj03_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj03_b_radar1_obj03_vx_sigma_decode(r1_obj03_b.radar1_obj03_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj03_b_radar1_obj03_vx_sigma_is_in_range(r1_obj03_b.radar1_obj03_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj03_b_radar1_obj03_ax_sigma_decode(r1_obj03_b.radar1_obj03_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj03_b_radar1_obj03_ax_sigma_is_in_range(r1_obj03_b.radar1_obj03_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj03_b_radar1_obj03_dy_sigma_decode(r1_obj03_b.radar1_obj03_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj03_b_radar1_obj03_dy_sigma_is_in_range(r1_obj03_b.radar1_obj03_dy_sigma);
+              w_class_decoded = xgu_radar1_obj03_b_radar1_obj03_w_class_decode(r1_obj03_b.radar1_obj03_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj03_b_radar1_obj03_w_class_is_in_range(r1_obj03_b.radar1_obj03_w_class);
+              class_decoded = xgu_radar1_obj03_b_radar1_obj03_class_decode(r1_obj03_b.radar1_obj03_class);
+              class_is_in_range = xgu_radar1_obj03_b_radar1_obj03_class_is_in_range(r1_obj03_b.radar1_obj03_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj03_b_radar1_obj03_dx_rear_end_loss_decode(r1_obj03_b.radar1_obj03_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj03_b_radar1_obj03_dx_rear_end_loss_is_in_range(
+                  r1_obj03_b.radar1_obj03_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj03_b_radar1_obj03_mess_bconsist_bit_encode(r1_obj03_b.radar1_obj03_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj03_b_radar1_obj03_mess_bconsist_bit_is_in_range(
+                  r1_obj03_b.radar1_obj03_mess_bconsist_bit);
+              break;
+            case 1326:
+              xgu_radar1_obj04_b_t r1_obj04_b;
+              vy_decoded = xgu_radar1_obj04_b_radar1_obj04_vy_decode(r1_obj04_b.radar1_obj04_vy);
+              vy_is_in_range = xgu_radar1_obj04_b_radar1_obj04_vy_is_in_range(r1_obj04_b.radar1_obj04_vy);
+              d_length_decoded = xgu_radar1_obj04_b_radar1_obj04_d_length_decode(r1_obj04_b.radar1_obj04_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj04_b_radar1_obj04_d_length_is_in_range(r1_obj04_b.radar1_obj04_d_length);
+              dz_decoded = xgu_radar1_obj04_b_radar1_obj04_dz_decode(r1_obj04_b.radar1_obj04_dz);
+              dz_is_in_range = xgu_radar1_obj04_b_radar1_obj04_dz_is_in_range(r1_obj04_b.radar1_obj04_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj04_b_radar1_obj04_moving_state_decode(r1_obj04_b.radar1_obj04_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj04_b_radar1_obj04_moving_state_is_in_range(r1_obj04_b.radar1_obj04_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj04_b_radar1_obj04_dx_sigma_decode(r1_obj04_b.radar1_obj04_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj04_b_radar1_obj04_dx_sigma_is_in_range(r1_obj04_b.radar1_obj04_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj04_b_radar1_obj04_vx_sigma_decode(r1_obj04_b.radar1_obj04_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj04_b_radar1_obj04_vx_sigma_is_in_range(r1_obj04_b.radar1_obj04_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj04_b_radar1_obj04_ax_sigma_decode(r1_obj04_b.radar1_obj04_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj04_b_radar1_obj04_ax_sigma_is_in_range(r1_obj04_b.radar1_obj04_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj04_b_radar1_obj04_dy_sigma_decode(r1_obj04_b.radar1_obj04_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj04_b_radar1_obj04_dy_sigma_is_in_range(r1_obj04_b.radar1_obj04_dy_sigma);
+              w_class_decoded = xgu_radar1_obj04_b_radar1_obj04_w_class_decode(r1_obj04_b.radar1_obj04_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj04_b_radar1_obj04_w_class_is_in_range(r1_obj04_b.radar1_obj04_w_class);
+              class_decoded = xgu_radar1_obj04_b_radar1_obj04_class_decode(r1_obj04_b.radar1_obj04_class);
+              class_is_in_range = xgu_radar1_obj04_b_radar1_obj04_class_is_in_range(r1_obj04_b.radar1_obj04_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj04_b_radar1_obj04_dx_rear_end_loss_decode(r1_obj04_b.radar1_obj04_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj04_b_radar1_obj04_dx_rear_end_loss_is_in_range(
+                  r1_obj04_b.radar1_obj04_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj04_b_radar1_obj04_mess_bconsist_bit_encode(r1_obj04_b.radar1_obj04_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj04_b_radar1_obj04_mess_bconsist_bit_is_in_range(
+                  r1_obj04_b.radar1_obj04_mess_bconsist_bit);
+              break;
+            case 1336:
+              xgu_radar1_obj05_b_t r1_obj05_b;
+              vy_decoded = xgu_radar1_obj05_b_radar1_obj05_vy_decode(r1_obj05_b.radar1_obj05_vy);
+              vy_is_in_range = xgu_radar1_obj05_b_radar1_obj05_vy_is_in_range(r1_obj05_b.radar1_obj05_vy);
+              d_length_decoded = xgu_radar1_obj05_b_radar1_obj05_d_length_decode(r1_obj05_b.radar1_obj05_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj05_b_radar1_obj05_d_length_is_in_range(r1_obj05_b.radar1_obj05_d_length);
+              dz_decoded = xgu_radar1_obj05_b_radar1_obj05_dz_decode(r1_obj05_b.radar1_obj05_dz);
+              dz_is_in_range = xgu_radar1_obj05_b_radar1_obj05_dz_is_in_range(r1_obj05_b.radar1_obj05_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj05_b_radar1_obj05_moving_state_decode(r1_obj05_b.radar1_obj05_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj05_b_radar1_obj05_moving_state_is_in_range(r1_obj05_b.radar1_obj05_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj05_b_radar1_obj05_dx_sigma_decode(r1_obj05_b.radar1_obj05_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj05_b_radar1_obj05_dx_sigma_is_in_range(r1_obj05_b.radar1_obj05_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj05_b_radar1_obj05_vx_sigma_decode(r1_obj05_b.radar1_obj05_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj05_b_radar1_obj05_vx_sigma_is_in_range(r1_obj05_b.radar1_obj05_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj05_b_radar1_obj05_ax_sigma_decode(r1_obj05_b.radar1_obj05_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj05_b_radar1_obj05_ax_sigma_is_in_range(r1_obj05_b.radar1_obj05_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj05_b_radar1_obj05_dy_sigma_decode(r1_obj05_b.radar1_obj05_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj05_b_radar1_obj05_dy_sigma_is_in_range(r1_obj05_b.radar1_obj05_dy_sigma);
+              w_class_decoded = xgu_radar1_obj05_b_radar1_obj05_w_class_decode(r1_obj05_b.radar1_obj05_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj05_b_radar1_obj05_w_class_is_in_range(r1_obj05_b.radar1_obj05_w_class);
+              class_decoded = xgu_radar1_obj05_b_radar1_obj05_class_decode(r1_obj05_b.radar1_obj05_class);
+              class_is_in_range = xgu_radar1_obj05_b_radar1_obj05_class_is_in_range(r1_obj05_b.radar1_obj05_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj05_b_radar1_obj05_dx_rear_end_loss_decode(r1_obj05_b.radar1_obj05_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj05_b_radar1_obj05_dx_rear_end_loss_is_in_range(
+                  r1_obj05_b.radar1_obj05_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj05_b_radar1_obj05_mess_bconsist_bit_encode(r1_obj05_b.radar1_obj05_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj05_b_radar1_obj05_mess_bconsist_bit_is_in_range(
+                  r1_obj05_b.radar1_obj05_mess_bconsist_bit);
+              break;
+            case 1346:
+              xgu_radar1_obj06_b_t r1_obj06_b;
+              vy_decoded = xgu_radar1_obj06_b_radar1_obj06_vy_decode(r1_obj06_b.radar1_obj06_vy);
+              vy_is_in_range = xgu_radar1_obj06_b_radar1_obj06_vy_is_in_range(r1_obj06_b.radar1_obj06_vy);
+              d_length_decoded = xgu_radar1_obj06_b_radar1_obj06_d_length_decode(r1_obj06_b.radar1_obj06_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj06_b_radar1_obj06_d_length_is_in_range(r1_obj06_b.radar1_obj06_d_length);
+              dz_decoded = xgu_radar1_obj06_b_radar1_obj06_dz_decode(r1_obj06_b.radar1_obj06_dz);
+              dz_is_in_range = xgu_radar1_obj06_b_radar1_obj06_dz_is_in_range(r1_obj06_b.radar1_obj06_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj06_b_radar1_obj06_moving_state_decode(r1_obj06_b.radar1_obj06_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj06_b_radar1_obj06_moving_state_is_in_range(r1_obj06_b.radar1_obj06_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj06_b_radar1_obj06_dx_sigma_decode(r1_obj06_b.radar1_obj06_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj06_b_radar1_obj06_dx_sigma_is_in_range(r1_obj06_b.radar1_obj06_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj06_b_radar1_obj06_vx_sigma_decode(r1_obj06_b.radar1_obj06_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj06_b_radar1_obj06_vx_sigma_is_in_range(r1_obj06_b.radar1_obj06_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj06_b_radar1_obj06_ax_sigma_decode(r1_obj06_b.radar1_obj06_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj06_b_radar1_obj06_ax_sigma_is_in_range(r1_obj06_b.radar1_obj06_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj06_b_radar1_obj06_dy_sigma_decode(r1_obj06_b.radar1_obj06_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj06_b_radar1_obj06_dy_sigma_is_in_range(r1_obj06_b.radar1_obj06_dy_sigma);
+              w_class_decoded = xgu_radar1_obj06_b_radar1_obj06_w_class_decode(r1_obj06_b.radar1_obj06_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj06_b_radar1_obj06_w_class_is_in_range(r1_obj06_b.radar1_obj06_w_class);
+              class_decoded = xgu_radar1_obj06_b_radar1_obj06_class_decode(r1_obj06_b.radar1_obj06_class);
+              class_is_in_range = xgu_radar1_obj06_b_radar1_obj06_class_is_in_range(r1_obj06_b.radar1_obj06_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj06_b_radar1_obj06_dx_rear_end_loss_decode(r1_obj06_b.radar1_obj06_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj06_b_radar1_obj06_dx_rear_end_loss_is_in_range(
+                  r1_obj06_b.radar1_obj06_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj06_b_radar1_obj06_mess_bconsist_bit_encode(r1_obj06_b.radar1_obj06_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj06_b_radar1_obj06_mess_bconsist_bit_is_in_range(
+                  r1_obj06_b.radar1_obj06_mess_bconsist_bit);
+              break;
+            case 1356:
+              xgu_radar1_obj07_b_t r1_obj07_b;
+              vy_decoded = xgu_radar1_obj07_b_radar1_obj07_vy_decode(r1_obj07_b.radar1_obj07_vy);
+              vy_is_in_range = xgu_radar1_obj07_b_radar1_obj07_vy_is_in_range(r1_obj07_b.radar1_obj07_vy);
+              d_length_decoded = xgu_radar1_obj07_b_radar1_obj07_d_length_decode(r1_obj07_b.radar1_obj07_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj07_b_radar1_obj07_d_length_is_in_range(r1_obj07_b.radar1_obj07_d_length);
+              dz_decoded = xgu_radar1_obj07_b_radar1_obj07_dz_decode(r1_obj07_b.radar1_obj07_dz);
+              dz_is_in_range = xgu_radar1_obj07_b_radar1_obj07_dz_is_in_range(r1_obj07_b.radar1_obj07_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj07_b_radar1_obj07_moving_state_decode(r1_obj07_b.radar1_obj07_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj07_b_radar1_obj07_moving_state_is_in_range(r1_obj07_b.radar1_obj07_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj07_b_radar1_obj07_dx_sigma_decode(r1_obj07_b.radar1_obj07_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj07_b_radar1_obj07_dx_sigma_is_in_range(r1_obj07_b.radar1_obj07_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj07_b_radar1_obj07_vx_sigma_decode(r1_obj07_b.radar1_obj07_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj07_b_radar1_obj07_vx_sigma_is_in_range(r1_obj07_b.radar1_obj07_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj07_b_radar1_obj07_ax_sigma_decode(r1_obj07_b.radar1_obj07_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj07_b_radar1_obj07_ax_sigma_is_in_range(r1_obj07_b.radar1_obj07_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj07_b_radar1_obj07_dy_sigma_decode(r1_obj07_b.radar1_obj07_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj07_b_radar1_obj07_dy_sigma_is_in_range(r1_obj07_b.radar1_obj07_dy_sigma);
+              w_class_decoded = xgu_radar1_obj07_b_radar1_obj07_w_class_decode(r1_obj07_b.radar1_obj07_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj07_b_radar1_obj07_w_class_is_in_range(r1_obj07_b.radar1_obj07_w_class);
+              class_decoded = xgu_radar1_obj07_b_radar1_obj07_class_decode(r1_obj07_b.radar1_obj07_class);
+              class_is_in_range = xgu_radar1_obj07_b_radar1_obj07_class_is_in_range(r1_obj07_b.radar1_obj07_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj07_b_radar1_obj07_dx_rear_end_loss_decode(r1_obj07_b.radar1_obj07_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj07_b_radar1_obj07_dx_rear_end_loss_is_in_range(
+                  r1_obj07_b.radar1_obj07_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj07_b_radar1_obj07_mess_bconsist_bit_encode(r1_obj07_b.radar1_obj07_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj07_b_radar1_obj07_mess_bconsist_bit_is_in_range(
+                  r1_obj07_b.radar1_obj07_mess_bconsist_bit);
+              break;
+            case 1366:
+              xgu_radar1_obj08_b_t r1_obj08_b;
+              vy_decoded = xgu_radar1_obj08_b_radar1_obj08_vy_decode(r1_obj08_b.radar1_obj08_vy);
+              vy_is_in_range = xgu_radar1_obj08_b_radar1_obj08_vy_is_in_range(r1_obj08_b.radar1_obj08_vy);
+              d_length_decoded = xgu_radar1_obj08_b_radar1_obj08_d_length_decode(r1_obj08_b.radar1_obj08_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj08_b_radar1_obj08_d_length_is_in_range(r1_obj08_b.radar1_obj08_d_length);
+              dz_decoded = xgu_radar1_obj08_b_radar1_obj08_dz_decode(r1_obj08_b.radar1_obj08_dz);
+              dz_is_in_range = xgu_radar1_obj08_b_radar1_obj08_dz_is_in_range(r1_obj08_b.radar1_obj08_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj08_b_radar1_obj08_moving_state_decode(r1_obj08_b.radar1_obj08_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj08_b_radar1_obj08_moving_state_is_in_range(r1_obj08_b.radar1_obj08_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj08_b_radar1_obj08_dx_sigma_decode(r1_obj08_b.radar1_obj08_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj08_b_radar1_obj08_dx_sigma_is_in_range(r1_obj08_b.radar1_obj08_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj08_b_radar1_obj08_vx_sigma_decode(r1_obj08_b.radar1_obj08_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj08_b_radar1_obj08_vx_sigma_is_in_range(r1_obj08_b.radar1_obj08_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj08_b_radar1_obj08_ax_sigma_decode(r1_obj08_b.radar1_obj08_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj08_b_radar1_obj08_ax_sigma_is_in_range(r1_obj08_b.radar1_obj08_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj08_b_radar1_obj08_dy_sigma_decode(r1_obj08_b.radar1_obj08_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj08_b_radar1_obj08_dy_sigma_is_in_range(r1_obj08_b.radar1_obj08_dy_sigma);
+              w_class_decoded = xgu_radar1_obj08_b_radar1_obj08_w_class_decode(r1_obj08_b.radar1_obj08_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj08_b_radar1_obj08_w_class_is_in_range(r1_obj08_b.radar1_obj08_w_class);
+              class_decoded = xgu_radar1_obj08_b_radar1_obj08_class_decode(r1_obj08_b.radar1_obj08_class);
+              class_is_in_range = xgu_radar1_obj08_b_radar1_obj08_class_is_in_range(r1_obj08_b.radar1_obj08_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj08_b_radar1_obj08_dx_rear_end_loss_decode(r1_obj08_b.radar1_obj08_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj08_b_radar1_obj08_dx_rear_end_loss_is_in_range(
+                  r1_obj08_b.radar1_obj08_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj08_b_radar1_obj08_mess_bconsist_bit_encode(r1_obj08_b.radar1_obj08_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj08_b_radar1_obj08_mess_bconsist_bit_is_in_range(
+                  r1_obj08_b.radar1_obj08_mess_bconsist_bit);
+              break;
+            case 1376:
+              xgu_radar1_obj09_b_t r1_obj09_b;
+              vy_decoded = xgu_radar1_obj09_b_radar1_obj09_vy_decode(r1_obj09_b.radar1_obj09_vy);
+              vy_is_in_range = xgu_radar1_obj09_b_radar1_obj09_vy_is_in_range(r1_obj09_b.radar1_obj09_vy);
+              d_length_decoded = xgu_radar1_obj09_b_radar1_obj09_d_length_decode(r1_obj09_b.radar1_obj09_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj09_b_radar1_obj09_d_length_is_in_range(r1_obj09_b.radar1_obj09_d_length);
+              dz_decoded = xgu_radar1_obj09_b_radar1_obj09_dz_decode(r1_obj09_b.radar1_obj09_dz);
+              dz_is_in_range = xgu_radar1_obj09_b_radar1_obj09_dz_is_in_range(r1_obj09_b.radar1_obj09_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj09_b_radar1_obj09_moving_state_decode(r1_obj09_b.radar1_obj09_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj09_b_radar1_obj09_moving_state_is_in_range(r1_obj09_b.radar1_obj09_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj09_b_radar1_obj09_dx_sigma_decode(r1_obj09_b.radar1_obj09_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj09_b_radar1_obj09_dx_sigma_is_in_range(r1_obj09_b.radar1_obj09_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj09_b_radar1_obj09_vx_sigma_decode(r1_obj09_b.radar1_obj09_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj09_b_radar1_obj09_vx_sigma_is_in_range(r1_obj09_b.radar1_obj09_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj09_b_radar1_obj09_ax_sigma_decode(r1_obj09_b.radar1_obj09_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj09_b_radar1_obj09_ax_sigma_is_in_range(r1_obj09_b.radar1_obj09_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj09_b_radar1_obj09_dy_sigma_decode(r1_obj09_b.radar1_obj09_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj09_b_radar1_obj09_dy_sigma_is_in_range(r1_obj09_b.radar1_obj09_dy_sigma);
+              w_class_decoded = xgu_radar1_obj09_b_radar1_obj09_w_class_decode(r1_obj09_b.radar1_obj09_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj09_b_radar1_obj09_w_class_is_in_range(r1_obj09_b.radar1_obj09_w_class);
+              class_decoded = xgu_radar1_obj09_b_radar1_obj09_class_decode(r1_obj09_b.radar1_obj09_class);
+              class_is_in_range = xgu_radar1_obj09_b_radar1_obj09_class_is_in_range(r1_obj09_b.radar1_obj09_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj09_b_radar1_obj09_dx_rear_end_loss_decode(r1_obj09_b.radar1_obj09_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj09_b_radar1_obj09_dx_rear_end_loss_is_in_range(
+                  r1_obj09_b.radar1_obj09_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj09_b_radar1_obj09_mess_bconsist_bit_encode(r1_obj09_b.radar1_obj09_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj09_b_radar1_obj09_mess_bconsist_bit_is_in_range(
+                  r1_obj09_b.radar1_obj09_mess_bconsist_bit);
+              break;
+            case 1386:
+              xgu_radar1_obj10_b_t r1_obj10_b;
+              vy_decoded = xgu_radar1_obj10_b_radar1_obj10_vy_decode(r1_obj10_b.radar1_obj10_vy);
+              vy_is_in_range = xgu_radar1_obj10_b_radar1_obj10_vy_is_in_range(r1_obj10_b.radar1_obj10_vy);
+              d_length_decoded = xgu_radar1_obj10_b_radar1_obj10_d_length_decode(r1_obj10_b.radar1_obj10_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj10_b_radar1_obj10_d_length_is_in_range(r1_obj10_b.radar1_obj10_d_length);
+              dz_decoded = xgu_radar1_obj10_b_radar1_obj10_dz_decode(r1_obj10_b.radar1_obj10_dz);
+              dz_is_in_range = xgu_radar1_obj10_b_radar1_obj10_dz_is_in_range(r1_obj10_b.radar1_obj10_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj10_b_radar1_obj10_moving_state_decode(r1_obj10_b.radar1_obj10_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj10_b_radar1_obj10_moving_state_is_in_range(r1_obj10_b.radar1_obj10_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj10_b_radar1_obj10_dx_sigma_decode(r1_obj10_b.radar1_obj10_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj10_b_radar1_obj10_dx_sigma_is_in_range(r1_obj10_b.radar1_obj10_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj10_b_radar1_obj10_vx_sigma_decode(r1_obj10_b.radar1_obj10_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj10_b_radar1_obj10_vx_sigma_is_in_range(r1_obj10_b.radar1_obj10_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj10_b_radar1_obj10_ax_sigma_decode(r1_obj10_b.radar1_obj10_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj10_b_radar1_obj10_ax_sigma_is_in_range(r1_obj10_b.radar1_obj10_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj10_b_radar1_obj10_dy_sigma_decode(r1_obj10_b.radar1_obj10_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj10_b_radar1_obj10_dy_sigma_is_in_range(r1_obj10_b.radar1_obj10_dy_sigma);
+              w_class_decoded = xgu_radar1_obj10_b_radar1_obj10_w_class_decode(r1_obj10_b.radar1_obj10_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj10_b_radar1_obj10_w_class_is_in_range(r1_obj10_b.radar1_obj10_w_class);
+              class_decoded = xgu_radar1_obj10_b_radar1_obj10_class_decode(r1_obj10_b.radar1_obj10_class);
+              class_is_in_range = xgu_radar1_obj10_b_radar1_obj10_class_is_in_range(r1_obj10_b.radar1_obj10_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj10_b_radar1_obj10_dx_rear_end_loss_decode(r1_obj10_b.radar1_obj10_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj10_b_radar1_obj10_dx_rear_end_loss_is_in_range(
+                  r1_obj10_b.radar1_obj10_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj10_b_radar1_obj10_mess_bconsist_bit_encode(r1_obj10_b.radar1_obj10_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj10_b_radar1_obj10_mess_bconsist_bit_is_in_range(
+                  r1_obj10_b.radar1_obj10_mess_bconsist_bit);
+              break;
+            case 1396:
+              xgu_radar1_obj11_b_t r1_obj11_b;
+              vy_decoded = xgu_radar1_obj11_b_radar1_obj11_vy_decode(r1_obj11_b.radar1_obj11_vy);
+              vy_is_in_range = xgu_radar1_obj11_b_radar1_obj11_vy_is_in_range(r1_obj11_b.radar1_obj11_vy);
+              d_length_decoded = xgu_radar1_obj11_b_radar1_obj11_d_length_decode(r1_obj11_b.radar1_obj11_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj11_b_radar1_obj11_d_length_is_in_range(r1_obj11_b.radar1_obj11_d_length);
+              dz_decoded = xgu_radar1_obj11_b_radar1_obj11_dz_decode(r1_obj11_b.radar1_obj11_dz);
+              dz_is_in_range = xgu_radar1_obj11_b_radar1_obj11_dz_is_in_range(r1_obj11_b.radar1_obj11_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj11_b_radar1_obj11_moving_state_decode(r1_obj11_b.radar1_obj11_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj11_b_radar1_obj11_moving_state_is_in_range(r1_obj11_b.radar1_obj11_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj11_b_radar1_obj11_dx_sigma_decode(r1_obj11_b.radar1_obj11_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj11_b_radar1_obj11_dx_sigma_is_in_range(r1_obj11_b.radar1_obj11_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj11_b_radar1_obj11_vx_sigma_decode(r1_obj11_b.radar1_obj11_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj11_b_radar1_obj11_vx_sigma_is_in_range(r1_obj11_b.radar1_obj11_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj11_b_radar1_obj11_ax_sigma_decode(r1_obj11_b.radar1_obj11_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj11_b_radar1_obj11_ax_sigma_is_in_range(r1_obj11_b.radar1_obj11_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj11_b_radar1_obj11_dy_sigma_decode(r1_obj11_b.radar1_obj11_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj11_b_radar1_obj11_dy_sigma_is_in_range(r1_obj11_b.radar1_obj11_dy_sigma);
+              w_class_decoded = xgu_radar1_obj11_b_radar1_obj11_w_class_decode(r1_obj11_b.radar1_obj11_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj11_b_radar1_obj11_w_class_is_in_range(r1_obj11_b.radar1_obj11_w_class);
+              class_decoded = xgu_radar1_obj11_b_radar1_obj11_class_decode(r1_obj11_b.radar1_obj11_class);
+              class_is_in_range = xgu_radar1_obj11_b_radar1_obj11_class_is_in_range(r1_obj11_b.radar1_obj11_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj11_b_radar1_obj11_dx_rear_end_loss_decode(r1_obj11_b.radar1_obj11_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj11_b_radar1_obj11_dx_rear_end_loss_is_in_range(
+                  r1_obj11_b.radar1_obj11_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj11_b_radar1_obj11_mess_bconsist_bit_encode(r1_obj11_b.radar1_obj11_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj11_b_radar1_obj11_mess_bconsist_bit_is_in_range(
+                  r1_obj11_b.radar1_obj11_mess_bconsist_bit);
+              break;
+            case 1406:
+              xgu_radar1_obj12_b_t r1_obj12_b;
+              vy_decoded = xgu_radar1_obj12_b_radar1_obj12_vy_decode(r1_obj12_b.radar1_obj12_vy);
+              vy_is_in_range = xgu_radar1_obj12_b_radar1_obj12_vy_is_in_range(r1_obj12_b.radar1_obj12_vy);
+              d_length_decoded = xgu_radar1_obj12_b_radar1_obj12_d_length_decode(r1_obj12_b.radar1_obj12_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj12_b_radar1_obj12_d_length_is_in_range(r1_obj12_b.radar1_obj12_d_length);
+              dz_decoded = xgu_radar1_obj12_b_radar1_obj12_dz_decode(r1_obj12_b.radar1_obj12_dz);
+              dz_is_in_range = xgu_radar1_obj12_b_radar1_obj12_dz_is_in_range(r1_obj12_b.radar1_obj12_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj12_b_radar1_obj12_moving_state_decode(r1_obj12_b.radar1_obj12_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj12_b_radar1_obj12_moving_state_is_in_range(r1_obj12_b.radar1_obj12_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj12_b_radar1_obj12_dx_sigma_decode(r1_obj12_b.radar1_obj12_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj12_b_radar1_obj12_dx_sigma_is_in_range(r1_obj12_b.radar1_obj12_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj12_b_radar1_obj12_vx_sigma_decode(r1_obj12_b.radar1_obj12_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj12_b_radar1_obj12_vx_sigma_is_in_range(r1_obj12_b.radar1_obj12_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj12_b_radar1_obj12_ax_sigma_decode(r1_obj12_b.radar1_obj12_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj12_b_radar1_obj12_ax_sigma_is_in_range(r1_obj12_b.radar1_obj12_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj12_b_radar1_obj12_dy_sigma_decode(r1_obj12_b.radar1_obj12_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj12_b_radar1_obj12_dy_sigma_is_in_range(r1_obj12_b.radar1_obj12_dy_sigma);
+              w_class_decoded = xgu_radar1_obj12_b_radar1_obj12_w_class_decode(r1_obj12_b.radar1_obj12_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj12_b_radar1_obj12_w_class_is_in_range(r1_obj12_b.radar1_obj12_w_class);
+              class_decoded = xgu_radar1_obj12_b_radar1_obj12_class_decode(r1_obj12_b.radar1_obj12_class);
+              class_is_in_range = xgu_radar1_obj12_b_radar1_obj12_class_is_in_range(r1_obj12_b.radar1_obj12_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj12_b_radar1_obj12_dx_rear_end_loss_decode(r1_obj12_b.radar1_obj12_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj12_b_radar1_obj12_dx_rear_end_loss_is_in_range(
+                  r1_obj12_b.radar1_obj12_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj12_b_radar1_obj12_mess_bconsist_bit_encode(r1_obj12_b.radar1_obj12_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj12_b_radar1_obj12_mess_bconsist_bit_is_in_range(
+                  r1_obj12_b.radar1_obj12_mess_bconsist_bit);
+              break;
+            case 1416:
+              xgu_radar1_obj13_b_t r1_obj13_b;
+              vy_decoded = xgu_radar1_obj13_b_radar1_obj13_vy_decode(r1_obj13_b.radar1_obj13_vy);
+              vy_is_in_range = xgu_radar1_obj13_b_radar1_obj13_vy_is_in_range(r1_obj13_b.radar1_obj13_vy);
+              d_length_decoded = xgu_radar1_obj13_b_radar1_obj13_d_length_decode(r1_obj13_b.radar1_obj13_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj13_b_radar1_obj13_d_length_is_in_range(r1_obj13_b.radar1_obj13_d_length);
+              dz_decoded = xgu_radar1_obj13_b_radar1_obj13_dz_decode(r1_obj13_b.radar1_obj13_dz);
+              dz_is_in_range = xgu_radar1_obj13_b_radar1_obj13_dz_is_in_range(r1_obj13_b.radar1_obj13_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj13_b_radar1_obj13_moving_state_decode(r1_obj13_b.radar1_obj13_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj13_b_radar1_obj13_moving_state_is_in_range(r1_obj13_b.radar1_obj13_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj13_b_radar1_obj13_dx_sigma_decode(r1_obj13_b.radar1_obj13_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj13_b_radar1_obj13_dx_sigma_is_in_range(r1_obj13_b.radar1_obj13_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj13_b_radar1_obj13_vx_sigma_decode(r1_obj13_b.radar1_obj13_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj13_b_radar1_obj13_vx_sigma_is_in_range(r1_obj13_b.radar1_obj13_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj13_b_radar1_obj13_ax_sigma_decode(r1_obj13_b.radar1_obj13_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj13_b_radar1_obj13_ax_sigma_is_in_range(r1_obj13_b.radar1_obj13_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj13_b_radar1_obj13_dy_sigma_decode(r1_obj13_b.radar1_obj13_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj13_b_radar1_obj13_dy_sigma_is_in_range(r1_obj13_b.radar1_obj13_dy_sigma);
+              w_class_decoded = xgu_radar1_obj13_b_radar1_obj13_w_class_decode(r1_obj13_b.radar1_obj13_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj13_b_radar1_obj13_w_class_is_in_range(r1_obj13_b.radar1_obj13_w_class);
+              class_decoded = xgu_radar1_obj13_b_radar1_obj13_class_decode(r1_obj13_b.radar1_obj13_class);
+              class_is_in_range = xgu_radar1_obj13_b_radar1_obj13_class_is_in_range(r1_obj13_b.radar1_obj13_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj13_b_radar1_obj13_dx_rear_end_loss_decode(r1_obj13_b.radar1_obj13_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj13_b_radar1_obj13_dx_rear_end_loss_is_in_range(
+                  r1_obj13_b.radar1_obj13_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj13_b_radar1_obj13_mess_bconsist_bit_encode(r1_obj13_b.radar1_obj13_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj13_b_radar1_obj13_mess_bconsist_bit_is_in_range(
+                  r1_obj13_b.radar1_obj13_mess_bconsist_bit);
+              break;
+            case 1426:
+              xgu_radar1_obj14_b_t r1_obj14_b;
+              vy_decoded = xgu_radar1_obj14_b_radar1_obj14_vy_decode(r1_obj14_b.radar1_obj14_vy);
+              vy_is_in_range = xgu_radar1_obj14_b_radar1_obj14_vy_is_in_range(r1_obj14_b.radar1_obj14_vy);
+              d_length_decoded = xgu_radar1_obj14_b_radar1_obj14_d_length_decode(r1_obj14_b.radar1_obj14_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj14_b_radar1_obj14_d_length_is_in_range(r1_obj14_b.radar1_obj14_d_length);
+              dz_decoded = xgu_radar1_obj14_b_radar1_obj14_dz_decode(r1_obj14_b.radar1_obj14_dz);
+              dz_is_in_range = xgu_radar1_obj14_b_radar1_obj14_dz_is_in_range(r1_obj14_b.radar1_obj14_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj14_b_radar1_obj14_moving_state_decode(r1_obj14_b.radar1_obj14_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj14_b_radar1_obj14_moving_state_is_in_range(r1_obj14_b.radar1_obj14_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj14_b_radar1_obj14_dx_sigma_decode(r1_obj14_b.radar1_obj14_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj14_b_radar1_obj14_dx_sigma_is_in_range(r1_obj14_b.radar1_obj14_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj14_b_radar1_obj14_vx_sigma_decode(r1_obj14_b.radar1_obj14_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj14_b_radar1_obj14_vx_sigma_is_in_range(r1_obj14_b.radar1_obj14_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj14_b_radar1_obj14_ax_sigma_decode(r1_obj14_b.radar1_obj14_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj14_b_radar1_obj14_ax_sigma_is_in_range(r1_obj14_b.radar1_obj14_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj14_b_radar1_obj14_dy_sigma_decode(r1_obj14_b.radar1_obj14_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj14_b_radar1_obj14_dy_sigma_is_in_range(r1_obj14_b.radar1_obj14_dy_sigma);
+              w_class_decoded = xgu_radar1_obj14_b_radar1_obj14_w_class_decode(r1_obj14_b.radar1_obj14_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj14_b_radar1_obj14_w_class_is_in_range(r1_obj14_b.radar1_obj14_w_class);
+              class_decoded = xgu_radar1_obj14_b_radar1_obj14_class_decode(r1_obj14_b.radar1_obj14_class);
+              class_is_in_range = xgu_radar1_obj14_b_radar1_obj14_class_is_in_range(r1_obj14_b.radar1_obj14_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj14_b_radar1_obj14_dx_rear_end_loss_decode(r1_obj14_b.radar1_obj14_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj14_b_radar1_obj14_dx_rear_end_loss_is_in_range(
+                  r1_obj14_b.radar1_obj14_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj14_b_radar1_obj14_mess_bconsist_bit_encode(r1_obj14_b.radar1_obj14_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj14_b_radar1_obj14_mess_bconsist_bit_is_in_range(
+                  r1_obj14_b.radar1_obj14_mess_bconsist_bit);
+              break;
+            case 1436:
+              xgu_radar1_obj15_b_t r1_obj15_b;
+              vy_decoded = xgu_radar1_obj15_b_radar1_obj15_vy_decode(r1_obj15_b.radar1_obj15_vy);
+              vy_is_in_range = xgu_radar1_obj15_b_radar1_obj15_vy_is_in_range(r1_obj15_b.radar1_obj15_vy);
+              d_length_decoded = xgu_radar1_obj15_b_radar1_obj15_d_length_decode(r1_obj15_b.radar1_obj15_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj15_b_radar1_obj15_d_length_is_in_range(r1_obj15_b.radar1_obj15_d_length);
+              dz_decoded = xgu_radar1_obj15_b_radar1_obj15_dz_decode(r1_obj15_b.radar1_obj15_dz);
+              dz_is_in_range = xgu_radar1_obj15_b_radar1_obj15_dz_is_in_range(r1_obj15_b.radar1_obj15_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj15_b_radar1_obj15_moving_state_decode(r1_obj15_b.radar1_obj15_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj15_b_radar1_obj15_moving_state_is_in_range(r1_obj15_b.radar1_obj15_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj15_b_radar1_obj15_dx_sigma_decode(r1_obj15_b.radar1_obj15_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj15_b_radar1_obj15_dx_sigma_is_in_range(r1_obj15_b.radar1_obj15_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj15_b_radar1_obj15_vx_sigma_decode(r1_obj15_b.radar1_obj15_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj15_b_radar1_obj15_vx_sigma_is_in_range(r1_obj15_b.radar1_obj15_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj15_b_radar1_obj15_ax_sigma_decode(r1_obj15_b.radar1_obj15_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj15_b_radar1_obj15_ax_sigma_is_in_range(r1_obj15_b.radar1_obj15_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj15_b_radar1_obj15_dy_sigma_decode(r1_obj15_b.radar1_obj15_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj15_b_radar1_obj15_dy_sigma_is_in_range(r1_obj15_b.radar1_obj15_dy_sigma);
+              w_class_decoded = xgu_radar1_obj15_b_radar1_obj15_w_class_decode(r1_obj15_b.radar1_obj15_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj15_b_radar1_obj15_w_class_is_in_range(r1_obj15_b.radar1_obj15_w_class);
+              class_decoded = xgu_radar1_obj15_b_radar1_obj15_class_decode(r1_obj15_b.radar1_obj15_class);
+              class_is_in_range = xgu_radar1_obj15_b_radar1_obj15_class_is_in_range(r1_obj15_b.radar1_obj15_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj15_b_radar1_obj15_dx_rear_end_loss_decode(r1_obj15_b.radar1_obj15_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj15_b_radar1_obj15_dx_rear_end_loss_is_in_range(
+                  r1_obj15_b.radar1_obj15_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj15_b_radar1_obj15_mess_bconsist_bit_encode(r1_obj15_b.radar1_obj15_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj15_b_radar1_obj15_mess_bconsist_bit_is_in_range(
+                  r1_obj15_b.radar1_obj15_mess_bconsist_bit);
+              break;
+            case 1446:
+              xgu_radar1_obj16_b_t r1_obj16_b;
+              vy_decoded = xgu_radar1_obj16_b_radar1_obj16_vy_decode(r1_obj16_b.radar1_obj16_vy);
+              vy_is_in_range = xgu_radar1_obj16_b_radar1_obj16_vy_is_in_range(r1_obj16_b.radar1_obj16_vy);
+              d_length_decoded = xgu_radar1_obj16_b_radar1_obj16_d_length_decode(r1_obj16_b.radar1_obj16_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj16_b_radar1_obj16_d_length_is_in_range(r1_obj16_b.radar1_obj16_d_length);
+              dz_decoded = xgu_radar1_obj16_b_radar1_obj16_dz_decode(r1_obj16_b.radar1_obj16_dz);
+              dz_is_in_range = xgu_radar1_obj16_b_radar1_obj16_dz_is_in_range(r1_obj16_b.radar1_obj16_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj16_b_radar1_obj16_moving_state_decode(r1_obj16_b.radar1_obj16_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj16_b_radar1_obj16_moving_state_is_in_range(r1_obj16_b.radar1_obj16_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj16_b_radar1_obj16_dx_sigma_decode(r1_obj16_b.radar1_obj16_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj16_b_radar1_obj16_dx_sigma_is_in_range(r1_obj16_b.radar1_obj16_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj16_b_radar1_obj16_vx_sigma_decode(r1_obj16_b.radar1_obj16_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj16_b_radar1_obj16_vx_sigma_is_in_range(r1_obj16_b.radar1_obj16_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj16_b_radar1_obj16_ax_sigma_decode(r1_obj16_b.radar1_obj16_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj16_b_radar1_obj16_ax_sigma_is_in_range(r1_obj16_b.radar1_obj16_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj16_b_radar1_obj16_dy_sigma_decode(r1_obj16_b.radar1_obj16_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj16_b_radar1_obj16_dy_sigma_is_in_range(r1_obj16_b.radar1_obj16_dy_sigma);
+              w_class_decoded = xgu_radar1_obj16_b_radar1_obj16_w_class_decode(r1_obj16_b.radar1_obj16_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj16_b_radar1_obj16_w_class_is_in_range(r1_obj16_b.radar1_obj16_w_class);
+              class_decoded = xgu_radar1_obj16_b_radar1_obj16_class_decode(r1_obj16_b.radar1_obj16_class);
+              class_is_in_range = xgu_radar1_obj16_b_radar1_obj16_class_is_in_range(r1_obj16_b.radar1_obj16_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj16_b_radar1_obj16_dx_rear_end_loss_decode(r1_obj16_b.radar1_obj16_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj16_b_radar1_obj16_dx_rear_end_loss_is_in_range(
+                  r1_obj16_b.radar1_obj16_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj16_b_radar1_obj16_mess_bconsist_bit_encode(r1_obj16_b.radar1_obj16_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj16_b_radar1_obj16_mess_bconsist_bit_is_in_range(
+                  r1_obj16_b.radar1_obj16_mess_bconsist_bit);
+              break;
+            case 1456:
+              xgu_radar1_obj17_b_t r1_obj17_b;
+              vy_decoded = xgu_radar1_obj17_b_radar1_obj17_vy_decode(r1_obj17_b.radar1_obj17_vy);
+              vy_is_in_range = xgu_radar1_obj17_b_radar1_obj17_vy_is_in_range(r1_obj17_b.radar1_obj17_vy);
+              d_length_decoded = xgu_radar1_obj17_b_radar1_obj17_d_length_decode(r1_obj17_b.radar1_obj17_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj17_b_radar1_obj17_d_length_is_in_range(r1_obj17_b.radar1_obj17_d_length);
+              dz_decoded = xgu_radar1_obj17_b_radar1_obj17_dz_decode(r1_obj17_b.radar1_obj17_dz);
+              dz_is_in_range = xgu_radar1_obj17_b_radar1_obj17_dz_is_in_range(r1_obj17_b.radar1_obj17_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj17_b_radar1_obj17_moving_state_decode(r1_obj17_b.radar1_obj17_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj17_b_radar1_obj17_moving_state_is_in_range(r1_obj17_b.radar1_obj17_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj17_b_radar1_obj17_dx_sigma_decode(r1_obj17_b.radar1_obj17_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj17_b_radar1_obj17_dx_sigma_is_in_range(r1_obj17_b.radar1_obj17_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj17_b_radar1_obj17_vx_sigma_decode(r1_obj17_b.radar1_obj17_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj17_b_radar1_obj17_vx_sigma_is_in_range(r1_obj17_b.radar1_obj17_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj17_b_radar1_obj17_ax_sigma_decode(r1_obj17_b.radar1_obj17_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj17_b_radar1_obj17_ax_sigma_is_in_range(r1_obj17_b.radar1_obj17_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj17_b_radar1_obj17_dy_sigma_decode(r1_obj17_b.radar1_obj17_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj17_b_radar1_obj17_dy_sigma_is_in_range(r1_obj17_b.radar1_obj17_dy_sigma);
+              w_class_decoded = xgu_radar1_obj17_b_radar1_obj17_w_class_decode(r1_obj17_b.radar1_obj17_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj17_b_radar1_obj17_w_class_is_in_range(r1_obj17_b.radar1_obj17_w_class);
+              class_decoded = xgu_radar1_obj17_b_radar1_obj17_class_decode(r1_obj17_b.radar1_obj17_class);
+              class_is_in_range = xgu_radar1_obj17_b_radar1_obj17_class_is_in_range(r1_obj17_b.radar1_obj17_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj17_b_radar1_obj17_dx_rear_end_loss_decode(r1_obj17_b.radar1_obj17_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj17_b_radar1_obj17_dx_rear_end_loss_is_in_range(
+                  r1_obj17_b.radar1_obj17_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj17_b_radar1_obj17_mess_bconsist_bit_encode(r1_obj17_b.radar1_obj17_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj17_b_radar1_obj17_mess_bconsist_bit_is_in_range(
+                  r1_obj17_b.radar1_obj17_mess_bconsist_bit);
+              break;
+            case 1466:
+              xgu_radar1_obj18_b_t r1_obj18_b;
+              vy_decoded = xgu_radar1_obj18_b_radar1_obj18_vy_decode(r1_obj18_b.radar1_obj18_vy);
+              vy_is_in_range = xgu_radar1_obj18_b_radar1_obj18_vy_is_in_range(r1_obj18_b.radar1_obj18_vy);
+              d_length_decoded = xgu_radar1_obj18_b_radar1_obj18_d_length_decode(r1_obj18_b.radar1_obj18_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj18_b_radar1_obj18_d_length_is_in_range(r1_obj18_b.radar1_obj18_d_length);
+              dz_decoded = xgu_radar1_obj18_b_radar1_obj18_dz_decode(r1_obj18_b.radar1_obj18_dz);
+              dz_is_in_range = xgu_radar1_obj18_b_radar1_obj18_dz_is_in_range(r1_obj18_b.radar1_obj18_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj18_b_radar1_obj18_moving_state_decode(r1_obj18_b.radar1_obj18_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj18_b_radar1_obj18_moving_state_is_in_range(r1_obj18_b.radar1_obj18_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj18_b_radar1_obj18_dx_sigma_decode(r1_obj18_b.radar1_obj18_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj18_b_radar1_obj18_dx_sigma_is_in_range(r1_obj18_b.radar1_obj18_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj18_b_radar1_obj18_vx_sigma_decode(r1_obj18_b.radar1_obj18_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj18_b_radar1_obj18_vx_sigma_is_in_range(r1_obj18_b.radar1_obj18_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj18_b_radar1_obj18_ax_sigma_decode(r1_obj18_b.radar1_obj18_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj18_b_radar1_obj18_ax_sigma_is_in_range(r1_obj18_b.radar1_obj18_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj18_b_radar1_obj18_dy_sigma_decode(r1_obj18_b.radar1_obj18_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj18_b_radar1_obj18_dy_sigma_is_in_range(r1_obj18_b.radar1_obj18_dy_sigma);
+              w_class_decoded = xgu_radar1_obj18_b_radar1_obj18_w_class_decode(r1_obj18_b.radar1_obj18_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj18_b_radar1_obj18_w_class_is_in_range(r1_obj18_b.radar1_obj18_w_class);
+              class_decoded = xgu_radar1_obj18_b_radar1_obj18_class_decode(r1_obj18_b.radar1_obj18_class);
+              class_is_in_range = xgu_radar1_obj18_b_radar1_obj18_class_is_in_range(r1_obj18_b.radar1_obj18_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj18_b_radar1_obj18_dx_rear_end_loss_decode(r1_obj18_b.radar1_obj18_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj18_b_radar1_obj18_dx_rear_end_loss_is_in_range(
+                  r1_obj18_b.radar1_obj18_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj18_b_radar1_obj18_mess_bconsist_bit_encode(r1_obj18_b.radar1_obj18_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj18_b_radar1_obj18_mess_bconsist_bit_is_in_range(
+                  r1_obj18_b.radar1_obj18_mess_bconsist_bit);
+              break;
+            case 1476:
+              xgu_radar1_obj19_b_t r1_obj19_b;
+              vy_decoded = xgu_radar1_obj19_b_radar1_obj19_vy_decode(r1_obj19_b.radar1_obj19_vy);
+              vy_is_in_range = xgu_radar1_obj19_b_radar1_obj19_vy_is_in_range(r1_obj19_b.radar1_obj19_vy);
+              d_length_decoded = xgu_radar1_obj19_b_radar1_obj19_d_length_decode(r1_obj19_b.radar1_obj19_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj19_b_radar1_obj19_d_length_is_in_range(r1_obj19_b.radar1_obj19_d_length);
+              dz_decoded = xgu_radar1_obj19_b_radar1_obj19_dz_decode(r1_obj19_b.radar1_obj19_dz);
+              dz_is_in_range = xgu_radar1_obj19_b_radar1_obj19_dz_is_in_range(r1_obj19_b.radar1_obj19_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj19_b_radar1_obj19_moving_state_decode(r1_obj19_b.radar1_obj19_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj19_b_radar1_obj19_moving_state_is_in_range(r1_obj19_b.radar1_obj19_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj19_b_radar1_obj19_dx_sigma_decode(r1_obj19_b.radar1_obj19_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj19_b_radar1_obj19_dx_sigma_is_in_range(r1_obj19_b.radar1_obj19_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj19_b_radar1_obj19_vx_sigma_decode(r1_obj19_b.radar1_obj19_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj19_b_radar1_obj19_vx_sigma_is_in_range(r1_obj19_b.radar1_obj19_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj19_b_radar1_obj19_ax_sigma_decode(r1_obj19_b.radar1_obj19_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj19_b_radar1_obj19_ax_sigma_is_in_range(r1_obj19_b.radar1_obj19_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj19_b_radar1_obj19_dy_sigma_decode(r1_obj19_b.radar1_obj19_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj19_b_radar1_obj19_dy_sigma_is_in_range(r1_obj19_b.radar1_obj19_dy_sigma);
+              w_class_decoded = xgu_radar1_obj19_b_radar1_obj19_w_class_decode(r1_obj19_b.radar1_obj19_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj19_b_radar1_obj19_w_class_is_in_range(r1_obj19_b.radar1_obj19_w_class);
+              class_decoded = xgu_radar1_obj19_b_radar1_obj19_class_decode(r1_obj19_b.radar1_obj19_class);
+              class_is_in_range = xgu_radar1_obj19_b_radar1_obj19_class_is_in_range(r1_obj19_b.radar1_obj19_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj19_b_radar1_obj19_dx_rear_end_loss_decode(r1_obj19_b.radar1_obj19_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj19_b_radar1_obj19_dx_rear_end_loss_is_in_range(
+                  r1_obj19_b.radar1_obj19_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj19_b_radar1_obj19_mess_bconsist_bit_encode(r1_obj19_b.radar1_obj19_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj19_b_radar1_obj19_mess_bconsist_bit_is_in_range(
+                  r1_obj19_b.radar1_obj19_mess_bconsist_bit);
+              break;
+            case 1486:
+              xgu_radar1_obj20_b_t r1_obj20_b;
+              vy_decoded = xgu_radar1_obj20_b_radar1_obj20_vy_decode(r1_obj20_b.radar1_obj20_vy);
+              vy_is_in_range = xgu_radar1_obj20_b_radar1_obj20_vy_is_in_range(r1_obj20_b.radar1_obj20_vy);
+              d_length_decoded = xgu_radar1_obj20_b_radar1_obj20_d_length_decode(r1_obj20_b.radar1_obj20_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj20_b_radar1_obj20_d_length_is_in_range(r1_obj20_b.radar1_obj20_d_length);
+              dz_decoded = xgu_radar1_obj20_b_radar1_obj20_dz_decode(r1_obj20_b.radar1_obj20_dz);
+              dz_is_in_range = xgu_radar1_obj20_b_radar1_obj20_dz_is_in_range(r1_obj20_b.radar1_obj20_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj20_b_radar1_obj20_moving_state_decode(r1_obj20_b.radar1_obj20_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj20_b_radar1_obj20_moving_state_is_in_range(r1_obj20_b.radar1_obj20_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj20_b_radar1_obj20_dx_sigma_decode(r1_obj20_b.radar1_obj20_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj20_b_radar1_obj20_dx_sigma_is_in_range(r1_obj20_b.radar1_obj20_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj20_b_radar1_obj20_vx_sigma_decode(r1_obj20_b.radar1_obj20_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj20_b_radar1_obj20_vx_sigma_is_in_range(r1_obj20_b.radar1_obj20_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj20_b_radar1_obj20_ax_sigma_decode(r1_obj20_b.radar1_obj20_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj20_b_radar1_obj20_ax_sigma_is_in_range(r1_obj20_b.radar1_obj20_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj20_b_radar1_obj20_dy_sigma_decode(r1_obj20_b.radar1_obj20_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj20_b_radar1_obj20_dy_sigma_is_in_range(r1_obj20_b.radar1_obj20_dy_sigma);
+              w_class_decoded = xgu_radar1_obj20_b_radar1_obj20_w_class_decode(r1_obj20_b.radar1_obj20_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj20_b_radar1_obj20_w_class_is_in_range(r1_obj20_b.radar1_obj20_w_class);
+              class_decoded = xgu_radar1_obj20_b_radar1_obj20_class_decode(r1_obj20_b.radar1_obj20_class);
+              class_is_in_range = xgu_radar1_obj20_b_radar1_obj20_class_is_in_range(r1_obj20_b.radar1_obj20_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj20_b_radar1_obj20_dx_rear_end_loss_decode(r1_obj20_b.radar1_obj20_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj20_b_radar1_obj20_dx_rear_end_loss_is_in_range(
+                  r1_obj20_b.radar1_obj20_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj20_b_radar1_obj20_mess_bconsist_bit_encode(r1_obj20_b.radar1_obj20_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj20_b_radar1_obj20_mess_bconsist_bit_is_in_range(
+                  r1_obj20_b.radar1_obj20_mess_bconsist_bit);
+              break;
+            case 1496:
+              xgu_radar1_obj21_b_t r1_obj21_b;
+              vy_decoded = xgu_radar1_obj21_b_radar1_obj21_vy_decode(r1_obj21_b.radar1_obj21_vy);
+              vy_is_in_range = xgu_radar1_obj21_b_radar1_obj21_vy_is_in_range(r1_obj21_b.radar1_obj21_vy);
+              d_length_decoded = xgu_radar1_obj21_b_radar1_obj21_d_length_decode(r1_obj21_b.radar1_obj21_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj21_b_radar1_obj21_d_length_is_in_range(r1_obj21_b.radar1_obj21_d_length);
+              dz_decoded = xgu_radar1_obj21_b_radar1_obj21_dz_decode(r1_obj21_b.radar1_obj21_dz);
+              dz_is_in_range = xgu_radar1_obj21_b_radar1_obj21_dz_is_in_range(r1_obj21_b.radar1_obj21_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj21_b_radar1_obj21_moving_state_decode(r1_obj21_b.radar1_obj21_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj21_b_radar1_obj21_moving_state_is_in_range(r1_obj21_b.radar1_obj21_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj21_b_radar1_obj21_dx_sigma_decode(r1_obj21_b.radar1_obj21_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj21_b_radar1_obj21_dx_sigma_is_in_range(r1_obj21_b.radar1_obj21_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj21_b_radar1_obj21_vx_sigma_decode(r1_obj21_b.radar1_obj21_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj21_b_radar1_obj21_vx_sigma_is_in_range(r1_obj21_b.radar1_obj21_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj21_b_radar1_obj21_ax_sigma_decode(r1_obj21_b.radar1_obj21_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj21_b_radar1_obj21_ax_sigma_is_in_range(r1_obj21_b.radar1_obj21_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj21_b_radar1_obj21_dy_sigma_decode(r1_obj21_b.radar1_obj21_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj21_b_radar1_obj21_dy_sigma_is_in_range(r1_obj21_b.radar1_obj21_dy_sigma);
+              w_class_decoded = xgu_radar1_obj21_b_radar1_obj21_w_class_decode(r1_obj21_b.radar1_obj21_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj21_b_radar1_obj21_w_class_is_in_range(r1_obj21_b.radar1_obj21_w_class);
+              class_decoded = xgu_radar1_obj21_b_radar1_obj21_class_decode(r1_obj21_b.radar1_obj21_class);
+              class_is_in_range = xgu_radar1_obj21_b_radar1_obj21_class_is_in_range(r1_obj21_b.radar1_obj21_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj21_b_radar1_obj21_dx_rear_end_loss_decode(r1_obj21_b.radar1_obj21_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj21_b_radar1_obj21_dx_rear_end_loss_is_in_range(
+                  r1_obj21_b.radar1_obj21_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj21_b_radar1_obj21_mess_bconsist_bit_encode(r1_obj21_b.radar1_obj21_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj21_b_radar1_obj21_mess_bconsist_bit_is_in_range(
+                  r1_obj21_b.radar1_obj21_mess_bconsist_bit);
+              break;
+            case 1506:
+              xgu_radar1_obj22_b_t r1_obj22_b;
+              vy_decoded = xgu_radar1_obj22_b_radar1_obj22_vy_decode(r1_obj22_b.radar1_obj22_vy);
+              vy_is_in_range = xgu_radar1_obj22_b_radar1_obj22_vy_is_in_range(r1_obj22_b.radar1_obj22_vy);
+              d_length_decoded = xgu_radar1_obj22_b_radar1_obj22_d_length_decode(r1_obj22_b.radar1_obj22_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj22_b_radar1_obj22_d_length_is_in_range(r1_obj22_b.radar1_obj22_d_length);
+              dz_decoded = xgu_radar1_obj22_b_radar1_obj22_dz_decode(r1_obj22_b.radar1_obj22_dz);
+              dz_is_in_range = xgu_radar1_obj22_b_radar1_obj22_dz_is_in_range(r1_obj22_b.radar1_obj22_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj22_b_radar1_obj22_moving_state_decode(r1_obj22_b.radar1_obj22_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj22_b_radar1_obj22_moving_state_is_in_range(r1_obj22_b.radar1_obj22_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj22_b_radar1_obj22_dx_sigma_decode(r1_obj22_b.radar1_obj22_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj22_b_radar1_obj22_dx_sigma_is_in_range(r1_obj22_b.radar1_obj22_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj22_b_radar1_obj22_vx_sigma_decode(r1_obj22_b.radar1_obj22_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj22_b_radar1_obj22_vx_sigma_is_in_range(r1_obj22_b.radar1_obj22_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj22_b_radar1_obj22_ax_sigma_decode(r1_obj22_b.radar1_obj22_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj22_b_radar1_obj22_ax_sigma_is_in_range(r1_obj22_b.radar1_obj22_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj22_b_radar1_obj22_dy_sigma_decode(r1_obj22_b.radar1_obj22_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj22_b_radar1_obj22_dy_sigma_is_in_range(r1_obj22_b.radar1_obj22_dy_sigma);
+              w_class_decoded = xgu_radar1_obj22_b_radar1_obj22_w_class_decode(r1_obj22_b.radar1_obj22_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj22_b_radar1_obj22_w_class_is_in_range(r1_obj22_b.radar1_obj22_w_class);
+              class_decoded = xgu_radar1_obj22_b_radar1_obj22_class_decode(r1_obj22_b.radar1_obj22_class);
+              class_is_in_range = xgu_radar1_obj22_b_radar1_obj22_class_is_in_range(r1_obj22_b.radar1_obj22_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj22_b_radar1_obj22_dx_rear_end_loss_decode(r1_obj22_b.radar1_obj22_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj22_b_radar1_obj22_dx_rear_end_loss_is_in_range(
+                  r1_obj22_b.radar1_obj22_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj22_b_radar1_obj22_mess_bconsist_bit_encode(r1_obj22_b.radar1_obj22_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj22_b_radar1_obj22_mess_bconsist_bit_is_in_range(
+                  r1_obj22_b.radar1_obj22_mess_bconsist_bit);
+              break;
+            case 1516:
+              xgu_radar1_obj23_b_t r1_obj23_b;
+              vy_decoded = xgu_radar1_obj23_b_radar1_obj23_vy_decode(r1_obj23_b.radar1_obj23_vy);
+              vy_is_in_range = xgu_radar1_obj23_b_radar1_obj23_vy_is_in_range(r1_obj23_b.radar1_obj23_vy);
+              d_length_decoded = xgu_radar1_obj23_b_radar1_obj23_d_length_decode(r1_obj23_b.radar1_obj23_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj23_b_radar1_obj23_d_length_is_in_range(r1_obj23_b.radar1_obj23_d_length);
+              dz_decoded = xgu_radar1_obj23_b_radar1_obj23_dz_decode(r1_obj23_b.radar1_obj23_dz);
+              dz_is_in_range = xgu_radar1_obj23_b_radar1_obj23_dz_is_in_range(r1_obj23_b.radar1_obj23_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj23_b_radar1_obj23_moving_state_decode(r1_obj23_b.radar1_obj23_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj23_b_radar1_obj23_moving_state_is_in_range(r1_obj23_b.radar1_obj23_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj23_b_radar1_obj23_dx_sigma_decode(r1_obj23_b.radar1_obj23_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj23_b_radar1_obj23_dx_sigma_is_in_range(r1_obj23_b.radar1_obj23_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj23_b_radar1_obj23_vx_sigma_decode(r1_obj23_b.radar1_obj23_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj23_b_radar1_obj23_vx_sigma_is_in_range(r1_obj23_b.radar1_obj23_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj23_b_radar1_obj23_ax_sigma_decode(r1_obj23_b.radar1_obj23_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj23_b_radar1_obj23_ax_sigma_is_in_range(r1_obj23_b.radar1_obj23_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj23_b_radar1_obj23_dy_sigma_decode(r1_obj23_b.radar1_obj23_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj23_b_radar1_obj23_dy_sigma_is_in_range(r1_obj23_b.radar1_obj23_dy_sigma);
+              w_class_decoded = xgu_radar1_obj23_b_radar1_obj23_w_class_decode(r1_obj23_b.radar1_obj23_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj23_b_radar1_obj23_w_class_is_in_range(r1_obj23_b.radar1_obj23_w_class);
+              class_decoded = xgu_radar1_obj23_b_radar1_obj23_class_decode(r1_obj23_b.radar1_obj23_class);
+              class_is_in_range = xgu_radar1_obj23_b_radar1_obj23_class_is_in_range(r1_obj23_b.radar1_obj23_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj23_b_radar1_obj23_dx_rear_end_loss_decode(r1_obj23_b.radar1_obj23_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj23_b_radar1_obj23_dx_rear_end_loss_is_in_range(
+                  r1_obj23_b.radar1_obj23_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj23_b_radar1_obj23_mess_bconsist_bit_encode(r1_obj23_b.radar1_obj23_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj23_b_radar1_obj23_mess_bconsist_bit_is_in_range(
+                  r1_obj23_b.radar1_obj23_mess_bconsist_bit);
+              break;
+            case 1526:
+              xgu_radar1_obj24_b_t r1_obj24_b;
+              vy_decoded = xgu_radar1_obj24_b_radar1_obj24_vy_decode(r1_obj24_b.radar1_obj24_vy);
+              vy_is_in_range = xgu_radar1_obj24_b_radar1_obj24_vy_is_in_range(r1_obj24_b.radar1_obj24_vy);
+              d_length_decoded = xgu_radar1_obj24_b_radar1_obj24_d_length_decode(r1_obj24_b.radar1_obj24_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj24_b_radar1_obj24_d_length_is_in_range(r1_obj24_b.radar1_obj24_d_length);
+              dz_decoded = xgu_radar1_obj24_b_radar1_obj24_dz_decode(r1_obj24_b.radar1_obj24_dz);
+              dz_is_in_range = xgu_radar1_obj24_b_radar1_obj24_dz_is_in_range(r1_obj24_b.radar1_obj24_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj24_b_radar1_obj24_moving_state_decode(r1_obj24_b.radar1_obj24_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj24_b_radar1_obj24_moving_state_is_in_range(r1_obj24_b.radar1_obj24_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj24_b_radar1_obj24_dx_sigma_decode(r1_obj24_b.radar1_obj24_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj24_b_radar1_obj24_dx_sigma_is_in_range(r1_obj24_b.radar1_obj24_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj24_b_radar1_obj24_vx_sigma_decode(r1_obj24_b.radar1_obj24_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj24_b_radar1_obj24_vx_sigma_is_in_range(r1_obj24_b.radar1_obj24_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj24_b_radar1_obj24_ax_sigma_decode(r1_obj24_b.radar1_obj24_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj24_b_radar1_obj24_ax_sigma_is_in_range(r1_obj24_b.radar1_obj24_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj24_b_radar1_obj24_dy_sigma_decode(r1_obj24_b.radar1_obj24_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj24_b_radar1_obj24_dy_sigma_is_in_range(r1_obj24_b.radar1_obj24_dy_sigma);
+              w_class_decoded = xgu_radar1_obj24_b_radar1_obj24_w_class_decode(r1_obj24_b.radar1_obj24_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj24_b_radar1_obj24_w_class_is_in_range(r1_obj24_b.radar1_obj24_w_class);
+              class_decoded = xgu_radar1_obj24_b_radar1_obj24_class_decode(r1_obj24_b.radar1_obj24_class);
+              class_is_in_range = xgu_radar1_obj24_b_radar1_obj24_class_is_in_range(r1_obj24_b.radar1_obj24_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj24_b_radar1_obj24_dx_rear_end_loss_decode(r1_obj24_b.radar1_obj24_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj24_b_radar1_obj24_dx_rear_end_loss_is_in_range(
+                  r1_obj24_b.radar1_obj24_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj24_b_radar1_obj24_mess_bconsist_bit_encode(r1_obj24_b.radar1_obj24_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj24_b_radar1_obj24_mess_bconsist_bit_is_in_range(
+                  r1_obj24_b.radar1_obj24_mess_bconsist_bit);
+              break;
+            case 1536:
+              xgu_radar1_obj25_b_t r1_obj25_b;
+              vy_decoded = xgu_radar1_obj25_b_radar1_obj25_vy_decode(r1_obj25_b.radar1_obj25_vy);
+              vy_is_in_range = xgu_radar1_obj25_b_radar1_obj25_vy_is_in_range(r1_obj25_b.radar1_obj25_vy);
+              d_length_decoded = xgu_radar1_obj25_b_radar1_obj25_d_length_decode(r1_obj25_b.radar1_obj25_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj25_b_radar1_obj25_d_length_is_in_range(r1_obj25_b.radar1_obj25_d_length);
+              dz_decoded = xgu_radar1_obj25_b_radar1_obj25_dz_decode(r1_obj25_b.radar1_obj25_dz);
+              dz_is_in_range = xgu_radar1_obj25_b_radar1_obj25_dz_is_in_range(r1_obj25_b.radar1_obj25_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj25_b_radar1_obj25_moving_state_decode(r1_obj25_b.radar1_obj25_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj25_b_radar1_obj25_moving_state_is_in_range(r1_obj25_b.radar1_obj25_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj25_b_radar1_obj25_dx_sigma_decode(r1_obj25_b.radar1_obj25_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj25_b_radar1_obj25_dx_sigma_is_in_range(r1_obj25_b.radar1_obj25_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj25_b_radar1_obj25_vx_sigma_decode(r1_obj25_b.radar1_obj25_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj25_b_radar1_obj25_vx_sigma_is_in_range(r1_obj25_b.radar1_obj25_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj25_b_radar1_obj25_ax_sigma_decode(r1_obj25_b.radar1_obj25_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj25_b_radar1_obj25_ax_sigma_is_in_range(r1_obj25_b.radar1_obj25_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj25_b_radar1_obj25_dy_sigma_decode(r1_obj25_b.radar1_obj25_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj25_b_radar1_obj25_dy_sigma_is_in_range(r1_obj25_b.radar1_obj25_dy_sigma);
+              w_class_decoded = xgu_radar1_obj25_b_radar1_obj25_w_class_decode(r1_obj25_b.radar1_obj25_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj25_b_radar1_obj25_w_class_is_in_range(r1_obj25_b.radar1_obj25_w_class);
+              class_decoded = xgu_radar1_obj25_b_radar1_obj25_class_decode(r1_obj25_b.radar1_obj25_class);
+              class_is_in_range = xgu_radar1_obj25_b_radar1_obj25_class_is_in_range(r1_obj25_b.radar1_obj25_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj25_b_radar1_obj25_dx_rear_end_loss_decode(r1_obj25_b.radar1_obj25_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj25_b_radar1_obj25_dx_rear_end_loss_is_in_range(
+                  r1_obj25_b.radar1_obj25_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj25_b_radar1_obj25_mess_bconsist_bit_encode(r1_obj25_b.radar1_obj25_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj25_b_radar1_obj25_mess_bconsist_bit_is_in_range(
+                  r1_obj25_b.radar1_obj25_mess_bconsist_bit);
+              break;
+            case 1546:
+              xgu_radar1_obj26_b_t r1_obj26_b;
+              vy_decoded = xgu_radar1_obj26_b_radar1_obj26_vy_decode(r1_obj26_b.radar1_obj26_vy);
+              vy_is_in_range = xgu_radar1_obj26_b_radar1_obj26_vy_is_in_range(r1_obj26_b.radar1_obj26_vy);
+              d_length_decoded = xgu_radar1_obj26_b_radar1_obj26_d_length_decode(r1_obj26_b.radar1_obj26_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj26_b_radar1_obj26_d_length_is_in_range(r1_obj26_b.radar1_obj26_d_length);
+              dz_decoded = xgu_radar1_obj26_b_radar1_obj26_dz_decode(r1_obj26_b.radar1_obj26_dz);
+              dz_is_in_range = xgu_radar1_obj26_b_radar1_obj26_dz_is_in_range(r1_obj26_b.radar1_obj26_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj26_b_radar1_obj26_moving_state_decode(r1_obj26_b.radar1_obj26_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj26_b_radar1_obj26_moving_state_is_in_range(r1_obj26_b.radar1_obj26_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj26_b_radar1_obj26_dx_sigma_decode(r1_obj26_b.radar1_obj26_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj26_b_radar1_obj26_dx_sigma_is_in_range(r1_obj26_b.radar1_obj26_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj26_b_radar1_obj26_vx_sigma_decode(r1_obj26_b.radar1_obj26_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj26_b_radar1_obj26_vx_sigma_is_in_range(r1_obj26_b.radar1_obj26_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj26_b_radar1_obj26_ax_sigma_decode(r1_obj26_b.radar1_obj26_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj26_b_radar1_obj26_ax_sigma_is_in_range(r1_obj26_b.radar1_obj26_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj26_b_radar1_obj26_dy_sigma_decode(r1_obj26_b.radar1_obj26_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj26_b_radar1_obj26_dy_sigma_is_in_range(r1_obj26_b.radar1_obj26_dy_sigma);
+              w_class_decoded = xgu_radar1_obj26_b_radar1_obj26_w_class_decode(r1_obj26_b.radar1_obj26_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj26_b_radar1_obj26_w_class_is_in_range(r1_obj26_b.radar1_obj26_w_class);
+              class_decoded = xgu_radar1_obj26_b_radar1_obj26_class_decode(r1_obj26_b.radar1_obj26_class);
+              class_is_in_range = xgu_radar1_obj26_b_radar1_obj26_class_is_in_range(r1_obj26_b.radar1_obj26_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj26_b_radar1_obj26_dx_rear_end_loss_decode(r1_obj26_b.radar1_obj26_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj26_b_radar1_obj26_dx_rear_end_loss_is_in_range(
+                  r1_obj26_b.radar1_obj26_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj26_b_radar1_obj26_mess_bconsist_bit_encode(r1_obj26_b.radar1_obj26_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj26_b_radar1_obj26_mess_bconsist_bit_is_in_range(
+                  r1_obj26_b.radar1_obj26_mess_bconsist_bit);
+              break;
+            case 1556:
+              xgu_radar1_obj27_b_t r1_obj27_b;
+              vy_decoded = xgu_radar1_obj27_b_radar1_obj27_vy_decode(r1_obj27_b.radar1_obj27_vy);
+              vy_is_in_range = xgu_radar1_obj27_b_radar1_obj27_vy_is_in_range(r1_obj27_b.radar1_obj27_vy);
+              d_length_decoded = xgu_radar1_obj27_b_radar1_obj27_d_length_decode(r1_obj27_b.radar1_obj27_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj27_b_radar1_obj27_d_length_is_in_range(r1_obj27_b.radar1_obj27_d_length);
+              dz_decoded = xgu_radar1_obj27_b_radar1_obj27_dz_decode(r1_obj27_b.radar1_obj27_dz);
+              dz_is_in_range = xgu_radar1_obj27_b_radar1_obj27_dz_is_in_range(r1_obj27_b.radar1_obj27_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj27_b_radar1_obj27_moving_state_decode(r1_obj27_b.radar1_obj27_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj27_b_radar1_obj27_moving_state_is_in_range(r1_obj27_b.radar1_obj27_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj27_b_radar1_obj27_dx_sigma_decode(r1_obj27_b.radar1_obj27_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj27_b_radar1_obj27_dx_sigma_is_in_range(r1_obj27_b.radar1_obj27_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj27_b_radar1_obj27_vx_sigma_decode(r1_obj27_b.radar1_obj27_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj27_b_radar1_obj27_vx_sigma_is_in_range(r1_obj27_b.radar1_obj27_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj27_b_radar1_obj27_ax_sigma_decode(r1_obj27_b.radar1_obj27_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj27_b_radar1_obj27_ax_sigma_is_in_range(r1_obj27_b.radar1_obj27_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj27_b_radar1_obj27_dy_sigma_decode(r1_obj27_b.radar1_obj27_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj27_b_radar1_obj27_dy_sigma_is_in_range(r1_obj27_b.radar1_obj27_dy_sigma);
+              w_class_decoded = xgu_radar1_obj27_b_radar1_obj27_w_class_decode(r1_obj27_b.radar1_obj27_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj27_b_radar1_obj27_w_class_is_in_range(r1_obj27_b.radar1_obj27_w_class);
+              class_decoded = xgu_radar1_obj27_b_radar1_obj27_class_decode(r1_obj27_b.radar1_obj27_class);
+              class_is_in_range = xgu_radar1_obj27_b_radar1_obj27_class_is_in_range(r1_obj27_b.radar1_obj27_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj27_b_radar1_obj27_dx_rear_end_loss_decode(r1_obj27_b.radar1_obj27_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj27_b_radar1_obj27_dx_rear_end_loss_is_in_range(
+                  r1_obj27_b.radar1_obj27_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj27_b_radar1_obj27_mess_bconsist_bit_encode(r1_obj27_b.radar1_obj27_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj27_b_radar1_obj27_mess_bconsist_bit_is_in_range(
+                  r1_obj27_b.radar1_obj27_mess_bconsist_bit);
+              break;
+            case 1566:
+              xgu_radar1_obj28_b_t r1_obj28_b;
+              vy_decoded = xgu_radar1_obj28_b_radar1_obj28_vy_decode(r1_obj28_b.radar1_obj28_vy);
+              vy_is_in_range = xgu_radar1_obj28_b_radar1_obj28_vy_is_in_range(r1_obj28_b.radar1_obj28_vy);
+              d_length_decoded = xgu_radar1_obj28_b_radar1_obj28_d_length_decode(r1_obj28_b.radar1_obj28_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj28_b_radar1_obj28_d_length_is_in_range(r1_obj28_b.radar1_obj28_d_length);
+              dz_decoded = xgu_radar1_obj28_b_radar1_obj28_dz_decode(r1_obj28_b.radar1_obj28_dz);
+              dz_is_in_range = xgu_radar1_obj28_b_radar1_obj28_dz_is_in_range(r1_obj28_b.radar1_obj28_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj28_b_radar1_obj28_moving_state_decode(r1_obj28_b.radar1_obj28_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj28_b_radar1_obj28_moving_state_is_in_range(r1_obj28_b.radar1_obj28_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj28_b_radar1_obj28_dx_sigma_decode(r1_obj28_b.radar1_obj28_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj28_b_radar1_obj28_dx_sigma_is_in_range(r1_obj28_b.radar1_obj28_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj28_b_radar1_obj28_vx_sigma_decode(r1_obj28_b.radar1_obj28_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj28_b_radar1_obj28_vx_sigma_is_in_range(r1_obj28_b.radar1_obj28_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj28_b_radar1_obj28_ax_sigma_decode(r1_obj28_b.radar1_obj28_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj28_b_radar1_obj28_ax_sigma_is_in_range(r1_obj28_b.radar1_obj28_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj28_b_radar1_obj28_dy_sigma_decode(r1_obj28_b.radar1_obj28_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj28_b_radar1_obj28_dy_sigma_is_in_range(r1_obj28_b.radar1_obj28_dy_sigma);
+              w_class_decoded = xgu_radar1_obj28_b_radar1_obj28_w_class_decode(r1_obj28_b.radar1_obj28_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj28_b_radar1_obj28_w_class_is_in_range(r1_obj28_b.radar1_obj28_w_class);
+              class_decoded = xgu_radar1_obj28_b_radar1_obj28_class_decode(r1_obj28_b.radar1_obj28_class);
+              class_is_in_range = xgu_radar1_obj28_b_radar1_obj28_class_is_in_range(r1_obj28_b.radar1_obj28_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj28_b_radar1_obj28_dx_rear_end_loss_decode(r1_obj28_b.radar1_obj28_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj28_b_radar1_obj28_dx_rear_end_loss_is_in_range(
+                  r1_obj28_b.radar1_obj28_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj28_b_radar1_obj28_mess_bconsist_bit_encode(r1_obj28_b.radar1_obj28_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj28_b_radar1_obj28_mess_bconsist_bit_is_in_range(
+                  r1_obj28_b.radar1_obj28_mess_bconsist_bit);
+              break;
+            case 1576:
+              xgu_radar1_obj29_b_t r1_obj29_b;
+              vy_decoded = xgu_radar1_obj29_b_radar1_obj29_vy_decode(r1_obj29_b.radar1_obj29_vy);
+              vy_is_in_range = xgu_radar1_obj29_b_radar1_obj29_vy_is_in_range(r1_obj29_b.radar1_obj29_vy);
+              d_length_decoded = xgu_radar1_obj29_b_radar1_obj29_d_length_decode(r1_obj29_b.radar1_obj29_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj29_b_radar1_obj29_d_length_is_in_range(r1_obj29_b.radar1_obj29_d_length);
+              dz_decoded = xgu_radar1_obj29_b_radar1_obj29_dz_decode(r1_obj29_b.radar1_obj29_dz);
+              dz_is_in_range = xgu_radar1_obj29_b_radar1_obj29_dz_is_in_range(r1_obj29_b.radar1_obj29_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj29_b_radar1_obj29_moving_state_decode(r1_obj29_b.radar1_obj29_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj29_b_radar1_obj29_moving_state_is_in_range(r1_obj29_b.radar1_obj29_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj29_b_radar1_obj29_dx_sigma_decode(r1_obj29_b.radar1_obj29_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj29_b_radar1_obj29_dx_sigma_is_in_range(r1_obj29_b.radar1_obj29_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj29_b_radar1_obj29_vx_sigma_decode(r1_obj29_b.radar1_obj29_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj29_b_radar1_obj29_vx_sigma_is_in_range(r1_obj29_b.radar1_obj29_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj29_b_radar1_obj29_ax_sigma_decode(r1_obj29_b.radar1_obj29_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj29_b_radar1_obj29_ax_sigma_is_in_range(r1_obj29_b.radar1_obj29_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj29_b_radar1_obj29_dy_sigma_decode(r1_obj29_b.radar1_obj29_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj29_b_radar1_obj29_dy_sigma_is_in_range(r1_obj29_b.radar1_obj29_dy_sigma);
+              w_class_decoded = xgu_radar1_obj29_b_radar1_obj29_w_class_decode(r1_obj29_b.radar1_obj29_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj29_b_radar1_obj29_w_class_is_in_range(r1_obj29_b.radar1_obj29_w_class);
+              class_decoded = xgu_radar1_obj29_b_radar1_obj29_class_decode(r1_obj29_b.radar1_obj29_class);
+              class_is_in_range = xgu_radar1_obj29_b_radar1_obj29_class_is_in_range(r1_obj29_b.radar1_obj29_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj29_b_radar1_obj29_dx_rear_end_loss_decode(r1_obj29_b.radar1_obj29_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj29_b_radar1_obj29_dx_rear_end_loss_is_in_range(
+                  r1_obj29_b.radar1_obj29_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj29_b_radar1_obj29_mess_bconsist_bit_encode(r1_obj29_b.radar1_obj29_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj29_b_radar1_obj29_mess_bconsist_bit_is_in_range(
+                  r1_obj29_b.radar1_obj29_mess_bconsist_bit);
+              break;
+            case 1586:
+              xgu_radar1_obj30_b_t r1_obj30_b;
+              vy_decoded = xgu_radar1_obj30_b_radar1_obj30_vy_decode(r1_obj30_b.radar1_obj30_vy);
+              vy_is_in_range = xgu_radar1_obj30_b_radar1_obj30_vy_is_in_range(r1_obj30_b.radar1_obj30_vy);
+              d_length_decoded = xgu_radar1_obj30_b_radar1_obj30_d_length_decode(r1_obj30_b.radar1_obj30_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj30_b_radar1_obj30_d_length_is_in_range(r1_obj30_b.radar1_obj30_d_length);
+              dz_decoded = xgu_radar1_obj30_b_radar1_obj30_dz_decode(r1_obj30_b.radar1_obj30_dz);
+              dz_is_in_range = xgu_radar1_obj30_b_radar1_obj30_dz_is_in_range(r1_obj30_b.radar1_obj30_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj30_b_radar1_obj30_moving_state_decode(r1_obj30_b.radar1_obj30_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj30_b_radar1_obj30_moving_state_is_in_range(r1_obj30_b.radar1_obj30_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj30_b_radar1_obj30_dx_sigma_decode(r1_obj30_b.radar1_obj30_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj30_b_radar1_obj30_dx_sigma_is_in_range(r1_obj30_b.radar1_obj30_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj30_b_radar1_obj30_vx_sigma_decode(r1_obj30_b.radar1_obj30_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj30_b_radar1_obj30_vx_sigma_is_in_range(r1_obj30_b.radar1_obj30_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj30_b_radar1_obj30_ax_sigma_decode(r1_obj30_b.radar1_obj30_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj30_b_radar1_obj30_ax_sigma_is_in_range(r1_obj30_b.radar1_obj30_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj30_b_radar1_obj30_dy_sigma_decode(r1_obj30_b.radar1_obj30_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj30_b_radar1_obj30_dy_sigma_is_in_range(r1_obj30_b.radar1_obj30_dy_sigma);
+              w_class_decoded = xgu_radar1_obj30_b_radar1_obj30_w_class_decode(r1_obj30_b.radar1_obj30_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj30_b_radar1_obj30_w_class_is_in_range(r1_obj30_b.radar1_obj30_w_class);
+              class_decoded = xgu_radar1_obj30_b_radar1_obj30_class_decode(r1_obj30_b.radar1_obj30_class);
+              class_is_in_range = xgu_radar1_obj30_b_radar1_obj30_class_is_in_range(r1_obj30_b.radar1_obj30_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj30_b_radar1_obj30_dx_rear_end_loss_decode(r1_obj30_b.radar1_obj30_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj30_b_radar1_obj30_dx_rear_end_loss_is_in_range(
+                  r1_obj30_b.radar1_obj30_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj30_b_radar1_obj30_mess_bconsist_bit_encode(r1_obj30_b.radar1_obj30_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj30_b_radar1_obj30_mess_bconsist_bit_is_in_range(
+                  r1_obj30_b.radar1_obj30_mess_bconsist_bit);
+              break;
+            case 1596:
+              xgu_radar1_obj31_b_t r1_obj31_b;
+              vy_decoded = xgu_radar1_obj31_b_radar1_obj31_vy_decode(r1_obj31_b.radar1_obj31_vy);
+              vy_is_in_range = xgu_radar1_obj31_b_radar1_obj31_vy_is_in_range(r1_obj31_b.radar1_obj31_vy);
+              d_length_decoded = xgu_radar1_obj31_b_radar1_obj31_d_length_decode(r1_obj31_b.radar1_obj31_d_length);
+              d_length_is_in_range =
+                  xgu_radar1_obj31_b_radar1_obj31_d_length_is_in_range(r1_obj31_b.radar1_obj31_d_length);
+              dz_decoded = xgu_radar1_obj31_b_radar1_obj31_dz_decode(r1_obj31_b.radar1_obj31_dz);
+              dz_is_in_range = xgu_radar1_obj31_b_radar1_obj31_dz_is_in_range(r1_obj31_b.radar1_obj31_dz);
+              moving_state_decoded =
+                  xgu_radar1_obj31_b_radar1_obj31_moving_state_decode(r1_obj31_b.radar1_obj31_moving_state);
+              moving_state_is_in_range =
+                  xgu_radar1_obj31_b_radar1_obj31_moving_state_is_in_range(r1_obj31_b.radar1_obj31_moving_state);
+              dx_sigma_decoded = xgu_radar1_obj31_b_radar1_obj31_dx_sigma_decode(r1_obj31_b.radar1_obj31_dx_sigma);
+              dx_sigma_is_in_range =
+                  xgu_radar1_obj31_b_radar1_obj31_dx_sigma_is_in_range(r1_obj31_b.radar1_obj31_dx_sigma);
+              vx_sigma_decoded = xgu_radar1_obj31_b_radar1_obj31_vx_sigma_decode(r1_obj31_b.radar1_obj31_vx_sigma);
+              vx_sigma_is_in_range =
+                  xgu_radar1_obj31_b_radar1_obj31_vx_sigma_is_in_range(r1_obj31_b.radar1_obj31_vx_sigma);
+              ax_sigma_decoded = xgu_radar1_obj31_b_radar1_obj31_ax_sigma_decode(r1_obj31_b.radar1_obj31_ax_sigma);
+              ax_sigma_is_in_range =
+                  xgu_radar1_obj31_b_radar1_obj31_ax_sigma_is_in_range(r1_obj31_b.radar1_obj31_ax_sigma);
+              dy_sigma_decoded = xgu_radar1_obj31_b_radar1_obj31_dy_sigma_decode(r1_obj31_b.radar1_obj31_dy_sigma);
+              dy_sigma_is_in_range =
+                  xgu_radar1_obj31_b_radar1_obj31_dy_sigma_is_in_range(r1_obj31_b.radar1_obj31_dy_sigma);
+              w_class_decoded = xgu_radar1_obj31_b_radar1_obj31_w_class_decode(r1_obj31_b.radar1_obj31_w_class);
+              w_class_is_in_range =
+                  xgu_radar1_obj31_b_radar1_obj31_w_class_is_in_range(r1_obj31_b.radar1_obj31_w_class);
+              class_decoded = xgu_radar1_obj31_b_radar1_obj31_class_decode(r1_obj31_b.radar1_obj31_class);
+              class_is_in_range = xgu_radar1_obj31_b_radar1_obj31_class_is_in_range(r1_obj31_b.radar1_obj31_class);
+              dx_rear_end_loss_decoded =
+                  xgu_radar1_obj31_b_radar1_obj31_dx_rear_end_loss_decode(r1_obj31_b.radar1_obj31_dx_rear_end_loss);
+              dx_rear_end_loss_is_in_range = xgu_radar1_obj31_b_radar1_obj31_dx_rear_end_loss_is_in_range(
+                  r1_obj31_b.radar1_obj31_dx_rear_end_loss);
+              mess_bconsist_bit_decoded =
+                  xgu_radar1_obj31_b_radar1_obj31_mess_bconsist_bit_encode(r1_obj31_b.radar1_obj31_mess_bconsist_bit);
+              mess_bconsist_bit_is_in_range = xgu_radar1_obj31_b_radar1_obj31_mess_bconsist_bit_is_in_range(
+                  r1_obj31_b.radar1_obj31_mess_bconsist_bit);
               break;
           }
           break;

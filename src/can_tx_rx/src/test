@@ -1,26 +1,27 @@
-for (int a = 1; a<10;a++){}
-
-xgu_radar1_obj00_a_t r1_obj00_a;
-            unpack_return = xgu_radar1_obj00_a_unpack(&r1_obj00_a, can_data, size_of_msg);
-            dx_decoded = xgu_radar1_obj00_a_radar1_obj00_dx_decode(r1_obj00_a.radar1_obj00_dx);
-            dx_is_in_range = xgu_radar1_obj00_a_radar1_obj00_dx_is_in_range(r1_obj00_a.radar1_obj00_dx);
-            vx_decoded = xgu_radar1_obj00_a_radar1_obj00_vx_decode(r1_obj00_a.radar1_obj00_vx);
-            vx_is_in_range = xgu_radar1_obj00_a_radar1_obj00_vx_is_in_range(r1_obj00_a.radar1_obj00_vx);
-            dy_decoded = xgu_radar1_obj00_a_radar1_obj00_dy_decode(r1_obj00_a.radar1_obj00_dy);
-            dy_is_in_range = xgu_radar1_obj00_a_radar1_obj00_dy_is_in_range(r1_obj00_a.radar1_obj00_dy);
-            w_exist_decoded = xgu_radar1_obj00_a_radar1_obj00_w_exist_decode(r1_obj00_a.radar1_obj00_w_exist);
-            w_exist_is_in_range = xgu_radar1_obj00_a_radar1_obj00_w_exist_is_in_range(r1_obj00_a.radar1_obj00_w_exist);
-            ax_decoded = xgu_radar1_obj00_a_radar1_obj00_ax_decode(r1_obj00_a.radar1_obj00_ax);
-            ax_is_in_range = xgu_radar1_obj00_a_radar1_obj00_ax_is_in_range(r1_obj00_a.radar1_obj00_ax);
-            w_obstacle_decoded = xgu_radar1_obj00_a_radar1_obj00_w_obstacle_decode(r1_obj00_a.radar1_obj00_w_obstacle);
-            w_obstacle_is_in_range = xgu_radar1_obj00_a_radar1_obj00_w_obstacle_is_in_range(r1_obj00_a.radar1_obj00_w_obstacle);
-            flag_valid_decoded = xgu_radar1_obj00_a_radar1_obj00_flag_valid_decode(r1_obj00_a.radar1_obj00_flag_valid);
-            flag_valid_is_in_range = xgu_radar1_obj00_a_radar1_obj00_flag_valid_is_in_range(r1_obj00_a.radar1_obj00_flag_valid);
-            w_non_obstacle_decoded = xgu_radar1_obj00_a_radar1_obj00_w_non_obstacle_decode(r1_obj00_a.radar1_obj00_w_non_obstacle);
-            w_non_obstacle_is_in_range = xgu_radar1_obj00_a_radar1_obj00_w_non_obstacle_is_in_range(r1_obj00_a.radar1_obj00_w_non_obstacle);
-            flag_meas_decoded = xgu_radar1_obj00_a_radar1_obj00_flag_meas_decode(r1_obj00_a.radar1_obj00_flag_meas);
-            flag_meas_is_in_range = xgu_radar1_obj00_a_radar1_obj00_flag_meas_is_in_range(r1_obj00_a.radar1_obj00_flag_meas);
-            flag_hist_decoded = xgu_radar1_obj00_a_radar1_obj00_flag_hist_decode(r1_obj00_a.radar1_obj00_flag_hist);
-            flag_hist_is_in_range = xgu_radar1_obj00_a_radar1_obj00_flag_hist_is_in_range(r1_obj00_a.radar1_obj00_flag_hist);
-            mess_aconsist_bit_decoded = xgu_radar1_obj00_a_radar1_obj00_mess_aconsist_bit_decode(r1_obj00_a.radar1_obj00_mess_aconsist_bit);
-            mess_aconsist_bit_is_in_range = xgu_radar1_obj00_a_radar1_obj00_mess_aconsist_bit_is_in_range(r1_obj00_a.radar1_obj00_mess_aconsist_bit);
+for (int index = 0; index <10; index++){
+cout << "xgu_radar1_obj0" << index << "_b_t r1_obj0" << index << "_b;" << "\n";
+cout << "                vy_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_vy_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_vy);" << "\n";
+cout << "                vy_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_vy_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_vy);" << "\n";
+cout << "                d_length_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_d_length_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_d_length);" << "\n";
+cout << "                d_length_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_d_length_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_d_length);" << "\n";
+cout << "                dz_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_dz_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_dz);" << "\n";
+cout << "                dz_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_dz_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_dz);" << "\n";
+cout << "                moving_state_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_moving_state_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_moving_state);" << "\n";
+cout << "                moving_state_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_moving_state_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_moving_state);" << "\n";
+cout << "                dx_sigma_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_dx_sigma_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_dx_sigma);" << "\n";
+cout << "                dx_sigma_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_dx_sigma_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_dx_sigma);" << "\n";
+cout << "                vx_sigma_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_vx_sigma_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_vx_sigma);" << "\n";
+cout << "                vx_sigma_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_vx_sigma_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_vx_sigma);" << "\n";
+cout << "                ax_sigma_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_ax_sigma_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_ax_sigma);" << "\n";
+cout << "                ax_sigma_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_ax_sigma_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_ax_sigma);" << "\n";
+cout << "                dy_sigma_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_dy_sigma_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_dy_sigma);" << "\n";
+cout << "                dy_sigma_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_dy_sigma_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_dy_sigma);" << "\n";
+cout << "                w_class_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_w_class_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_w_class);" << "\n";
+cout << "                w_class_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_w_class_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_w_class);" << "\n";
+cout << "                class_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_class_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_class);" << "\n";
+cout << "                class_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_class_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_class);" << "\n";
+cout << "                dx_rear_end_loss_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_dx_rear_end_loss_decode(r1_obj0" << index << "_b.radar1_obj0" << index << "_dx_rear_end_loss);" << "\n";
+cout << "                dx_rear_end_loss_is_in_range =xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_dx_rear_end_loss_is_in_range (r1_obj0" << index << "_b.radar1_obj0" << index << "_dx_rear_end_loss);" << "\n";
+cout << "                mess_bconsist_bit_decoded = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_mess_bconsist_bit_encode(r1_obj0" << index << "_b.radar1_obj0" << index << "_mess_bconsist_bit);" << "\n";
+cout << "                mess_bconsist_bit_is_in_range = xgu_radar1_obj0" << index << "_b_radar1_obj0" << index << "_mess_bconsist_bit_is_in_range(r1_obj0" << index << "_b.radar1_obj0" << index << "_mess_bconsist_bit);   " << "\n";
+}
