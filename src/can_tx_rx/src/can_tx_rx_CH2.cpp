@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <sstream>
+#include <vector>
 
 #include "ros/ros.h"
 
@@ -164,7 +165,9 @@ int main(int argc, char** argv) {
           diag_response.timestamp = time;
           diag_response.radar_number = radar_num;
           memcpy(serialized_radar_diag_response, &diag_response, sizeof(diag_response));
-          diag_data_msg.radar_diag_input = (long unsigned int)serialized_radar_diag_response;
+          (diag_data_msg.radar_diag_input)
+              .insert((diag_data_msg.radar_diag_input).begin(), std::begin(serialized_radar_diag_response),
+                      std::end(serialized_radar_diag_response));
           diag_data_pub.publish(diag_data_msg);
           break;
         case 2:
@@ -1471,7 +1474,9 @@ int main(int argc, char** argv) {
           target_info.radar_number = radar_num;
           target_info.target_object_number = target_object_num;
           memcpy(serialized_target_info, &diag_response, sizeof(target_info));
-          raw_obj_data_msg.target_info = (long unsigned int)serialized_target_info;
+          (raw_obj_data_msg.target_info)
+              .insert((raw_obj_data_msg.target_info).begin(), std::begin(serialized_target_info),
+                      std::end(serialized_target_info));
           raw_obj_data_pub.publish(raw_obj_data_msg);
           break;
         case 3:
@@ -1632,7 +1637,9 @@ int main(int argc, char** argv) {
           radar_info.timestamp = time;
           radar_info.radar_number = radar_num;
           memcpy(serialized_radar_info, &radar_info, sizeof(radar_info));
-          diag_data_msg.radar_info = (long unsigned int)serialized_radar_info;
+          (diag_data_msg.radar_info)
+              .insert((diag_data_msg.radar_info).begin(), std::begin(serialized_radar_info),
+                      std::end(serialized_radar_info));
           diag_data_pub.publish(diag_data_msg);
           break;
         case 4:
@@ -7883,7 +7890,9 @@ int main(int argc, char** argv) {
           all_object_info.radar_number = radar_num;
           all_object_info.object_number = obj_num;
           memcpy(serialized_all_object_info, &radar_info, sizeof(all_object_info));
-          raw_obj_data_msg.obj_info = (long unsigned int)serialized_all_object_info;
+          (raw_obj_data_msg.obj_info)
+              .insert((raw_obj_data_msg.obj_info).begin(), std::begin(serialized_all_object_info),
+                      std::end(serialized_all_object_info));
           raw_obj_data_pub.publish(raw_obj_data_msg);
           break;
       }
