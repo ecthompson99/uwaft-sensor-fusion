@@ -83,7 +83,7 @@ void get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8
 }
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "can_tx_rx_CH2");
+  ros::init(argc, argv, "can_tx_rx_CH3");
   ros::NodeHandle can_tx_rx_CH3_handle;
 
   ros::Publisher diag_data_pub = can_tx_rx_CH3_handle.advertise<can_tx_rx::sensor_diagnostic_data_msg>(
