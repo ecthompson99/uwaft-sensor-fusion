@@ -1479,9 +1479,9 @@ int main(int argc, char** argv) {
             case 1665:
               xgu_radar1_object_ender_t r1_obj_ender_obj;
               unpack_return = xgu_radar1_object_ender_unpack(&r1_obj_ender_obj, can_data, size_of_msg);
-              radar_info.xgu_radar_timestamp_decoded =
+              radar_info.radar_timestamp_decoded =
                   xgu_radar1_object_ender_radar1_timestamp_decode(r1_obj_ender_obj.radar1_timestamp);
-              radar_info.xgu_radar_timestamp_is_in_range =
+              radar_info.radar_timestamp_is_in_range =
                   xgu_radar1_object_ender_radar1_timestamp_is_in_range(r1_obj_ender_obj.radar1_timestamp);
               radar_info.tc_counter_decoded =
                   xgu_radar1_object_ender_radar1_tc_counter_decode(r1_obj_ender_obj.radar1_tc_counter);
@@ -1500,9 +1500,9 @@ int main(int argc, char** argv) {
             case 1667:
               xgu_radar2_object_ender_t r2_obj_ender_obj;
               unpack_return = xgu_radar2_object_ender_unpack(&r2_obj_ender_obj, can_data, size_of_msg);
-              radar_info.xgu_radar_timestamp_decoded =
+              radar_info.radar_timestamp_decoded =
                   xgu_radar2_object_ender_radar2_object_timestamp_decode(r2_obj_ender_obj.radar2_object_timestamp);
-              radar_info.xgu_radar_timestamp_is_in_range =
+              radar_info.radar_timestamp_is_in_range =
                   xgu_radar2_object_ender_radar2_object_timestamp_is_in_range(r2_obj_ender_obj.radar2_object_timestamp);
               radar_info.tc_counter_decoded =
                   xgu_radar2_object_ender_radar2_tc_counter_decode(r2_obj_ender_obj.radar2_tc_counter);
