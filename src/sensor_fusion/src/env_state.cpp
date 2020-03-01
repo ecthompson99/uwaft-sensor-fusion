@@ -1,5 +1,8 @@
 #include "env_state.h"
 #include "object_state.h"
+#include "string.h"
+
+using namespace std;
 
 EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_node_handle(node_handle) {
   filtered_object_sub = env_state_node_handle->subscribe("filtered_object", MESSAGE_BUFFER_SIZE,
