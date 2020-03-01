@@ -10,14 +10,14 @@ class ObjectState {
 
  private:
   uint8_t obj_id; // object ID
-  float64 obj_dx; // longitudinal range
-  uint8 obj_lane; // lane assignment
-  float64 obj_vx; // relaive longitudinal velocity
-  float64 obj_dy; // lateral range
-  float64 obj_ax; // relative longitudinal accel
+  double obj_dx; // longitudinal range
+  uint8_t obj_lane; // lane assignment
+  double obj_vx; // relaive longitudinal velocity
+  double obj_dy; // lateral range
+  double obj_ax; // relative longitudinal accel
   bool obj_path; // 1:object in path 2:object not in path
-  float64 obj_vy; // lateral velocity
-  float64 obj_timestamp; //time last object detection
+  double obj_vy; // lateral velocity
+  double obj_timestamp; //time last object detection
 };
 
 #endif  // __OBJECT_STATE_H__

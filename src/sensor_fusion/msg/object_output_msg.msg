@@ -1,6 +1,6 @@
 Header header
 
-uint8_t	obj_id
+uint8 obj_id
 float64	obj_dx
 uint8 obj_lane
 float64	obj_vx
