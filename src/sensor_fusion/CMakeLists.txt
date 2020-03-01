@@ -68,7 +68,8 @@ find_package(
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   	object_output_msg.msg
+   filtered_object_msg.msg
+	object_output_msg.msg
 )
 
 ## Generate services in the 'srv' folder
