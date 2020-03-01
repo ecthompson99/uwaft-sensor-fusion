@@ -33,7 +33,7 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
                     << "obj_dy" << object_output_msg.obj_dy << "\n"
                     << "obj_ax " << object_output_msg.obj_ax << "\n"
                     << "obj_in_lane " << object_output_msg.obj_in_lane << "\n"
-                    << "obj_vy" << object_output_msg.obj_vy << "\n"
+                    << "obj_vy" << object_output_msg.obj_vy << "\n");
 
 
 }
