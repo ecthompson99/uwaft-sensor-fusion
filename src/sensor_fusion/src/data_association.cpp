@@ -2,7 +2,7 @@
 
 DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(node_handle) {
     
-      sensor_data_obj_sub = node_handle->subscribe(SENSOR_DATA_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_data_obj_callback, this);
+    sensor_data_obj_sub = node_handle->subscribe(SENSOR_DATA_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_data_obj_callback, this);
     std::cout << "data association class waiting and listening to " << SENSOR_DATA_TOPIC << " topic" << std::endl;
     //   sensor_data_obj_pub = sensor_fusion_node_handle->advertise<sensor_fusion::fused_object_data_msg>(KALMAN_FILTER_TOPIC, MESSAGE_BUFFER_SIZE);
 }
@@ -61,7 +61,7 @@ void DataAssociation::sensor_data_obj_callback(const sensor_fusion::raw_sensor_o
             break;
         }
 
-    }
+    } 
 
     for (auto obj : potential_objs) {
         if (objects_match(obj, sensor_data)) {
