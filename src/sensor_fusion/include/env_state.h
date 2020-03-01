@@ -21,7 +21,7 @@ class EnvironmentState {
 
  private:
   ros::NodeHandle* env_state_node_handle;
-  ros::Subscriber filtered_obj_sub;
+  ros::Subscriber filtered_object_sub;
   ros::Publisher object_output_pub;
   sensor_fusion::object_output_msg object_output_msg;
 };

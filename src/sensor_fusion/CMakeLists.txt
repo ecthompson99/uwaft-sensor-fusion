@@ -68,15 +68,14 @@ find_package(
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   raw_sensor_object_data_msg.msg
-	sensor_diagnostic_flag_msg.msg
-	fused_object_data_msg.msg
+   filtered_object_msg.msg
+	object_output_msg.msg
 )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
-#   Service1.srv
+#   request_env_data_srv.srv
 #   Service2.srv
 # )
 
@@ -142,7 +141,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/sensor_fusion.cpp
+#   src/${PROJECT_NAME}/env_state.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -157,8 +156,8 @@ include_directories(
 
 add_executable(
     ${PROJECT_NAME}
-    src/sensor_fusion_main.cpp
-    src/sensor_fusion.cpp
+    src/env_state.cpp
+    src/env_state_main.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -242,8 +241,8 @@ if (CATKIN_ENABLE_TESTING)
     ## Add gtest based cpp test target and link libraries
     catkin_add_gtest(
         ${PROJECT_NAME}-test
-        test/test_sensor_fusion.cpp
-        src/sensor_fusion.cpp
+        test/test_env_state.cpp
+        src/env_state.cpp
     )
     if(TARGET ${PROJECT_NAME}-test)
         target_link_libraries(

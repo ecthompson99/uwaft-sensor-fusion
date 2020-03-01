@@ -2,7 +2,7 @@
 #include "env_state.h"
  
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "env_state");
+  ros::init(argc, argv, "env_state"); // initialize name of node
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state(&env_state_node_handle);
 
