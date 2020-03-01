@@ -3,8 +3,8 @@
 
 #include "ros/ros.h"
 
-#include "sensor_fusion/filtered_object.h" // sub
-#include "sensor_fusion/object_output.h"  // pub
+#include "sensor_fusion/filtered_object_msg.h" // sub
+#include "sensor_fusion/object_output_msg.h"  // pub
 
 
 static const uint8_t MESSAGE_BUFFER_SIZE = 10;
