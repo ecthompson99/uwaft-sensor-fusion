@@ -158,7 +158,7 @@ include_directories(
 add_executable(
     ${PROJECT_NAME}
     src/sensor_fusion_main.cpp
-    src/sensor_fusion.cpp
+    src/data_association.cpp
 )
 
 ## Rename C++ executable without prefix
