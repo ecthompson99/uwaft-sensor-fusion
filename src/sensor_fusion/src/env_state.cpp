@@ -25,15 +25,14 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
     object_output_msg.obj_in_lane = 1;
     object_output_msg.obj_vy = 16.7;
     
-    ROS_INFO_STREAM("\n"
-                    << "obj_id " << object_output_msg.obj_id << "\n"
+    cout  << "obj_id: "<< object_output_msg.obj_id << "\n"
                     << "obj_dx " << object_output_msg.obj_dx << "\n"
                     << "obj_lane " << object_output_msg.obj_lane << "\n"
                     << "obj_vx " << object_output_msg.obj_vx << "\n"
                     << "obj_dy" << object_output_msg.obj_dy << "\n"
                     << "obj_ax " << object_output_msg.obj_ax << "\n"
                     << "obj_in_lane " << object_output_msg.obj_in_lane << "\n"
-                    << "obj_vy" << object_output_msg.obj_vy << "\n");
+                    << "obj_vy" << object_output_msg.obj_vy << "\n";
 
 
 }
