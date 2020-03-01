@@ -1,10 +1,10 @@
 Header header
 
 uint8 obj_id
-float64	obj_dx
+float64 obj_dx
 uint8 obj_lane
 float64 obj_vx
 float64 obj_dy
 float64 obj_ax
-bool obj_lane
-float64	obj_vy
+bool obj_in_lane
+float64 obj_vy
