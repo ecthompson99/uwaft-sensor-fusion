@@ -15,7 +15,7 @@ class EnvironmentState {
   virtual ~EnvironmentState();
 
   void publish_object_output();
-  void filtered_object_callback(const sensor_fusion::filtered_object& filtered_msg);
+  void filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg);
 
   sensor_fusion::object_output_msg get_object_output_msg();
 

@@ -14,7 +14,7 @@ EnvironmentState::~EnvironmentState() {}
 
 void EnvironmentState::publish_object_output() { object_output_pub.publish(object_output_msg); }
 
-void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object& filtered_msg) {
+void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg) {
     // TODO:
     object_output_msg.obj_id = 1;
     object_output_msg.obj_dx = 2.2;

@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv) {
 
-  ros::init(argc, argv, "sensor_fusion"); // initialize name of node
+  ros::init(argc, argv, "sensor_fusion"); 
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state(&env_state_node_handle);
 
