@@ -19,7 +19,7 @@ class EnvironmentState {
   sensor_fusion::object_output_msg get_object_output_msg();
 
   // TODO:
-  bool contains_filtered_object(const sensor_fusion::filtered_object_msg& filtered_msg); 
+  void track_env_state(const sensor_fusion::filtered_object_msg& filtered_msg); 
   void add_object(const sensor_fusion::filtered_object_msg& filtered_msg);
   void update_object(const sensor_fusion::filtered_object_msg& filtered_msg);
   vector<ObjectState> trackedObjects;

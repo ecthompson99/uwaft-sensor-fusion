@@ -8,7 +8,6 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
   filtered_object_sub = env_state_node_handle->subscribe("filtered_object", MESSAGE_BUFFER_SIZE,
                                                             &EnvironmentState::filtered_object_callback, this);
 
-
   object_output_pub = env_state_node_handle->advertise<sensor_fusion::object_output_msg>("object_output",
                                                                                              MESSAGE_BUFFER_SIZE);
 }
@@ -18,6 +17,9 @@ EnvironmentState::~EnvironmentState() {}
 void EnvironmentState::publish_object_output() { object_output_pub.publish(object_output_msg); }
 
 void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg) {
+    
+    track_env_state(filtered_msg);
+
     // TODO:
     object_output_msg.obj_id = 1;
     object_output_msg.obj_dx = 2.2;
@@ -43,14 +45,20 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
 
 sensor_fusion::object_output_msg EnvironmentState::get_object_output_msg() { return object_output_msg; }
 
-bool contains_filtered_object(const sensor_fusion::filtered_object_msg& filtered_msg) {
-
+void track_env_state(const sensor_fusion::filtered_object_msg& filtered_msg) {
+  
+  for (int index = 0; index < trackedObjects.size(); index++){
+    if (filtered_msg.obj_id == trackedObjects[index].obj_id)
+      update_object(filtered_msg, index);
+  }
+  add_object(filtered_msg);
+  
 }
 
 void add_object(const sensor_fusion::filtered_object_msg& filtered_msg) {
-
+  trackedObjects.push_back(filtered_msg);
 }
 
-void update_object(const sensor_fusion::filtered_object_msg& filtered_msg {
-
+void update_object(const sensor_fusion::filtered_object_msg& filtered_msg, int index) {
+  trackedObjects[index] = filtered_msg;
 }
