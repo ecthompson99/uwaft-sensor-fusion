@@ -42,3 +42,15 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
 
 
 sensor_fusion::object_output_msg EnvironmentState::get_object_output_msg() { return object_output_msg; }
+
+bool contains_filtered_object(const sensor_fusion::filtered_object_msg& filtered_msg) {
+
+}
+
+void add_object(const sensor_fusion::filtered_object_msg& filtered_msg) {
+
+}
+
+void update_object(const sensor_fusion::filtered_object_msg& filtered_msg {
+
+}
