@@ -6,7 +6,7 @@
 class ObjectState {
  public:
   ObjectState();
-  virtual ~ObjectState()
+  virtual ~ObjectState();
   uint8_t get_obj_id();
 
  private:
