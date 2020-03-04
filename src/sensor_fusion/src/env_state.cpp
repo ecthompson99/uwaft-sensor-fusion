@@ -55,7 +55,7 @@ void EnvironmentState::update_object(const sensor_fusion::filtered_object_msg& f
 void EnvironmentState::track_env_state(const sensor_fusion::filtered_object_msg& filtered_msg) {
   
   for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
-    if (filtered_msg.obj_id == EnvironmentState::trackedObjects[index].obj_id)
+    if (filtered_msg.obj_id == EnvironmentState::trackedObjects[index].get_obj_id())
       update_object(filtered_msg, index);
   }
   add_object(filtered_msg);
