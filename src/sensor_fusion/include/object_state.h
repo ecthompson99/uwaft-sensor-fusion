@@ -18,6 +18,9 @@ class ObjectState {
   bool obj_path; // 1:object in path 2:object not in path
   double obj_vy; // lateral velocity
   double obj_timestamp; //time last object detection
+
+public:
+  uint8_t get_obj_id();
 };
 
 #endif  // __OBJECT_STATE_H__
