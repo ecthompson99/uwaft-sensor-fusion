@@ -2,6 +2,7 @@
 #define __ENV_STATE_H__
 
 #include "ros/ros.h"
+#include "object_state.h"
 #include "sensor_fusion/filtered_object_msg.h" // sub
 #include "sensor_fusion/object_output_msg.h"  // pub
 #include <vector>
