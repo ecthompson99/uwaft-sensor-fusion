@@ -2,9 +2,9 @@
 #define __ENV_STATE_H__
 
 #include "ros/ros.h"
-
 #include "sensor_fusion/filtered_object_msg.h" // sub
 #include "sensor_fusion/object_output_msg.h"  // pub
+#include <vector>
 
 
 static const uint8_t MESSAGE_BUFFER_SIZE = 10;
@@ -19,12 +19,13 @@ class EnvironmentState {
   sensor_fusion::object_output_msg get_object_output_msg();
 
   // TODO:
-  bool is_equal(const sensor_fusion::filtered_object_msg& filtered_msg); // compare input msg to state objects
-  bool is_in_state_array(); 
-  void add_object();
+  bool is_equal(const sensor_fusion::filtered_object_msg& filtered_msg); // compare dx, dy, vx, vy of input msg with state msg
+  bool is_in_state_array(const sensor_fusion::filtered_object_msg& filtered_msg); 
+  void add_object(const sensor_fusion::filtered_object_msg& filtered_msg);
+  vector<ObjectState> trackedObjects;
 
 
- private:
+//  private:
   ros::NodeHandle* env_state_node_handle;
   ros::Subscriber filtered_object_sub;
   ros::Publisher object_output_pub;
