@@ -45,11 +45,11 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
 sensor_fusion::object_output_msg EnvironmentState::get_object_output_msg() { return object_output_msg; }
 
 void EnvironmentState::add_object(const sensor_fusion::filtered_object_msg& filtered_msg) {
-  EnvironmentState::trackedObjects.push_back(filtered_msg);
+  EnvironmentState::trackedObjects.push_back(filtered_msg); // error b/c trying to insert different data type to vector type ObjectState
 }
 
 void EnvironmentState::update_object(const sensor_fusion::filtered_object_msg& filtered_msg, int index) {
-  EnvironmentState::trackedObjects[index] = filtered_msg;
+  EnvironmentState::trackedObjects[index] = filtered_msg; // error from filtered_object_msg not same as ObjectState type
 }
 
 void EnvironmentState::track_env_state(const sensor_fusion::filtered_object_msg& filtered_msg) {
