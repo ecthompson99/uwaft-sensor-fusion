@@ -23,7 +23,7 @@ class EnvironmentState {
   void track_env_state(const sensor_fusion::filtered_object_msg& filtered_msg); 
   void add_object(const sensor_fusion::filtered_object_msg& filtered_msg);
   void update_object(const sensor_fusion::filtered_object_msg& filtered_msg);
-  vector<ObjectState> trackedObjects;
+  std::vector<ObjectState> trackedObjects;
 
 
 //  private:

@@ -44,7 +44,7 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
 
 sensor_fusion::object_output_msg EnvironmentState::get_object_output_msg() { return object_output_msg; }
 
-EnvironmentState::void track_env_state(const sensor_fusion::filtered_object_msg& filtered_msg) {
+void EnvironmentState::track_env_state(const sensor_fusion::filtered_object_msg& filtered_msg) {
   
   for (int index = 0; index < ObjectState::trackedObjects.size(); index++){
     if (filtered_msg.obj_id == ObjectState::trackedObjects[index].obj_id)
@@ -54,10 +54,10 @@ EnvironmentState::void track_env_state(const sensor_fusion::filtered_object_msg&
   
 }
 
-EnvironmentState::void add_object(const sensor_fusion::filtered_object_msg& filtered_msg) {
+void EnvironmentState::add_object(const sensor_fusion::filtered_object_msg& filtered_msg) {
   ObjectState::trackedObjects.push_back(filtered_msg);
 }
 
-EnvironmentState::void update_object(const sensor_fusion::filtered_object_msg& filtered_msg, int index) {
+void EnvironmentState::update_object(const sensor_fusion::filtered_object_msg& filtered_msg, int index) {
   ObjectState::trackedObjects[index] = filtered_msg;
 }
