@@ -16,7 +16,8 @@ EnvironmentState::~EnvironmentState() {}
 void EnvironmentState::publish_object_output() { object_output_pub.publish(object_output_msg); }
 
 void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg) {
-    ObjectState tracked_msg = ObjectState::create_object();
+    ObjectState tracked_msg;
+    tracked_msg.copy_info(filtered_msg);
     track_env_state(tracked_msg);
 
     // TODO:
