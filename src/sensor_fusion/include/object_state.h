@@ -7,9 +7,9 @@
 class ObjectState {
  public:
   ObjectState();
-  ObjectState(const sensor_fusion::filtered_object_msg& filtered_msg);
   virtual ~ObjectState();
   uint8_t get_obj_id() const;
+  ObjectState create_object(const sensor_fusion::filtered_object_msg& filtered_msg);
 
  private:
   uint8_t obj_id; // object ID
