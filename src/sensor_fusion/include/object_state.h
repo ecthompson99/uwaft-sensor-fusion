@@ -2,12 +2,14 @@
 #define __OBJECT_STATE_H__
 
 #include "ros/ros.h"
+#include "sensor_fusion/filtered_object_msg.h"
 
 class ObjectState {
  public:
   ObjectState();
+  ObjectState(const sensor_fusion::filtered_object_msg& filtered_msg);
   virtual ~ObjectState();
-  uint8_t get_obj_id();
+  uint8_t get_obj_id() const;
 
  private:
   uint8_t obj_id; // object ID

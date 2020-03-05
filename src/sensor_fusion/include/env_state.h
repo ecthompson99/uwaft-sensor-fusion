@@ -20,9 +20,9 @@ class EnvironmentState {
   void filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg);
   sensor_fusion::object_output_msg get_object_output_msg();
 
-  void add_object(const sensor_fusion::filtered_object_msg& filtered_msg);
-  void update_object(const sensor_fusion::filtered_object_msg& filtered_msg, int index);
-  void track_env_state(const sensor_fusion::filtered_object_msg& filtered_msg); 
+  void add_object(const ObjectState& tracked_msg);
+  void update_object(const ObjectState& tracked_msg, int index);
+  void track_env_state(const ObjectState& tracked_msg); 
 
 
   private:

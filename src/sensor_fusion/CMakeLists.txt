@@ -158,6 +158,7 @@ add_executable(
     ${PROJECT_NAME}
     src/env_state.cpp
     src/sensor_fusion_main.cpp
+    src/object_state.cpp
 )
 
 ## Rename C++ executable without prefix

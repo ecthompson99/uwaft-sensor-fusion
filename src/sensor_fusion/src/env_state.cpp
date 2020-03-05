@@ -16,8 +16,8 @@ EnvironmentState::~EnvironmentState() {}
 void EnvironmentState::publish_object_output() { object_output_pub.publish(object_output_msg); }
 
 void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg) {
-    
-    track_env_state(filtered_msg);
+    ObjectState tracked_msg = ObjectState(const filtered_msg);
+    track_env_state(tracked_msg);
 
     // TODO:
     object_output_msg.obj_id = 1;
@@ -26,7 +26,7 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
     object_output_msg.obj_vx = 3.3;
     object_output_msg.obj_dy = 5.6;
     object_output_msg.obj_ax = 12.4;
-    object_output_msg.obj_in_lane = 1;
+    object_output_msg.obj_path = 1;
     object_output_msg.obj_vy = 16.7;
     
     cout  << "obj_id: "<< object_output_msg.obj_id << "\n"
@@ -35,7 +35,7 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
                     << "obj_vx " << object_output_msg.obj_vx << "\n"
                     << "obj_dy" << object_output_msg.obj_dy << "\n"
                     << "obj_ax " << object_output_msg.obj_ax << "\n"
-                    << "obj_in_lane " << object_output_msg.obj_in_lane << "\n"
+                    << "obj_path " << object_output_msg.obj_path << "\n"
                     << "obj_vy" << object_output_msg.obj_vy << "\n";
 
 
@@ -44,21 +44,21 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
 
 sensor_fusion::object_output_msg EnvironmentState::get_object_output_msg() { return object_output_msg; }
 
-void EnvironmentState::add_object(const sensor_fusion::filtered_object_msg& filtered_msg) {
-  EnvironmentState::trackedObjects.push_back(filtered_msg); // error b/c trying to insert different data type to vector type ObjectState
+void EnvironmentState::add_object(const ObjectState& tracked_msg) {
+  EnvironmentState::trackedObjects.push_back(tracked_msg); // error b/c trying to insert different data type to vector type ObjectState
 }
 
-void EnvironmentState::update_object(const sensor_fusion::filtered_object_msg& filtered_msg, int index) {
-  EnvironmentState::trackedObjects[index] = filtered_msg; // error from filtered_object_msg not same as ObjectState type
+void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) {
+  EnvironmentState::trackedObjects[index] = tracked_msg; // error from filtered_object_msg not same as ObjectState type
 }
 
-void EnvironmentState::track_env_state(const sensor_fusion::filtered_object_msg& filtered_msg) {
+void EnvironmentState::track_env_state(const ObjectState& tracked_msg) {
   
   for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
-    if (filtered_msg.obj_id == EnvironmentState::trackedObjects[index].get_obj_id())
-      update_object(filtered_msg, index);
+    if (tracked_msg.get_obj_id() == EnvironmentState::trackedObjects[index].get_obj_id())
+      update_object(tracked_msg, index);
   }
-  add_object(filtered_msg);
+  add_object(tracked_msg);
   
 }
 
