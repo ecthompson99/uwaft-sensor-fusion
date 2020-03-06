@@ -271,12 +271,6 @@ int main(int argc, char **argv) {
               target_info.target_vx_sigma_is_in_range =
                   bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vx_sigma_is_in_range(
                       r1_target00_b_obj.radar1_target00_vx_sigma);
-              target_info.target_ax_sigma_decoded =
-                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_ax_sigma_decode(
-                      r1_target00_b_obj.radar1_target00_ax_sigma);
-              target_info.target_ax_sigma_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_ax_sigma_is_in_range(
-                      r1_target00_b_obj.radar1_target00_ax_sigma);
               target_info.target_dy_sigma_decoded =
                   bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dy_sigma_decode(
                       r1_target00_b_obj.radar1_target00_dy_sigma);
@@ -333,11 +327,6 @@ int main(int argc, char **argv) {
               target_info.target_w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_w_exist_is_in_range(
                       r1_target01_a_obj.radar1_target01_w_exist);
-              target_info.target_ax_decode = bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_ax_decode(
-                  r1_target01_a_obj.radar1_target01_ax);
-              target_info.target_ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_ax_is_in_range(
-                      r1_target01_a_obj.radar1_target01_ax);
               target_info.target_w_obstacle_decode =
                   bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_w_obstacle_decode(
                       r1_target01_a_obj.radar1_target01_w_obstacle);
@@ -413,12 +402,6 @@ int main(int argc, char **argv) {
               target_info.target_vx_sigma_is_in_range =
                   bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vx_sigma_is_in_range(
                       r1_target01_b_obj.radar1_target01_vx_sigma);
-              target_info.target_ax_sigma_decoded =
-                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_ax_sigma_decode(
-                      r1_target01_b_obj.radar1_target01_ax_sigma);
-              target_info.target_ax_sigma_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_ax_sigma_is_in_range(
-                      r1_target01_b_obj.radar1_target01_ax_sigma);
               target_info.target_dy_sigma_decoded =
                   bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dy_sigma_decode(
                       r1_target01_b_obj.radar1_target01_dy_sigma);
@@ -475,11 +458,6 @@ int main(int argc, char **argv) {
               target_info.target_w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_w_exist_is_in_range(
                       r1_target02_a_obj.radar1_target02_w_exist);
-              target_info.target_ax_decode = bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_ax_decode(
-                  r1_target02_a_obj.radar1_target02_ax);
-              target_info.target_ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_ax_is_in_range(
-                      r1_target02_a_obj.radar1_target02_ax);
               target_info.target_w_obstacle_decode =
                   bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_w_obstacle_decode(
                       r1_target02_a_obj.radar1_target02_w_obstacle);
@@ -555,12 +533,6 @@ int main(int argc, char **argv) {
               target_info.target_vx_sigma_is_in_range =
                   bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_vx_sigma_is_in_range(
                       r1_target02_b_obj.radar1_target02_vx_sigma);
-              target_info.target_ax_sigma_decoded =
-                  bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_ax_sigma_decode(
-                      r1_target02_b_obj.radar1_target02_ax_sigma);
-              target_info.target_ax_sigma_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_ax_sigma_is_in_range(
-                      r1_target02_b_obj.radar1_target02_ax_sigma);
               target_info.target_dy_sigma_decoded =
                   bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_dy_sigma_decode(
                       r1_target02_b_obj.radar1_target02_dy_sigma);
@@ -617,11 +589,6 @@ int main(int argc, char **argv) {
               target_info.target_w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_w_exist_is_in_range(
                       r1_target03_a_obj.radar1_target03_w_exist);
-              target_info.target_ax_decode = bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_ax_decode(
-                  r1_target03_a_obj.radar1_target03_ax);
-              target_info.target_ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_ax_is_in_range(
-                      r1_target03_a_obj.radar1_target03_ax);
               target_info.target_w_obstacle_decode =
                   bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_w_obstacle_decode(
                       r1_target03_a_obj.radar1_target03_w_obstacle);
@@ -697,12 +664,7 @@ int main(int argc, char **argv) {
               target_info.target_vx_sigma_is_in_range =
                   bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_vx_sigma_is_in_range(
                       r1_target03_b_obj.radar1_target03_vx_sigma);
-              target_info.target_ax_sigma_decoded =
-                  bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_ax_sigma_decode(
-                      r1_target03_b_obj.radar1_target03_ax_sigma);
-              target_info.target_ax_sigma_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_ax_sigma_is_in_range(
-                      r1_target03_b_obj.radar1_target03_ax_sigma);
+              
               target_info.target_dy_sigma_decoded =
                   bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_dy_sigma_decode(
                       r1_target03_b_obj.radar1_target03_dy_sigma);
@@ -759,11 +721,6 @@ int main(int argc, char **argv) {
               target_info.target_w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_w_exist_is_in_range(
                       r1_target04_a_obj.radar1_target04_w_exist);
-              target_info.target_ax_decode = bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_ax_decode(
-                  r1_target04_a_obj.radar1_target04_ax);
-              target_info.target_ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_ax_is_in_range(
-                      r1_target04_a_obj.radar1_target04_ax);
               target_info.target_w_obstacle_decode =
                   bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_w_obstacle_decode(
                       r1_target04_a_obj.radar1_target04_w_obstacle);
@@ -839,12 +796,6 @@ int main(int argc, char **argv) {
               target_info.target_vx_sigma_is_in_range =
                   bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_vx_sigma_is_in_range(
                       r1_target04_b_obj.radar1_target04_vx_sigma);
-              target_info.target_ax_sigma_decoded =
-                  bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_ax_sigma_decode(
-                      r1_target04_b_obj.radar1_target04_ax_sigma);
-              target_info.target_ax_sigma_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_ax_sigma_is_in_range(
-                      r1_target04_b_obj.radar1_target04_ax_sigma);
               target_info.target_dy_sigma_decoded =
                   bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_dy_sigma_decode(
                       r1_target04_b_obj.radar1_target04_dy_sigma);
@@ -901,11 +852,6 @@ int main(int argc, char **argv) {
               target_info.target_w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_target05_a_radar1_target05_w_exist_is_in_range(
                       r1_target05_a_obj.radar1_target05_w_exist);
-              target_info.target_ax_decode = bosch_xgu_corner_radar_radar1_target05_a_radar1_target05_ax_decode(
-                  r1_target05_a_obj.radar1_target05_ax);
-              target_info.target_ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target05_a_radar1_target05_ax_is_in_range(
-                      r1_target05_a_obj.radar1_target05_ax);
               target_info.target_w_obstacle_decode =
                   bosch_xgu_corner_radar_radar1_target05_a_radar1_target05_w_obstacle_decode(
                       r1_target05_a_obj.radar1_target05_w_obstacle);
@@ -981,12 +927,6 @@ int main(int argc, char **argv) {
               target_info.target_vx_sigma_is_in_range =
                   bosch_xgu_corner_radar_radar1_target05_b_radar1_target05_vx_sigma_is_in_range(
                       r1_target05_b_obj.radar1_target05_vx_sigma);
-              target_info.target_ax_sigma_decoded =
-                  bosch_xgu_corner_radar_radar1_target05_b_radar1_target05_ax_sigma_decode(
-                      r1_target05_b_obj.radar1_target05_ax_sigma);
-              target_info.target_ax_sigma_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target05_b_radar1_target05_ax_sigma_is_in_range(
-                      r1_target05_b_obj.radar1_target05_ax_sigma);
               target_info.target_dy_sigma_decoded =
                   bosch_xgu_corner_radar_radar1_target05_b_radar1_target05_dy_sigma_decode(
                       r1_target05_b_obj.radar1_target05_dy_sigma);
@@ -1162,10 +1102,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj00_a_radar1_obj00_w_exist_is_in_range(
                       r1_obj00_a.radar1_obj00_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj00_a_radar1_obj00_ax_decode(r1_obj00_a.radar1_obj00_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj00_a_radar1_obj00_ax_is_in_range(r1_obj00_a.radar1_obj00_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj00_a_radar1_obj00_w_obstacle_decode(
                   r1_obj00_a.radar1_obj00_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1219,10 +1155,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj01_a_radar1_obj01_w_exist_is_in_range(
                       r1_obj01_a.radar1_obj01_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj01_a_radar1_obj01_ax_decode(r1_obj01_a.radar1_obj01_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj01_a_radar1_obj01_ax_is_in_range(r1_obj01_a.radar1_obj01_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj01_a_radar1_obj01_w_obstacle_decode(
                   r1_obj01_a.radar1_obj01_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1276,10 +1208,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj02_a_radar1_obj02_w_exist_is_in_range(
                       r1_obj02_a.radar1_obj02_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj02_a_radar1_obj02_ax_decode(r1_obj02_a.radar1_obj02_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj02_a_radar1_obj02_ax_is_in_range(r1_obj02_a.radar1_obj02_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj02_a_radar1_obj02_w_obstacle_decode(
                   r1_obj02_a.radar1_obj02_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1333,10 +1261,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj03_a_radar1_obj03_w_exist_is_in_range(
                       r1_obj03_a.radar1_obj03_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj03_a_radar1_obj03_ax_decode(r1_obj03_a.radar1_obj03_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj03_a_radar1_obj03_ax_is_in_range(r1_obj03_a.radar1_obj03_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj03_a_radar1_obj03_w_obstacle_decode(
                   r1_obj03_a.radar1_obj03_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1390,10 +1314,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj04_a_radar1_obj04_w_exist_is_in_range(
                       r1_obj04_a.radar1_obj04_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj04_a_radar1_obj04_ax_decode(r1_obj04_a.radar1_obj04_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj04_a_radar1_obj04_ax_is_in_range(r1_obj04_a.radar1_obj04_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj04_a_radar1_obj04_w_obstacle_decode(
                   r1_obj04_a.radar1_obj04_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1447,10 +1367,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj05_a_radar1_obj05_w_exist_is_in_range(
                       r1_obj05_a.radar1_obj05_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj05_a_radar1_obj05_ax_decode(r1_obj05_a.radar1_obj05_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj05_a_radar1_obj05_ax_is_in_range(r1_obj05_a.radar1_obj05_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj05_a_radar1_obj05_w_obstacle_decode(
                   r1_obj05_a.radar1_obj05_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1504,10 +1420,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj06_a_radar1_obj06_w_exist_is_in_range(
                       r1_obj06_a.radar1_obj06_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj06_a_radar1_obj06_ax_decode(r1_obj06_a.radar1_obj06_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj06_a_radar1_obj06_ax_is_in_range(r1_obj06_a.radar1_obj06_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj06_a_radar1_obj06_w_obstacle_decode(
                   r1_obj06_a.radar1_obj06_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1561,10 +1473,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj07_a_radar1_obj07_w_exist_is_in_range(
                       r1_obj07_a.radar1_obj07_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj07_a_radar1_obj07_ax_decode(r1_obj07_a.radar1_obj07_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj07_a_radar1_obj07_ax_is_in_range(r1_obj07_a.radar1_obj07_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj07_a_radar1_obj07_w_obstacle_decode(
                   r1_obj07_a.radar1_obj07_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1618,10 +1526,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj08_a_radar1_obj08_w_exist_is_in_range(
                       r1_obj08_a.radar1_obj08_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj08_a_radar1_obj08_ax_decode(r1_obj08_a.radar1_obj08_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj08_a_radar1_obj08_ax_is_in_range(r1_obj08_a.radar1_obj08_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj08_a_radar1_obj08_w_obstacle_decode(
                   r1_obj08_a.radar1_obj08_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1675,10 +1579,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj09_a_radar1_obj09_w_exist_is_in_range(
                       r1_obj09_a.radar1_obj09_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj09_a_radar1_obj09_ax_decode(r1_obj09_a.radar1_obj09_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj09_a_radar1_obj09_ax_is_in_range(r1_obj09_a.radar1_obj09_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj09_a_radar1_obj09_w_obstacle_decode(
                   r1_obj09_a.radar1_obj09_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1732,10 +1632,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj10_a_radar1_obj10_w_exist_is_in_range(
                       r1_obj10_a.radar1_obj10_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj10_a_radar1_obj10_ax_decode(r1_obj10_a.radar1_obj10_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj10_a_radar1_obj10_ax_is_in_range(r1_obj10_a.radar1_obj10_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj10_a_radar1_obj10_w_obstacle_decode(
                   r1_obj10_a.radar1_obj10_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1789,10 +1685,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj11_a_radar1_obj11_w_exist_is_in_range(
                       r1_obj11_a.radar1_obj11_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj11_a_radar1_obj11_ax_decode(r1_obj11_a.radar1_obj11_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj11_a_radar1_obj11_ax_is_in_range(r1_obj11_a.radar1_obj11_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj11_a_radar1_obj11_w_obstacle_decode(
                   r1_obj11_a.radar1_obj11_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1846,10 +1738,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj12_a_radar1_obj12_w_exist_is_in_range(
                       r1_obj12_a.radar1_obj12_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj12_a_radar1_obj12_ax_decode(r1_obj12_a.radar1_obj12_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj12_a_radar1_obj12_ax_is_in_range(r1_obj12_a.radar1_obj12_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj12_a_radar1_obj12_w_obstacle_decode(
                   r1_obj12_a.radar1_obj12_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
@@ -1903,10 +1791,6 @@ int main(int argc, char **argv) {
               all_object_info.w_exist_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj13_a_radar1_obj13_w_exist_is_in_range(
                       r1_obj13_a.radar1_obj13_w_exist);
-              all_object_info.ax_decoded =
-                  bosch_xgu_corner_radar_radar1_obj13_a_radar1_obj13_ax_decode(r1_obj13_a.radar1_obj13_ax);
-              all_object_info.ax_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj13_a_radar1_obj13_ax_is_in_range(r1_obj13_a.radar1_obj13_ax);
               all_object_info.w_obstacle_decoded = bosch_xgu_corner_radar_radar1_obj13_a_radar1_obj13_w_obstacle_decode(
                   r1_obj13_a.radar1_obj13_w_obstacle);
               all_object_info.w_obstacle_is_in_range =
