@@ -185,12 +185,6 @@ int main(int argc, char **argv) {
               target_info.target_dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_dy_is_in_range(
                       r1_target00_a_obj.radar1_target00_dy);
-              target_info.target_w_exist_decode =
-                  bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_w_exist_decode(
-                      r1_target00_a_obj.radar1_target00_w_exist);
-              target_info.target_w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_w_exist_is_in_range(
-                      r1_target00_a_obj.radar1_target00_w_exist);
               target_info.target_flag_valid_decode =
                   bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_flag_valid_decode(
                       r1_target00_a_obj.radar1_target00_flag_valid);
@@ -298,12 +292,6 @@ int main(int argc, char **argv) {
               target_info.target_dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_dy_is_in_range(
                       r1_target01_a_obj.radar1_target01_dy);
-              target_info.target_w_exist_decode =
-                  bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_w_exist_decode(
-                      r1_target01_a_obj.radar1_target01_w_exist);
-              target_info.target_w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_w_exist_is_in_range(
-                      r1_target01_a_obj.radar1_target01_w_exist);
               target_info.target_flag_valid_decode =
                   bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_flag_valid_decode(
                       r1_target01_a_obj.radar1_target01_flag_valid);
@@ -411,12 +399,6 @@ int main(int argc, char **argv) {
               target_info.target_dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_dy_is_in_range(
                       r1_target02_a_obj.radar1_target02_dy);
-              target_info.target_w_exist_decode =
-                  bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_w_exist_decode(
-                      r1_target02_a_obj.radar1_target02_w_exist);
-              target_info.target_w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_w_exist_is_in_range(
-                      r1_target02_a_obj.radar1_target02_w_exist);
               target_info.target_flag_valid_decode =
                   bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_flag_valid_decode(
                       r1_target02_a_obj.radar1_target02_flag_valid);
@@ -524,12 +506,6 @@ int main(int argc, char **argv) {
               target_info.target_dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_dy_is_in_range(
                       r1_target03_a_obj.radar1_target03_dy);
-              target_info.target_w_exist_decode =
-                  bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_w_exist_decode(
-                      r1_target03_a_obj.radar1_target03_w_exist);
-              target_info.target_w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_w_exist_is_in_range(
-                      r1_target03_a_obj.radar1_target03_w_exist);
               target_info.target_flag_valid_decode =
                   bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_flag_valid_decode(
                       r1_target03_a_obj.radar1_target03_flag_valid);
@@ -637,12 +613,6 @@ int main(int argc, char **argv) {
               target_info.target_dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_dy_is_in_range(
                       r1_target04_a_obj.radar1_target04_dy);
-              target_info.target_w_exist_decode =
-                  bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_w_exist_decode(
-                      r1_target04_a_obj.radar1_target04_w_exist);
-              target_info.target_w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_w_exist_is_in_range(
-                      r1_target04_a_obj.radar1_target04_w_exist);
               target_info.target_flag_valid_decode =
                   bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_flag_valid_decode(
                       r1_target04_a_obj.radar1_target04_flag_valid);
@@ -750,12 +720,6 @@ int main(int argc, char **argv) {
               target_info.target_dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_target05_a_radar1_target05_dy_is_in_range(
                       r1_target05_a_obj.radar1_target05_dy);
-              target_info.target_w_exist_decode =
-                  bosch_xgu_corner_radar_radar1_target05_a_radar1_target05_w_exist_decode(
-                      r1_target05_a_obj.radar1_target05_w_exist);
-              target_info.target_w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_target05_a_radar1_target05_w_exist_is_in_range(
-                      r1_target05_a_obj.radar1_target05_w_exist);
               target_info.target_flag_valid_decode =
                   bosch_xgu_corner_radar_radar1_target05_a_radar1_target05_flag_valid_decode(
                       r1_target05_a_obj.radar1_target05_flag_valid);
@@ -983,11 +947,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj00_a_radar1_obj00_dy_decode(r1_obj00_a.radar1_obj00_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj00_a_radar1_obj00_dy_is_in_range(r1_obj00_a.radar1_obj00_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj00_a_radar1_obj00_w_exist_decode(r1_obj00_a.radar1_obj00_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj00_a_radar1_obj00_w_exist_is_in_range(
-                      r1_obj00_a.radar1_obj00_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj00_a_radar1_obj00_flag_valid_decode(
                   r1_obj00_a.radar1_obj00_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1025,11 +984,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj01_a_radar1_obj01_dy_decode(r1_obj01_a.radar1_obj01_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj01_a_radar1_obj01_dy_is_in_range(r1_obj01_a.radar1_obj01_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj01_a_radar1_obj01_w_exist_decode(r1_obj01_a.radar1_obj01_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj01_a_radar1_obj01_w_exist_is_in_range(
-                      r1_obj01_a.radar1_obj01_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj01_a_radar1_obj01_flag_valid_decode(
                   r1_obj01_a.radar1_obj01_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1067,11 +1021,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj02_a_radar1_obj02_dy_decode(r1_obj02_a.radar1_obj02_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj02_a_radar1_obj02_dy_is_in_range(r1_obj02_a.radar1_obj02_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj02_a_radar1_obj02_w_exist_decode(r1_obj02_a.radar1_obj02_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj02_a_radar1_obj02_w_exist_is_in_range(
-                      r1_obj02_a.radar1_obj02_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj02_a_radar1_obj02_flag_valid_decode(
                   r1_obj02_a.radar1_obj02_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1109,11 +1058,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj03_a_radar1_obj03_dy_decode(r1_obj03_a.radar1_obj03_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj03_a_radar1_obj03_dy_is_in_range(r1_obj03_a.radar1_obj03_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj03_a_radar1_obj03_w_exist_decode(r1_obj03_a.radar1_obj03_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj03_a_radar1_obj03_w_exist_is_in_range(
-                      r1_obj03_a.radar1_obj03_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj03_a_radar1_obj03_flag_valid_decode(
                   r1_obj03_a.radar1_obj03_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1151,11 +1095,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj04_a_radar1_obj04_dy_decode(r1_obj04_a.radar1_obj04_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj04_a_radar1_obj04_dy_is_in_range(r1_obj04_a.radar1_obj04_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj04_a_radar1_obj04_w_exist_decode(r1_obj04_a.radar1_obj04_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj04_a_radar1_obj04_w_exist_is_in_range(
-                      r1_obj04_a.radar1_obj04_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj04_a_radar1_obj04_flag_valid_decode(
                   r1_obj04_a.radar1_obj04_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1193,11 +1132,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj05_a_radar1_obj05_dy_decode(r1_obj05_a.radar1_obj05_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj05_a_radar1_obj05_dy_is_in_range(r1_obj05_a.radar1_obj05_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj05_a_radar1_obj05_w_exist_decode(r1_obj05_a.radar1_obj05_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj05_a_radar1_obj05_w_exist_is_in_range(
-                      r1_obj05_a.radar1_obj05_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj05_a_radar1_obj05_flag_valid_decode(
                   r1_obj05_a.radar1_obj05_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1235,11 +1169,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj06_a_radar1_obj06_dy_decode(r1_obj06_a.radar1_obj06_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj06_a_radar1_obj06_dy_is_in_range(r1_obj06_a.radar1_obj06_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj06_a_radar1_obj06_w_exist_decode(r1_obj06_a.radar1_obj06_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj06_a_radar1_obj06_w_exist_is_in_range(
-                      r1_obj06_a.radar1_obj06_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj06_a_radar1_obj06_flag_valid_decode(
                   r1_obj06_a.radar1_obj06_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1277,11 +1206,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj07_a_radar1_obj07_dy_decode(r1_obj07_a.radar1_obj07_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj07_a_radar1_obj07_dy_is_in_range(r1_obj07_a.radar1_obj07_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj07_a_radar1_obj07_w_exist_decode(r1_obj07_a.radar1_obj07_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj07_a_radar1_obj07_w_exist_is_in_range(
-                      r1_obj07_a.radar1_obj07_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj07_a_radar1_obj07_flag_valid_decode(
                   r1_obj07_a.radar1_obj07_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1319,11 +1243,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj08_a_radar1_obj08_dy_decode(r1_obj08_a.radar1_obj08_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj08_a_radar1_obj08_dy_is_in_range(r1_obj08_a.radar1_obj08_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj08_a_radar1_obj08_w_exist_decode(r1_obj08_a.radar1_obj08_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj08_a_radar1_obj08_w_exist_is_in_range(
-                      r1_obj08_a.radar1_obj08_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj08_a_radar1_obj08_flag_valid_decode(
                   r1_obj08_a.radar1_obj08_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1361,11 +1280,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj09_a_radar1_obj09_dy_decode(r1_obj09_a.radar1_obj09_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj09_a_radar1_obj09_dy_is_in_range(r1_obj09_a.radar1_obj09_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj09_a_radar1_obj09_w_exist_decode(r1_obj09_a.radar1_obj09_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj09_a_radar1_obj09_w_exist_is_in_range(
-                      r1_obj09_a.radar1_obj09_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj09_a_radar1_obj09_flag_valid_decode(
                   r1_obj09_a.radar1_obj09_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1403,11 +1317,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj10_a_radar1_obj10_dy_decode(r1_obj10_a.radar1_obj10_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj10_a_radar1_obj10_dy_is_in_range(r1_obj10_a.radar1_obj10_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj10_a_radar1_obj10_w_exist_decode(r1_obj10_a.radar1_obj10_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj10_a_radar1_obj10_w_exist_is_in_range(
-                      r1_obj10_a.radar1_obj10_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj10_a_radar1_obj10_flag_valid_decode(
                   r1_obj10_a.radar1_obj10_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1445,11 +1354,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj11_a_radar1_obj11_dy_decode(r1_obj11_a.radar1_obj11_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj11_a_radar1_obj11_dy_is_in_range(r1_obj11_a.radar1_obj11_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj11_a_radar1_obj11_w_exist_decode(r1_obj11_a.radar1_obj11_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj11_a_radar1_obj11_w_exist_is_in_range(
-                      r1_obj11_a.radar1_obj11_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj11_a_radar1_obj11_flag_valid_decode(
                   r1_obj11_a.radar1_obj11_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1487,11 +1391,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj12_a_radar1_obj12_dy_decode(r1_obj12_a.radar1_obj12_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj12_a_radar1_obj12_dy_is_in_range(r1_obj12_a.radar1_obj12_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj12_a_radar1_obj12_w_exist_decode(r1_obj12_a.radar1_obj12_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj12_a_radar1_obj12_w_exist_is_in_range(
-                      r1_obj12_a.radar1_obj12_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj12_a_radar1_obj12_flag_valid_decode(
                   r1_obj12_a.radar1_obj12_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1529,11 +1428,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj13_a_radar1_obj13_dy_decode(r1_obj13_a.radar1_obj13_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj13_a_radar1_obj13_dy_is_in_range(r1_obj13_a.radar1_obj13_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj13_a_radar1_obj13_w_exist_decode(r1_obj13_a.radar1_obj13_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj13_a_radar1_obj13_w_exist_is_in_range(
-                      r1_obj13_a.radar1_obj13_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj13_a_radar1_obj13_flag_valid_decode(
                   r1_obj13_a.radar1_obj13_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1571,11 +1465,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj14_a_radar1_obj14_dy_decode(r1_obj14_a.radar1_obj14_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj14_a_radar1_obj14_dy_is_in_range(r1_obj14_a.radar1_obj14_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj14_a_radar1_obj14_w_exist_decode(r1_obj14_a.radar1_obj14_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj14_a_radar1_obj14_w_exist_is_in_range(
-                      r1_obj14_a.radar1_obj14_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj14_a_radar1_obj14_flag_valid_decode(
                   r1_obj14_a.radar1_obj14_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1613,11 +1502,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj15_a_radar1_obj15_dy_decode(r1_obj15_a.radar1_obj15_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj15_a_radar1_obj15_dy_is_in_range(r1_obj15_a.radar1_obj15_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj15_a_radar1_obj15_w_exist_decode(r1_obj15_a.radar1_obj15_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj15_a_radar1_obj15_w_exist_is_in_range(
-                      r1_obj15_a.radar1_obj15_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj15_a_radar1_obj15_flag_valid_decode(
                   r1_obj15_a.radar1_obj15_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1655,11 +1539,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj16_a_radar1_obj16_dy_decode(r1_obj16_a.radar1_obj16_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj16_a_radar1_obj16_dy_is_in_range(r1_obj16_a.radar1_obj16_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj16_a_radar1_obj16_w_exist_decode(r1_obj16_a.radar1_obj16_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj16_a_radar1_obj16_w_exist_is_in_range(
-                      r1_obj16_a.radar1_obj16_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj16_a_radar1_obj16_flag_valid_decode(
                   r1_obj16_a.radar1_obj16_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1697,11 +1576,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj17_a_radar1_obj17_dy_decode(r1_obj17_a.radar1_obj17_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj17_a_radar1_obj17_dy_is_in_range(r1_obj17_a.radar1_obj17_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj17_a_radar1_obj17_w_exist_decode(r1_obj17_a.radar1_obj17_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj17_a_radar1_obj17_w_exist_is_in_range(
-                      r1_obj17_a.radar1_obj17_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj17_a_radar1_obj17_flag_valid_decode(
                   r1_obj17_a.radar1_obj17_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1739,11 +1613,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj18_a_radar1_obj18_dy_decode(r1_obj18_a.radar1_obj18_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj18_a_radar1_obj18_dy_is_in_range(r1_obj18_a.radar1_obj18_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj18_a_radar1_obj18_w_exist_decode(r1_obj18_a.radar1_obj18_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj18_a_radar1_obj18_w_exist_is_in_range(
-                      r1_obj18_a.radar1_obj18_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj18_a_radar1_obj18_flag_valid_decode(
                   r1_obj18_a.radar1_obj18_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1781,11 +1650,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj19_a_radar1_obj19_dy_decode(r1_obj19_a.radar1_obj19_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj19_a_radar1_obj19_dy_is_in_range(r1_obj19_a.radar1_obj19_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj19_a_radar1_obj19_w_exist_decode(r1_obj19_a.radar1_obj19_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj19_a_radar1_obj19_w_exist_is_in_range(
-                      r1_obj19_a.radar1_obj19_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj19_a_radar1_obj19_flag_valid_decode(
                   r1_obj19_a.radar1_obj19_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1823,11 +1687,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj20_a_radar1_obj20_dy_decode(r1_obj20_a.radar1_obj20_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj20_a_radar1_obj20_dy_is_in_range(r1_obj20_a.radar1_obj20_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj20_a_radar1_obj20_w_exist_decode(r1_obj20_a.radar1_obj20_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj20_a_radar1_obj20_w_exist_is_in_range(
-                      r1_obj20_a.radar1_obj20_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj20_a_radar1_obj20_flag_valid_decode(
                   r1_obj20_a.radar1_obj20_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1865,11 +1724,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj21_a_radar1_obj21_dy_decode(r1_obj21_a.radar1_obj21_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj21_a_radar1_obj21_dy_is_in_range(r1_obj21_a.radar1_obj21_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj21_a_radar1_obj21_w_exist_decode(r1_obj21_a.radar1_obj21_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj21_a_radar1_obj21_w_exist_is_in_range(
-                      r1_obj21_a.radar1_obj21_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj21_a_radar1_obj21_flag_valid_decode(
                   r1_obj21_a.radar1_obj21_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1907,11 +1761,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj22_a_radar1_obj22_dy_decode(r1_obj22_a.radar1_obj22_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj22_a_radar1_obj22_dy_is_in_range(r1_obj22_a.radar1_obj22_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj22_a_radar1_obj22_w_exist_decode(r1_obj22_a.radar1_obj22_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj22_a_radar1_obj22_w_exist_is_in_range(
-                      r1_obj22_a.radar1_obj22_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj22_a_radar1_obj22_flag_valid_decode(
                   r1_obj22_a.radar1_obj22_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1949,11 +1798,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj23_a_radar1_obj23_dy_decode(r1_obj23_a.radar1_obj23_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj23_a_radar1_obj23_dy_is_in_range(r1_obj23_a.radar1_obj23_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj23_a_radar1_obj23_w_exist_decode(r1_obj23_a.radar1_obj23_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj23_a_radar1_obj23_w_exist_is_in_range(
-                      r1_obj23_a.radar1_obj23_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj23_a_radar1_obj23_flag_valid_decode(
                   r1_obj23_a.radar1_obj23_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -1991,11 +1835,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj24_a_radar1_obj24_dy_decode(r1_obj24_a.radar1_obj24_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj24_a_radar1_obj24_dy_is_in_range(r1_obj24_a.radar1_obj24_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj24_a_radar1_obj24_w_exist_decode(r1_obj24_a.radar1_obj24_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj24_a_radar1_obj24_w_exist_is_in_range(
-                      r1_obj24_a.radar1_obj24_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj24_a_radar1_obj24_flag_valid_decode(
                   r1_obj24_a.radar1_obj24_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -2033,11 +1872,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj25_a_radar1_obj25_dy_decode(r1_obj25_a.radar1_obj25_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj25_a_radar1_obj25_dy_is_in_range(r1_obj25_a.radar1_obj25_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj25_a_radar1_obj25_w_exist_decode(r1_obj25_a.radar1_obj25_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj25_a_radar1_obj25_w_exist_is_in_range(
-                      r1_obj25_a.radar1_obj25_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj25_a_radar1_obj25_flag_valid_decode(
                   r1_obj25_a.radar1_obj25_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -2075,11 +1909,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj26_a_radar1_obj26_dy_decode(r1_obj26_a.radar1_obj26_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj26_a_radar1_obj26_dy_is_in_range(r1_obj26_a.radar1_obj26_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj26_a_radar1_obj26_w_exist_decode(r1_obj26_a.radar1_obj26_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj26_a_radar1_obj26_w_exist_is_in_range(
-                      r1_obj26_a.radar1_obj26_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj26_a_radar1_obj26_flag_valid_decode(
                   r1_obj26_a.radar1_obj26_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -2117,11 +1946,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj27_a_radar1_obj27_dy_decode(r1_obj27_a.radar1_obj27_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj27_a_radar1_obj27_dy_is_in_range(r1_obj27_a.radar1_obj27_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj27_a_radar1_obj27_w_exist_decode(r1_obj27_a.radar1_obj27_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj27_a_radar1_obj27_w_exist_is_in_range(
-                      r1_obj27_a.radar1_obj27_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj27_a_radar1_obj27_flag_valid_decode(
                   r1_obj27_a.radar1_obj27_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -2159,11 +1983,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj28_a_radar1_obj28_dy_decode(r1_obj28_a.radar1_obj28_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj28_a_radar1_obj28_dy_is_in_range(r1_obj28_a.radar1_obj28_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj28_a_radar1_obj28_w_exist_decode(r1_obj28_a.radar1_obj28_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj28_a_radar1_obj28_w_exist_is_in_range(
-                      r1_obj28_a.radar1_obj28_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj28_a_radar1_obj28_flag_valid_decode(
                   r1_obj28_a.radar1_obj28_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -2201,11 +2020,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj29_a_radar1_obj29_dy_decode(r1_obj29_a.radar1_obj29_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj29_a_radar1_obj29_dy_is_in_range(r1_obj29_a.radar1_obj29_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj29_a_radar1_obj29_w_exist_decode(r1_obj29_a.radar1_obj29_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj29_a_radar1_obj29_w_exist_is_in_range(
-                      r1_obj29_a.radar1_obj29_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj29_a_radar1_obj29_flag_valid_decode(
                   r1_obj29_a.radar1_obj29_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -2243,11 +2057,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj30_a_radar1_obj30_dy_decode(r1_obj30_a.radar1_obj30_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj30_a_radar1_obj30_dy_is_in_range(r1_obj30_a.radar1_obj30_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj30_a_radar1_obj30_w_exist_decode(r1_obj30_a.radar1_obj30_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj30_a_radar1_obj30_w_exist_is_in_range(
-                      r1_obj30_a.radar1_obj30_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj30_a_radar1_obj30_flag_valid_decode(
                   r1_obj30_a.radar1_obj30_flag_valid);
               all_object_info.flag_valid_is_in_range =
@@ -2285,11 +2094,6 @@ int main(int argc, char **argv) {
                   bosch_xgu_corner_radar_radar1_obj31_a_radar1_obj31_dy_decode(r1_obj31_a.radar1_obj31_dy);
               all_object_info.dy_is_in_range =
                   bosch_xgu_corner_radar_radar1_obj31_a_radar1_obj31_dy_is_in_range(r1_obj31_a.radar1_obj31_dy);
-              all_object_info.w_exist_decoded =
-                  bosch_xgu_corner_radar_radar1_obj31_a_radar1_obj31_w_exist_decode(r1_obj31_a.radar1_obj31_w_exist);
-              all_object_info.w_exist_is_in_range =
-                  bosch_xgu_corner_radar_radar1_obj31_a_radar1_obj31_w_exist_is_in_range(
-                      r1_obj31_a.radar1_obj31_w_exist);
               all_object_info.flag_valid_decoded = bosch_xgu_corner_radar_radar1_obj31_a_radar1_obj31_flag_valid_decode(
                   r1_obj31_a.radar1_obj31_flag_valid);
               all_object_info.flag_valid_is_in_range =
