@@ -13,6 +13,7 @@ static const uint8_t MESSAGE_BUFFER_SIZE = 10;
 class EnvironmentState {
  public:
   std::vector<ObjectState> trackedObjects;
+  ObjectState targetObjects[3] = {};
   
   EnvironmentState(ros::NodeHandle* env_state_node_handle);
   virtual ~EnvironmentState();
@@ -24,6 +25,7 @@ class EnvironmentState {
   void update_object(const ObjectState& tracked_msg, int index);
   void check_timestamp(const ObjectState& tracked_msg);
   void update_env_state(const ObjectState& tracked_msg); 
+  void find_target_objects();
 
 
   private:

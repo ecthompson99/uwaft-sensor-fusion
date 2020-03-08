@@ -1,5 +1,6 @@
 #include "env_state.h"
 // #include "string.h"
+#define TIMESTAMP_TOL 10000 // tolerance used to determine outdated tracks
 
 using namespace std;
 
@@ -20,6 +21,9 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
     tracked_msg.copy_info(filtered_msg); // copy constructor
     check_timestamp(tracked_msg); // removes outdated state vector
     update_env_state(tracked_msg); // update id of objects in state vector
+
+    // fill target object array
+    find_target_objects();
 
     // // TODO:
     // object_output_msg.obj_id = 1;
@@ -57,7 +61,7 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) 
 void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
   
   for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
-    if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp())>10000){
+    if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp())>TIMESTAMP_TOL){
       // removes tracked object from state vectors
       EnvironmentState::trackedObjects.erase(trackedObjects.begin() + index-1);
     }  
@@ -72,7 +76,10 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
       update_object(tracked_msg, index);
   }
   // if object has not been tracked, add the object to state vector
-  add_object(tracked_msg);
+  add_object(tracked_msg); 
+}
+
+void EnvironmentState::find_target_objects(){
   
 }
 
