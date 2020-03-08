@@ -22,6 +22,7 @@ class ObjectState {
   bool obj_path; // 1:object in path 2:object not in path
   double obj_vy; // lateral velocity
   double obj_timestamp; //time last object detection
+  uint8_t obj_count; // count used for obj association
 };
 
 #endif  // __OBJECT_STATE_H__
