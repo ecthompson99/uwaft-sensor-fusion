@@ -14,7 +14,22 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
 
 EnvironmentState::~EnvironmentState() {}
 
-void EnvironmentState::publish_object_output() { object_output_pub.publish(object_output_msg); }
+void EnvironmentState::publish_object_output() {
+  for (int index = 0; index < 3; index++) {
+    object_output_msg.obj_id = targetObjects[index].get_obj_id();
+    object_output_msg.obj_dx = targetObjects[index].get_obj_dx();
+    object_output_msg.obj_lane = targetObjects[index].get_obj_lane();
+    object_output_msg.obj_vx = targetObjects[index].get_obj_vx();
+    object_output_msg.obj_dy = targetObjects[index].get_obj_dy();
+    object_output_msg.obj_ax = targetObjects[index].get_obj_ax();
+    object_output_msg.obj_path = targetObjects[index].get_obj_path();
+    object_output_msg.obj_vy = targetObjects[index].get_obj_vy();
+    object_output_msg.obj_timestamp = targetObjects[index].get_obj_timestamp();
+    object_output_msg.object_track_num = targetObjects[index].get_obj_lane()+1;
+
+    object_output_pub.publish(object_output_msg);
+  }
+}
 
 void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg) {
     ObjectState tracked_msg;
