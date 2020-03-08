@@ -51,11 +51,11 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
 sensor_fusion::object_output_msg EnvironmentState::get_object_output_msg() { return object_output_msg; }
 
 void EnvironmentState::add_object(const ObjectState& tracked_msg) {
-  EnvironmentState::trackedObjects.push_back(tracked_msg); // error b/c trying to insert different data type to vector type ObjectState
+  EnvironmentState::trackedObjects.push_back(tracked_msg); 
 }
 
 void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) {
-  EnvironmentState::trackedObjects[index] = tracked_msg; // error from filtered_object_msg not same as ObjectState type
+  EnvironmentState::trackedObjects[index] = tracked_msg;
 }
 
 void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
