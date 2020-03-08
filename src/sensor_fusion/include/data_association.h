@@ -3,6 +3,8 @@
 
 #include "ros/ros.h"
 #include "sensor_fusion/raw_sensor_object_data_msg.h"  // sub
+#include "object_state.h"
+
 
 static const uint8_t MESSAGE_BUFFER_SIZE = 10;
 
@@ -15,11 +17,11 @@ class DataAssociation {
   ros::NodeHandle* node_handle;
   ros::Subscriber sensor_data_obj_sub;
   ros::Publisher sensor_data_obj_pub;
-  std::vector<int> potential_objs; // should be vector of objects
+  std::vector<ObjectState> potential_objs; // should be vector of objects
 
   const std::string KALMAN_FILTER_TOPIC = "kalman_filter";
   const std::string SENSOR_DATA_TOPIC = "raw_sensor_object_data";
-
+  const int TOL = 5;
   void sensor_data_obj_callback(const sensor_fusion::raw_sensor_object_data_msg& sensor_data);
 };
 
