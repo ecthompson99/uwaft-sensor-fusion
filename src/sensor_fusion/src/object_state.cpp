@@ -5,6 +5,7 @@ ObjectState::ObjectState(){}
 ObjectState::~ObjectState() {}
 
 uint8_t ObjectState::get_obj_id() const { return obj_id;}
+uint8_t ObjectState::get_obj_timestamp() const {return obj_timestamp};
 
 void ObjectState::copy_info(const sensor_fusion::filtered_object_msg& filtered_msg) {
     // cout << "Copy constructor allocating ptr." << endl;

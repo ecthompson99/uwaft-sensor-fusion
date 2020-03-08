@@ -17,8 +17,9 @@ void EnvironmentState::publish_object_output() { object_output_pub.publish(objec
 
 void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg) {
     ObjectState tracked_msg;
-    tracked_msg.copy_info(filtered_msg);
-    track_env_state(tracked_msg);
+    tracked_msg.copy_info(filtered_msg); // copy constructor
+    check_timestamp(tracked_msg); // removes outdated state vector
+    update_env_state(tracked_msg); // update id of objects in state vector
 
     // // TODO:
     // object_output_msg.obj_id = 1;
@@ -53,7 +54,16 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) 
   EnvironmentState::trackedObjects[index] = tracked_msg; // error from filtered_object_msg not same as ObjectState type
 }
 
-void EnvironmentState::track_env_state(const ObjectState& tracked_msg) {
+void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
+  
+  for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
+    if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp())>10000){
+      // removes tracked object from state vectors
+      trackedObjects.erase(index);
+    }  
+}
+
+void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
   
   for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
     // if object is found in the state vector (has been tracked), update it's ID
@@ -62,6 +72,9 @@ void EnvironmentState::track_env_state(const ObjectState& tracked_msg) {
   }
   // if object has not been tracked, add the object to state vector
   add_object(tracked_msg);
+  
+}
+
   
 }
 
