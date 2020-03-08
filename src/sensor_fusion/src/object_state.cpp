@@ -1,5 +1,5 @@
 #include "object_state.h"
-#include "string.h"
+// #include "string.h"
 
 uint8_t ObjectState::get_obj_id() const { return obj_id;}
 

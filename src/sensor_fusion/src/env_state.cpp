@@ -1,5 +1,5 @@
 #include "env_state.h"
-#include "string.h"
+// #include "string.h"
 
 using namespace std;
 
@@ -20,24 +20,24 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
     tracked_msg.copy_info(filtered_msg);
     track_env_state(tracked_msg);
 
-    // TODO:
-    object_output_msg.obj_id = 1;
-    object_output_msg.obj_dx = 2.2;
-    object_output_msg.obj_lane = 1;
-    object_output_msg.obj_vx = 3.3;
-    object_output_msg.obj_dy = 5.6;
-    object_output_msg.obj_ax = 12.4;
-    object_output_msg.obj_path = 1;
-    object_output_msg.obj_vy = 16.7;
+    // // TODO:
+    // object_output_msg.obj_id = 1;
+    // object_output_msg.obj_dx = 2.2;
+    // object_output_msg.obj_lane = 1;
+    // object_output_msg.obj_vx = 3.3;
+    // object_output_msg.obj_dy = 5.6;
+    // object_output_msg.obj_ax = 12.4;
+    // object_output_msg.obj_path = 1;
+    // object_output_msg.obj_vy = 16.7;
     
-    cout  << "obj_id: "<< object_output_msg.obj_id << "\n"
-                    << "obj_dx " << object_output_msg.obj_dx << "\n"
-                    << "obj_lane " << object_output_msg.obj_lane << "\n"
-                    << "obj_vx " << object_output_msg.obj_vx << "\n"
-                    << "obj_dy" << object_output_msg.obj_dy << "\n"
-                    << "obj_ax " << object_output_msg.obj_ax << "\n"
-                    << "obj_path " << object_output_msg.obj_path << "\n"
-                    << "obj_vy" << object_output_msg.obj_vy << "\n";
+    // cout  << "obj_id: "<< object_output_msg.obj_id << "\n"
+    //                 << "obj_dx " << object_output_msg.obj_dx << "\n"
+    //                 << "obj_lane " << object_output_msg.obj_lane << "\n"
+    //                 << "obj_vx " << object_output_msg.obj_vx << "\n"
+    //                 << "obj_dy" << object_output_msg.obj_dy << "\n"
+    //                 << "obj_ax " << object_output_msg.obj_ax << "\n"
+    //                 << "obj_path " << object_output_msg.obj_path << "\n"
+    //                 << "obj_vy" << object_output_msg.obj_vy << "\n";
 
 
 }
@@ -56,9 +56,11 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) 
 void EnvironmentState::track_env_state(const ObjectState& tracked_msg) {
   
   for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
+    // if object is found in the state vector (has been tracked), update it's ID
     if (tracked_msg.get_obj_id() == EnvironmentState::trackedObjects[index].get_obj_id())
       update_object(tracked_msg, index);
   }
+  // if object has not been tracked, add the object to state vector
   add_object(tracked_msg);
   
 }

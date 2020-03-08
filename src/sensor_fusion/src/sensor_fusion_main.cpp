@@ -1,5 +1,6 @@
 #include "ros/ros.h"
 #include "env_state.h"
+#include "string.h"
 
 int main(int argc, char** argv) {
 
