@@ -24,7 +24,7 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
 
     // fill target object array
     find_target_objects();
-
+    
     // // TODO:
     // object_output_msg.obj_id = 1;
     // object_output_msg.obj_dx = 2.2;
@@ -60,7 +60,7 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) 
 
 void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
   
-  for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
+for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
     if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp())>TIMESTAMP_TOL){
       // removes tracked object from state vectors
       EnvironmentState::trackedObjects.erase(trackedObjects.begin() + index-1);
@@ -80,7 +80,13 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
 }
 
 void EnvironmentState::find_target_objects(){
-  
+    
+    int lane = tracked_msg.get_obj_lane();
+    if ((tracked_msg.get_obj_dx() < targetObjects[lane].get_obj_dx()) ||
+         ((tracked_msg.get_obj_dx() > targetObjects[lane].get_obj_dx()) && 
+         (tracked_msg.get_obj_id() == targetObjects[lane].get_obj_id()))){
+      targetObjects[lane] = tracked_msg;
+    }
 }
 
   
