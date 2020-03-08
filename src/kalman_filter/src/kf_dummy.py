@@ -10,17 +10,18 @@ def main():
 
 	dummy_objects = [filtered_object_msg() for i in range(3)]
 	for i in range(3):
-		dummy_objects[0].obj_id = i+1
+		dummy_objects[i].obj_id = i+1
 
-	for i in range(10):
+	for i in range(100):
 		for a in dummy_objects:
-			a.obj_dx = i
-			a.obj_lane = i
-			a.obj_vx = i
-			a.obj_dy = i
-			a.obj_ax = i
+			offset = a.obj_id
+			a.obj_dx = i + offset
+			a.obj_lane = i + offset
+			a.obj_vx = i + offset
+			a.obj_dy = i + offset
+			a.obj_ax = i + offset
 			a.obj_in_lane = i%2 == 0
-			a.obj_vy = i
+			a.obj_vy = i + offset
 			sender.publish(a)
 			time.sleep(.01)
 		time.sleep(.5)
