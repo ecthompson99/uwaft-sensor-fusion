@@ -22,3 +22,8 @@ void ObjectState::copy_info(const sensor_fusion::filtered_object_msg& filtered_m
     obj_vy = filtered_msg.obj_vy;
     obj_timestamp = filtered_msg.obj_timestamp;
 }
+
+// TODO:
+// distinguish 3 tracked objects from vector of 32 objects
+// check timestamps, lane of 3 objects
+// publish 3 target vehicle objects to CAN topic
