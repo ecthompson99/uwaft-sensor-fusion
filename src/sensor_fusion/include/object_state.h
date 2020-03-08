@@ -22,11 +22,11 @@ class ObjectState {
  private:
   uint8_t obj_id; // object ID
   double obj_dx; // longitudinal range
-  uint8_t obj_lane; // lane assignment
+  uint8_t obj_lane; // lane assignment: 0-ego, 1-left, 2-right
   double obj_vx; // relaive longitudinal velocity
   double obj_dy; // lateral range
   double obj_ax; // relative longitudinal accel
-  bool obj_path; // 1:object in path 2:object not in path
+  bool obj_path; // 1:object in vehicle path 2:object not in path
   double obj_vy; // lateral velocity
   double obj_timestamp; //time last object detection
   uint8_t obj_count; // count used for obj association
