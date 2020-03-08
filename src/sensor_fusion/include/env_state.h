@@ -21,7 +21,6 @@ class EnvironmentState {
   sensor_fusion::object_output_msg get_object_output_msg();
 
   void add_object(const ObjectState& tracked_msg);
-  void remove_object(int index);
   void update_object(const ObjectState& tracked_msg, int index);
   void check_timestamp(const ObjectState& tracked_msg);
   void update_env_state(const ObjectState& tracked_msg); 

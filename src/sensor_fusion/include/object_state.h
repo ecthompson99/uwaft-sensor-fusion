@@ -9,6 +9,7 @@ class ObjectState {
   ObjectState();
   virtual ~ObjectState();
   uint8_t get_obj_id() const;
+  uint8_t get_obj_timestamp() const;
   void copy_info(const sensor_fusion::filtered_object_msg& filtered_msg);
 
  private:
