@@ -13,7 +13,7 @@ static const uint8_t MESSAGE_BUFFER_SIZE = 10;
 class EnvironmentState {
  public:
   std::vector<ObjectState> trackedObjects;
-  sensor_fusion::object_output_msg targetObjects[3] = {};
+  ObjectState targetObjects[3] = {};
   
   EnvironmentState(ros::NodeHandle* env_state_node_handle);
   virtual ~EnvironmentState();
