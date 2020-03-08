@@ -11,7 +11,7 @@ class ObjectState {
   uint8_t get_obj_id() const;
   uint8_t get_obj_timestamp() const;
   uint8_t get_obj_lane() const;
-  uint8_t get_obj_dx() const
+  uint8_t get_obj_dx() const;
   void copy_info(const sensor_fusion::filtered_object_msg& filtered_msg);
 
  private:

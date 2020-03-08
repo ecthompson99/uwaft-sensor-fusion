@@ -21,9 +21,8 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
     tracked_msg.copy_info(filtered_msg); // copy constructor
     check_timestamp(tracked_msg); // removes outdated state vector
     update_env_state(tracked_msg); // update id of objects in state vector
+    find_target_objects(tracked_msg);     // fill array with target objects
 
-    // fill target object array
-    find_target_objects();
     
     // // TODO:
     // object_output_msg.obj_id = 1;
@@ -78,8 +77,7 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
   // if object has not been tracked, add the object to state vector
   add_object(tracked_msg); 
 }
-
-void EnvironmentState::find_target_objects(){
+void EnvironmentState::find_target_objects(const ObjectState& tracked_msg){
     
     int lane = tracked_msg.get_obj_lane();
     if ((tracked_msg.get_obj_dx() < targetObjects[lane].get_obj_dx()) ||

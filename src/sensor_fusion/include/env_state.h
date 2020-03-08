@@ -25,7 +25,7 @@ class EnvironmentState {
   void update_object(const ObjectState& tracked_msg, int index);
   void check_timestamp(const ObjectState& tracked_msg);
   void update_env_state(const ObjectState& tracked_msg); 
-  void find_target_objects();
+  void find_target_objects(const ObjectState& tracked_msg);
 
 
   private:
