@@ -61,6 +61,7 @@ void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
       // removes tracked object from state vectors
       EnvironmentState::trackedObjects.erase(index);
     }  
+  }
 }
 
 void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
