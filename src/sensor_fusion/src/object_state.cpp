@@ -5,9 +5,14 @@ ObjectState::ObjectState(){}
 ObjectState::~ObjectState() {}
 
 uint8_t ObjectState::get_obj_id() const { return obj_id; }
+double ObjectState::get_obj_dx() const { return obj_dx; }
 uint8_t ObjectState::get_obj_timestamp() const { return obj_timestamp; }
 uint8_t ObjectState::get_obj_lane() const { return obj_lane; }
-uint8_t ObjectState::get_obj_dx() const { return obj_dx; }
+double ObjectState::get_obj_vx() const {return obj_vx;}
+double ObjectState::get_obj_dy() const {return obj_dy;}
+double ObjectState::get_obj_ax() const {return obj_ax;}
+bool ObjectState::get_obj_path() const {return obj_path;}
+double ObjectState::get_obj_vy() const {return obj_vy;}
 
 void ObjectState::copy_info(const sensor_fusion::filtered_object_msg& filtered_msg) {
     // cout << "Copy constructor allocating ptr." << endl;
