@@ -55,7 +55,7 @@ void EnvironmentState::add_object(const ObjectState& tracked_msg) {
 }
 
 void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) {
-  EnvironmentState::trackedObjects[index] = tracked_msg;
+  EnvironmentState::trackedObjects[index] = tracked_msg; 
 }
 
 void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
