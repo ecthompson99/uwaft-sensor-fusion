@@ -59,7 +59,7 @@ void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
   for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
     if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp())>10000){
       // removes tracked object from state vectors
-      EnvironmentState::trackedObjects.erase(index);
+      EnvironmentState::trackedObjects.erase(trackedObjects.begin() + index-1);
     }  
   }
 }
