@@ -5,7 +5,7 @@
 using namespace std;
 
 EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_node_handle(node_handle) {
-  filtered_object_sub = env_state_node_handle->subscribe("filtered_object", MESSAGE_BUFFER_SIZE,
+  filtered_object_sub = env_state_node_handle->subscribe("kf_dummy_data", MESSAGE_BUFFER_SIZE,
                                                             &EnvironmentState::filtered_object_callback, this);
 
   object_output_pub = env_state_node_handle->advertise<sensor_fusion::object_output_msg>("object_output",
@@ -27,37 +27,25 @@ void EnvironmentState::publish_object_output() {
     object_output_msg.obj_timestamp = targetObjects[index].get_obj_timestamp();
     object_output_msg.object_track_num = targetObjects[index].get_obj_lane()+1;
 
+    
     object_output_pub.publish(object_output_msg);
   }
 }
 
 void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg) {
+    //printf("Testing with printf....\n");
+    //ROS_INFO_STREAM("Testing with ros info stream....\n");
+
+    printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
+    filtered_msg.obj_id, filtered_msg.obj_dx, filtered_msg.obj_lane, 
+    filtered_msg.obj_vx, filtered_msg.obj_dy, filtered_msg.obj_ax, 
+    filtered_msg.obj_path, filtered_msg.obj_vy, filtered_msg.obj_timestamp);
+
     ObjectState tracked_msg;
     tracked_msg.copy_info(filtered_msg); // copy constructor
     check_timestamp(tracked_msg); // removes outdated state vector
     update_env_state(tracked_msg); // update id of objects in state vector
     find_target_objects(tracked_msg);     // fill array with target objects
-
-    
-    // // TODO:
-    // object_output_msg.obj_id = 1;
-    // object_output_msg.obj_dx = 2.2;
-    // object_output_msg.obj_lane = 1;
-    // object_output_msg.obj_vx = 3.3;
-    // object_output_msg.obj_dy = 5.6;
-    // object_output_msg.obj_ax = 12.4;
-    // object_output_msg.obj_path = 1;
-    // object_output_msg.obj_vy = 16.7;
-    
-    // cout  << "obj_id: "<< object_output_msg.obj_id << "\n"
-    //                 << "obj_dx " << object_output_msg.obj_dx << "\n"
-    //                 << "obj_lane " << object_output_msg.obj_lane << "\n"
-    //                 << "obj_vx " << object_output_msg.obj_vx << "\n"
-    //                 << "obj_dy" << object_output_msg.obj_dy << "\n"
-    //                 << "obj_ax " << object_output_msg.obj_ax << "\n"
-    //                 << "obj_path " << object_output_msg.obj_path << "\n"
-    //                 << "obj_vy" << object_output_msg.obj_vy << "\n";
-
 
 }
 
