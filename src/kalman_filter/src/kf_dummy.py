@@ -18,7 +18,7 @@ def main():
 			for a in dummy_objects:
 				offset = a.obj_id
 				a.obj_dx = i + offset
-				a.obj_lane = i + offset
+				a.obj_lane = offset - 1
 				a.obj_vx = i + offset
 				a.obj_dy = i + offset
 				a.obj_ax = i + offset

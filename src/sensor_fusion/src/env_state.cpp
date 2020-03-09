@@ -25,8 +25,12 @@ void EnvironmentState::publish_object_output() {
     object_output_msg.obj_path = targetObjects[index].get_obj_path();
     object_output_msg.obj_vy = targetObjects[index].get_obj_vy();
     object_output_msg.obj_timestamp = targetObjects[index].get_obj_timestamp();
-    object_output_msg.object_track_num = targetObjects[index].get_obj_lane()+1;
+    object_output_msg.object_track_num = targetObjects[index].get_obj_lane();
 
+    printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
+    object_output_msg.obj_id, object_output_msg.obj_dx, object_output_msg.obj_lane, 
+    object_output_msg.obj_vx, object_output_msg.obj_dy, object_output_msg.obj_ax, 
+    object_output_msg.obj_path, object_output_msg.obj_vy, object_output_msg.obj_timestamp);
     
     object_output_pub.publish(object_output_msg);
   }
@@ -36,10 +40,10 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
     //printf("Testing with printf....\n");
     //ROS_INFO_STREAM("Testing with ros info stream....\n");
 
-    printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
-    filtered_msg.obj_id, filtered_msg.obj_dx, filtered_msg.obj_lane, 
-    filtered_msg.obj_vx, filtered_msg.obj_dy, filtered_msg.obj_ax, 
-    filtered_msg.obj_path, filtered_msg.obj_vy, filtered_msg.obj_timestamp);
+    // printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
+    // filtered_msg.obj_id, filtered_msg.obj_dx, filtered_msg.obj_lane, 
+    // filtered_msg.obj_vx, filtered_msg.obj_dy, filtered_msg.obj_ax, 
+    // filtered_msg.obj_path, filtered_msg.obj_vy, filtered_msg.obj_timestamp);
 
     ObjectState tracked_msg;
     tracked_msg.copy_info(filtered_msg); // copy constructor
@@ -62,7 +66,7 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) 
 
 void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
   
-for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
+  for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
     if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp())>TIMESTAMP_TOL){
       // removes tracked object from state vectors
       EnvironmentState::trackedObjects.erase(trackedObjects.begin() + index-1);

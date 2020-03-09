@@ -15,10 +15,6 @@ bool ObjectState::get_obj_path() const {return obj_path;}
 double ObjectState::get_obj_vy() const {return obj_vy;}
 
 void ObjectState::copy_info(const sensor_fusion::filtered_object_msg& filtered_msg) {
-    // cout << "Copy constructor allocating ptr." << endl;
-    // ptr = new int;
-    // *ptr = *filtered_msg.ptr;
-    
     
     obj_id = filtered_msg.obj_id;
     obj_dx = filtered_msg.obj_dx;
