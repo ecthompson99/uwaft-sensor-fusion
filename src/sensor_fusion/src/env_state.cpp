@@ -27,10 +27,11 @@ void EnvironmentState::publish_object_output() {
     object_output_msg.obj_timestamp = targetObjects[index].get_obj_timestamp();
     object_output_msg.object_track_num = targetObjects[index].get_obj_lane();
 
-    printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
+    printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
     object_output_msg.obj_id, object_output_msg.obj_dx, object_output_msg.obj_lane, 
     object_output_msg.obj_vx, object_output_msg.obj_dy, object_output_msg.obj_ax, 
-    object_output_msg.obj_path, object_output_msg.obj_vy, object_output_msg.obj_timestamp);
+    object_output_msg.obj_path, object_output_msg.obj_vy, object_output_msg.obj_timestamp, 
+    object_output_msg.object_track_num);
     
     object_output_pub.publish(object_output_msg);
   }
