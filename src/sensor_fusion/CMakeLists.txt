@@ -243,7 +243,7 @@ if (CATKIN_ENABLE_TESTING)
     catkin_add_gtest(
         ${PROJECT_NAME}-test
         test/test_sensor_fusion.cpp
-        src/sensor_fusion.cpp
+        src/sensor_fusion_main.cpp
     )
     if(TARGET ${PROJECT_NAME}-test)
         target_link_libraries(

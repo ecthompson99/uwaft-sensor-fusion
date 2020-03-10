@@ -13,6 +13,10 @@ class DataAssociation {
   DataAssociation(ros::NodeHandle* node_handle);
   void delete_potential_objects();
 
+  friend class ObjectState;
+  
+  std::vector<int> toRemove;   //builds up a vector of indicies to be removed because removing random indicies while iterating  a second time will skip
+
  private:
   ros::NodeHandle* node_handle;
   ros::Subscriber sensor_data_obj_sub;
@@ -23,6 +27,8 @@ class DataAssociation {
   const std::string SENSOR_DATA_TOPIC = "raw_sensor_object_data";
   const int TOL = 5;
   void sensor_data_obj_callback(const sensor_fusion::raw_sensor_object_data_msg& sensor_data);
+  bool objects_match(ObjectState obj, ObjectState sensor_data);  //both of type confirmedObjsContainer - post-conversion
+
 };
 
 #endif  // __DATA_ASSOCIATION_H__

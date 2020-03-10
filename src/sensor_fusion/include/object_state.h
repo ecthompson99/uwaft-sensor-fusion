@@ -3,6 +3,9 @@
 #include "ros/ros.h"
 class ObjectState {
  public:
+
+  ObjectState(){}
+
   ObjectState(double dx, double vx, double dy, double vy, double timestamp) {
       dx = dx;
       vx = vx;
@@ -12,8 +15,10 @@ class ObjectState {
       count = 0;
   }
 
+  friend class DataAssociation;
+
   virtual ~ObjectState();
- private:
+ 
   int count;
   uint8_t id; // object ID
   double dx; // longitudinal range
