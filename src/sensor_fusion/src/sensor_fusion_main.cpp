@@ -12,15 +12,15 @@ int main(int argc, char** argv) {
     while (ros::ok()){ 
         data_assc.delete_potential_objects();
 
-        // mock mobileye pub
-        // sensor_fusion::mobileye_object_data me_data;
+        mock mobileye pub
+        sensor_fusion::mobileye_object_data me_data;
 
-        // me_data.me_dx = (rand()%10) + 1;
-        // me_data.me_dy = (rand()%10) + 1;
-        // me_data.me_vx = (rand()%10) + 1;
-        // me_data.me_timestamp = std::time(nullptr);
+        me_data.me_dx = (rand()%100) + 1;
+        me_data.me_dy = (rand()%100) + 1;
+        me_data.me_vx = (rand()%10) + 1;
+        me_data.me_timestamp = std::time(nullptr);
 
-        // data_assc.mock_me_pub.publish(me_data);
+        data_assc.mock_me_pub.publish(me_data);
 
         
         // mock radar pub

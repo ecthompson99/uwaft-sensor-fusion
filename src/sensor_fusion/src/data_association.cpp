@@ -48,10 +48,7 @@ ObjectState convert_radar_data(const sensor_fusion::radar_object_data& recvd_dat
 }
 
 ObjectState convert_mobile_eye(const sensor_fusion::mobileye_object_data& recvd_data) {
-    //me_vy = someCalc;   //how will we do this?
-    // maybe diff objectState constructor without a vy param?
-    double me_vy = 1.0;
-
+    double me_vy = 0.0;
     return ObjectState(recvd_data.me_dx, recvd_data.me_vx, recvd_data.me_dy, me_vy, recvd_data.me_timestamp);
 
 }
@@ -109,6 +106,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
 
             // potential_objs[i].count += 1;
             int oldCount = potential_objs[i].count;
+
             potential_objs[i] = sensor_data;
             potential_objs[i].count = oldCount + 1;
 
@@ -154,7 +152,13 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
 
     for (int i = 0; i < potential_objs.size(); i++) {  
         if (objects_match(potential_objs[i], sensor_data)) {    //won't consider this possibility if already matched for that sensor_data
-            potential_objs[i].count += 1;
+            int oldCount = potential_objs[i].count;
+            int oldVy = potential_objs[i].vy;
+
+            potential_objs[i] = sensor_data;
+            
+            potential_objs[i].vy = oldVy;
+            potential_objs[i].count = oldCount + 1;
 
             if (potential_objs[i].count > 5) {
                 publish_object_to_kf(sensor_data);  //do we have to break once we publish?
