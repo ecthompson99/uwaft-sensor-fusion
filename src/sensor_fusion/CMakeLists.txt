@@ -68,9 +68,11 @@ find_package(
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   raw_sensor_object_data_msg.msg
-	sensor_diagnostic_flag_msg.msg
-	fused_object_data_msg.msg
+    raw_sensor_object_data_msg.msg
+    sensor_diagnostic_flag_msg.msg
+    fused_object_data_msg.msg
+    radar_object_data.msg
+    mobileye_object_data.msg
 )
 
 ## Generate services in the 'srv' folder

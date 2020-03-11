@@ -17,7 +17,7 @@ class ObjectState {
 
   friend class DataAssociation;
 
-  virtual ~ObjectState();
+  // virtual ~ObjectState();
  
   int count;
   uint8_t id; // object ID
