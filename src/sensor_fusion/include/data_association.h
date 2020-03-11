@@ -6,6 +6,7 @@
 #include "sensor_fusion/mobileye_object_data.h"
 #include "sensor_fusion/radar_object_data.h"
 #include "sensor_fusion/sensor_diagnostic_flag_msg.h"
+#include "sensor_fusion/fused_object_data_msg.h"
 #include "object_state.h"
 
 
@@ -40,6 +41,8 @@ class DataAssociation {
   void sensor_diagnostics_callback(const sensor_fusion::sensor_diagnostic_flag_msg& sensor_diag);
 
   bool objects_match(ObjectState obj, ObjectState sensor_data);  //both of type confirmedObjsContainer - post-conversion
+
+  void publish_object_to_kf(ObjectState sensor_data);
 
 };
 
