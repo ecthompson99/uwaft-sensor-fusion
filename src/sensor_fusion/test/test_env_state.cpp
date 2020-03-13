@@ -112,7 +112,10 @@ TEST(AddObject, validLogic) {
 }
 
 TEST(UpdateObject, validLogic) {
+  ros::NodeHandle env_state_node_handle;
+  EnvironmentState env_state_test(&env_state_node_handle);
 
+  std::vector<ObjectState> trackedObjects;
 }
 // 
 TEST(CheckTimestamp, validLogic){}
