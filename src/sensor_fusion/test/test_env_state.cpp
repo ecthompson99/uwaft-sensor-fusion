@@ -109,6 +109,7 @@ TEST(CheckTimestamp, validLogic){
 }
 TEST(UpdateEnvState, validLogic){}
 TEST(FindTargetObjects, validLogic){}
+<<<<<<< HEAD
 TEST(FiltObjCallback, validCallback) {
 //TO DO
 }
@@ -194,6 +195,8 @@ TEST(UpdateEnvState, validLogic) {
 TEST(FindTargetObjects, validLogic) {
 //TO DO
 }
+=======
+>>>>>>> 69e83a59d6e35b73a09f14cabb82e079e3a48c61
 
 bool object_output_cb_called = false;
 void test_output_obj_cb(const sensor_fusion::object_output_msg& object_output_msg){object_output_cb_called = true;}
