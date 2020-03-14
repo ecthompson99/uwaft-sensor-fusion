@@ -25,8 +25,6 @@ class DataAssociation {
 
 	friend class ObjectState;
 
-	std::vector<int> toRemove;   //builds up a vector of indicies to be removed because removing random indicies while iterating  a second time will skip
-
 	private:
 	ros::NodeHandle* node_handle;
 

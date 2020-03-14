@@ -20,7 +20,7 @@ bool oldObject(ObjectState obj) {
     const int secondsToDelete = 5;
 
     // epoch seconds
-    if ((double)std::time(nullptr) - obj.timestamp > secondsToDelete) {
+    if ((double)std::time(nullptr) - obj.timestamp > secondsToDelete) { // works because we swap entire object including timestamp when match
         std::cout << "DELETED OBJ CUZ TOO OLD" << std::endl;
     }
     
@@ -111,7 +111,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
             potential_objs[i].count = oldCount + 1;
 
             if (potential_objs[i].count > 5) {
-                publish_object_to_kf(sensor_data);  //do we have to break once we publish?
+                publish_object_to_kf(sensor_data);  //break once we publish
                 potential_objs.erase (potential_objs.begin()+i);
                 std::cout << "DELETED OBJ CUZ COUNT > 5" << std::endl;
             }
