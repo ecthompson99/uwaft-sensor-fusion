@@ -79,6 +79,7 @@ find_package(
 #   FILES
 #   Service1.srv
 #   Service2.srv
+    env_state_srv.srv
 # )
 
 ## Generate actions in the 'action' folder

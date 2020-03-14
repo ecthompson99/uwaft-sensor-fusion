@@ -3,6 +3,7 @@
 
 #include "ros/ros.h"
 #include "object_state.h"
+#include "sensor_fusion/env_state_srv.h"
 
 #include "sensor_fusion/mobileye_object_data.h"
 #include "sensor_fusion/radar_object_data.h"
@@ -12,10 +13,13 @@
 
 static const uint8_t MESSAGE_BUFFER_SIZE = 10;
 
+
 class DataAssociation {
 	public:
 	DataAssociation(ros::NodeHandle* node_handle);
 	void delete_potential_objects();
+
+    ros::ServiceClient client;
 
 	ros::Publisher mock_me_pub;
 	const std::string MOBILEYE_TOPIC = "mobileye_topic";
