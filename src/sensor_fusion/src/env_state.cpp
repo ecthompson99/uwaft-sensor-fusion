@@ -30,14 +30,14 @@ void EnvironmentState::publish_object_output() {
     // object_output_msg.obj_timestamp = targetObjects[index].get_obj_timestamp();
     // object_output_msg.object_track_num = targetObjects[index].get_obj_lane();
 
-    printf("Target Object %d \n", index);
-    printf("%d, %f, %d, %f, %f, %f, %d, %f, %d \n",
-    targetObjects[index].get_obj_id(), targetObjects[index].get_obj_dx(), targetObjects[index].get_obj_lane(), 
-    targetObjects[index].get_obj_vx(), targetObjects[index].get_obj_dy(), targetObjects[index].get_obj_ax(), 
-    targetObjects[index].get_obj_path(), targetObjects[index].get_obj_vy(), targetObjects[index].get_obj_timestamp());
+    // printf("Target Object %d \n", index);
+    // printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
+    // targetObjects[index].get_obj_id(), targetObjects[index].get_obj_dx(), targetObjects[index].get_obj_lane(), 
+    // targetObjects[index].get_obj_vx(), targetObjects[index].get_obj_dy(), targetObjects[index].get_obj_ax(), 
+    // targetObjects[index].get_obj_path(), targetObjects[index].get_obj_vy(), targetObjects[index].get_obj_timestamp());
 
     // printf("Object Output Msg\n");
-    // printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
+    // printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %f \n",
     // object_output_msg.obj_id, object_output_msg.obj_dx, object_output_msg.obj_lane, 
     // object_output_msg.obj_vx, object_output_msg.obj_dy, object_output_msg.obj_ax, 
     // object_output_msg.obj_path, object_output_msg.obj_vy, object_output_msg.obj_timestamp, 
@@ -48,18 +48,17 @@ void EnvironmentState::publish_object_output() {
 }
 
 void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg) {
-    // printf("Testing with printf....\n");
-    // ROS_INFO_STREAM("Testing with ros info stream....\n");
     // printf("Filtered Message:\n");
-    // printf("%d, %f, %d, %f, %f, %f, %d, %f, %d \n",
+    // printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
     // filtered_msg.obj_id, filtered_msg.obj_dx, filtered_msg.obj_lane, 
     // filtered_msg.obj_vx, filtered_msg.obj_dy, filtered_msg.obj_ax, 
     // filtered_msg.obj_path, filtered_msg.obj_vy, filtered_msg.obj_timestamp);
 
     ObjectState tracked_msg;
     tracked_msg.copy_info(filtered_msg); // copy constructor
+
     // printf("Tracked Message:\n");
-    // printf("%d, %f, %d, %f, %f, %f, %d, %f, %d \n",
+    // printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
     // tracked_msg.get_obj_id(), tracked_msg.get_obj_dx(), tracked_msg.get_obj_lane(), 
     // tracked_msg.get_obj_vx(), tracked_msg.get_obj_dy(), tracked_msg.get_obj_ax(), 
     // tracked_msg.get_obj_path(), tracked_msg.get_obj_vy(), tracked_msg.get_obj_timestamp());
