@@ -30,6 +30,7 @@ find_package(
 	roscpp
 	std_msgs
 	message_generation
+    sensor_fusion
 )
 
 ## System dependencies are found with CMake's conventions
@@ -75,12 +76,10 @@ find_package(
 )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
+ add_service_files(
+    FILES
     env_state_srv.srv
-# )
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(

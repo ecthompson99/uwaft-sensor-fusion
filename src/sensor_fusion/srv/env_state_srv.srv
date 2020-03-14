@@ -1,2 +1,2 @@
 
-vector<ObjectState> env_state_vec_from_container
+uint8 env_state_vec_from_container
