@@ -1,4 +1,4 @@
-#include <gtest/gtesh.h>
+#include <gtest/gtest.h>
 #include "env_state.h"
 
 TEST(FiltObjCallback, validLogic){
@@ -96,19 +96,19 @@ TEST(FiltObjCallback, validCallback){
 
 }
 
-TEST(AddObject, validLogic){}
-TEST(UpdateObject, validLogic){}
-TEST(CheckTimestamp, validLogic){
-  sensor_fusion::filtered_object_msg filtered_msg;
-  filtered_msg.obj_timestamp = 
-  sensor_fusion::object_output_msg object_output_expected;
+// TEST(AddObject, validLogic){}
+// TEST(UpdateObject, validLogic){}
+// TEST(CheckTimestamp, validLogic){
+//   // sensor_fusion::filtered_object_msg filtered_msg;
+//   // filtered_msg.obj_timestamp = 
+//   // sensor_fusion::object_output_msg object_output_expected;
 
 
 
 
-}
-TEST(UpdateEnvState, validLogic){}
-TEST(FindTargetObjects, validLogic){}
+// }
+// TEST(UpdateEnvState, validLogic){}
+// TEST(FindTargetObjects, validLogic){}
 
 bool object_output_cb_called = false;
 void test_output_obj_cb(const sensor_fusion::object_output_msg& object_output_msg){object_output_cb_called = true;}
