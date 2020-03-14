@@ -96,24 +96,6 @@ TEST(FiltObjCallback, validCallback){
 
 }
 
-TEST(AddObject, validLogic){}
-TEST(UpdateObject, validLogic){}
-TEST(CheckTimestamp, validLogic){
-  sensor_fusion::filtered_object_msg filtered_msg;
-  filtered_msg.obj_timestamp = 
-  sensor_fusion::object_output_msg object_output_expected;
-
-
-
-
-}
-TEST(UpdateEnvState, validLogic){}
-TEST(FindTargetObjects, validLogic){}
-<<<<<<< HEAD
-TEST(FiltObjCallback, validCallback) {
-//TO DO
-}
-
 TEST(AddObject, validLogic) {
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
@@ -177,26 +159,19 @@ TEST(AddObject, validLogic) {
   ASSERT_EQ(EnvironmentState::trackedObjects[1].obj_id, 6)
 }
 
-TEST(UpdateObject, validLogic) {
-  ros::NodeHandle env_state_node_handle;
-  EnvironmentState env_state_test(&env_state_node_handle);
+TEST(UpdateObject, validLogic){}
+TEST(CheckTimestamp, validLogic){
+  sensor_fusion::filtered_object_msg filtered_msg;
+  filtered_msg.obj_timestamp = 
+  sensor_fusion::object_output_msg object_output_expected;
 
-  std::vector<ObjectState> trackedObjects;
-}
 
-TEST(CheckTimestamp, validLogic) {
-//TO DO
-}
 
-TEST(UpdateEnvState, validLogic) {
-//TO DO
-}
 
-TEST(FindTargetObjects, validLogic) {
-//TO DO
 }
-=======
->>>>>>> 69e83a59d6e35b73a09f14cabb82e079e3a48c61
+TEST(UpdateEnvState, validLogic){}
+TEST(FindTargetObjects, validLogic){}
+
 
 bool object_output_cb_called = false;
 void test_output_obj_cb(const sensor_fusion::object_output_msg& object_output_msg){object_output_cb_called = true;}
