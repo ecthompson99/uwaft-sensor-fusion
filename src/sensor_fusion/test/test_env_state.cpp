@@ -46,7 +46,6 @@ TEST(FiltObjCallback, validLogic){
 
 }
 
-<<<<<<< HEAD
 TEST(FiltObjCallback, validCallback){
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
@@ -110,7 +109,6 @@ TEST(CheckTimestamp, validLogic){
 }
 TEST(UpdateEnvState, validLogic){}
 TEST(FindTargetObjects, validLogic){}
-=======
 TEST(FiltObjCallback, validCallback) {
 //TO DO
 }
@@ -196,7 +194,6 @@ TEST(UpdateEnvState, validLogic) {
 TEST(FindTargetObjects, validLogic) {
 //TO DO
 }
->>>>>>> 0a9d7542384cc50c392600b10e99f10e76ec5b36
 
 bool object_output_cb_called = false;
 void test_output_obj_cb(const sensor_fusion::object_output_msg& object_output_msg){object_output_cb_called = true;}
