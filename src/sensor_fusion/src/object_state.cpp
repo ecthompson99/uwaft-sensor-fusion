@@ -27,6 +27,20 @@ void ObjectState::copy_info(const sensor_fusion::filtered_object_msg& filtered_m
     obj_timestamp = filtered_msg.obj_timestamp;
 }
 
+void ObjectState::set_constructor(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
+    double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp){
+    
+    obj_id = set_obj_id;
+    obj_dx = set_obj_dx;
+    obj_lane = set_obj_lane;
+    obj_vx = set_obj_vx;
+    obj_dy = set_obj_dy;
+    obj_ax = set_obj_ax;
+    obj_path = set_obj_path;
+    obj_vy = set_obj_vy;
+    obj_timestamp = set_obj_timestamp;
+}
+
 // TODO:
 // distinguish 3 tracked objects from vector of 32 objects
 // check timestamps, lane of 3 objects

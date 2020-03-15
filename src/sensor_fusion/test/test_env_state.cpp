@@ -47,123 +47,63 @@ TEST(FiltObjCallback, validCallback){}
 TEST(AddObject, validLogic) {
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
+  
+  //void set_constructor(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane,
+  //double set_obj_vx, double set_obj_dy, double set_obj_ax, bool set_obj_path, 
+  //double set_obj_vy, double set_obj_timestamp){
 
-  ObjectState new_object_1;
-  new_object_1.obj_id = 4;
-  new_object_1.obj_dx = 10;
-  new_object_1.obj_dy = 15;
-  new_object_1.obj_lane = 1;
-  new_object_1.obj_vx = 4;
-  new_object_1.obj_vy = 6;
-  new_object_1.obj_path = 0;
-  new_object_1.obj_ax = 12;
-  new_object_1.obj_timestamp = 100;
+  ObjectState new_object_1, new_object_2, new_object_3;
 
-  ObjectState new_object_2;
-  new_object_1.obj_id = 5;
-  new_object_1.obj_dx = 15;
-  new_object_1.obj_dy = 6;
-  new_object_1.obj_lane = 2;
-  new_object_1.obj_vx = 43;
-  new_object_1.obj_vy = 64;
-  new_object_1.obj_path = 1;
-  new_object_1.obj_ax = 15;
-  new_object_1.obj_timestamp = 200;
-
-  ObjectState new_object_3;
-  new_object_1.obj_id = 6;
-  new_object_1.obj_dx = 40;
-  new_object_1.obj_dy = 45;
-  new_object_1.obj_lane = 3;
-  new_object_1.obj_vx = 29;
-  new_object_1.obj_vy = 26;
-  new_object_1.obj_path = 0;
-  new_object_1.obj_ax = 21;
-  new_object_1.obj_timestamp = 300;
+  new_object_1.set_constructor(4, 10, 1, 4, 15, 12, 0, 6, 100);
+  new_object_2.set_constructor(5, 15, 2, 43, 6, 15, 1, 64, 200);
+  new_object_3.set_constructor(6, 40, 3, 29, 45, 21, 0, 26, 300);
 
   std::vector<ObjectState> trackedObjects;
+  
   ObjectState tracked_object_1;
-  tracked_object_1.obj_id = 1;
-  tracked_object_1.obj_dx = 12;
-  tracked_object_1.obj_lane = 2;
-  tracked_object_1.obj_vx = 23;
-  tracked_object_1.obj_dy = 46;
-  tracked_object_1.obj_ax = 45;
-  tracked_object_1.obj_path = 1;
-  tracked_object_1.obj_vy = 67;
-  tracked_object_1.obj_timestamp = 134;
+  tracked_object_1.set_constructor(1, 12, 2, 23, 46, 45, 1, 67, 134);
 
-  EnvironmentState::trackedObjects.push_back(tracked_object_1);
+  trackedObjects.push_back(tracked_object_1);
 
-  ASSERT_EQ(EnvironmentState::trackedObjects.size() = 1);
+  ASSERT_EQ(trackedObjects.size(), 1);
   EnvironmentState::env_state_test.add_object(new_object_1);
-  ASSERT_EQ(EnvironmentState::trackedObjects.size(), 2);
-  ASSERT_EQ(EnvironmentState::trackedObjects[1].obj_id, 4)
-  EnvironmentState::env_state_test.add_object(new_object_2);
-  ASSERT_EQ(EnvironmentState::trackedObjects.size(), 3);
-  ASSERT_EQ(EnvironmentState::trackedObjects[1].obj_id, 5)
-  EnvironmentState::env_state_test.add_object(new_object_3);
-  ASSERT_EQ(EnvironmentState::trackedObjects.size(), 4);
-  ASSERT_EQ(EnvironmentState::trackedObjects[1].obj_id, 6)
+  ASSERT_EQ(trackedObjects.size(), 2);
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 4)
+  trackedObjects.add_object(new_object_2);
+  ASSERT_EQ(trackedObjects.size(), 3);
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 5)
+  trackedObjects.add_object(new_object_3);
+  ASSERT_EQ(trackedObjects.size(), 4);
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 6)
 }
 
 TEST(UpdateObject, validLogic) {
-ros::NodeHandle env_state_node_handle;
+  ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
 
-  ObjectState new_object_1;
-  new_object_1.obj_id = 4;
-  new_object_1.obj_dx = 10;
-  new_object_1.obj_dy = 15;
-  new_object_1.obj_lane = 1;
-  new_object_1.obj_vx = 4;
-  new_object_1.obj_vy = 6;
-  new_object_1.obj_path = 0;
-  new_object_1.obj_ax = 12;
-  new_object_1.obj_timestamp = 100;
+  //void set_constructor(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane,
+  //double set_obj_vx, double set_obj_dy, double set_obj_ax, bool set_obj_path, 
+  //double set_obj_vy, double set_obj_timestamp){
 
-  ObjectState new_object_2;
-  new_object_1.obj_id = 5;
-  new_object_1.obj_dx = 15;
-  new_object_1.obj_dy = 6;
-  new_object_1.obj_lane = 2;
-  new_object_1.obj_vx = 43;
-  new_object_1.obj_vy = 64;
-  new_object_1.obj_path = 1;
-  new_object_1.obj_ax = 15;
-  new_object_1.obj_timestamp = 200;
+  ObjectState new_object_1, new_object_2;
+  
+  new_object_1.set_constructor(4, 10, 1, 4, 15, 12, 0, 6, 100);
+  new_object_2.set_constructor(5, 15, 2, 43, 6, 15, 1, 64, 200);
 
   std::vector<ObjectState> trackedObjects;
-  ObjectState tracked_object_1;
-  tracked_object_1.obj_id = 1;
-  tracked_object_1.obj_dx = 12;
-  tracked_object_1.obj_lane = 2;
-  tracked_object_1.obj_vx = 23;
-  tracked_object_1.obj_dy = 46;
-  tracked_object_1.obj_ax = 45;
-  tracked_object_1.obj_path = 1;
-  tracked_object_1.obj_vy = 67;
-  tracked_object_1.obj_timestamp = 134;
+  
+  ObjectState tracked_object_1, tracked_object_2;
+  tracked_object_1.set_constructor(1, 12, 2, 23, 46, 45, 1, 67, 134);
+  tracked_object_2.set_constructor(6, 40, 3, 29, 45, 21, 0, 26, 300);
 
-  ObjectState tracked_object_2;
-  tracked_object_2.obj_id = 6;
-  tracked_object_2.obj_dx = 40;
-  tracked_object_2.obj_dy = 45;
-  tracked_object_2.obj_lane = 3;
-  tracked_object_2.obj_vx = 29;
-  tracked_object_2.obj_vy = 26;
-  tracked_object_2.obj_path = 0;
-  tracked_object_2.obj_ax = 21;
-  tracked_object_2.obj_timestamp = 300;
+  trackedObjects.push_back(tracked_object_1);
+  trackedObjects.push_back(tracked_object_2);
 
-  EnvironmentState::trackedObjects.push_back(tracked_object_1);
-  EnvironmentState::trackedObjects.push_back(tracked_object_2);
-
-  ASSERT_EQ(EnvironmentState::trackedObjects.size(), 2);
-  EnvironmentState::env_state_test.update_object(new_object_1, 0);
-  ASSERT_EQ(EnvironmentState::trackedObjects[0].obj_id, 4)
-  EnvironmentState::env_state_test.update_object(new_object_2, 1);
-  ASSERT_EQ(EnvironmentState::trackedObjects[1].obj_id, 5)
+  ASSERT_EQ(trackedObjects.size(), 2);
+  trackedObjects.update_object(new_object_1, 0);
+  ASSERT_EQ(trackedObjects[0].get_obj_id(), 4)
+  trackedObjects.update_object(new_object_2, 1);
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 5)
 }
 
 TEST(CheckTimestamp, validLogic){}

@@ -27,7 +27,7 @@ class EnvironmentState {
   void update_env_state(const ObjectState& tracked_msg); 
   void find_target_objects(const ObjectState& tracked_msg);
 
-  bool env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &request, sensor_fusion::env_state_srv::Response &response);
+  //bool env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &request, sensor_fusion::env_state_srv::Response &response);
 
   private:
   ros::NodeHandle* env_state_node_handle;
