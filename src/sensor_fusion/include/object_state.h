@@ -7,6 +7,8 @@
 class ObjectState {
  public:
   ObjectState();
+  ObjectState(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
+    double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp);
   virtual ~ObjectState();
   uint8_t get_obj_id() const;
   double get_obj_dx() const;
@@ -18,8 +20,6 @@ class ObjectState {
   double get_obj_vy() const;
   double get_obj_timestamp() const;
   void copy_info(const sensor_fusion::filtered_object_msg& filtered_msg);
-  void set_constructor(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
-    double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp);
   
  private:
   uint8_t obj_id; // object ID
