@@ -52,27 +52,24 @@ TEST(AddObject, validLogic) {
   //double set_obj_vx, double set_obj_dy, double set_obj_ax, bool set_obj_path, 
   //double set_obj_vy, double set_obj_timestamp){
 
-  ObjectState new_object_1, new_object_2, new_object_3;
-
-  new_object_1.set_constructor(4, 10, 1, 4, 15, 12, 0, 6, 100);
-  new_object_2.set_constructor(5, 15, 2, 43, 6, 15, 1, 64, 200);
-  new_object_3.set_constructor(6, 40, 0, 29, 45, 21, 0, 26, 300);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 100);
+  ObjectState new_object_2(5, 15, 2, 43, 6, 15, 1, 64, 200);
+  ObjectState new_object_3(6, 40, 3, 29, 45, 21, 0, 26, 300);
 
   std::vector<ObjectState> trackedObjects;
   
-  ObjectState tracked_object_1;
-  tracked_object_1.set_constructor(1, 12, 2, 23, 46, 45, 1, 67, 134);
+  ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 134);
 
   trackedObjects.push_back(tracked_object_1);
 
   ASSERT_EQ(trackedObjects.size(), 1);
-  env_state_test.add_object(new_object_1);
+  EnvironmentState::env_state_test.add_object(new_object_1);
   ASSERT_EQ(trackedObjects.size(), 2);
   ASSERT_EQ(trackedObjects[1].get_obj_id(), 4)
-  env_state_test.add_object(new_object_2);
+  trackedObjects.add_object(new_object_2);
   ASSERT_EQ(trackedObjects.size(), 3);
   ASSERT_EQ(trackedObjects[1].get_obj_id(), 5)
-  env_state_test.add_object(new_object_3);
+  trackedObjects.add_object(new_object_3);
   ASSERT_EQ(trackedObjects.size(), 4);
   ASSERT_EQ(trackedObjects[1].get_obj_id(), 6)
 }
@@ -85,16 +82,13 @@ TEST(UpdateObject, validLogic) {
   //double set_obj_vx, double set_obj_dy, double set_obj_ax, bool set_obj_path, 
   //double set_obj_vy, double set_obj_timestamp){
 
-  ObjectState new_object_1, new_object_2;
-  
-  new_object_1.set_constructor(4, 10, 1, 4, 15, 12, 0, 6, 100);
-  new_object_2.set_constructor(5, 15, 2, 43, 6, 15, 1, 64, 200);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 100);
+  ObjectState new_object_2(5, 15, 2, 43, 6, 15, 1, 64, 200);
 
   std::vector<ObjectState> trackedObjects;
   
-  ObjectState tracked_object_1, tracked_object_2;
-  tracked_object_1.set_constructor(1, 12, 2, 23, 46, 45, 1, 67, 134);
-  tracked_object_2.set_constructor(6, 40, 0, 29, 45, 21, 0, 26, 300);
+  ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 134);
+  ObjectState tracked_object_2(6, 40, 3, 29, 45, 21, 0, 26, 300);
 
   trackedObjects.push_back(tracked_object_1);
   trackedObjects.push_back(tracked_object_2);
@@ -115,18 +109,15 @@ TEST(CheckTimestamp, validLogic){
   //void set_constructor(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane,
   //double set_obj_vx, double set_obj_dy, double set_obj_ax, bool set_obj_path, 
   //double set_obj_vy, double set_obj_timestamp){
-
-  ObjectState new_object_1, new_object_2;
   
-  new_object_1.set_constructor(4, 10, 1, 4, 15, 12, 0, 6, 4000);
-  new_object_2.set_constructor(3, 56, 2, 3, 56, 14, 1, 67, 50000);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 4000);
+  ObjectState new_object_2(3, 56, 2, 3, 56, 14, 1, 67, 50000);
 
   std::vector<ObjectState> trackedObjects;
   
-  ObjectState tracked_object_1, tracked_object_2, tracked_object_3;
-  tracked_object_1.set_constructor(1, 12, 2, 23, 46, 45, 1, 67, 134);
-  tracked_object_2.set_constructor(6, 40, 0, 29, 45, 21, 0, 26, 1500);
-  tracked_object_2.set_constructor(5, 10, 1, 27, 34, 87, 1, 90, 3000);
+  ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 134);
+  ObjectState tracked_object_2(6, 40, 0, 29, 45, 21, 0, 26, 1500);
+  ObjectState tracked_object_2(5, 10, 1, 27, 34, 87, 1, 90, 3000);
 
   ASSERT_EQ(trackedObjects.size(), 0);
   env_state_test.push_back(tracked_object_1);
@@ -150,21 +141,18 @@ TEST(CheckTimestamp, validLogic){
 TEST(UpdateEnvState, validLogic){}
 
 TEST(FindTargetObjects, validLogic){
-ros::NodeHandle env_state_node_handle;
+  ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
-
-  ObjectState new_object_1, new_object_2, new_object_3;
   
-  new_object_1.set_constructor(4, 10, 1, 4, 15, 12, 0, 6, 100);
-  new_object_2.set_constructor(5, 15, 2, 43, 6, 15, 1, 64, 200);
-  new_object_3.set_constructor(1, 24, 0, 67, 3, 623, 1, 45, 1200);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 100);
+  ObjectState new_object_2(5, 15, 2, 43, 6, 15, 1, 64, 200);
+  ObjectState new_object_3(1, 24, 0, 67, 3, 623, 1, 45, 1200);
 
   std::vector<ObjectState> trackedObjects;
   
-  ObjectState tracked_object_1, tracked_object_2, tracked_object_3;
-  tracked_object_3.set_constructor(7, 89, 1, 29, 45, 21, 0, 26, 300);
-  tracked_object_1.set_constructor(5, 11, 2, 23, 46, 45, 1, 67, 134);
-  tracked_object_2.set_constructor(6, 12, 0, 78, 45, 21, 0, 26, 300);
+  ObjectState tracked_object_3(7, 89, 1, 29, 45, 21, 0, 26, 300);
+  ObjectState tracked_object_1(5, 11, 2, 23, 46, 45, 1, 67, 134);
+  ObjectState tracked_object_2(6, 12, 0, 78, 45, 21, 0, 26, 300);
 
   env_state_test.push_back(tracked_object_1);
   env_state_test.push_back(tracked_object_2);
