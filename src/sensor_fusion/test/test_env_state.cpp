@@ -65,13 +65,13 @@ TEST(AddObject, validLogic) {
   ASSERT_EQ(trackedObjects.size(), 1);
   EnvironmentState::env_state_test.add_object(new_object_1);
   ASSERT_EQ(trackedObjects.size(), 2);
-  ASSERT_EQ(trackedObjects[1].get_obj_id(), 4)
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 4);
   trackedObjects.add_object(new_object_2);
   ASSERT_EQ(trackedObjects.size(), 3);
-  ASSERT_EQ(trackedObjects[1].get_obj_id(), 5)
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 5);
   trackedObjects.add_object(new_object_3);
   ASSERT_EQ(trackedObjects.size(), 4);
-  ASSERT_EQ(trackedObjects[1].get_obj_id(), 6)
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 6);
 }
 
 TEST(UpdateObject, validLogic) {
@@ -92,14 +92,14 @@ TEST(UpdateObject, validLogic) {
 
   trackedObjects.push_back(tracked_object_1);
   trackedObjects.push_back(tracked_object_2);
-  ASSERT_EQ(trackedObjects[0].get_obj_id(), 1)
-  ASSERT_EQ(trackedObjects[1].get_obj_id(), 6)
+  ASSERT_EQ(trackedObjects[0].get_obj_id(), 1);
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 6);
 
   ASSERT_EQ(trackedObjects.size(), 2);
   env_state_test.update_object(new_object_1, 0);
-  ASSERT_EQ(trackedObjects[0].get_obj_id(), 4)
+  ASSERT_EQ(trackedObjects[0].get_obj_id(), 4);
   env_state_test.update_object(new_object_2, 1);
-  ASSERT_EQ(trackedObjects[1].get_obj_id(), 5)
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 5);
 }
 
 TEST(CheckTimestamp, validLogic){
@@ -120,16 +120,16 @@ TEST(CheckTimestamp, validLogic){
   ObjectState tracked_object_2(5, 10, 1, 27, 34, 87, 1, 90, 3000);
 
   ASSERT_EQ(trackedObjects.size(), 0);
-  env_state_test.push_back(tracked_object_1);
+  trackedObjects.push_back(tracked_object_1);
   ASSERT_EQ(trackedObjects.size(), 1);
-  env_state_test.push_back(tracked_object_2);
+  trackedObjects.push_back(tracked_object_2);
   ASSERT_EQ(trackedObjects.size(), 2);
-  env_state_test.push_back(tracked_object_3);
+  trackedObjects.push_back(tracked_object_3);
   ASSERT_EQ(trackedObjects.size(), 3);
 
-  ASSERT_EQ(trackedObjects[0].get_obj_id(), 1)
-  ASSERT_EQ(trackedObjects[1].get_obj_id(), 6)
-  ASSERT_EQ(trackedObjects[2].get_obj_id(), 5)
+  ASSERT_EQ(trackedObjects[0].get_obj_id(), 1);
+  ASSERT_EQ(trackedObjects[1].get_obj_id(), 6);
+  ASSERT_EQ(trackedObjects[2].get_obj_id(), 5);
 
   env_state_test.check_timestamp(new_object_1);
   ASSERT_EQ(trackedObjects.size(), 3);
