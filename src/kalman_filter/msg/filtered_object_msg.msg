@@ -6,6 +6,6 @@ uint8 obj_lane
 float64 obj_vx
 float64 obj_dy
 float64 obj_ax
-bool obj_in_lane
+bool obj_path
 float64 obj_vy
 float64 obj_timestamp
