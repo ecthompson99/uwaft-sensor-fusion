@@ -11,7 +11,7 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
   object_output_pub = env_state_node_handle->advertise<sensor_fusion::object_output_msg>("object_output",
                                                                                              MESSAGE_BUFFER_SIZE);
 
-  //my_service = env_state_node_handle->advertiseService("srv_env_state_topic", env_state_vector_service_callback);     
+  my_service = env_state_node_handle->advertiseService("srv_env_state_topic", &EnvironmentState::env_state_vector_service_callback, this);     
 
 }
 
@@ -110,10 +110,13 @@ void EnvironmentState::find_target_objects(const ObjectState& tracked_msg){
     }
 }
 
+
 // service callback
-// bool env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &request, sensor_fusion::env_state_srv::Response &response){
-//   response.env_state_vec_from_container = trackedObjects;
-// }
+bool EnvironmentState::env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res){
+  // int i = 0;
+  // res.temp[i] = 5;
+  return true;
+}
 
 
 
