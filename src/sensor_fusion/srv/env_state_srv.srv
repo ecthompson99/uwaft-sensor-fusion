@@ -1,2 +1,7 @@
 
-uint8 env_state_vec_from_container
+
+geometry_msgs/vectorvector<int> env_state_vec_from_container
+
+---
+
+std::vector<int> env_state_vec_from_container

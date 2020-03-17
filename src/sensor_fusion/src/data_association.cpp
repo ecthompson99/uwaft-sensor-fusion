@@ -4,7 +4,7 @@
 
 DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(node_handle) {
     
-    client = node_handle.serviceClient<sensor_fusion::env_state_srv>("srv_env_state_topic");
+    client = node_handle->serviceClient<sensor_fusion::env_state_srv>("srv_env_state_topic");
     
     sensor_diag_sub = node_handle->subscribe(SENSOR_DIAG_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_diagnostics_callback, this);
     
@@ -92,10 +92,14 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
     ObjectState sensor_data = convert_radar_data(recvd_data);
 
     //get environment state with service
-    sensor_fusion::env_state_srv service_call;
+    
+    sensor_fusion::env_state_srv service_call;    //service object
+    
     if (client.call(service_call)){     //returns true if the service call went through, false is error
         
-        std::vector<ObjectState> envState = service_call.response.env_state_vec_from_container;
+        std::vector<int> envState = service_call.response.env_state_vec_from_container;
+
+        // std::vector<int> envState = service_call.response.env_state_vec_from_container;
 
         // if the object we received is already in the envState, send it to kf
         for (auto obj : envState) {

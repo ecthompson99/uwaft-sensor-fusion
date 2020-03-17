@@ -30,7 +30,6 @@ find_package(
 	roscpp
 	std_msgs
 	message_generation
-    sensor_fusion
 )
 
 ## System dependencies are found with CMake's conventions
