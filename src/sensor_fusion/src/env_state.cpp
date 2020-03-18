@@ -113,8 +113,8 @@ void EnvironmentState::find_target_objects(const ObjectState& tracked_msg){
 
 // service callback
 bool EnvironmentState::env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res){
-  // int i = 0;
-  // res.temp[i] = 5;
+  //res.classObj = 3;
+  
   return true;
 }
 
