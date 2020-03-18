@@ -19,8 +19,6 @@ class DataAssociation {
 	DataAssociation(ros::NodeHandle* node_handle);
 	void delete_potential_objects();
 
-    ros::ServiceClient client;
-
 	ros::Publisher mock_me_pub;
 	const std::string MOBILEYE_TOPIC = "mobileye_topic";
 
@@ -31,6 +29,8 @@ class DataAssociation {
 
 	private:
 	ros::NodeHandle* node_handle;
+
+    ros::ServiceClient client;
 
 	ros::Publisher sensor_data_obj_pub;
 

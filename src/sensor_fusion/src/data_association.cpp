@@ -97,17 +97,17 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
     
     if (client.call(service_call)){     //returns true if the service call went through, false is error
         
-        std::vector<int> envState = service_call.response.env_state_vec_from_container;
+        std::vector<double> envState = service_call.response.env_state_vec_from_container;
 
         // std::vector<int> envState = service_call.response.env_state_vec_from_container;
 
-        // if the object we received is already in the envState, send it to kf
-        for (auto obj : envState) {
-            if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
-                publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
-                return;
-            }
-        } 
+        //if the object we received is already in the envState, send it to kf
+        // for (auto obj : envState) {
+        //     if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
+        //         publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
+        //         return;
+        //     }
+        // }
     }
 
    

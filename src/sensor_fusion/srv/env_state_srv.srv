@@ -1,7 +1,3 @@
-
-
-geometry_msgs/vectorvector<int> env_state_vec_from_container
-
+float64[] rand
 ---
-
-std::vector<int> env_state_vec_from_container
+float64[] env_state_vec_from_container
