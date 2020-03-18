@@ -72,12 +72,14 @@ find_package(
     fused_object_data_msg.msg
     radar_object_data.msg
     mobileye_object_data.msg
+    dummy_msg.msg
 )
 
 ## Generate services in the 'srv' folder
  add_service_files(
     FILES
     env_state_srv.srv
+    new_srv.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -159,6 +161,8 @@ add_executable(
     ${PROJECT_NAME}
     src/sensor_fusion_main.cpp
     src/data_association.cpp
+    src/server.cpp
+    src/client.cpp
 )
 
 ## Rename C++ executable without prefix

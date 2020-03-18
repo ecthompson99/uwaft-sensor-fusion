@@ -1,4 +1,3 @@
-float64 asd
-uint8 lmao
-float64 test
-bool test
+float64 apple
+uint8 bat
+float64 cat
