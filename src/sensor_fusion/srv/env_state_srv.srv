@@ -1,7 +1,4 @@
 
-
-geometry_msgs/vectorvector<int> env_state_vec_from_container
-
+uint8 rand
 ---
-
-std::vector<int> env_state_vec_from_container
+uint8 classObj_Containing_vector_as_class_member
