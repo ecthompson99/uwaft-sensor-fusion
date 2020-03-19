@@ -150,10 +150,6 @@ add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp)
 add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(can_tx_rx_CH4 ${catkin_LIBRARIES})
 
-add_executable(print_tests src/print_tests.cpp)
-add_dependencies(print_tests ${${PROJECT_NAME}_EXPORTED_TARGETS})
-target_link_libraries(print_tests ${catkin_LIBRARIES})
-
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

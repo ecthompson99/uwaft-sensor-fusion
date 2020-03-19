@@ -14,44 +14,6 @@
 static const uint16_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
 static const uint64_t FRAME_INTERVAL = 50;
 
-void test_function (uint8_t can_data[8], long int & id, int count) {
-    
-    double me_dx = 3.2;
-    double me_dy = 6.4;
-
-    double me_vx = 2.6;
-    double me_ax = 12.4;
-
-    uint8_t me_object_id = 1;
-    uint8_t me_object_lane = 2;
-
-    if (count == 0) {
-        id = 1849;
-        ext_log_data2_2_32_obstacle_data_a1_t testA1;
-        testA1.obstacle_pos_x = ext_log_data2_2_32_obstacle_data_a1_obstacle_pos_x_encode(me_dx);
-        testA1.obstacle_pos_y = ext_log_data2_2_32_obstacle_data_a1_obstacle_pos_y_encode(me_dy);
-        testA1.obstacle_vel_x = ext_log_data2_2_32_obstacle_data_a1_obstacle_vel_x_encode(me_vx);
-        testA1.obstacle_id = ext_log_data2_2_32_obstacle_data_a1_obstacle_id_encode(me_object_id);
-        ext_log_data2_2_32_obstacle_data_a1_pack(can_data, &testA1, 8);
-
-    }
-    else if (count == 1) {
-        id = 1850;
-        ext_log_data2_2_32_obstacle_data_b1_t testB1;
-        testB1.obstacle_lane = ext_log_data2_2_32_obstacle_data_b1_obstacle_lane_encode(me_object_lane);
-        ext_log_data2_2_32_obstacle_data_b1_pack(can_data, &testB1, 8);
-    }
-    else if (count == 2) {
-        id = 1851;
-        ext_log_data2_2_32_obstacle_data_c1_t testC1;
-        testC1.object_accel_x = ext_log_data2_2_32_obstacle_data_c1_object_accel_x_encode(me_ax);
-        ext_log_data2_2_32_obstacle_data_c1_pack(can_data, &testC1, 8);
-    }
-    else{
-        while (1) {}
-    }
-}
-
 bool time_control (std::string frame, bool &publish_choice, uint64_t&obj_time, uint64_t time) {
     if (frame == "A") {
         obj_time = time;
@@ -94,7 +56,7 @@ int main(int argc, char **argv) {
 
     can_tx_rx::mobileye_object_data_msg msg;
 
-    /*canHandle hnd;
+    canHandle hnd;
     
     canInitializeLibrary();
 
@@ -110,11 +72,11 @@ int main(int argc, char **argv) {
     canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
     canSetBusOutputControl(hnd, canDRIVER_NORMAL);
     canBusOn(hnd);
-    */
+
     long int id;
     unsigned int dlc;
     unsigned int flag;
-    uint64_t time = 3; // time from CANread
+    uint64_t time = 0; // time from CANread
     uint8_t obj_num = -1; // 0 to 31 = valid
     uint8_t size_of_msg = 8;
     uint8_t can_data[8] = {0};
@@ -123,13 +85,10 @@ int main(int argc, char **argv) {
 
     uint64_t obj_time = 0; // time for msg
     bool publish_choice = 0;
-    int TEST_COUNT = 0;
 
     while (ros::ok()) {
-        //canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
-        test_function(can_data, id, TEST_COUNT);
-        TEST_COUNT++;
-        if (/*canOK == stat*/1) {
+        canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
+        if (canOK == stat) {
             switch (id) {
                 //A-frames
                 case 1849:
@@ -303,7 +262,6 @@ int main(int argc, char **argv) {
                         unpack_return = ext_log_data2_2_32_obstacle_data_c1_unpack(&target_c1_obj, can_data, size_of_msg);
                         msg.me_ax = ext_log_data2_2_32_obstacle_data_c1_object_accel_x_decode(target_c1_obj.object_accel_x);
                         data_pub.publish(msg);
-                        ROS_INFO_STREAM("post publish");
                         ros::spinOnce();
                     }
                     break;
@@ -400,8 +358,8 @@ int main(int argc, char **argv) {
             }
         }
     }
-    //canBusOff(hnd);
-    //canClose(hnd);
+    canBusOff(hnd);
+    canClose(hnd);
 
     return 0;
 }
