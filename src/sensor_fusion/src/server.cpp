@@ -2,7 +2,8 @@
 #include "sensor_fusion/new_srv.h"
 
     bool add(sensor_fusion::new_srv::Request &req, sensor_fusion::new_srv::Response &res){
-        res.sum = req.a + req.b;
+        
+        res.data.apple = 3;
         
         return true;
     }
@@ -13,7 +14,7 @@
 
         ros::ServiceServer service = n.advertiseService("service_topic", add);
         
-        ROS_INFO("Ready to add two ints.");
+        ROS_INFO("Waiting for my guy, client.");
         ros::spin();
 
         return 0;

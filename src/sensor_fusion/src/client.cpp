@@ -10,15 +10,14 @@ int main(int argc, char **argv){
     
     sensor_fusion::new_srv srv;
     
-    srv.request.a = ;
+    srv.request.temp = 1;
 
     if (client.call(srv)){
-        ROS_INFO("Sum: %ld", (long int)srv.response.sum);
-    }
-    else {
+        double lmao = srv.response.data.apple;
+        std::cout << lmao; 
+    } else {
         ROS_ERROR("Failed to call service add_two_ints");
         return 1;
     }
-   
     return 0;
 }
