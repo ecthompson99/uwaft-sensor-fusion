@@ -53,6 +53,7 @@ find_package(catkin REQUIRED COMPONENTS
    drive_ctrl_input_msg.msg
    sensor_diagnostic_data_msg.msg
    raw_sensor_object_data_msg.msg
+   mobileye_object_data_msg.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -144,6 +145,15 @@ target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES})
 add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp)
 add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES})
+
+add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp)
+add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(can_tx_rx_CH4 ${catkin_LIBRARIES})
+
+add_executable(print_tests src/print_tests.cpp)
+add_dependencies(print_tests ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(print_tests ${catkin_LIBRARIES})
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -162,6 +172,7 @@ target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES})
 
 target_link_libraries(${PROJECT_NAME}_CH2 ${catkin_LIBRARIES} canlib)
 target_link_libraries(${PROJECT_NAME}_CH3 ${catkin_LIBRARIES} canlib)
+target_link_libraries(${PROJECT_NAME}_CH4 ${catkin_LIBRARIES} canlib)
 
 #############
 ## Install ##
