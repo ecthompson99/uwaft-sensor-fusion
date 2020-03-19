@@ -68,17 +68,19 @@ find_package(
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   raw_sensor_object_data_msg.msg
-	sensor_diagnostic_flag_msg.msg
-	fused_object_data_msg.msg
+    sensor_diagnostic_flag_msg.msg
+    fused_object_data_msg.msg
+    radar_object_data.msg
+    mobileye_object_data.msg
+    dummy_msg.msg
 )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+ add_service_files(
+    FILES
+#    env_state_srv.srv
+    new_srv.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -157,8 +159,10 @@ include_directories(
 
 add_executable(
     ${PROJECT_NAME}
-    src/sensor_fusion_main.cpp
-    src/sensor_fusion.cpp
+#    src/sensor_fusion_main.cpp
+#    src/data_association.cpp
+    src/server.cpp
+    src/client.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -243,7 +247,7 @@ if (CATKIN_ENABLE_TESTING)
     catkin_add_gtest(
         ${PROJECT_NAME}-test
         test/test_sensor_fusion.cpp
-        src/sensor_fusion.cpp
+        src/sensor_fusion_main.cpp
     )
     if(TARGET ${PROJECT_NAME}-test)
         target_link_libraries(
