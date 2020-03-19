@@ -248,6 +248,9 @@ if (CATKIN_ENABLE_TESTING)
         ${PROJECT_NAME}-test
         test/test_sensor_fusion.cpp
         src/sensor_fusion_main.cpp
+        src/server.cpp
+        src/client.cpp
+        src/data_association.cpp
     )
     if(TARGET ${PROJECT_NAME}-test)
         target_link_libraries(

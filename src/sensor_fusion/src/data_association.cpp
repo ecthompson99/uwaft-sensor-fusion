@@ -97,31 +97,19 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
     
     if (client.call(service_call)){     //returns true if the service call went through, false is error
         
-<<<<<<< HEAD
-        std::vector<double> envState = service_call.response.env_state_vec_from_container;
-=======
-        int envState = service_call.response.classObj_Containing_vector_as_class_member;
->>>>>>> 272ddc9fd06516987cace9add1d05b7dbbe8ce33
+        //int envState = service_call.response.classObj_Containing_vector_as_class_member;
 
         // #include or dependencies when calling because EnvironmentState envState = service_call.response.classObj_Containing_vector_as_class_member;
 
-<<<<<<< HEAD
-        //if the object we received is already in the envState, send it to kf
-=======
         // // std::vector<int> envState = service_call.response.env_state_vec_from_container;
 
         // // if the object we received is already in the envState, send it to kf
->>>>>>> 272ddc9fd06516987cace9add1d05b7dbbe8ce33
         // for (auto obj : envState) {
         //     if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
         //         publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
         //         return;
         //     }
-<<<<<<< HEAD
-        // }
-=======
         // } 
->>>>>>> 272ddc9fd06516987cace9add1d05b7dbbe8ce33
     }
 
    
@@ -162,15 +150,15 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
 
     //get environment state with service
     
-    // std::vector<ObjectState> envState;
+    std::vector<ObjectState> envState;
 
-    // // if the object we received is already in the envState, send it to kf
-    // for (auto obj : envState) {
-    //     if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
-    //         publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
-    //         return;
-    //     }
-    // } 
+    // if the object we received is already in the envState, send it to kf
+    for (auto obj : envState) {
+        if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
+            publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
+            return;
+        }
+    } 
 
     // now check if it matches any of the potential objects
 

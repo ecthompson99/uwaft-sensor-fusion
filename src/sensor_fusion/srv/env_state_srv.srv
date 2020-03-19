@@ -1,10 +1,3 @@
-<<<<<<< HEAD
 float64[] rand
 ---
 float64[] env_state_vec_from_container
-=======
-
-uint8 rand
----
-uint8 classObj_Containing_vector_as_class_member
->>>>>>> 272ddc9fd06516987cace9add1d05b7dbbe8ce33
