@@ -7,7 +7,9 @@
 class stateTemp{
     public:
 
-    stateTemp(int id, double dx) : obj_id(id), obj_dx(dx);
+    stateTemp(int id, double dx) : obj_id(id), obj_dx(dx){
+
+    }
 
     int obj_id;
     double obj_dx;
@@ -37,10 +39,12 @@ int main(int argc, char **argv){
     std::vector<stateTemp> stateVector;
 
     if (client.call(srv)){
-        for(int i = 0; i < srv.response.obj_id.size(); i++){
-            stateVector.push_back(stateTemp someObj(srv.response.obj_id[i], srv.response.obj_dx[i])); 
-        } 
-        std::cout << stateVector[i].obj_id << std::endl;    //should return 6       
+        std::cout<<"HEY";
+        // for(int i = 0; i < srv.response.obj_id.size(); i++){
+        //     stateTemp someObj(srv.response.obj_id[i], srv.response.obj_dx[i]);
+        //     stateVector.push_back(someObj); 
+        // } 
+        // std::cout << stateVector[0].obj_id << std::endl;    //should return 6       
     } else {
         ROS_ERROR("Failed to call service");
         return 1;
