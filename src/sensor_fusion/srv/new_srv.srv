@@ -1,3 +1,4 @@
 
 ---
-dummy_msg[] test
+uint8[] obj_id
+float64[] obj_dx

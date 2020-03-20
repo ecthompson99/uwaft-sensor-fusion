@@ -22,17 +22,18 @@
         tempClass obj(6, 6.3);
         tempClass obj2(7, 7.3);
         tempClass obj3(8, 8.3);
-        tempClass obj4(9, 9.3);
+
         cont.vec.push_back(obj);
         cont.vec.push_back(obj2);
         cont.vec.push_back(obj3);
-        cont.vec.push_back(obj4);
 
         // index refers to specific objectNum in the original vector
-        //for(int i = 0; i < cont.vec.size(); i++){
-            int i = 0;
-            res.obj_dx[i] = cont.vec[i].intMember;
-            // res.obj_lane[i] = cont.vec[i].intMember;
+        for(int i = 0; i < cont.vec.size(); i++){
+            res.obj_id.push_back(cont.vec[i].intMember);
+            res.obj_dx.push_back(cont.vec[i].dubMember);
+
+
+            //res.obj_lane.push_back(cont.vec[i].intMember);
             // res.obj_vx[i] = cont.vec[i].intMember;
             // res.obj_dy[i] = cont.vec[i].intMember;
             // res.obj_ax[i] = cont.vec[i].intMember;
@@ -40,7 +41,7 @@
             // res.obj_vy[i] = cont.vec[i].intMember;
             // res.obj_timestamp[i] = cont.vec[i].intMember;
             // res.object_track_num[i] = cont.vec[i].intMember;
-        //}
+        }
         return true;
     }
 

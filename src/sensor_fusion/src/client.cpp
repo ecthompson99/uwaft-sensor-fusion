@@ -40,11 +40,12 @@ int main(int argc, char **argv){
 
     if (client.call(srv)){
         std::cout<<"HEY";
-        // for(int i = 0; i < srv.response.obj_id.size(); i++){
-        //     stateTemp someObj(srv.response.obj_id[i], srv.response.obj_dx[i]);
-        //     stateVector.push_back(someObj); 
-        // } 
-        // std::cout << stateVector[0].obj_id << std::endl;    //should return 6       
+        for(int i = 0; i < srv.response.obj_id.size(); i++){
+            stateTemp someObj(srv.response.obj_id[i], srv.response.obj_dx[i]);
+            stateVector.push_back(someObj); 
+        } 
+        std::cout << stateVector[0].obj_id << std::endl; //6
+        std::cout << stateVector[2].obj_dx << std::endl;    //should return 8.3       
     } else {
         ROS_ERROR("Failed to call service");
         return 1;
