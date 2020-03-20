@@ -48,12 +48,7 @@
         ros::init(argc, argv, "server");
         ros::NodeHandle n;
 
-        ros::Publisher pub = n.advertise<sensor_fusion::dummy_msg>("tempTopic", 10);
-
-        // while(ros::ok()){
-        //     pub.publish(msgObj);
-        // }
-        
+        ros::Publisher pub = n.advertise<sensor_fusion::dummy_msg>("tempTopic", 10);        
 
         ros::ServiceServer service = n.advertiseService("service_topic", add);
         
@@ -62,3 +57,15 @@
 
         return 0;
     }
+
+
+
+// ADD THESE TO THE srv request .srv file
+// uint8[] obj_lane
+// float64[] obj_vx
+// float64[] obj_dy
+// float64[] obj_ax
+// bool[] obj_path
+// float64[] obj_vy
+// float64[] obj_timestamp
+// uint8[] object_track_num

@@ -39,7 +39,8 @@ int main(int argc, char **argv){
     if (client.call(srv)){
         for(int i = 0; i < srv.response.obj_id.size(); i++){
             stateVector.push_back(stateTemp someObj(srv.response.obj_id[i], srv.response.obj_dx[i])); 
-        }        
+        } 
+        std::cout << stateVector[i].obj_id << std::endl;    //should return 6       
     } else {
         ROS_ERROR("Failed to call service");
         return 1;
