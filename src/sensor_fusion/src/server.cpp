@@ -61,12 +61,14 @@
 
 
 
-// ADD THESE TO THE srv request .srv file
+// MAKE THIS THE srv request .srv file
+// uint8[] obj_id
+// float64[] obj_dx
 // uint8[] obj_lane
 // float64[] obj_vx
 // float64[] obj_dy
 // float64[] obj_ax
-// bool[] obj_path
+// bool obj_path
 // float64[] obj_vy
 // float64[] obj_timestamp
-// uint8[] object_track_num
+// uint8[] obj_count

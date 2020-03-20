@@ -4,6 +4,28 @@
 #include "sensor_fusion/dummy_msg.h"
    
 
+//class stateTemp{
+//     public:
+
+//     stateTemp(int id, double dx, int lane, double vx, double, dy, double ax, bool path, double vy, double time, int count) :
+//         obj_id(id), obj_dx(dx), obj_lane(lane), obj_vx(vx), obj_dy(dy), obj_ax(ax), obj_path(path), obj_vy(vy), obj_timestamp(time), obj_count(count){
+
+//     }
+
+//     int obj_id;
+//     double obj_dx;
+//     int obj_lane;
+//     double obj_vx;
+//     double obj_dy;
+//     double obj_ax;
+//     bool obj_path;
+//     double obj_vy;
+//     double obj_timestamp;
+//     int obj_count;
+// };
+
+
+
 class stateTemp{
     public:
 
