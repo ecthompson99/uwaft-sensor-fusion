@@ -1,4 +1,5 @@
 #include "env_state.h"
+//#include "object_state.h"
 // #include "string.h"
 #define TIMESTAMP_TOL 10000 // tolerance used to determine outdated tracks
 
@@ -11,7 +12,7 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
   object_output_pub = env_state_node_handle->advertise<sensor_fusion::object_output_msg>("object_output",
                                                                                              MESSAGE_BUFFER_SIZE);
 
-  my_service = env_state_node_handle->advertiseService("srv_env_state_topic", &EnvironmentState::env_state_vector_service_callback, this);     
+  //my_service = env_state_node_handle->advertiseService("srv_env_state_topic", &EnvironmentState::env_state_vector_service_callback, this);     
 
 }
 
@@ -57,11 +58,11 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
     ObjectState tracked_msg;
     tracked_msg.copy_info(filtered_msg); // copy constructor
 
-    // printf("Tracked Message:\n");
-    // printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
-    // tracked_msg.get_obj_id(), tracked_msg.get_obj_dx(), tracked_msg.get_obj_lane(), 
-    // tracked_msg.get_obj_vx(), tracked_msg.get_obj_dy(), tracked_msg.get_obj_ax(), 
-    // tracked_msg.get_obj_path(), tracked_msg.get_obj_vy(), tracked_msg.get_obj_timestamp());
+     printf("Tracked Message:\n");
+     printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
+     tracked_msg.get_obj_id(), tracked_msg.get_obj_dx(), tracked_msg.get_obj_lane(), 
+     tracked_msg.get_obj_vx(), tracked_msg.get_obj_dy(), tracked_msg.get_obj_ax(), 
+     tracked_msg.get_obj_path(), tracked_msg.get_obj_vy(), tracked_msg.get_obj_timestamp());
 
     check_timestamp(tracked_msg); // removes outdated state vector
     update_env_state(tracked_msg); // update id of objects in state vector
@@ -112,11 +113,11 @@ void EnvironmentState::find_target_objects(const ObjectState& tracked_msg){
 
 
 // service callback
-bool EnvironmentState::env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res){
+//bool EnvironmentState::env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res){
   //res.classObj = 3;
   
-  return true;
-}
+//  return true;
+//}
 
 
 

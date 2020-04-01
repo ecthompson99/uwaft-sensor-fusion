@@ -6,7 +6,7 @@
 #include "sensor_fusion/filtered_object_msg.h" // sub
 #include "sensor_fusion/object_output_msg.h"  // pub
 #include <vector>
-#include "sensor_fusion/env_state_srv.h"  //service
+//#include "sensor_fusion/env_state_srv.h"  //service
 
 
 static const uint8_t MESSAGE_BUFFER_SIZE = 10;
@@ -14,7 +14,7 @@ static const uint8_t MESSAGE_BUFFER_SIZE = 10;
 class EnvironmentState {
  public:
   std::vector<ObjectState> trackedObjects;
-  ObjectState targetObjects[3] = {};
+  ObjectState targetObjects[3];
   
   EnvironmentState(ros::NodeHandle* env_state_node_handle);
   virtual ~EnvironmentState();
@@ -28,14 +28,14 @@ class EnvironmentState {
   void update_env_state(const ObjectState& tracked_msg); 
   void find_target_objects(const ObjectState& tracked_msg);
 
-  bool env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res);
+ // bool env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res);
 
   private:
   ros::NodeHandle* env_state_node_handle;
   ros::Subscriber filtered_object_sub;
   ros::Publisher object_output_pub;
   sensor_fusion::object_output_msg object_output_msg;
-  ros::ServiceServer my_service;
+ // ros::ServiceServer my_service;
 };
 
 #endif  // __ENV_STATE_H__
