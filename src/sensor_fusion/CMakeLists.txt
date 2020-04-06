@@ -244,6 +244,7 @@ if (CATKIN_ENABLE_TESTING)
         ${PROJECT_NAME}-test
         test/test_env_state.cpp
         src/env_state.cpp
+	src/object_state.cpp
     )
     if(TARGET ${PROJECT_NAME}-test)
         target_link_libraries(

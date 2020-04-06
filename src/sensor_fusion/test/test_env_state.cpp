@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "env_state.h"
-#include "object_state.h"
+//#include "object_state.h"
 
 TEST(FiltObjCallback, validLogic){
   ros::NodeHandle env_state_node_handle;
