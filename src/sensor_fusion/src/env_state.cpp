@@ -1,9 +1,8 @@
 #include "env_state.h"
 //#include "object_state.h"
-// #include "string.h"
+
 #define TIMESTAMP_TOL 10000 // tolerance used to determine outdated tracks
 
-using namespace std;
 
 EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_node_handle(node_handle) {
   filtered_object_sub = env_state_node_handle->subscribe("kf_dummy_data", MESSAGE_BUFFER_SIZE,

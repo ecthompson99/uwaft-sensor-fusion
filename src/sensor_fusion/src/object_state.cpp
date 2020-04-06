@@ -1,5 +1,4 @@
 #include "object_state.h"
-// #include "string.h"
 
 ObjectState::ObjectState(){}
 ObjectState::ObjectState(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
