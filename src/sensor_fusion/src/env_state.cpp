@@ -1,7 +1,7 @@
 #include "env_state.h"
 //#include "object_state.h"
 
-#define TIMESTAMP_TOL 10000 // tolerance used to determine outdated tracks
+#define TIMESTAMP_TOL 10 // 10 ms tolerance used to determine outdated tracks
 
 
 EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_node_handle(node_handle) {
@@ -88,7 +88,7 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) 
 void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
   
   for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
-    if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp())>TIMESTAMP_TOL){
+    if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp())>TIMESTAMP_TOL){ // assume more recent timestamps are larger
       // removes tracked object from state vectors
       EnvironmentState::trackedObjects.erase(trackedObjects.begin() + index-1);
     }  
