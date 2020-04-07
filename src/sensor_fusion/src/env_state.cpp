@@ -88,10 +88,12 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) 
 void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
   
   for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
-    if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp())>TIMESTAMP_TOL){ // assume more recent timestamps are larger
-      // removes tracked object from state vectors
-      EnvironmentState::trackedObjects.erase(trackedObjects.begin() + index-1);
-    }  
+    if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp()) > TIMESTAMP_TOL){ // assume more recent timestamps are larger
+      
+			// removes tracked object from state vectors
+      EnvironmentState::trackedObjects.erase(trackedObjects.begin() + index - 1); // .begin starts at 1
+    }
+		else{}  
   }
 }
 
