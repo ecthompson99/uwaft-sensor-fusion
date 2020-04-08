@@ -134,40 +134,40 @@ TEST(UpdateObject, validLogic) {
   ASSERT_EQ(env_state_test.trackedObjects.size(), 2);
 }
 
-//TEST(CheckTimestamp, validLogic){
-//  ros::NodeHandle env_state_node_handle;
-//  EnvironmentState env_state_test(&env_state_node_handle);
+TEST(CheckTimestamp, validLogic){
+  ros::NodeHandle env_state_node_handle;
+  EnvironmentState env_state_test(&env_state_node_handle);
 
-//  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 35);
-//  ObjectState new_object_2(3, 56, 2, 3, 56, 14, 1, 67, 37);
-//  ObjectState new_object_3(7, 96, 1, 5, 76, 34, 0, 77, 100);
-//  
-//  ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 25);
-//  ObjectState tracked_object_2(6, 40, 0, 29, 45, 21, 0, 26, 30);
-//  ObjectState tracked_object_3(5, 10, 1, 27, 34, 87, 1, 90, 28);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 35);
+  ObjectState new_object_2(3, 56, 2, 3, 56, 14, 1, 67, 37);
+  ObjectState new_object_3(7, 96, 1, 5, 76, 34, 0, 77, 100);
+  
+  ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 25);
+  ObjectState tracked_object_2(6, 40, 0, 29, 45, 21, 0, 26, 30);
+  ObjectState tracked_object_3(5, 10, 1, 27, 34, 87, 1, 90, 28);
 
-//  ASSERT_EQ(env_state_test.trackedObjects.size(), 0);
-//  env_state_test.add_object(tracked_object_1);
-//  ASSERT_EQ(env_state_test.trackedObjects.size(), 1);
-//  env_state_test.add_object(tracked_object_2);
-//  ASSERT_EQ(env_state_test.trackedObjects.size(), 2);
-//  env_state_test.add_object(tracked_object_3);
-//  ASSERT_EQ(env_state_test.trackedObjects.size(), 3);
+  ASSERT_EQ(env_state_test.trackedObjects.size(), 0);
+  env_state_test.add_object(tracked_object_1);
+  ASSERT_EQ(env_state_test.trackedObjects.size(), 1);
+  env_state_test.add_object(tracked_object_2);
+  ASSERT_EQ(env_state_test.trackedObjects.size(), 2);
+  env_state_test.add_object(tracked_object_3);
+  ASSERT_EQ(env_state_test.trackedObjects.size(), 3);
 
-//  ASSERT_EQ(env_state_test.trackedObjects[0].get_obj_id(), 1);
-//  ASSERT_EQ(env_state_test.trackedObjects[1].get_obj_id(), 6);
-//  ASSERT_EQ(env_state_test.trackedObjects[2].get_obj_id(), 5);
+  ASSERT_EQ(env_state_test.trackedObjects[0].get_obj_id(), 1);
+  ASSERT_EQ(env_state_test.trackedObjects[1].get_obj_id(), 6);
+  ASSERT_EQ(env_state_test.trackedObjects[2].get_obj_id(), 5);
 
-//  env_state_test.check_timestamp(new_object_1); // not erase any of the tracked objects
-//  ASSERT_EQ(env_state_test.trackedObjects.size(), 3);
+  env_state_test.check_timestamp(new_object_1); // not erase any of the tracked objects
+  ASSERT_EQ(env_state_test.trackedObjects.size(), 3);
 
-//  env_state_test.check_timestamp(new_object_2); // erase tracked_object_1 (37 - 25 = 12> 10)
-//  //ASSERT_EQ(env_state_test.trackedObjects.size(), 2);
-////  ASSERT_EQ(env_state_test.trackedObjects[0].get_obj_id(), 6);
+  env_state_test.check_timestamp(new_object_2); // erase tracked_object_1 (37 - 25 = 12> 10)
+	ASSERT_EQ(env_state_test.trackedObjects.size(), 2);
+	ASSERT_EQ(env_state_test.trackedObjects[0].get_obj_id(), 6);
 
-////  env_state_test.check_timestamp(new_object_3); // erase tracked_object_2 & 3
-////  ASSERT_EQ(env_state_test.trackedObjects.size(), 0);
-//}
+  env_state_test.check_timestamp(new_object_3); // erase tracked_object_2 & 3
+  ASSERT_EQ(env_state_test.trackedObjects.size(), 0);
+}
 
 TEST(UpdateEnvState, validLogic) {
   ros::NodeHandle env_state_node_handle;

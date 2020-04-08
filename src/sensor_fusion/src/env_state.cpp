@@ -2,7 +2,7 @@
 //#include "object_state.h"
 
 #define TIMESTAMP_TOL 10 // 10 ms tolerance used to determine outdated tracks
-
+#define NUM_OBJECTS 100
 
 EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_node_handle(node_handle) {
   filtered_object_sub = env_state_node_handle->subscribe("kf_dummy_data", MESSAGE_BUFFER_SIZE,
@@ -11,11 +11,10 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
   object_output_pub = env_state_node_handle->advertise<sensor_fusion::object_output_msg>("object_output",
                                                                                              MESSAGE_BUFFER_SIZE);
 
-	//trackedObjects.clear();
+	// reserve memory for vector (NUM_OBJECTS)
+	trackedObjects.reserve(NUM_OBJECTS);
 	
 	
-	
-
   //my_service = env_state_node_handle->advertiseService("srv_env_state_topic", &EnvironmentState::env_state_vector_service_callback, this);     
 
 }
@@ -86,15 +85,24 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) 
 }
 
 void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
+
+	bool indices[NUM_OBJECTS] = {0};
+	int count = 1;
   
-  for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
-    if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp()) > TIMESTAMP_TOL){ // assume more recent timestamps are larger
-      
-			// removes tracked object from state vectors
-      EnvironmentState::trackedObjects.erase(trackedObjects.begin() + index - 1); // .begin starts at 1
-    }
-		else{}  
+  for (int index = 0 ;index < EnvironmentState::trackedObjects.size(); index++){	
+  	if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp()) > TIMESTAMP_TOL){ // assume more recent timestamps are larger
+  		indices[index + 1] = true; // have to add 1 since vector .begin starts at 1
+  	}
   }
+  
+  for (auto temp = EnvironmentState::trackedObjects.begin(); temp != EnvironmentState::trackedObjects.end(); temp++){
+  	if (indices[count] == true){
+  		// iterator is decremented after it is passed to erase() but before erase() is executed
+  		EnvironmentState::trackedObjects.erase(temp--);
+  	}
+  	count++;
+  }
+  
 }
 
 void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
