@@ -7,6 +7,8 @@
 class ObjectState {
  public:
   ObjectState();
+  ObjectState(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
+    double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp);
   virtual ~ObjectState();
   uint8_t get_obj_id() const;
   double get_obj_dx() const;
