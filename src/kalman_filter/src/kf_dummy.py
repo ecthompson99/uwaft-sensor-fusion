@@ -14,7 +14,7 @@ def main():
 
 	i = 0
 	try:
-		while (i < 10):
+		while True:
 			for a in dummy_objects:
 				offset = a.obj_id
 				a.obj_dx = i + offset

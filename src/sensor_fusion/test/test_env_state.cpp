@@ -1,48 +1,48 @@
 #include <gtest/gtest.h>
 #include "env_state.h"
 
-TEST(FiltObjCallback, validLogic){
-  ros::NodeHandle env_state_node_handle;
-  EnvironmentState env_state_test(&env_state_node_handle);
+//TEST(FiltObjCallback, validLogic){
+//  ros::NodeHandle env_state_node_handle;
+//  EnvironmentState env_state_test(&env_state_node_handle);
 
-  sensor_fusion::object_output_msg output_msg_expected;
-  output_msg_expected.obj_id = 1;
-  output_msg_expected.obj_dx = 2;
-  output_msg_expected.obj_lane = 0;
-  output_msg_expected.obj_vx = 2;
-  output_msg_expected.obj_dy = 2;
-  output_msg_expected.obj_ax = 2;
-  output_msg_expected.obj_path = 0;
-  output_msg_expected.obj_vy = 2;
-  output_msg_expected.obj_timestamp = 2;
-  output_msg_expected.obj_track_num = 0;
-  
-  sensor_fusion::filtered_object_msg filtered_msg;
-  filtered_msg.obj_id = 1;
-  filtered_msg.obj_dx = 2;
-  filtered_msg.obj_lane = 0;
-  filtered_msg.obj_vx = 2;
-  filtered_msg.obj_dy = 2;
-  filtered_msg.obj_ax = 2;
-  filtered_msg.obj_path = 0;
-  filtered_msg.obj_vy = 2;
-  filtered_msg.obj_timestamp = 2;
-  
-  env_state_test.filtered_object_callback(filtered_msg);
+//  sensor_fusion::object_output_msg output_msg_expected;
+//  output_msg_expected.obj_id = 1;
+//  output_msg_expected.obj_dx = 2;
+//  output_msg_expected.obj_lane = 0;
+//  output_msg_expected.obj_vx = 2;
+//  output_msg_expected.obj_dy = 2;
+//  output_msg_expected.obj_ax = 2;
+//  output_msg_expected.obj_path = 0;
+//  output_msg_expected.obj_vy = 2;
+//  output_msg_expected.obj_timestamp = 2;
+//  output_msg_expected.obj_track_num = 0;
+//  
+//  sensor_fusion::filtered_object_msg filtered_msg;
+//  filtered_msg.obj_id = 1;
+//  filtered_msg.obj_dx = 2;
+//  filtered_msg.obj_lane = 0;
+//  filtered_msg.obj_vx = 2;
+//  filtered_msg.obj_dy = 2;
+//  filtered_msg.obj_ax = 2;
+//  filtered_msg.obj_path = 0;
+//  filtered_msg.obj_vy = 2;
+//  filtered_msg.obj_timestamp = 2;
+//  
+//  env_state_test.filtered_object_callback(filtered_msg);
 
-  sensor_fusion::object_output_msg output_msg = env_state_test.get_object_output_msg();
+//  sensor_fusion::object_output_msg output_msg = env_state_test.get_object_output_msg();
 
-  ASSERT_EQ(output_msg_expected.obj_id, output_msg.obj_id);
-  ASSERT_EQ(output_msg_expected.obj_dx, output_msg.obj_dx);
-  ASSERT_EQ(output_msg_expected.obj_lane, output_msg.obj_lane);
-  ASSERT_EQ(output_msg_expected.obj_vx, output_msg.obj_vx);
-  ASSERT_EQ(output_msg_expected.obj_dy, output_msg.obj_dy);
-  ASSERT_EQ(output_msg_expected.obj_ax, output_msg.obj_ax);
-  ASSERT_EQ(output_msg_expected.obj_path, output_msg.obj_path);
-  ASSERT_EQ(output_msg_expected.obj_vy, output_msg.obj_vy);
-  ASSERT_EQ(output_msg_expected.obj_timestamp, output_msg.obj_timestamp);
-  ASSERT_EQ(output_msg_expected.obj_track_num, output_msg.obj_track_num);
-}
+//  ASSERT_EQ(output_msg_expected.obj_id, output_msg.obj_id);
+//  ASSERT_EQ(output_msg_expected.obj_dx, output_msg.obj_dx);
+//  ASSERT_EQ(output_msg_expected.obj_lane, output_msg.obj_lane);
+//  ASSERT_EQ(output_msg_expected.obj_vx, output_msg.obj_vx);
+//  ASSERT_EQ(output_msg_expected.obj_dy, output_msg.obj_dy);
+//  ASSERT_EQ(output_msg_expected.obj_ax, output_msg.obj_ax);
+//  ASSERT_EQ(output_msg_expected.obj_path, output_msg.obj_path);
+//  ASSERT_EQ(output_msg_expected.obj_vy, output_msg.obj_vy);
+//  ASSERT_EQ(output_msg_expected.obj_timestamp, output_msg.obj_timestamp);
+//  ASSERT_EQ(output_msg_expected.obj_track_num, output_msg.obj_track_num);
+//}
 
 //TEST(FiltObjCallback, validCallback){
 //  ros::NodeHandle env_state_node_handle;
@@ -260,22 +260,22 @@ TEST(FindTargetObjects, validLogic){
 
 }
 
-bool object_output_cb_called = false;
-void test_output_obj_cb(const sensor_fusion::object_output_msg& object_output_msg){object_output_cb_called = true;}
+//bool object_output_cb_called = false;
+//void test_output_obj_cb(const sensor_fusion::object_output_msg& object_output_msg){object_output_cb_called = true;}
 
-TEST(PublishOutputObj, validLogic){
-  ros::NodeHandle env_state_node_handle;
-  EnvironmentState env_state_test(&env_state_node_handle);
+//TEST(PublishOutputObj, validLogic){
+//  ros::NodeHandle env_state_node_handle;
+//  EnvironmentState env_state_test(&env_state_node_handle);
 
-  ros::NodeHandle output_obj_node_handle;
-  ros::Subscriber sub = output_obj_node_handle.subscribe("object_output", MESSAGE_BUFFER_SIZE, &test_output_obj_cb);
+//  ros::NodeHandle output_obj_node_handle;
+//  ros::Subscriber sub = output_obj_node_handle.subscribe("object_output", MESSAGE_BUFFER_SIZE, &test_output_obj_cb);
 
-  env_state_test.publish_object_output();
-  ros::spinOnce();
+//  env_state_test.publish_object_output();
+//  ros::spinOnce();
 
-  ASSERT_EQ(object_output_cb_called, false);
+//  ASSERT_EQ(object_output_cb_called, false);
 
-}
+//}
 
 
 int main(int argc, char **argv) {
