@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include "env_state.h"
-//#include "object_state.h"
 
 //TEST(FiltObjCallback, validLogic){
 //  ros::NodeHandle env_state_node_handle;
@@ -8,26 +7,26 @@
 
 //  sensor_fusion::object_output_msg output_msg_expected;
 //  output_msg_expected.obj_id = 1;
-//  output_msg_expected.obj_dx = 12;
-//  output_msg_expected.obj_lane = 2;
-//  output_msg_expected.obj_vx = 23;
-//  output_msg_expected.obj_dy = 46;
-//  output_msg_expected.obj_ax = 45;
-//  output_msg_expected.obj_path = 1;
-//  output_msg_expected.obj_vy = 67;
-//  output_msg_expected.obj_timestamp = 134;
+//  output_msg_expected.obj_dx = 2;
+//  output_msg_expected.obj_lane = 0;
+//  output_msg_expected.obj_vx = 2;
+//  output_msg_expected.obj_dy = 2;
+//  output_msg_expected.obj_ax = 2;
+//  output_msg_expected.obj_path = 0;
+//  output_msg_expected.obj_vy = 2;
+//  output_msg_expected.obj_timestamp = 2;
 
 //  sensor_fusion::filtered_object_msg filtered_msg;
 //  filtered_msg.obj_id = 1;
-//  filtered_msg.obj_dx = 12;
-//  filtered_msg.obj_lane = 2;
-//  filtered_msg.obj_vx = 23;
-//  filtered_msg.obj_dy = 46;
-//  filtered_msg.obj_ax = 45;
-//  filtered_msg.obj_path = 1;
-//  filtered_msg.obj_vy = 67;
-//  filtered_msg.obj_timestamp = 134;
-
+//  filtered_msg.obj_dx = 2;
+//  filtered_msg.obj_lane = 0;
+//  filtered_msg.obj_vx = 2;
+//  filtered_msg.obj_dy = 2;
+//  filtered_msg.obj_ax = 2;
+//  filtered_msg.obj_path = 0;
+//  filtered_msg.obj_vy = 2;
+//  filtered_msg.obj_timestamp = 2;
+//  
 //  env_state_test.filtered_object_callback(filtered_msg);
 
 //  sensor_fusion::object_output_msg output_msg = env_state_test.get_object_output_msg();
@@ -53,25 +52,25 @@
 
 //  sensor_fusion::object_output_msg output_msg_expected;
 //  output_msg_expected.obj_id = 1;
-//  output_msg_expected.obj_dx = 12;
-//  output_msg_expected.obj_lane = 2;
-//  output_msg_expected.obj_vx = 23;
-//  output_msg_expected.obj_dy = 46;
-//  output_msg_expected.obj_ax = 45;
-//  output_msg_expected.obj_path = 1;
-//  output_msg_expected.obj_vy = 67;
-//  output_msg_expected.obj_timestamp = 134;
+//  output_msg_expected.obj_dx = 2;
+//  output_msg_expected.obj_lane = 0;
+//  output_msg_expected.obj_vx = 2;
+//  output_msg_expected.obj_dy = 2;
+//  output_msg_expected.obj_ax = 2;
+//  output_msg_expected.obj_path = 0;
+//  output_msg_expected.obj_vy = 2;
+//  output_msg_expected.obj_timestamp = 2;
 
 //  sensor_fusion::filtered_object_msg filtered_msg;
 //  filtered_msg.obj_id = 1;
-//  filtered_msg.obj_dx = 12;
-//  filtered_msg.obj_lane = 2;
-//  filtered_msg.obj_vx = 23;
-//  filtered_msg.obj_dy = 46;
-//  filtered_msg.obj_ax = 45;
-//  filtered_msg.obj_path = 1;
-//  filtered_msg.obj_vy = 67;
-//  filtered_msg.obj_timestamp = 134;
+//  filtered_msg.obj_dx = 2;
+//  filtered_msg.obj_lane = 0;
+//  filtered_msg.obj_vx = 2;
+//  filtered_msg.obj_dy = 2;
+//  filtered_msg.obj_ax = 2;
+//  filtered_msg.obj_path = 0;
+//  filtered_msg.obj_vy = 2;
+//  filtered_msg.obj_timestamp = 2;
 
 //  pub.publish(filtered_msg);
 //  ros::spinOnce();
@@ -206,6 +205,24 @@ TEST(UpdateEnvState, validLogic) {
 
 }
 
+TEST(FindTargetObjectsEmptyArray, validLogic){
+  ros::NodeHandle env_state_node_handle;
+  EnvironmentState env_state_test(&env_state_node_handle);
+  
+  ObjectState target_object_1(7, 89, 1, 29, 45, 21, 0, 26, 300);
+  ObjectState target_object_2(5, 11, 2, 23, 46, 45, 1, 67, 134);
+  ObjectState target_object_3(6, 12, 0, 78, 45, 21, 0, 26, 300);
+
+  env_state_test.find_target_objects(target_object_1); 
+  ASSERT_EQ(env_state_test.targetObjects[1].get_obj_id(), 7);
+
+  env_state_test.find_target_objects(target_object_2); 
+  ASSERT_EQ(env_state_test.targetObjects[2].get_obj_id(), 5);
+
+  env_state_test.find_target_objects(target_object_3); 
+  ASSERT_EQ(env_state_test.targetObjects[0].get_obj_id(), 6);
+}
+
 TEST(FindTargetObjects, validLogic){
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
@@ -237,6 +254,7 @@ TEST(FindTargetObjects, validLogic){
 
   env_state_test.find_target_objects(new_object_4); // 2 dx < 12 dx (lane 0) -> update target object
   ASSERT_EQ(env_state_test.targetObjects[0].get_obj_id(), 9);
+
 }
 
 //bool object_output_cb_called = false;
