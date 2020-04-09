@@ -182,20 +182,20 @@ bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Requ
 
         // breaking the objects stored in the vector into members and storing in multiple vectors for srv communication
         // index refers to specific objectNum in the original vector
-        for(int i = 0; i < trackedObjects.size(); i++){
-            // res.id.push_back(trackedObjects[i].get_obj_id());
-            // res.dx.push_back(trackedObjects[i].get_obj_dx());
-            // res.lane.push_back(trackedObjects[i].get_obj_lane());
-            // res.vx.push_back(trackedObjects[i].get_obj_vx());
-            // res.dy.push_back(trackedObjects[i].get_obj_dy());
-            // res.ax.push_back(trackedObjects[i].get_obj_ax());
-            // res.path.push_back(trackedObjects[i].get_obj_path());
-            // res.vy.push_back(trackedObjects[i].get_obj_vy());
-            // res.timestamp.push_back(trackedObjects[i].get_obj_timestamp());
+        // for(int i = 0; i < trackedObjects.size(); i++){
+        //     res.id.push_back(trackedObjects[i].get_obj_id());
+        //     res.dx.push_back(trackedObjects[i].get_obj_dx());
+        //     res.lane.push_back(trackedObjects[i].get_obj_lane());
+        //     res.vx.push_back(trackedObjects[i].get_obj_vx());
+        //     res.dy.push_back(trackedObjects[i].get_obj_dy());
+        //     res.ax.push_back(trackedObjects[i].get_obj_ax());
+        //     res.path.push_back(trackedObjects[i].get_obj_path());
+        //     res.vy.push_back(trackedObjects[i].get_obj_vy());
+        //     res.timestamp.push_back(trackedObjects[i].get_obj_timestamp());
             
-            // not in objects yet
-            //res.count.push_back(trackedObjects[i].get_obj_count);
-        }
+        //     // not in objects yet
+        //     //res.count.push_back(trackedObjects[i].get_obj_count);
+        // }
         return true;
 }
 
