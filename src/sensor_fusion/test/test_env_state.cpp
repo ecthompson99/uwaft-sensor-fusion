@@ -95,9 +95,9 @@ TEST(AddObject, validLogic) {
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
 
-  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 100);
-  ObjectState new_object_2(5, 15, 2, 43, 6, 15, 1, 64, 200);
-  ObjectState new_object_3(6, 40, 3, 29, 45, 21, 0, 26, 300);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 100, 1);
+  ObjectState new_object_2(5, 15, 2, 43, 6, 15, 1, 64, 200, 1);
+  ObjectState new_object_3(6, 40, 3, 29, 45, 21, 0, 26, 300, 1);
 
   ASSERT_EQ(env_state_test.trackedObjects.size(), 0);
   env_state_test.add_object(new_object_1); // add object_1
@@ -117,11 +117,11 @@ TEST(UpdateObject, validLogic) {
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
 
-  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 100);
-  ObjectState new_object_2(5, 15, 2, 43, 6, 15, 1, 64, 200);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 100, 1);
+  ObjectState new_object_2(5, 15, 2, 43, 6, 15, 1, 64, 200, 1);
   
-  ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 134);
-  ObjectState tracked_object_2(6, 40, 3, 29, 45, 21, 0, 26, 300);
+  ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 134, 1);
+  ObjectState tracked_object_2(6, 40, 3, 29, 45, 21, 0, 26, 300, 1);
 
   env_state_test.add_object(tracked_object_1); // add object
   env_state_test.add_object(tracked_object_2); // add object
@@ -140,13 +140,13 @@ TEST(CheckTimestamp, validLogic){
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
 
-  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 35);
-  ObjectState new_object_2(3, 56, 2, 3, 56, 14, 1, 67, 37);
-  ObjectState new_object_3(7, 96, 1, 5, 76, 34, 0, 77, 100);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 35, 1);
+  ObjectState new_object_2(3, 56, 2, 3, 56, 14, 1, 67, 37, 1);
+  ObjectState new_object_3(7, 96, 1, 5, 76, 34, 0, 77, 100, 1);
   
-  ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 25);
-  ObjectState tracked_object_2(6, 40, 0, 29, 45, 21, 0, 26, 30);
-  ObjectState tracked_object_3(5, 10, 1, 27, 34, 87, 1, 90, 28);
+  ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 25, 1);
+  ObjectState tracked_object_2(6, 40, 0, 29, 45, 21, 0, 26, 30, 1);
+  ObjectState tracked_object_3(5, 10, 1, 27, 34, 87, 1, 90, 28, 1);
 
   ASSERT_EQ(env_state_test.trackedObjects.size(), 0);
   env_state_test.add_object(tracked_object_1);
@@ -175,12 +175,12 @@ TEST(UpdateEnvState, validLogic) {
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
 
-  ObjectState new_object_1(1, 10, 1, 4, 15, 11, 0, 6, 100);
-  ObjectState new_object_2(2, 15, 2, 43, 6, 15, 1, 64, 200);
-  ObjectState new_object_3(1, 33, 1, 23, 9, 14, 0, 8, 300);
-  ObjectState new_object_4(3, 45, 2, 3, 16, 35, 1, 5, 400);
-  ObjectState new_object_5(4, 12, 1, 6, 18, 12, 0, 4, 500);
-  ObjectState new_object_6(2, 11, 1, 19, 32, 5, 1, 6, 600);
+  ObjectState new_object_1(1, 10, 1, 4, 15, 11, 0, 6, 100, 1);
+  ObjectState new_object_2(2, 15, 2, 43, 6, 15, 1, 64, 200, 1);
+  ObjectState new_object_3(1, 33, 1, 23, 9, 14, 0, 8, 300, 1);
+  ObjectState new_object_4(3, 45, 2, 3, 16, 35, 1, 5, 400, 1);
+  ObjectState new_object_5(4, 12, 1, 6, 18, 12, 0, 4, 500, 1);
+  ObjectState new_object_6(2, 11, 1, 19, 32, 5, 1, 6, 600, 1);
 
   env_state_test.update_env_state(new_object_1); //add new_object_1
   ASSERT_EQ(env_state_test.trackedObjects.size(), 1); 
@@ -212,9 +212,9 @@ TEST(FindTargetObjectsEmptyArray, validLogic){
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
   
-  ObjectState target_object_1(7, 89, 1, 29, 45, 21, 0, 26, 300);
-  ObjectState target_object_2(5, 11, 2, 23, 46, 45, 1, 67, 134);
-  ObjectState target_object_3(6, 12, 0, 78, 45, 21, 0, 26, 300);
+  ObjectState target_object_1(7, 89, 1, 29, 45, 21, 0, 26, 300, 1);
+  ObjectState target_object_2(5, 11, 2, 23, 46, 45, 1, 67, 134, 1);
+  ObjectState target_object_3(6, 12, 0, 78, 45, 21, 0, 26, 300, 1);
 
   env_state_test.find_target_objects(target_object_1); 
   ASSERT_EQ(env_state_test.targetObjects[1].get_obj_lane(), 1);
@@ -230,14 +230,14 @@ TEST(FindTargetObjects, validLogic){
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
 
-  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 100);
-  ObjectState new_object_2(5, 15, 2, 43, 6, 15, 1, 64, 200);
-  ObjectState new_object_3(1, 24, 0, 67, 3, 623, 1, 45, 1200);
-  ObjectState new_object_4(9, 2, 0, 67, 3, 623, 1, 45, 1200);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 100, 1);
+  ObjectState new_object_2(5, 15, 2, 43, 6, 15, 1, 64, 200, 1);
+  ObjectState new_object_3(1, 24, 0, 67, 3, 623, 1, 45, 1200, 1);
+  ObjectState new_object_4(9, 2, 0, 67, 3, 623, 1, 45, 1200, 1);
 
-  ObjectState target_object_1(7, 89, 1, 29, 45, 21, 0, 26, 300);
-  ObjectState target_object_2(5, 11, 2, 23, 46, 45, 1, 67, 134);
-  ObjectState target_object_3(6, 12, 0, 78, 45, 21, 0, 26, 300);
+  ObjectState target_object_1(7, 89, 1, 29, 45, 21, 0, 26, 300, 1);
+  ObjectState target_object_2(5, 11, 2, 23, 46, 45, 1, 67, 134, 1);
+  ObjectState target_object_3(6, 12, 0, 78, 45, 21, 0, 26, 300, 1);
 
   env_state_test.targetObjects[0] = target_object_3;// add objects in increasing order of lanes (0, 1, 2)
   ASSERT_EQ(env_state_test.targetObjects[0].get_obj_id(), 6);

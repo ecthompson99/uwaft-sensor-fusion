@@ -25,6 +25,7 @@ def main():
 				a.obj_timestamp = i + offset
 				a.obj_path = i%2 == 0
 				a.obj_vy = i + offset
+				a.obj_count = i + offset
 				sender.publish(a)
 				time.sleep(.01)
 			time.sleep(.5)

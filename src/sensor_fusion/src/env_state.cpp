@@ -193,8 +193,7 @@ bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Requ
             res.vy.push_back(trackedObjects[i].get_obj_vy());
             res.timestamp.push_back(trackedObjects[i].get_obj_timestamp());
             
-            // not in objects yet
-            //res.count.push_back(trackedObjects[i].get_obj_count);
+            res.count.push_back(trackedObjects[i].get_obj_count());
         }
         return true;
 }
