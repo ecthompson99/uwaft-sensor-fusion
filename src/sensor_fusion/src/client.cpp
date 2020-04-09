@@ -46,9 +46,8 @@ class stateTemp{
 };
 
 
-
 int main(int argc, char **argv){
-    ros::init(argc, argv, "client");
+    ros::init(argc, argv, "client");    //each executable needs an init (for node)
     
     // void callback_temp(const sensor_fusion::dummy_msg& msg_obj);
 
