@@ -6,6 +6,8 @@
 #include "sensor_fusion/filtered_object_msg.h" // sub
 #include "sensor_fusion/object_output_msg.h"  // pub
 #include <vector>
+#include "sensor_fusion/env_state_srv.h"  //service
+
 
 
 static const uint8_t MESSAGE_BUFFER_SIZE = 10;

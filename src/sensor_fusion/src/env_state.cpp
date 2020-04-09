@@ -1,6 +1,5 @@
 #include "env_state.h"
 //#include "object_state.h"
-#include "sensor_fusion/env_state_srv.h"  //service
 
 
 #define TIMESTAMP_TOL 10 // 10 ms tolerance used to determine outdated tracks

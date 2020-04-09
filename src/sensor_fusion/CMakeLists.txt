@@ -75,7 +75,7 @@ find_package(
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
-#   request_env_data_srv.srv
+#   env_state_srv.srv
 #   Service2.srv
 # )
 
