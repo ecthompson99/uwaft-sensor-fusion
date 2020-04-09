@@ -28,14 +28,15 @@ class EnvironmentState {
   void update_env_state(const ObjectState& tracked_msg); 
   void find_target_objects(const ObjectState& tracked_msg);
 
- // bool env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res);
+    //FOR SERVICE
+  bool env_state_srv_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res);
 
   private:
   ros::NodeHandle* env_state_node_handle;
   ros::Subscriber filtered_object_sub;
   ros::Publisher object_output_pub;
   sensor_fusion::object_output_msg object_output_msg;
- // ros::ServiceServer my_service;
+  ros::ServiceServer service;
 };
 
 #endif  // __ENV_STATE_H__

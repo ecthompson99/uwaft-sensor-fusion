@@ -16,7 +16,7 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
 	trackedObjects.reserve(NUM_OBJECTS); 	// reserve memory for vector (NUM_OBJECTS)
 	
 	
-  //my_service = env_state_node_handle->advertiseService("srv_env_state_topic", &EnvironmentState::env_state_vector_service_callback, this);     
+  service = env_state_node_handle->advertiseService("env_service_topic", &EnvironmentState::env_state_srv_callback, this);     
 
 }
 
@@ -177,12 +177,26 @@ void EnvironmentState::find_target_objects(const ObjectState& tracked_msg){
 }
 
 
-// service callback
-//bool EnvironmentState::env_state_vector_service_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res){
-  //res.classObj = 3;
-  
-//  return true;
-//}
+bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res){
+
+        // breaking the objects stored in the vector into members and storing in multiple vectors for srv communication
+        // index refers to specific objectNum in the original vector
+        for(int i = 0; i < trackObjects.size(); i++){
+            res.id.push_back(trackedObjects[i].obj_id);
+            res.dx.push_back(trackedObjects[i].obj_dx);
+            res.lane.push_back(trackedObjects[i].obj_lane);
+            res.vx.push_back(trackedObjects[i].obj_vx);
+            res.dy.push_back(trackedObjects[i].obj_dy);
+            res.ax.push_back(trackedObjects[i].obj_ax);
+            res.path.push_back(trackedObjects[i].obj_path);
+            res.vy.push_back(trackedObjects[i].obj_vy);
+            res.timestamp.push_back(trackedObjects[i].obj_timestamp);
+            res.count.push_back(trackedObjects[i].obj_count);
+        }
+        return true;
+}
+
+
 
 
 
