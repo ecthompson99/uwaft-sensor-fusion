@@ -157,11 +157,11 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/sensor_fusion_node.cpp)
 
-#######add_executable(
-    ###########${PROJECT_NAME}
-    ############src/sensor_fusion_main.cpp
-    ############src/data_association.cpp
-####)
+add_executable(
+    ${PROJECT_NAME}
+    src/sensor_fusion_main.cpp
+    src/data_association.cpp
+)
 
 
 
