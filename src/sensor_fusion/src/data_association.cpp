@@ -101,15 +101,15 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
 
     if (client.call(srv)){
         std::cout<<"HEY";
-        for(int i = 0; i < srv.response.obj_id.size(); i++){
+        for(int i = 0; i < srv.response.id.size(); i++){
             
-            ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.lane[i], srv.response.vx[i], 
-            srv.response.dy[i], srv.response.ax[i],srv.response.path[i],srv.response.vy[i],srv.response.timestamp[i],srv.response.count[i]);
+       		//	// ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.lane[i], srv.response.vx[i], 
+                //	// srv.response.dy[i], srv.response.ax[i],srv.response.path[i],srv.response.vy[i],srv.response.timestamp[i],srv.response.count[i]);
             
-            stateVector.push_back(someObj); 
+           	//	// stateVector.push_back(someObj); 
         } 
-        std::cout << stateVector[0].obj_id << std::endl; //6
-        std::cout << stateVector[2].obj_dx << std::endl;    //should return 8.3   
+        std::cout << stateVector[0].id << std::endl; //6
+        std::cout << stateVector[2].dx << std::endl;    //should return 8.3   
 
         // if the object we received is already in the envState, send it to kf
         for (auto obj : stateVector) {
@@ -121,8 +121,8 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
         
     } else {
         ROS_ERROR("Failed to call service, but continuing to the already stored potential objects, maybe it matches up there!?");
-    }     
-   
+    }    
+
 
    // CHECK TEMP TRACKS
 
