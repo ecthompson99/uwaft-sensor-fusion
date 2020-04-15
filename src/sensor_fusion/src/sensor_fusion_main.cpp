@@ -1,14 +1,19 @@
-#include "sensor_fusion.h"
+#include "ros/ros.h"
+#include "env_state.h"
+#include "string.h"
 
 int main(int argc, char** argv) {
-  ros::init(argc, argv, "sensor_fusion");
-  ros::NodeHandle sensor_fusion_handle;
-  SensorFusion sensor_fusion(&sensor_fusion_handle);
+
+  ros::init(argc, argv, "sensor_fusion"); 
+  ros::NodeHandle env_state_node_handle;
+  EnvironmentState env_state(&env_state_node_handle);
 
   while (ros::ok()) {
-    sensor_fusion.publish_fused_data();
+    env_state.publish_object_output();
     ros::spinOnce();
   }
 
   return 0;
 }
+
+
