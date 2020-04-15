@@ -30,6 +30,7 @@ find_package(
 	roscpp
 	std_msgs
 	message_generation
+    rospy
 )
 
 ## System dependencies are found with CMake's conventions
@@ -73,6 +74,8 @@ find_package(
     radar_object_data.msg
     mobileye_object_data.msg
     dummy_msg.msg
+    associated_radar_msg.msg
+    associated_me_msg.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -127,7 +130,7 @@ find_package(
 catkin_package(
   INCLUDE_DIRS include
   #LIBRARIES sensor_fusion
-  CATKIN_DEPENDS roscpp message_runtime std_msgs
+  CATKIN_DEPENDS roscpp message_runtime std_msgs rospy
   #DEPENDS system_lib
 )
 
