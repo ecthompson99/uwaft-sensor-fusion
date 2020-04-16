@@ -81,7 +81,7 @@ find_package(
 ## Generate services in the 'srv' folder
  add_service_files(
     FILES
-#    env_state_srv.srv
+    env_state_srv.srv
     new_srv.srv
 )
 

@@ -10,10 +10,10 @@ int main(int argc, char **argv){
     
     sensor_fusion::new_srv srv;
     
-    srv.request.useless = 1;
+    srv.request.a = ;
 
     if (client.call(srv)){
-        ROS_INFO("Sum: %f %d %f", srv.response.data[0].apple, srv.response.data[0].bat, srv.response.data[0].cat);
+        ROS_INFO("Sum: %ld", (long int)srv.response.sum);
     }
     else {
         ROS_ERROR("Failed to call service add_two_ints");
