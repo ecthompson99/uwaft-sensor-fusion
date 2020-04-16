@@ -45,7 +45,7 @@ void EnvironmentState::publish_target_obj() {
 
 
 //	 TESTING-------------------------------------------------------
-     printf("Object Output Msg\n");
+     printf("Target Output Msg\n");
      printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
      target_output_msg.obj_id, target_output_msg.obj_dx, target_output_msg.obj_lane, 
      target_output_msg.obj_vx, target_output_msg.obj_dy, target_output_msg.obj_ax, 
@@ -61,31 +61,34 @@ void EnvironmentState::publish_target_obj() {
 
 void EnvironmentState::publish_tracked_obj() {
 
-		for (int lane = 0; lane < trackedObjects.size(); lane++){
+		if (trackedObjects.size() >=1 ){
 
-     tracked_output_msg.obj_id = trackedObjects[lane].get_obj_id();
-     tracked_output_msg.obj_dx = trackedObjects[lane].get_obj_dx();
-     tracked_output_msg.obj_lane = trackedObjects[lane].get_obj_lane(); // 0 to 2
-     tracked_output_msg.obj_vx = trackedObjects[lane].get_obj_vx();
-     tracked_output_msg.obj_dy = trackedObjects[lane].get_obj_dy();
-     tracked_output_msg.obj_ax = trackedObjects[lane].get_obj_ax();
-     tracked_output_msg.obj_path = trackedObjects[lane].get_obj_path();
-     tracked_output_msg.obj_vy = trackedObjects[lane].get_obj_vy();
-     tracked_output_msg.obj_timestamp = trackedObjects[lane].get_obj_timestamp();
-     tracked_output_msg.obj_track_num = trackedObjects[lane].get_obj_lane() + 1; // 1 to 3
+			for (int lane = 0; lane < trackedObjects.size(); lane++){
+
+		   tracked_output_msg.obj_id = trackedObjects[lane].get_obj_id();
+		   tracked_output_msg.obj_dx = trackedObjects[lane].get_obj_dx();
+		   tracked_output_msg.obj_lane = trackedObjects[lane].get_obj_lane(); // 0 to 2
+		   tracked_output_msg.obj_vx = trackedObjects[lane].get_obj_vx();
+		   tracked_output_msg.obj_dy = trackedObjects[lane].get_obj_dy();
+		   tracked_output_msg.obj_ax = trackedObjects[lane].get_obj_ax();
+		   tracked_output_msg.obj_path = trackedObjects[lane].get_obj_path();
+		   tracked_output_msg.obj_vy = trackedObjects[lane].get_obj_vy();
+		   tracked_output_msg.obj_timestamp = trackedObjects[lane].get_obj_timestamp();
+		   tracked_output_msg.obj_track_num = trackedObjects[lane].get_obj_lane() + 1; // 1 to 3
 
 
-//	 TESTING-------------------------------------------------------
-     printf("Object Output Msg\n");
-     printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
-     tracked_output_msg.obj_id, tracked_output_msg.obj_dx, tracked_output_msg.obj_lane, 
-     tracked_output_msg.obj_vx, tracked_output_msg.obj_dy, tracked_output_msg.obj_ax, 
-     tracked_output_msg.obj_path, tracked_output_msg.obj_vy, tracked_output_msg.obj_timestamp, 
-     tracked_output_msg.obj_track_num);
- 
+	//	 TESTING-------------------------------------------------------
+		   printf("Tracked Output Msg\n");
+		   printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
+		   tracked_output_msg.obj_id, tracked_output_msg.obj_dx, tracked_output_msg.obj_lane, 
+		   tracked_output_msg.obj_vx, tracked_output_msg.obj_dy, tracked_output_msg.obj_ax, 
+		   tracked_output_msg.obj_path, tracked_output_msg.obj_vy, tracked_output_msg.obj_timestamp, 
+		   tracked_output_msg.obj_track_num);
+	 
 
-    tracked_obj_pub.publish(tracked_output_msg);
-     
+		  tracked_obj_pub.publish(tracked_output_msg);
+		   
+		}
 	}
 
 }
