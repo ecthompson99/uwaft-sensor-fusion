@@ -4,8 +4,8 @@
 
 DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(node_handle) {
     
-    client = node_handle->serviceClient<sensor_fusion::env_state_srv>("srv_env_state_topic");
-    
+    client = node_handle->serviceClient<sensor_fusion::env_state_srv>("env_service_topic");
+
     sensor_diag_sub = node_handle->subscribe(SENSOR_DIAG_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_diagnostics_callback, this);
     
     sensor_me_data_obj_sub = node_handle->subscribe(MOBILEYE_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_me_data_obj_callback, this);
@@ -91,40 +91,41 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
 
     ObjectState sensor_data = convert_radar_data(recvd_data);
 
-    //get environment state with service
+    // Get environment state with service
+
+    // NEED TO FIX OBJECT STATE TEMP CONSTRUCTOR IN THIS BRANCH --> CONVERTDATA Declarations need to be extended too! more variables to hold
+
+    sensor_fusion::env_state_srv srv;
     
-    sensor_fusion::env_state_srv service_call;    //service object
-    
-    if (client.call(service_call)){     //returns true if the service call went through, false is error
+    std::vector<ObjectState> stateVector;
+
+    if (client.call(srv)){
+        std::cout<<"HEY";
+        for(int i = 0; i < srv.response.id.size(); i++){
+            
+       		//	// ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.lane[i], srv.response.vx[i], 
+                //	// srv.response.dy[i], srv.response.ax[i],srv.response.path[i],srv.response.vy[i],srv.response.timestamp[i],srv.response.count[i]);
+            
+           	//	// stateVector.push_back(someObj); 
+        } 
+        std::cout << stateVector[0].id << std::endl; //6
+        std::cout << stateVector[2].dx << std::endl;    //should return 8.3   
+
+        // if the object we received is already in the envState, send it to kf
+        for (auto obj : stateVector) {
+            if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
+                publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
+                return;
+            }
+        }     
         
-<<<<<<< HEAD
-        std::vector<double> envState = service_call.response.env_state_vec_from_container;
-=======
-        int envState = service_call.response.classObj_Containing_vector_as_class_member;
->>>>>>> 272ddc9fd06516987cace9add1d05b7dbbe8ce33
+    } else {
+        ROS_ERROR("Failed to call service, but continuing to the already stored potential objects, maybe it matches up there!?");
+    }    
 
-        // #include or dependencies when calling because EnvironmentState envState = service_call.response.classObj_Containing_vector_as_class_member;
 
-<<<<<<< HEAD
-        //if the object we received is already in the envState, send it to kf
-=======
-        // // std::vector<int> envState = service_call.response.env_state_vec_from_container;
+   // CHECK TEMP TRACKS
 
-        // // if the object we received is already in the envState, send it to kf
->>>>>>> 272ddc9fd06516987cace9add1d05b7dbbe8ce33
-        // for (auto obj : envState) {
-        //     if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
-        //         publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
-        //         return;
-        //     }
-<<<<<<< HEAD
-        // }
-=======
-        // } 
->>>>>>> 272ddc9fd06516987cace9add1d05b7dbbe8ce33
-    }
-
-   
     for (int i = 0; i < potential_objs.size(); i++) {  
         if (objects_match(potential_objs[i], sensor_data)) {    //won't consider this possibility if already matched for that sensor_data
 
@@ -144,6 +145,8 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
         }
     }
 
+    // ONLY OCCURS IF NOT IN CONFIRMED TRACKS OR TEMP TRACKS
+
     std::cout << "added obj to potentials" << std::endl;
     potential_objs.emplace_back(sensor_data);
 }
@@ -162,15 +165,15 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
 
     //get environment state with service
     
-    // std::vector<ObjectState> envState;
+    std::vector<ObjectState> envState;
 
-    // // if the object we received is already in the envState, send it to kf
-    // for (auto obj : envState) {
-    //     if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
-    //         publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
-    //         return;
-    //     }
-    // } 
+    // if the object we received is already in the envState, send it to kf
+    for (auto obj : envState) {
+        if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
+            publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
+            return;
+        }
+    } 
 
     // now check if it matches any of the potential objects
 

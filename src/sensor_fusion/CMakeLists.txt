@@ -162,11 +162,20 @@ include_directories(
 
 add_executable(
     ${PROJECT_NAME}
-#    src/sensor_fusion_main.cpp
-#    src/data_association.cpp
-    src/server.cpp
-    src/client.cpp
+    src/sensor_fusion_main.cpp
+    src/data_association.cpp
 )
+
+
+
+add_executable(client src/client.cpp)
+add_dependencies(client ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(client ${catkin_LIBRARIES})
+
+add_executable(server src/server.cpp)
+add_dependencies(server ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(server ${catkin_LIBRARIES})
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -178,25 +187,27 @@ add_executable(
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_dependencies(
-    ${PROJECT_NAME}
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-)
+
+####add_dependencies(
+    ####${PROJECT_NAME}
+    ####${${PROJECT_NAME}_EXPORTED_TARGETS}
+####)
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(
-    ${PROJECT_NAME}
-    ${catkin_LIBRARIES}
-)
 
-target_compile_definitions(
-    ${PROJECT_NAME}
-    PUBLIC
-    ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_VERBOSITY}
-)
+####target_link_libraries(
+    ####${PROJECT_NAME}
+    ####${catkin_LIBRARIES}
+####)
+
+#####target_compile_definitions(
+    #####${PROJECT_NAME}
+    #####PUBLIC
+    #####ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_VERBOSITY}
+#####)
 
 
 
@@ -251,6 +262,9 @@ if (CATKIN_ENABLE_TESTING)
         ${PROJECT_NAME}-test
         test/test_sensor_fusion.cpp
         src/sensor_fusion_main.cpp
+        src/server.cpp
+        src/client.cpp
+        src/data_association.cpp
     )
     if(TARGET ${PROJECT_NAME}-test)
         target_link_libraries(

@@ -1,24 +1,83 @@
 #include "ros/ros.h"
 #include "sensor_fusion/new_srv.h"
 #include <cstdlib>
+#include "sensor_fusion/dummy_msg.h"
    
+
+//class stateTemp{
+//     public:
+
+//     stateTemp(int id, double dx, int lane, double vx, double, dy, double ax, bool path, double vy, double time, int count) :
+//         obj_id(id), obj_dx(dx), obj_lane(lane), obj_vx(vx), obj_dy(dy), obj_ax(ax), obj_path(path), obj_vy(vy), obj_timestamp(time), obj_count(count){
+
+//     }
+
+//     int obj_id;
+//     double obj_dx;
+//     int obj_lane;
+//     double obj_vx;
+//     double obj_dy;
+//     double obj_ax;
+//     bool obj_path;
+//     double obj_vy;
+//     double obj_timestamp;
+//     int obj_count;
+// };
+
+
+
+class stateTemp{
+    public:
+
+    stateTemp(int id, double dx) : obj_id(id), obj_dx(dx){
+
+    }
+
+    int obj_id;
+    double obj_dx;
+    // int obj_lane;
+    // double obj_vx;
+    // double obj_dy;
+    // double obj_ax;
+    // bool obj_path;
+    // double obj_vy;
+    // double obj_timestamp;
+    // int object_track_num;
+};
+
+
 int main(int argc, char **argv){
-    ros::init(argc, argv, "client");
-   
+    ros::init(argc, argv, "client");    //each executable needs an init (for node)
+    
+    // void callback_temp(const sensor_fusion::dummy_msg& msg_obj);
+
     ros::NodeHandle n;
     ros::ServiceClient client = n.serviceClient<sensor_fusion::new_srv>("service_topic");
+    // ros::Subscriber sub = n.subscribe("tempTopic", 10, callback_temp);
     
     sensor_fusion::new_srv srv;
     
-    srv.request.a = ;
+    std::vector<stateTemp> stateVector;
 
     if (client.call(srv)){
-        ROS_INFO("Sum: %ld", (long int)srv.response.sum);
-    }
-    else {
-        ROS_ERROR("Failed to call service add_two_ints");
+        std::cout<<"HEY";
+        for(int i = 0; i < srv.response.obj_id.size(); i++){
+            stateTemp someObj(srv.response.obj_id[i], srv.response.obj_dx[i]);
+            stateVector.push_back(someObj); 
+        } 
+        std::cout << stateVector[0].obj_id << std::endl; //6
+        std::cout << stateVector[2].obj_dx << std::endl;    //should return 8.3       
+    } else {
+        ROS_ERROR("Failed to call service");
         return 1;
     }
-   
+
+
+    ros::spinOnce();
     return 0;
 }
+
+
+// void callback_temp(const sensor_fusion::dummy_msg& msg_obj){
+//     std::cout << msg_obj.apple << std::endl;
+// }
