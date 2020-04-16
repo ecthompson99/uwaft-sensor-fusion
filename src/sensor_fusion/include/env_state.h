@@ -40,6 +40,8 @@ class EnvironmentState {
   ros::Subscriber filtered_object_sub;
   ros::Publisher target_obj_pub;
 	ros::Publisher tracked_obj_pub;
+  sensor_fusion::target_output_msg target_output_msg;
+  sensor_fusion::tracked_output_msg tracked_output_msg;
   ros::ServiceServer service;
 };
 
