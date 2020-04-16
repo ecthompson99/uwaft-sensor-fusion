@@ -89,6 +89,7 @@ void EnvironmentState::publish_tracked_obj() {
 		  tracked_obj_pub.publish(tracked_output_msg);
 		   
 		}
+
 	}
 
 }
