@@ -260,22 +260,39 @@ TEST(FindTargetObjects, validLogic){
 
 }
 
-//bool object_output_cb_called = false;
-//void test_output_obj_cb(const sensor_fusion::object_output_msg& object_output_msg){object_output_cb_called = true;}
+bool target_output_cb_called = false;
+void test_target_obj_cb(const sensor_fusion::target_obj_pub& target_output_msg){target_output_cb_called = true;}
 
-//TEST(PublishOutputObj, validLogic){
-//  ros::NodeHandle env_state_node_handle;
-//  EnvironmentState env_state_test(&env_state_node_handle);
+TEST(PublishOutputObj, validLogic){
+  ros::NodeHandle env_state_node_handle;
+  EnvironmentState env_state_test(&env_state_node_handle);
 
-//  ros::NodeHandle output_obj_node_handle;
-//  ros::Subscriber sub = output_obj_node_handle.subscribe("object_output", MESSAGE_BUFFER_SIZE, &test_output_obj_cb);
+  ros::NodeHandle target_obj_node_handle;
+  ros::Subscriber sub = target_obj_node_handle.subscribe("target_obj", MESSAGE_BUFFER_SIZE, &test_target_obj_cb);
 
-//  env_state_test.publish_object_output();
-//  ros::spinOnce();
+  env_state_test.publish_target_obj();
+  ros::spinOnce();
 
-//  ASSERT_EQ(object_output_cb_called, false);
+  ASSERT_EQ(target_output_cb_called, false);
 
-//}
+}
+
+bool tracked_output_cb_called = false;
+void test_tracked_obj_cb(const sensor_fusion::tracked_obj_pub& tracked_output_msg){tracked_output_cb_called = true;}
+
+TEST(PublishOutputObj, validLogic){
+  ros::NodeHandle env_state_node_handle;
+  EnvironmentState env_state_test(&env_state_node_handle);
+
+  ros::NodeHandle tracked_obj_node_handle;
+  ros::Subscriber sub = tracked_obj_node_handle.subscribe("tracked_obj", MESSAGE_BUFFER_SIZE, &test_tracked_obj_cb);
+
+  env_state_test.publish_tracked_obj();
+  ros::spinOnce();
+
+  ASSERT_EQ(tracked_output_cb_called, false);
+
+}
 
 
 int main(int argc, char **argv) {
