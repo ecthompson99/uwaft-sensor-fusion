@@ -1,9 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+from __future__ import print_function, division
 import rospy
 import numpy as np 
 from filterpy.kalman import KalmanFilter
 from filterpy.common import Q_discrete_white_noise
-from __future__ import print_function, division
 from kalman_filter.msg import object_deletion_msg, filtered_object_msg
 from sensor_fusion.msg import associated_me_msg, associated_radar_msg
 
@@ -31,7 +31,7 @@ class KF(KalmanFilter):
         self.Q = Q_discrete_white_noise(2, self.dt, .5**2, block_size=2)
         np.fill_diagonal(self.P, [100 for _ in range(4)])
 
-class KF_Node:
+class KF_Node(object):
     def me_association_callback(self, obj):
         measurement = [[obj.obj.me_dx,
                         obj.obj.me_dy,
@@ -58,7 +58,7 @@ class KF_Node:
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
         result.obj_id = obj.obj_id 
         result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
-        result.ax = obj.obj.me_ax
+        result.obj_ax = obj.obj.me_ax
         result.obj_timestamp = obj.obj.me_timestamp
         result.obj_count = 30
         
@@ -87,7 +87,7 @@ class KF_Node:
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
         result.obj_id = obj.obj_id 
         result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
-        result.ax = obj.obj.radar_ax
+        result.obj_ax = obj.obj.radar_ax
         result.obj_timestamp = obj.obj.radar_timestamp
         result.obj_count = 30
 
@@ -99,10 +99,10 @@ class KF_Node:
     def __init__(self):
         rospy.init_node('kf_node')
         self.objects = {}
-        rospy.Subscriber('associated_me', self.me_association_callback)
-        rospy.Subscriber('associated_radar', self.radar_association_callback)
-        rospy.Subscriber('obj_deletion', self.object_deletion_callback)
-        self.output = rospy.Publisher('filtered_obj', filtered_object_msg)
+        rospy.Subscriber('associated_me', associated_me_msg, callback=self.me_association_callback)
+        rospy.Subscriber('associated_radar', associated_radar_msg, callback=self.radar_association_callback)
+        rospy.Subscriber('obj_deletion', object_deletion_msg, callback=self.object_deletion_callback)
+        self.output = rospy.Publisher('filtered_obj', filtered_object_msg, queue_size=10)
 
 if __name__ == '__main__':
     KF_Node()

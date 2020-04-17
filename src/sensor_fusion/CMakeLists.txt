@@ -164,17 +164,21 @@ add_executable(
     ${PROJECT_NAME}
     src/sensor_fusion_main.cpp
     src/data_association.cpp
+    include/data_association.h
+)
+target_link_libraries(
+    sensor_fusion
+    ${catkin_LIBRARIES}
 )
 
 
+# add_executable(client src/client.cpp)
+# add_dependencies(client ${${PROJECT_NAME}_EXPORTED_TARGETS})
+# target_link_libraries(client ${catkin_LIBRARIES})
 
-add_executable(client src/client.cpp)
-add_dependencies(client ${${PROJECT_NAME}_EXPORTED_TARGETS})
-target_link_libraries(client ${catkin_LIBRARIES})
-
-add_executable(server src/server.cpp)
-add_dependencies(server ${${PROJECT_NAME}_EXPORTED_TARGETS})
-target_link_libraries(server ${catkin_LIBRARIES})
+# add_executable(server src/server.cpp)
+# add_dependencies(server ${${PROJECT_NAME}_EXPORTED_TARGETS})
+# target_link_libraries(server ${catkin_LIBRARIES})
 
 
 ## Rename C++ executable without prefix
