@@ -8,7 +8,7 @@ class ObjectState {
  public:
   ObjectState();
   ObjectState(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
-    double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp, uint8_t set_obj_count);
+    double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp,uint8_t set_obj_track_num); //, uint8_t set_obj_count) {
   virtual ~ObjectState();
   uint8_t get_obj_id() const;
   double get_obj_dx() const;
@@ -19,7 +19,7 @@ class ObjectState {
   bool get_obj_path() const;
   double get_obj_vy() const;
   double get_obj_timestamp() const;
-	uint8_t get_obj_count() const;
+//	uint8_t get_obj_count() const;
 
   void copy_info(const sensor_fusion::filtered_object_msg& filtered_msg);
   
@@ -34,7 +34,7 @@ class ObjectState {
   double obj_vy; // lateral velocity
   double obj_timestamp; //time last object detection
 	uint8_t obj_track_num; // for CAN DBC file
-	uint8_t obj_count; // count used for obj association
+//	uint8_t obj_count; // count used for obj association
 };
 
 #endif  // __OBJECT_STATE_H__

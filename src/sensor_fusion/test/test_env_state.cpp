@@ -216,6 +216,10 @@ TEST(FindTargetObjectsEmptyArray, validLogic){
   ObjectState target_object_2(5, 11, 2, 23, 46, 45, 1, 67, 134, 1);
   ObjectState target_object_3(6, 12, 0, 78, 45, 21, 0, 26, 300, 1);
 
+  ASSERT_EQ(env_state_test.targetObjects[0].get_obj_id(), 0);
+  ASSERT_EQ(env_state_test.targetObjects[1].get_obj_id(), 0);
+  ASSERT_EQ(env_state_test.targetObjects[2].get_obj_id(), 0);
+
   env_state_test.find_target_objects(target_object_1); 
   ASSERT_EQ(env_state_test.targetObjects[1].get_obj_lane(), 1);
 

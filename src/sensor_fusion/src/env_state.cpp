@@ -20,8 +20,16 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
 
 
 	trackedObjects.reserve(NUM_OBJECTS); 	// reserve memory for vector (NUM_OBJECTS)
-	
-	
+
+	// initialize array of targetObjects
+	ObjectState target_obj1(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	ObjectState target_obj2(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	ObjectState target_obj3(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+	targetObjects[0] = target_obj1;
+	targetObjects[1] = target_obj2;
+	targetObjects[2] = target_obj3;
+
   service = env_state_node_handle->advertiseService("env_service_topic", &EnvironmentState::env_state_srv_callback, this);     
 
 }
@@ -30,32 +38,34 @@ EnvironmentState::~EnvironmentState() {}
 
 void EnvironmentState::publish_target_obj() {
 
-		for (int lane = 0; lane < 3; lane++){
+	//if (target1 && target2 && target3){ // all 3 targets are filled
+			for (int lane = 0; lane < 3; lane++){
 
-     target_output_msg.obj_id = targetObjects[lane].get_obj_id();
-     target_output_msg.obj_dx = targetObjects[lane].get_obj_dx();
-     target_output_msg.obj_lane = targetObjects[lane].get_obj_lane(); // 0 to 2
-     target_output_msg.obj_vx = targetObjects[lane].get_obj_vx();
-     target_output_msg.obj_dy = targetObjects[lane].get_obj_dy();
-     target_output_msg.obj_ax = targetObjects[lane].get_obj_ax();
-     target_output_msg.obj_path = targetObjects[lane].get_obj_path();
-     target_output_msg.obj_vy = targetObjects[lane].get_obj_vy();
-     target_output_msg.obj_timestamp = targetObjects[lane].get_obj_timestamp();
-     target_output_msg.obj_track_num = targetObjects[lane].get_obj_lane() + 1; // 1 to 3
+		   target_output_msg.obj_id = targetObjects[lane].get_obj_id();
+		   target_output_msg.obj_dx = targetObjects[lane].get_obj_dx();
+		   target_output_msg.obj_lane = targetObjects[lane].get_obj_lane(); // 0 to 2
+		   target_output_msg.obj_vx = targetObjects[lane].get_obj_vx();
+		   target_output_msg.obj_dy = targetObjects[lane].get_obj_dy();
+		   target_output_msg.obj_ax = targetObjects[lane].get_obj_ax();
+		   target_output_msg.obj_path = targetObjects[lane].get_obj_path();
+		   target_output_msg.obj_vy = targetObjects[lane].get_obj_vy();
+		   target_output_msg.obj_timestamp = targetObjects[lane].get_obj_timestamp();
+		   target_output_msg.obj_track_num = targetObjects[lane].get_obj_lane() + 1; // 1 to 3
 
 
-//	 TESTING-------------------------------------------------------
-     printf("Target Output Msg\n");
-     printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
-     target_output_msg.obj_id, target_output_msg.obj_dx, target_output_msg.obj_lane, 
-     target_output_msg.obj_vx, target_output_msg.obj_dy, target_output_msg.obj_ax, 
-     target_output_msg.obj_path, target_output_msg.obj_vy, target_output_msg.obj_timestamp, 
-     target_output_msg.obj_track_num);
- 
+	//	 TESTING-------------------------------------------------------
+		   printf("Target Output Msg\n");
+		   printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
+		   target_output_msg.obj_id, target_output_msg.obj_dx, target_output_msg.obj_lane, 
+		   target_output_msg.obj_vx, target_output_msg.obj_dy, target_output_msg.obj_ax, 
+		   target_output_msg.obj_path, target_output_msg.obj_vy, target_output_msg.obj_timestamp, 
+		   target_output_msg.obj_track_num);
+	 
 
-    target_obj_pub.publish(target_output_msg);
-     
-	}
+		  target_obj_pub.publish(target_output_msg);
+		   
+		}
+	//}
 
 }
 
@@ -234,7 +244,7 @@ bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Requ
             res.vy.push_back(trackedObjects[i].get_obj_vy());
             res.timestamp.push_back(trackedObjects[i].get_obj_timestamp());
             
-            res.count.push_back(trackedObjects[i].get_obj_count());
+            //res.count.push_back(trackedObjects[i].get_obj_count());
         }
         return true;
 }
