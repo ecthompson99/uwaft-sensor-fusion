@@ -9,7 +9,8 @@ int main(int argc, char** argv) {
   EnvironmentState env_state(&env_state_node_handle);
 
   while (ros::ok()) {
-    env_state.publish_object_output();
+    env_state.publish_target_obj();
+		env_state.publish_tracked_obj();
     ros::spinOnce();
   }
 
