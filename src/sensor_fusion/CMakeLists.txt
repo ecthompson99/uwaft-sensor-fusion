@@ -158,11 +158,11 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/sensor_fusion_node.cpp)
 
 add_executable(
-    ${PROJECT_NAME}
+    data_association
     src/data_association.cpp
 )
 target_link_libraries(
-    sensor_fusion
+    data_association
     ${catkin_LIBRARIES}
 )
 
