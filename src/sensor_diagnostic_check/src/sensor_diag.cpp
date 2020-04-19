@@ -39,8 +39,7 @@ int main(int argc, char** argv) {
     ros::Subscriber sensor_diag_sub = sensor_diag_handle.subscribe("sensor_diagnostic_data", TX_RX_MESSAGE_BUFFER_SIZE,
         can_msg_callback);
   
-    ros:: Publisher sensor_diag_pub = sensor_diag_handle.advertise<
-        sensor_diagnostic_check::sensor_diagnostic_flag_msg>("sensor_diagnostic_flags", TX_RX_MESSAGE_BUFFER_SIZE);
+    ros:: Publisher sensor_diag_pub = sensor_diag_handle.advertise<sensor_diagnostic_check::sensor_diagnostic_flag_msg>("sensor_diagnostic_flags", TX_RX_MESSAGE_BUFFER_SIZE);
   
     sensor_diagnostic_check::sensor_diagnostic_flag_msg radar_msg; 
   

@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   message_generation
+  sensor_fusion
 )
 
 ## System dependencies are found with CMake's conventions
@@ -50,6 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   filtered_object_msg.msg
+  object_deletion_msg.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -70,6 +72,7 @@ add_message_files(
 generate_messages(
   DEPENDENCIES
   std_msgs  # Or other packages containing msgs
+  sensor_fusion
 )
 
 ################################################

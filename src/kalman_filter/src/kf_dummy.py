@@ -12,26 +12,19 @@ def main():
 	for i in range(3):
 		dummy_objects[i].obj_id = i+1
 
-	i = 0
-	try:
-		while True:
-			for a in dummy_objects:
-				offset = a.obj_id
-				a.obj_dx = i + offset
-				a.obj_lane = offset - 1
-				a.obj_vx = i + offset
-				a.obj_dy = i + offset
-				a.obj_ax = i + offset
-				a.obj_timestamp = i + offset
-				a.obj_path = i%2 == 0
-				a.obj_vy = i + offset
-				a.obj_count = i + offset
-				sender.publish(a)
-				time.sleep(.01)
-			time.sleep(.5)
-			i += 1
-	except KeyboardInterrupt:
-		exit()
+	for i in range(100):
+		for a in dummy_objects:
+			offset = a.obj_id
+			a.obj_dx = i + offset
+			a.obj_lane = i + offset
+			a.obj_vx = i + offset
+			a.obj_dy = i + offset
+			a.obj_ax = i + offset
+			a.obj_in_lane = i%2 == 0
+			a.obj_vy = i + offset
+			sender.publish(a)
+			time.sleep(.01)
+		time.sleep(.5)
 
 	print('finished publishing, idling now')
 	rospy.spin()

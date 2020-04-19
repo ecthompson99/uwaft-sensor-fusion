@@ -30,6 +30,7 @@ find_package(
 	roscpp
 	std_msgs
 	message_generation
+    rospy
 )
 
 ## System dependencies are found with CMake's conventions
@@ -68,6 +69,11 @@ find_package(
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
+    sensor_diagnostic_flag_msg.msg
+    radar_object_data.msg
+    mobileye_object_data.msg
+    associated_radar_msg.msg
+    associated_me_msg.msg
    filtered_object_msg.msg
 	target_output_msg.msg
 	tracked_output_msg.msg
@@ -75,9 +81,9 @@ find_package(
 
 ## Generate services in the 'srv' folder
  add_service_files(
-   FILES
-   env_state_srv.srv
- )
+    FILES
+    env_state_srv.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -124,7 +130,7 @@ find_package(
 catkin_package(
   INCLUDE_DIRS include
   #LIBRARIES sensor_fusion
-  CATKIN_DEPENDS roscpp message_runtime std_msgs
+  CATKIN_DEPENDS roscpp message_runtime std_msgs rospy
   #DEPENDS system_lib
 )
 
@@ -155,11 +161,36 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/sensor_fusion_node.cpp)
 
 add_executable(
-    ${PROJECT_NAME}
+    data_association
+    src/data_association.cpp
+)
+
+add_executable(
+    environment_state
     src/env_state.cpp
     src/sensor_fusion_main.cpp
     src/object_state.cpp
 )
+
+target_link_libraries(
+    environment_state
+    ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+    data_association
+    ${catkin_LIBRARIES}
+)
+
+
+# add_executable(client src/client.cpp)
+# add_dependencies(client ${${PROJECT_NAME}_EXPORTED_TARGETS})
+# target_link_libraries(client ${catkin_LIBRARIES})
+
+# add_executable(server src/server.cpp)
+# add_dependencies(server ${${PROJECT_NAME}_EXPORTED_TARGETS})
+# target_link_libraries(server ${catkin_LIBRARIES})
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -171,25 +202,27 @@ add_executable(
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_dependencies(
-    ${PROJECT_NAME}
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-)
+
+####add_dependencies(
+    ####${PROJECT_NAME}
+    ####${${PROJECT_NAME}_EXPORTED_TARGETS}
+####)
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(
-    ${PROJECT_NAME}
-    ${catkin_LIBRARIES}
-)
 
-target_compile_definitions(
-    ${PROJECT_NAME}
-    PUBLIC
-    ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_VERBOSITY}
-)
+####target_link_libraries(
+    ####${PROJECT_NAME}
+    ####${catkin_LIBRARIES}
+####)
+
+#####target_compile_definitions(
+    #####${PROJECT_NAME}
+    #####PUBLIC
+    #####ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_VERBOSITY}
+#####)
 
 
 
@@ -237,28 +270,30 @@ target_compile_definitions(
 
 #############
 ## Testing ##
-#############
-if (CATKIN_ENABLE_TESTING)
-    ## Add gtest based cpp test target and link libraries
-    catkin_add_gtest(
-        ${PROJECT_NAME}-test
-        test/test_env_state.cpp
-        src/env_state.cpp
-	src/object_state.cpp
-    )
-    if(TARGET ${PROJECT_NAME}-test)
-        target_link_libraries(
-            ${PROJECT_NAME}-test
-            ${catkin_LIBRARIES}
-        )
-    endif()
-    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
-    target_compile_definitions(
-        ${PROJECT_NAME}-test
-        PUBLIC
-        ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_TEST_VERBOSITY}
-    )
-endif(CATKIN_ENABLE_TESTING)
+##############
+#if (CATKIN_ENABLE_TESTING)
+#    ## Add gtest based cpp test target and link libraries
+#    catkin_add_gtest(
+#        ${PROJECT_NAME}-test
+#        test/test_sensor_fusion.cpp
+#        src/sensor_fusion_main.cpp
+#        src/server.cpp
+#        src/client.cpp
+#        src/data_association.cpp
+#    )
+#    if(TARGET ${PROJECT_NAME}-test)
+#        target_link_libraries(
+#            ${PROJECT_NAME}-test
+#            ${catkin_LIBRARIES}
+#        )
+#    endif()
+#    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#    target_compile_definitions(
+#        ${PROJECT_NAME}-test
+#        PUBLIC
+#        ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_TEST_VERBOSITY}
+#    )
+#endif(CATKIN_ENABLE_TESTING)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

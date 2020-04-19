@@ -39,3 +39,6 @@ build/*
 devel/*
 logs/*
 .catkin_tools/*
+
+.vscode
+.ipynb_checkpoints

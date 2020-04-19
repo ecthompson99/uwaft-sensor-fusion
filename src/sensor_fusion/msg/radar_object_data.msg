@@ -1,0 +1,11 @@
+float64 radar_dx
+float64 radar_dy
+float64 radar_vx
+float64 radar_vy
+float64 radar_ax
+uint8 radar_target_num
+float64 radar_timestamp
+float64 radar_dx_sigma
+float64 radar_dy_sigma
+float64 radar_vx_sigma
+float64 radar_ax_sigma

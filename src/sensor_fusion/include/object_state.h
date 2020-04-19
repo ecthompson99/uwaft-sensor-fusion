@@ -1,6 +1,5 @@
 #ifndef __OJBECT_STATE_H__
 #define __OBJECT_STATE_H__
-
 #include "ros/ros.h"
 #include "sensor_fusion/filtered_object_msg.h"
 
