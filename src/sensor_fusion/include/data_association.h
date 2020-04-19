@@ -2,7 +2,7 @@
 #define __DATA_ASSOCIATION_H__
 
 #include "ros/ros.h"
-#include "object_state.h"
+#include "object_state_da.h"
 
 #include "sensor_fusion/env_state_srv.h"
 

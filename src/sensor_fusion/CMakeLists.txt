@@ -74,6 +74,9 @@ find_package(
     mobileye_object_data.msg
     associated_radar_msg.msg
     associated_me_msg.msg
+   filtered_object_msg.msg
+	target_output_msg.msg
+	tracked_output_msg.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -144,7 +147,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/sensor_fusion.cpp
+#   src/${PROJECT_NAME}/env_state.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -161,6 +164,19 @@ add_executable(
     data_association
     src/data_association.cpp
 )
+
+add_executable(
+    environment_state
+    src/env_state.cpp
+    src/sensor_fusion_main.cpp
+    src/object_state.cpp
+)
+
+target_link_libraries(
+    environment_state
+    ${catkin_LIBRARIES}
+)
+
 target_link_libraries(
     data_association
     ${catkin_LIBRARIES}

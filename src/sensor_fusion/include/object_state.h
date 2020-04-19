@@ -1,57 +1,39 @@
 #ifndef __OJBECT_STATE_H__
 #define __OBJECT_STATE_H__
+#include "ros/ros.h"
+#include "sensor_fusion/filtered_object_msg.h"
 
 class ObjectState {
-    public:
+ public:
+  ObjectState();
+  ObjectState(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
+    double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp,uint8_t set_obj_track_num); //, uint8_t set_obj_count) {
+  virtual ~ObjectState();
+  uint8_t get_obj_id() const;
+  double get_obj_dx() const;
+  uint8_t get_obj_lane() const;
+  double get_obj_vx() const;
+  double get_obj_dy() const;
+  double get_obj_ax() const;
+  bool get_obj_path() const;
+  double get_obj_vy() const;
+  double get_obj_timestamp() const;
+//	uint8_t get_obj_count() const;
 
-    ObjectState(){}
-
-    ObjectState(double dx, double vx, double dy, double vy, double timestamp) :
-    dx(dx),
-    vx(vx),
-    dy(dy),
-    vy(vy),
-    timestamp(timestamp)
-
-
-
-    // ADD MORE MEMBERS 
-    // THIS IS THE SRV FILE :
-    // uint8[] id
-    // float64[] dx
-    // uint8[] lane
-    // float64[] vx
-    // float64[] dy
-    // float64[] ax
-    // bool[] path
-    // float64[] vy
-    // float64[] timestamp
-    // uint8[] count
-    
-    {
-        count = 0;
-    }
-
-    ObjectState(double x, double y) :
-        dx(x), dy(y) {count = 0;}
-
-    ObjectState(unsigned long long id, double x, double y, double time) :
-        id(id), dx(x), dy(y), timestamp(time) {}
-
-    friend class DataAssociation;
-
-    // virtual ~ObjectState();
-
-    uint8_t id; // object ID
-    double dx; // longitudinal range
-    uint8_t lane; // lane assignment
-    double vx; // relaive longitudinal velocity
-    double dy; // lateral range
-    double ax; // relative longitudinal accel
-    bool path; // 1:object in path 2:object not in path
-    double vy; // lateral velocity
-    double timestamp; //time last object detection
-    int count;
-
+  void copy_info(const sensor_fusion::filtered_object_msg& filtered_msg);
+  
+ private:
+  uint8_t obj_id; // object ID
+  double obj_dx; // longitudinal range
+  uint8_t obj_lane; // lane assignment: 0-ego, 1-left, 2-right
+  double obj_vx; // relaive longitudinal velocity
+  double obj_dy; // lateral range
+  double obj_ax; // relative longitudinal accel
+  bool obj_path; // 1:object in vehicle path 2:object not in path
+  double obj_vy; // lateral velocity
+  double obj_timestamp; //time last object detection
+	uint8_t obj_track_num; // for CAN DBC file
+//	uint8_t obj_count; // count used for obj association
 };
+
 #endif  // __OBJECT_STATE_H__
