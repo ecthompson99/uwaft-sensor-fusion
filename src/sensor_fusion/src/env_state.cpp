@@ -236,12 +236,7 @@ bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Requ
         for(int i = 0; i < trackedObjects.size(); i++){
             res.id.push_back(trackedObjects[i].get_obj_id());
             res.dx.push_back(trackedObjects[i].get_obj_dx());
-            res.lane.push_back(trackedObjects[i].get_obj_lane());
-            res.vx.push_back(trackedObjects[i].get_obj_vx());
             res.dy.push_back(trackedObjects[i].get_obj_dy());
-            res.ax.push_back(trackedObjects[i].get_obj_ax());
-            res.path.push_back(trackedObjects[i].get_obj_path());
-            res.vy.push_back(trackedObjects[i].get_obj_vy());
             res.timestamp.push_back(trackedObjects[i].get_obj_timestamp());
             
             //res.count.push_back(trackedObjects[i].get_obj_count());
@@ -249,7 +244,12 @@ bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Requ
         return true;
 }
 
-
+int main(int argc, char** argv){
+    ros::init(argc, argv, "env_state");
+    ros::NodeHandle env_state_node_handle;
+    EnvironmentState env_state = EnvironmentState(&env_state_node_handle);
+    ros::spin();
+}
 
 
 

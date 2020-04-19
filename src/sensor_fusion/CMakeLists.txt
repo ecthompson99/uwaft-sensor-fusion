@@ -69,14 +69,13 @@ find_package(
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-    sensor_diagnostic_flag_msg.msg
-    radar_object_data.msg
-    mobileye_object_data.msg
-    associated_radar_msg.msg
-    associated_me_msg.msg
+   radar_object_data.msg
+   mobileye_object_data.msg
+   associated_radar_msg.msg
+   associated_me_msg.msg
    filtered_object_msg.msg
-	target_output_msg.msg
-	tracked_output_msg.msg
+   target_output_msg.msg
+   tracked_output_msg.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -168,9 +167,11 @@ add_executable(
 add_executable(
     environment_state
     src/env_state.cpp
-    src/sensor_fusion_main.cpp
     src/object_state.cpp
 )
+
+add_dependencies(data_association ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_dependencies(environment_state ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 target_link_libraries(
     environment_state
