@@ -69,6 +69,7 @@ find_package(
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
+   sensor_diagnostic_flag_msg.msg
    radar_object_data.msg
    mobileye_object_data.msg
    associated_radar_msg.msg
