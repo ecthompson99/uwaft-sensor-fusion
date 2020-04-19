@@ -1,4 +1,5 @@
 #include "data_association.h"
+#include "object_state.h"
 #include <algorithm>
 #include <ctime>
 
@@ -12,8 +13,8 @@ DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(nod
     
     sensor_radar_data_obj_sub = node_handle->subscribe(RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
     
-    radar_to_kf_pub = node_handle->advertise<sensor_fusion::associated_radar_msg>(KALMAN_FILTER_TOPIC, 10);
-    me_to_kf_pub = node_handle->advertise<sensor_fusion::associated_me_msg>(MOBILEYE_TOPIC, 10);
+    radar_to_kf_pub = node_handle->advertise<sensor_fusion::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
+    me_to_kf_pub = node_handle->advertise<sensor_fusion::associated_me_msg>(KALMAN_FILTER_ME_TOPIC, 10);
 
     next_id = 0;
 }
@@ -68,7 +69,6 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
     // std::cout << "radar_timestamp: " << (time_t)recvd_data.radar_timestamp << " ";
     // std::cout << std::endl << std::endl;
 
-    sensor_data = *recvd_data;
     sensor_fusion::env_state_srv srv;
     std::vector<ObjectState> stateVector;
 
@@ -84,9 +84,9 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
         // std::cout << stateVector[2].dx << std::endl;
 
         for (auto obj : stateVector) {
-            if (objects_match(obj, sensor_data.radar_dx, sensor_data.radar_dy)) {
+            if (objects_match(obj, recvd_data.radar_dx, recvd_data.radar_dy)) {
                 sensor_fusion::associated_radar_msg matched;
-                matched.obj = sensor_data;
+                matched.obj = recvd_data;
                 matched.obj_id = obj.id;
                 radar_to_kf_pub.publish(matched);
                 return;
@@ -99,15 +99,15 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
 
    // CHECK TEMP TRACKS
     for (int i = 0; i < potential_objs.size(); i++) {  
-        if (objects_match(potential_objs[i], sensor_data.radar_dx, sensor_data.radar_dy)) {
+        if (objects_match(potential_objs[i], recvd_data.radar_dx, recvd_data.radar_dy)) {
 
-            potential_objs[i].dx = sensor_data.dx;
-            potential_objs[i].dy = sensor_data.dy;
+            potential_objs[i].dx = recvd_data.radar_dx;
+            potential_objs[i].dy = recvd_data.radar_dy;
             potential_objs[i].count++;
 
             if (potential_objs[i].count > 5) {
                 sensor_fusion::associated_radar_msg matched;
-                matched.obj = sensor_data;
+                matched.obj = recvd_data;
                 matched.obj_id = next_id++;
                 radar_to_kf_pub.publish(matched);
                 potential_objs.erase (potential_objs.begin()+i);
@@ -121,7 +121,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
     // ONLY OCCURS IF NOT IN CONFIRMED TRACKS OR TEMP TRACKS
 
     std::cout << "added obj to potentials" << std::endl;
-    potential_objs.emplace_back(ObjectState(sensor_data.radar_dx, sensor_data.radar_dy));
+    potential_objs.emplace_back(ObjectState(recvd_data.radar_dx, recvd_data.radar_dy));
 }
 
 void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_object_data& recvd_data) {
@@ -133,8 +133,7 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
     // std::cout << std::endl << std::endl;
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
-    sensor_data = *recvd_data;
-    
+    sensor_fusion::env_state_srv srv;
     std::vector<ObjectState> envState;
 
     if (client.call(srv)){
@@ -150,9 +149,9 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
 
         // if the object we received is already in the envState, send it to kf
         for (auto obj : envState) {
-            if (objects_match(obj, sensor_data.me_dx, sensor_data.me_dy)) {
+            if (objects_match(obj, recvd_data.me_dx, recvd_data.me_dy)) {
                 sensor_fusion::associated_me_msg matched;
-                matched.obj = sensor_data;
+                matched.obj = recvd_data;
                 matched.obj_id = obj.id;
                 me_to_kf_pub.publish(matched);
                 return;
@@ -166,15 +165,15 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
     // now check if it matches any of the potential objects
 
     for (int i = 0; i < potential_objs.size(); i++) {  
-        if (objects_match(potential_objs[i], sensor_data.me_dx, sensor_data.me_dy)) {
+        if (objects_match(potential_objs[i], recvd_data.me_dx, recvd_data.me_dy)) {
 
-            potential_objs[i].dx = sensor_data.dx;
-            potential_objs[i].dy = sensor_data.dy;
+            potential_objs[i].dx = recvd_data.me_dx;
+            potential_objs[i].dy = recvd_data.me_dy;
             potential_objs[i].count++;
 
             if (potential_objs[i].count > 5) {
                 sensor_fusion::associated_me_msg matched;
-                matched.obj = sensor_data;
+                matched.obj = recvd_data;
                 matched.obj_id = next_id++;
                 me_to_kf_pub.publish(matched);
                 potential_objs.erase (potential_objs.begin()+i);
@@ -184,7 +183,7 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
         }
     }
 
-    potential_objs.emplace_back(ObjectState(sensor_data.me_dx, sensor_data.me_dy));
+    potential_objs.emplace_back(ObjectState(recvd_data.me_dx, recvd_data.me_dy));
 }
 
 void DataAssociation::sensor_diagnostics_callback(const sensor_fusion::sensor_diagnostic_flag_msg& sensor_diag) {
