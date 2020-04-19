@@ -1,2 +1,2 @@
 mobileye_object_data obj 
-uint8 obj_id
+uint64 obj_id

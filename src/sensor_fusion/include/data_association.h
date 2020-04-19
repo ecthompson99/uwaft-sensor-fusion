@@ -3,55 +3,56 @@
 
 #include "ros/ros.h"
 #include "object_state.h"
+
 #include "sensor_fusion/env_state_srv.h"
 
 #include "sensor_fusion/mobileye_object_data.h"
 #include "sensor_fusion/radar_object_data.h"
 #include "sensor_fusion/sensor_diagnostic_flag_msg.h"
-#include "sensor_fusion/fused_object_data_msg.h"
+#include "sensor_fusion/associated_me_msg.h"
+#include "sensor_fusion/associated_radar_msg.h"
 
-
-static const uint8_t MESSAGE_BUFFER_SIZE = 10;
-
+#define MOBILEYE_TOPIC "mobileye_topic"
+#define RADAR_TOPIC "radar_topic"
+#define KALMAN_FILTER_RADAR_TOPIC "kf_radar"
+#define KALMAN_FILTER_ME_TOPIC "kf_me"
+#define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
+#define TOL 5
+#define MESSAGE_BUFFER_SIZE 10
 
 class DataAssociation {
 	public:
-	DataAssociation(ros::NodeHandle* node_handle);
-	void delete_potential_objects();
+		DataAssociation(ros::NodeHandle* node_handle);
+		void delete_potential_objects();
 
-	ros::Publisher mock_me_pub;
-	const std::string MOBILEYE_TOPIC = "mobileye_topic";
+		// ros::Publisher mock_me_pub;
 
-	ros::Publisher mock_radar_pub;
-	const std::string RADAR_TOPIC = "radar_topic";
+		// ros::Publisher mock_radar_pub;
 
-	friend class ObjectState;
+		friend class ObjectState;
 
 	private:
-	ros::NodeHandle* node_handle;
+		ros::NodeHandle* node_handle;
 
-    ros::ServiceClient client;
+		ros::ServiceClient client;
 
-	ros::Publisher sensor_data_obj_pub;
+		ros::Publisher radar_to_kf_pub;
+		ros::Publisher me_to_kf_pub;
 
-	ros::Subscriber sensor_radar_data_obj_sub;
-	void sensor_radar_data_obj_callback(const sensor_fusion::radar_object_data& sensor_data);
+		ros::Subscriber sensor_radar_data_obj_sub;
+		void sensor_radar_data_obj_callback(const sensor_fusion::radar_object_data& sensor_data);
 
-	ros::Subscriber sensor_me_data_obj_sub;
-	void sensor_me_data_obj_callback(const sensor_fusion::mobileye_object_data& sensor_data);
+		ros::Subscriber sensor_me_data_obj_sub;
+		void sensor_me_data_obj_callback(const sensor_fusion::mobileye_object_data& sensor_data);
 
-	ros::Subscriber sensor_diag_sub;
-	void sensor_diagnostics_callback(const sensor_fusion::sensor_diagnostic_flag_msg& sensor_diag);
+		ros::Subscriber sensor_diag_sub;
+		void sensor_diagnostics_callback(const sensor_fusion::sensor_diagnostic_flag_msg& sensor_diag);
 
-	std::vector<ObjectState> potential_objs; // should be vector of objects
+		std::vector<ObjectState> potential_objs;
 
-	const std::string KALMAN_FILTER_TOPIC = "kalman_filter";
-	const std::string SENSOR_DIAG_TOPIC = "sensor_diagnostic_flags";
-	const int TOL = 5;
+		bool objects_match(ObjectState obj, double sensor_dx, double sensor_dy);
 
-	bool objects_match(ObjectState obj, ObjectState sensor_data);  //both of type confirmedObjsContainer - post-conversion
-
-	void publish_object_to_kf(ObjectState sensor_data);
+		unsigned long long next_id;
 
 };
 

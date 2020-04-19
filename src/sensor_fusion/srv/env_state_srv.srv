@@ -1,12 +1,6 @@
 
 ---
-uint8[] id
+uint64[] id
 float64[] dx
-uint8[] lane
-float64[] vx
 float64[] dy
-float64[] ax
-bool[] path
-float64[] vy
 float64[] timestamp
-uint8[] count

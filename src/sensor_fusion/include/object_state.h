@@ -1,6 +1,6 @@
 #ifndef __OJBECT_STATE_H__
 #define __OBJECT_STATE_H__
-#include "ros/ros.h"
+
 class ObjectState {
     public:
 
@@ -31,6 +31,12 @@ class ObjectState {
     {
         count = 0;
     }
+
+    ObjectState(double x, double y) :
+        dx(x), dy(y) {count = 0;}
+
+    ObjectState(unsigned long long id, double x, double y, double time) :
+        id(id), dx(x), dy(y), timestamp(time) {}
 
     friend class DataAssociation;
 

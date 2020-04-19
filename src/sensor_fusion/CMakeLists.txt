@@ -164,7 +164,6 @@ add_executable(
     ${PROJECT_NAME}
     src/sensor_fusion_main.cpp
     src/data_association.cpp
-    include/data_association.h
 )
 target_link_libraries(
     sensor_fusion

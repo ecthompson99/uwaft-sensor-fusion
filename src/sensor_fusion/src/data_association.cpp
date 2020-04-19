@@ -9,16 +9,16 @@ DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(nod
     sensor_diag_sub = node_handle->subscribe(SENSOR_DIAG_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_diagnostics_callback, this);
     
     sensor_me_data_obj_sub = node_handle->subscribe(MOBILEYE_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_me_data_obj_callback, this);
-    mock_me_pub = node_handle->advertise<sensor_fusion::mobileye_object_data>(MOBILEYE_TOPIC, 10);
     
     sensor_radar_data_obj_sub = node_handle->subscribe(RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
-    mock_radar_pub = node_handle->advertise<sensor_fusion::radar_object_data>(RADAR_TOPIC, 10);    
     
-    sensor_data_obj_pub = node_handle->advertise<sensor_fusion::fused_object_data_msg>(KALMAN_FILTER_TOPIC, 10);
+    radar_to_kf_pub = node_handle->advertise<sensor_fusion::associated_radar_msg>(KALMAN_FILTER_TOPIC, 10);
+    me_to_kf_pub = node_handle->advertise<sensor_fusion::associated_me_msg>(MOBILEYE_TOPIC, 10);
 
-    potential_objs.emplace_back(ObjectState(1000000, 696969, 420420, 1, std::time(nullptr)));
+    next_id = 0;
 }
 
+// Not called
 bool oldObject(ObjectState obj) {
     const int secondsToDelete = 5;
 
@@ -30,34 +30,14 @@ bool oldObject(ObjectState obj) {
     return (double)std::time(nullptr) - obj.timestamp > secondsToDelete;
 }
 
+// Not called
 void DataAssociation::delete_potential_objects() {
     potential_objs.erase(std::remove_if(potential_objs.begin(), potential_objs.end(), oldObject), potential_objs.end());
 }
 
-sensor_fusion::fused_object_data_msg convert_object_state_to_fused_msg(ObjectState obj) {
-    sensor_fusion::fused_object_data_msg msg;
-    // msg.x = obj.dx;
-    return msg;
-}
 
-void DataAssociation::publish_object_to_kf(ObjectState sensor_data) {
-    // need to convert objectstate to fused object msg? gfdi
-    sensor_fusion::fused_object_data_msg fused_data = convert_object_state_to_fused_msg(sensor_data);
-    sensor_data_obj_pub.publish(fused_data);
-}
-
-ObjectState convert_radar_data(const sensor_fusion::radar_object_data& recvd_data) {    
-    return ObjectState(recvd_data.radar_dx, recvd_data.radar_vx, recvd_data.radar_dy, recvd_data.radar_vy, recvd_data.radar_timestamp);
-}
-
-ObjectState convert_mobile_eye(const sensor_fusion::mobileye_object_data& recvd_data) {
-    double me_vy = 0.0;
-    return ObjectState(recvd_data.me_dx, recvd_data.me_vx, recvd_data.me_dy, me_vy, recvd_data.me_timestamp);
-
-}
-
-bool DataAssociation::objects_match(ObjectState obj, ObjectState sensor_data) {  //both of type confirmedObjsContainer - post-conversion
-    int dist = sqrt(pow((obj.dx - sensor_data.dx), 2) + (pow((obj.dy - sensor_data.dy), 2)));
+bool DataAssociation::objects_match(ObjectState obj, double sensor_dx, double sensor_dy) {
+    int dist = sqrt(pow((obj.dx - sensor_dx), 2) + (pow((obj.dy - sensor_dy), 2)));
 
     if (dist <= TOL) {
         std::cout << "objects match with a distance of " << dist << std::endl;
@@ -69,52 +49,46 @@ bool DataAssociation::objects_match(ObjectState obj, ObjectState sensor_data) { 
 
 void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_object_data& recvd_data) {
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
-    for (auto obj : potential_objs) {
-        std::cout << "obj dx: " << obj.dx << " ";
-        std::cout << "obj dy: " << obj.dy << " ";
-        std::cout << "obj vx: " << obj.vx << " ";
-        std::cout << "obj vy: " << obj.vy << " ";
-        std::cout << "obj timestamp: " << (time_t)obj.timestamp << " ";
-        std::cout << "obj count: " << obj.count;
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
+    // for (auto obj : potential_objs) {
+    //     std::cout << "obj dx: " << obj.dx << " ";
+    //     std::cout << "obj dy: " << obj.dy << " ";
+    //     std::cout << "obj vx: " << obj.vx << " ";
+    //     std::cout << "obj vy: " << obj.vy << " ";
+    //     std::cout << "obj timestamp: " << (time_t)obj.timestamp << " ";
+    //     std::cout << "obj count: " << obj.count;
+    //     std::cout << std::endl;
+    // }
+    // std::cout << std::endl;
 
-    std::cout << "Radar data: ";
-    std::cout << "radar_dx: " << recvd_data.radar_dx << " ";
-    std::cout << "radar_dy: " << recvd_data.radar_dy << " ";
-    std::cout << "radar_vx: " << recvd_data.radar_vx << " ";
-    std::cout << "radar_vy: " << recvd_data.radar_vy << " ";
-    std::cout << "radar_timestamp: " << (time_t)recvd_data.radar_timestamp << " ";
-    std::cout << std::endl << std::endl;
+    // std::cout << "Radar data: ";
+    // std::cout << "radar_dx: " << recvd_data.radar_dx << " ";
+    // std::cout << "radar_dy: " << recvd_data.radar_dy << " ";
+    // std::cout << "radar_vx: " << recvd_data.radar_vx << " ";
+    // std::cout << "radar_vy: " << recvd_data.radar_vy << " ";
+    // std::cout << "radar_timestamp: " << (time_t)recvd_data.radar_timestamp << " ";
+    // std::cout << std::endl << std::endl;
 
-
-    ObjectState sensor_data = convert_radar_data(recvd_data);
-
-    // Get environment state with service
-
-    // NEED TO FIX OBJECT STATE TEMP CONSTRUCTOR IN THIS BRANCH --> CONVERTDATA Declarations need to be extended too! more variables to hold
-
+    sensor_data = *recvd_data;
     sensor_fusion::env_state_srv srv;
-    
     std::vector<ObjectState> stateVector;
 
     if (client.call(srv)){
-        std::cout<<"HEY";
+        std::cout<<"HEY\n";
         for(int i = 0; i < srv.response.id.size(); i++){
             
-       		//	// ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.lane[i], srv.response.vx[i], 
-                //	// srv.response.dy[i], srv.response.ax[i],srv.response.path[i],srv.response.vy[i],srv.response.timestamp[i],srv.response.count[i]);
-            
-           	//	// stateVector.push_back(someObj); 
+            ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.dy[i], srv.response.timestamp[i]);
+        
+            stateVector.push_back(someObj); 
         } 
-        std::cout << stateVector[0].id << std::endl; //6
-        std::cout << stateVector[2].dx << std::endl;    //should return 8.3   
+        // std::cout << stateVector[0].id << std::endl;
+        // std::cout << stateVector[2].dx << std::endl;
 
-        // if the object we received is already in the envState, send it to kf
         for (auto obj : stateVector) {
-            if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
-                publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
+            if (objects_match(obj, sensor_data.radar_dx, sensor_data.radar_dy)) {
+                sensor_fusion::associated_radar_msg matched;
+                matched.obj = sensor_data;
+                matched.obj_id = obj.id;
+                radar_to_kf_pub.publish(matched);
                 return;
             }
         }     
@@ -123,20 +97,19 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
         ROS_ERROR("Failed to call service, but continuing to the already stored potential objects, maybe it matches up there!?");
     }    
 
-
    // CHECK TEMP TRACKS
-
     for (int i = 0; i < potential_objs.size(); i++) {  
-        if (objects_match(potential_objs[i], sensor_data)) {    //won't consider this possibility if already matched for that sensor_data
+        if (objects_match(potential_objs[i], sensor_data.radar_dx, sensor_data.radar_dy)) {
 
-            // potential_objs[i].count += 1;
-            int oldCount = potential_objs[i].count;
-
-            potential_objs[i] = sensor_data;
-            potential_objs[i].count = oldCount + 1;
+            potential_objs[i].dx = sensor_data.dx;
+            potential_objs[i].dy = sensor_data.dy;
+            potential_objs[i].count++;
 
             if (potential_objs[i].count > 5) {
-                publish_object_to_kf(sensor_data);  //break once we publish
+                sensor_fusion::associated_radar_msg matched;
+                matched.obj = sensor_data;
+                matched.obj_id = next_id++;
+                radar_to_kf_pub.publish(matched);
                 potential_objs.erase (potential_objs.begin()+i);
                 std::cout << "DELETED OBJ CUZ COUNT > 5" << std::endl;
             }
@@ -148,54 +121,70 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
     // ONLY OCCURS IF NOT IN CONFIRMED TRACKS OR TEMP TRACKS
 
     std::cout << "added obj to potentials" << std::endl;
-    potential_objs.emplace_back(sensor_data);
+    potential_objs.emplace_back(ObjectState(sensor_data.radar_dx, sensor_data.radar_dy));
 }
 
 void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_object_data& recvd_data) {
-    std::cout << "Mobileye data: ";
-    std::cout << "me_dx: " << recvd_data.me_dx << " ";
-    std::cout << "me_dy: " << recvd_data.me_dy << " ";
-    std::cout << "me_vx: " << recvd_data.me_vx << " ";
-    std::cout << "me_timestamp: " << (time_t)recvd_data.me_timestamp << " ";
-    std::cout << std::endl << std::endl;
-    // return;
+    // std::cout << "Mobileye data: ";
+    // std::cout << "me_dx: " << recvd_data.me_dx << " ";
+    // std::cout << "me_dy: " << recvd_data.me_dy << " ";
+    // std::cout << "me_vx: " << recvd_data.me_vx << " ";
+    // std::cout << "me_timestamp: " << (time_t)recvd_data.me_timestamp << " ";
+    // std::cout << std::endl << std::endl;
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
-    ObjectState sensor_data = convert_mobile_eye(recvd_data);
-
-    //get environment state with service
+    sensor_data = *recvd_data;
     
     std::vector<ObjectState> envState;
 
-    // if the object we received is already in the envState, send it to kf
-    for (auto obj : envState) {
-        if (objects_match(obj, sensor_data)) {      //if it's' placed in the confirmed container don't need to push_back to the temp vector
-            publish_object_to_kf(sensor_data);  //match ID so the KF can compare this sensor_data to its' prediction
-            return;
-        }
-    } 
+    if (client.call(srv)){
+        std::cout<<"HEY me\n";
+        for(int i = 0; i < srv.response.id.size(); i++){
+            
+            ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.dy[i], srv.response.timestamp[i]);
+        
+            envState.push_back(someObj); 
+        } 
+        std::cout << envState[0].id << std::endl; //6
+        std::cout << envState[2].dx << std::endl;    //should return 8.3   
+
+        // if the object we received is already in the envState, send it to kf
+        for (auto obj : envState) {
+            if (objects_match(obj, sensor_data.me_dx, sensor_data.me_dy)) {
+                sensor_fusion::associated_me_msg matched;
+                matched.obj = sensor_data;
+                matched.obj_id = obj.id;
+                me_to_kf_pub.publish(matched);
+                return;
+            }
+        }     
+        
+    } else {
+        ROS_ERROR("Failed to call service, but continuing to the already stored potential objects, maybe it matches up there!?");
+    }
 
     // now check if it matches any of the potential objects
 
     for (int i = 0; i < potential_objs.size(); i++) {  
-        if (objects_match(potential_objs[i], sensor_data)) {    //won't consider this possibility if already matched for that sensor_data
-            int oldCount = potential_objs[i].count;
-            int oldVy = potential_objs[i].vy;
+        if (objects_match(potential_objs[i], sensor_data.me_dx, sensor_data.me_dy)) {
 
-            potential_objs[i] = sensor_data;
-            
-            potential_objs[i].vy = oldVy;
-            potential_objs[i].count = oldCount + 1;
+            potential_objs[i].dx = sensor_data.dx;
+            potential_objs[i].dy = sensor_data.dy;
+            potential_objs[i].count++;
 
             if (potential_objs[i].count > 5) {
-                publish_object_to_kf(sensor_data);  //do we have to break once we publish?
+                sensor_fusion::associated_me_msg matched;
+                matched.obj = sensor_data;
+                matched.obj_id = next_id++;
+                me_to_kf_pub.publish(matched);
                 potential_objs.erase (potential_objs.begin()+i);
-                return;
-            } 
+                std::cout << "DELETED OBJ CUZ COUNT > 5" << std::endl;
+            }
+            return;
         }
     }
 
-    potential_objs.emplace_back(sensor_data);
+    potential_objs.emplace_back(ObjectState(sensor_data.me_dx, sensor_data.me_dy));
 }
 
 void DataAssociation::sensor_diagnostics_callback(const sensor_fusion::sensor_diagnostic_flag_msg& sensor_diag) {
@@ -208,3 +197,9 @@ void DataAssociation::sensor_diagnostics_callback(const sensor_fusion::sensor_di
     }
 }
 
+int main(int argc, char** argv){
+    ros::init(argc, argv, "data_association");
+    ros::NodeHandle data_association_handle;
+    DataAssociation data_assc = DataAssociation(&data_association_handle);
+    ros::spin();
+}
