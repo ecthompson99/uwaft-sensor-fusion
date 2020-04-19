@@ -69,7 +69,7 @@ find_package(
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-    sensor_diagnostic_flag_msg.msg
+   # sensor_diagnostic_flag_msg.msg
     radar_object_data.msg
     mobileye_object_data.msg
     associated_radar_msg.msg
@@ -168,7 +168,6 @@ add_executable(
 add_executable(
     environment_state
     src/env_state.cpp
-    src/sensor_fusion_main.cpp
     src/object_state.cpp
 )
 
