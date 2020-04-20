@@ -37,10 +37,6 @@ classdef CustomMsgConsts
         sensor_fusion_sensor_diagnostic_flag_msg = 'sensor_fusion/sensor_diagnostic_flag_msg'
         sensor_fusion_target_output_msg = 'sensor_fusion/target_output_msg'
         sensor_fusion_tracked_output_msg = 'sensor_fusion/tracked_output_msg'
-        sensor_fusion_testing_mobileye_object_data = 'sensor_fusion_testing/mobileye_object_data'
-        sensor_fusion_testing_mobileye_object_data_from_matlab = 'sensor_fusion_testing/mobileye_object_data_from_matlab'
-        sensor_fusion_testing_radar_object_data = 'sensor_fusion_testing/radar_object_data'
-        sensor_fusion_testing_radar_object_data_from_matlab = 'sensor_fusion_testing/radar_object_data_from_matlab'
     end
     
     methods (Static, Hidden)
@@ -50,7 +46,7 @@ classdef CustomMsgConsts
             
             persistent msgList
             if isempty(msgList)
-                msgList = cell(34, 1);
+                msgList = cell(30, 1);
                 msgList{1} = 'can_tx_rx/can_comms_data_msg';
                 msgList{2} = 'can_tx_rx/drive_ctrl_input_msg';
                 msgList{3} = 'can_tx_rx/raw_sensor_object_data_msg';
@@ -81,10 +77,6 @@ classdef CustomMsgConsts
                 msgList{28} = 'sensor_fusion/sensor_diagnostic_flag_msg';
                 msgList{29} = 'sensor_fusion/target_output_msg';
                 msgList{30} = 'sensor_fusion/tracked_output_msg';
-                msgList{31} = 'sensor_fusion_testing/mobileye_object_data';
-                msgList{32} = 'sensor_fusion_testing/mobileye_object_data_from_matlab';
-                msgList{33} = 'sensor_fusion_testing/radar_object_data';
-                msgList{34} = 'sensor_fusion_testing/radar_object_data_from_matlab';
             end
             
             messageList = msgList;
