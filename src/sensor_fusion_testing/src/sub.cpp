@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "sensor_fusion_sub");
     ros::NodeHandle nh;
 
-    ros::Subscriber sensor_radar_data_obj_sub = nh.subscribe("radar_topic", 10, radar_callback);
+    ros::Subscriber sensor_radar_data_obj_sub = nh.subscribe("radar_topic", 1000, radar_callback);
     ROS_INFO_STREAM("a");
 
 	// ros::Subscriber sensor_me_data_obj_sub = nh.subscribe("mobileye_topic", 10, mobileye_callback);
