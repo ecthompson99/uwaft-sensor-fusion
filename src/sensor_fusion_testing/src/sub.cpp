@@ -7,7 +7,12 @@ void radar_callback(const sensor_fusion_testing::radar_object_data_from_matlab& 
                         "radar_dx" << radar_msg.RadarDx << "  " <<
                         "radar_dy" << radar_msg.RadarDy << "  " <<
                         "radar_vx" << radar_msg.RadarVx << "  " <<
-                        "radar_vy" << radar_msg.RadarVy << "\n"
+                        "radar_vy" << radar_msg.RadarVy << "  " <<
+                        "radar_ax" << radar_msg.RadarAx << "  " <<
+                        "radar_dx_sigma" << radar_msg.RadarDxSigma << "  " <<
+                        "radar_dy_sigma" << radar_msg.RadarDySigma << "  " <<
+                        "radar_vx_sigma" << radar_msg.RadarVxSigma << "  " <<
+                        "radar_ax_sigma" << radar_msg.RadarAxSigma << "\n"
                     );
 }
 
