@@ -34,6 +34,9 @@
 # Build files
 *.bin
 
+#Bag files
+*.bag
+
 # Build directories
 build/*
 devel/*
