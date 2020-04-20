@@ -1,7 +1,7 @@
 %% Load rosbag
 % ADDINS NEEDED: 'Robotics System Toolbox' 
 
-bag = rosbag('C:\Users\sophy\OneDrive\UWAFT\Code\env_state.bag');
+bag = rosbag('C:\Users\sophy\Documents\GitHub\kaiROS\sensor fusion testing\env_state.bag');
 bagInfo = rosbag('info','C:\Users\sophy\OneDrive\UWAFT\Code\env_state.bag');
 
 %% Filter info
@@ -30,8 +30,8 @@ tar_array = table2array(tar_sorted(:,3:12));
 track_array = table2array(track_sorted(:,3:12));
 
 % Find unique object nums
-targetIds = unique(targetSorted.ObjId);
-trackedIds = unique(trackedSorted.ObjId);
+targetIds = unique(tar_sorted.ObjId);
+trackedIds = unique(track_sorted.ObjId);
 
 
  %% Driving scenario
@@ -55,11 +55,8 @@ end
 % end
 
 % specify for target 1
-test = double(tar_array(:, 6));
-speed_calc = sqrt(double(tar_array(:, 6)).^2 + double(tar_array(:, 10)).^2);
-
-waypoints = [tar_array(:, 4) tar_array(:, 7)];
-%speeds = [30 10 5 5 10 30];
+speed_calc = sqrt(double(tar_array(:, 4)).^2 + double(tar_array(:, 8)).^2); % take vx and vy in columns 6 and 7 of array
+waypoints = [tar_array(:, 2) tar_array(:, 5)]; % take dx and dy in columns 2 and 5 of array
 trajectory(targets{1},waypoints,speed_calc)
 
 % add a plot for debug
