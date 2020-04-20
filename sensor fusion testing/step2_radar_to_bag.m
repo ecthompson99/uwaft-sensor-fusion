@@ -4,7 +4,7 @@ clc
 load('radar.mat');
 
 rosinit
-radar_pub = rospublisher('/radar_topic','sensor_fusion_testing/radar_object_data');
+radar_pub = rospublisher('/radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
 radar_msg = rosmessage(radar_pub);
 
 timetable_height=height(radar_final);
@@ -23,7 +23,7 @@ end
 for i = start_index:2:end_index
     fields_A=fieldnames(radar_final.Signals{i,1});
     fields_B=fieldnames(radar_final.Signals{i+1,1});
-    radar_msg.RadarDx = getfield(radar_final.Signals{i,1},fields_A{7})
+    radar_msg.RadarDx = getfield(radar_final.Signals{i,1},fields_A{7});
     radar_msg.RadarDy = getfield(radar_final.Signals{i,1},fields_A{6});
     radar_msg.RadarVx = getfield(radar_final.Signals{i,1},fields_A{5});
     radar_msg.RadarVy = getfield(radar_final.Signals{i+1,1},fields_B{8});

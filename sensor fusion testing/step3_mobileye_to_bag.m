@@ -4,7 +4,7 @@ clc
 load('mobileye.mat');
 
 rosinit
-me_pub = rospublisher('/mobileye_topic','sensor_fusion_testing/mobileye_object_data');
+me_pub = rospublisher('/mobileye_from_matlab','sensor_fusion_testing/mobileye_object_data_from_matlab');
 me_msg = rosmessage(me_pub);
 
 timetable_height=height(me_final);

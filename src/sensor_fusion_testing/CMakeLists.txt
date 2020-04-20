@@ -49,6 +49,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
    FILES
+   radar_object_data_from_matlab.msg
+   mobileye_object_data_from_matlab.msg
    radar_object_data.msg
    mobileye_object_data.msg
 )
