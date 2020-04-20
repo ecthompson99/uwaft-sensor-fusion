@@ -12,7 +12,4 @@ timetable_length = height(tt_ascending);
 time_in_sec = seconds(tt_ascending.Time);
 
 timetable_final = addvars(tt_ascending,time_in_sec);
-
-for i=1:timetable_length
-    
-end
+writetimetable(timetable_final,'ACCGapTestMed_20191103_155525_CAN.txt');
