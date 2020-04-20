@@ -8,8 +8,17 @@ data_me = blfread("ACCGapTestMed_20191103_155525_CAN.blf",6,...
             
 timetable_combined = [data_me; data_radar];
 tt_ascending = sortrows(timetable_combined);
-timetable_length = height(tt_ascending);
 time_in_sec = seconds(tt_ascending.Time);
 
 timetable_final = addvars(tt_ascending,time_in_sec);
-writetimetable(timetable_final,'ACCGapTestMed_20191103_155525_CAN.csv');
+timetable_length = height(timetable_final);
+
+clear candb_radar;
+clear candb_me;
+clear data_radar;
+clear data_me;
+clear timetable_combined;
+clear tt_ascending;
+clear time_in_sec;
+
+save('ACCGapTestMed_20191103_155525_CAN.mat');
