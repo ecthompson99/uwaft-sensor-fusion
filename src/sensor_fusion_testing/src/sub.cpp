@@ -12,13 +12,13 @@ void radar_callback(const sensor_fusion_testing::radar_object_data& radar_msg) {
                     );
 }
 
-// void mobileye_callback(const sensor_fusion_testing::mobileye_object_data& me_msg) {
-//     ROS_INFO_STREAM("timestamp" << me_msg.me_timestamp << "  "
-//                         "me_dx" << me_msg.me_dx << "  " <<
-//                         "me_dy" << me_msg.me_dy << "  " <<
-//                         "me_vx" << me_msg.me_vx << "\n"
-//                     );
-// }
+void mobileye_callback(const sensor_fusion_testing::mobileye_object_data& me_msg) {
+    ROS_INFO_STREAM("timestamp" << me_msg.MeTimestamp << "  "
+                        "me_dx" << me_msg.MeDx << "  " <<
+                        "me_dy" << me_msg.MeDy << "  " <<
+                        "me_vx" << me_msg.MeVx << "\n"
+                    );
+}
 
 
 int main(int argc, char **argv)
@@ -27,9 +27,9 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
 
     ros::Subscriber sensor_radar_data_obj_sub = nh.subscribe("radar_topic", 1000, radar_callback);
-    ROS_INFO_STREAM("a");
 
-	// ros::Subscriber sensor_me_data_obj_sub = nh.subscribe("mobileye_topic", 10, mobileye_callback);
+
+	ros::Subscriber sensor_me_data_obj_sub = nh.subscribe("mobileye_topic", 1000, mobileye_callback);
   
 
     ros::spin();
