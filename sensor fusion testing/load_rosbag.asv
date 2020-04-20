@@ -24,13 +24,11 @@ tracked_A = table2array(track_sorted(:,3:12));
 
 % Find unique objects & num of occurances
 [target_obj,ia,target_c] = unique(target_A(:,1),'rows');
-[tracked_obj,ib,tracked_c] = unique(tracked_A(:,1),'rows');
+[tracked_obj,ic,tracked_c] = unique(tracked_A(:,1),'rows');
 
-tracked_count = accumarray(target_c,1);
-target_count = accumarray(tracked_c,1);
-
-target_counts = [double(target_obj), double(tracked_count)]; % show unique ObjId and num of occurances
-tracked_counts = [double(tracked_obj), double(target_count)];
+tracked_count = 
+target_counts = [target_obj, accumarray(target_count,1)]; % displays obId and # of occurances
+tracked_counts = [tracked_obj, accumarray(tracked_count,1)];
 
 % 
 % % Find unique object nums
