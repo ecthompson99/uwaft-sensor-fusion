@@ -1,5 +1,7 @@
 %% Load rosbag
 % ADDINS NEEDED: 'Robotics System Toolbox' 
+clear
+clc
 
 bag = rosbag('C:\Users\sophy\Documents\GitHub\kaiROS\sensor fusion testing\env_state.bag');
 
@@ -18,47 +20,48 @@ target_T = sortrows(struct2table(target_struct),3);
 tracked_T = sortrows(struct2table(tracked_struct),3);
 
 % Create array: ObjId,ObjDx,ObjLane,ObjVx,ObjDy,ObjAx,ObjPath,ObjVy,ObjTimestamp,ObjTrackNum 
-target_A = table2array(tar_sorted(:,3:12));
-tracked_A = table2array(track_sorted(:,3:12));
+target_A = table2array(target_T(:,3:12));
+tracked_A = table2array(tracked_T(:,3:12));
 
 % Find unique objects & num of occurances
 [target_obj,ia,target_c] = unique(target_A(:,1),'rows');
 [tracked_obj,ib,tracked_c] = unique(tracked_A(:,1),'rows');
 
-tracked_count = accumarray(target_c,1);
-target_count = accumarray(tracked_c,1);
+target_count = accumarray(target_c,1);
+tracked_count = accumarray(tracked_c,1);
 
 % convert to uint8 to array of doubles
-target_counts = [double(target_obj), double(tracked_count)]; % show unique ObjId and num of occurances
-tracked_counts = [double(tracked_obj), double(target_count)]; % show unique ObjId and num of occurances
+target_counts = [double(target_obj), double(target_count)]; % show unique ObjId and num of occurances
+tracked_counts = [double(tracked_obj), double(tracked_count)]; % show unique ObjId and num of occurances
 
 %% Driving scenario for target objects
 
 scenario = drivingScenario;
 
 % create empty arrays for vehicles
-targets = cell(size(targetIds,1),1);
-waypoints = cell(size(targetIds,1),1);
-speed_calc = cell(size(targetIds,1),1);
+targets = cell(size(target_obj,1),1);
+waypoints = cell(size(target_obj,1),1);
+speed_calc = cell(size(target_obj,1),1);
 
 % construct a straight road segment 50 m in length.
 road(scenario, [0 0 0; 50 0 0]);
 
-temp = 0; % used to keep track of unique object
+counter = 0; % used to keep track of unique object
 num_targets = double(target_count); % permanent array
 
-for i = 1:size(targetIds,1)% loop through target_id 
+for i = 1:size(target_obj,1)% loop through target_id 
     targets{i} = vehicle(scenario); % create target vehicle
-    for j = temp:num_targets(i)
-        % Specify rows in target_A and specify trajectory for unique object
-        waypoints{i} = [tar_array(temp:num_targets(i), 2) tar_array(temp:num_targets(i), 5)]; % take dx and dy in columns 2 and 5 of array
-        speed_calc{i} = sqrt(double(tar_array(temp:num_targets(i), 4)).^2 + double(tar_array(temp:num_targets(i), 8)).^2); % take vx and vy in columns 4 and 8 of array
-    end 
-    temp = num_targets(i);
+    % Specify rows in target_A and specify trajectory for unique object
+    waypoints{i} = [target_A((counter + 1):(counter + num_targets(i)), 2) ...
+        target_A((counter + 1):(counter + num_targets(i)), 5)]; % take dx and dy in columns 2 and 5 of array
+    speed_calc{i} = [sqrt(double(target_A((counter + 1):(counter + num_targets(i)), 4)).^2 + ...
+        double(target_A((counter + 1):(counter + num_targets(i)), 8).^2))]; % take vx and vy in columns 4 and 8 of array
+    
+    counter = counter + num_targets(i);
 end
 
-for i = 1:size(targetIds,1)% loop through target_id 
-    trajectory(targets{i},waypoints{i},speed_calc{i})
+for i = 1:size(target_obj,1)% loop through target_id 
+    trajectory(targets{i},waypoints{i},speed_calc{i}(:,1))
 end
 
 % add a plot for debug
