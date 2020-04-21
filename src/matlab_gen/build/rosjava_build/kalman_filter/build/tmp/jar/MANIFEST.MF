@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.ros.rosjava_messages.kalman_filter
 Bundle-Version: 0.0.0
 Bundle-Name: kalman_filter
 Bundle-ManifestVersion: 2
-Bnd-LastModified: 1587415601000
+Bnd-LastModified: 1587489290000
 Import-Package: org.ros.internal.message
 Created-By: 1.8.0_222 (AdoptOpenJDK)
 Tool: Bnd-2.1.0.20130426-122213

@@ -33,9 +33,9 @@ class KF(KalmanFilter):
 
 class KF_Node(object):
     def me_association_callback(self, obj):
-        measurement = [[obj.obj.me_dx,
-                        obj.obj.me_dy,
-                        obj.obj.me_vx,
+        measurement = [[obj.obj.MeDx,
+                        obj.obj.MeDy,
+                        obj.obj.MeVx,
                         0],
                         # Tunable
                         [.5**2,
@@ -56,23 +56,23 @@ class KF_Node(object):
 
         result = filtered_object_msg()
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
-        result.obj_id = obj.obj_id 
-        result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
-        result.obj_ax = obj.obj.me_ax
-        result.obj_timestamp = obj.obj.me_timestamp
+        # result.obj_id = obj.obj_id 
+        # result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
+        # result.obj_ax = obj.obj.me_ax
+        result.obj_timestamp = obj.obj.MeTimestamp
         result.obj_count = 30
         
         self.output.publish(result)
 
     def radar_association_callback(self, obj):
-        measurement = [[obj.obj.radar_dx,
-                        obj.obj.radar_dy,
-                        obj.obj.radar_vx,
-                        obj.obj.radar_vy],
+        measurement = [[obj.obj.RadarDx,
+                        obj.obj.RadarDy,
+                        obj.obj.RadarVx,
+                        obj.obj.RadarVy],
                         # Tunable
-                        [obj.obj.radar_dx_sigma**2,
-                         obj.obj.radar_dy_sigma**2,
-                         obj.obj.radar_vx_sigma**2,
+                        [obj.obj.RadarDxSigma**2,
+                         obj.obj.RadarDySigma**2,
+                         obj.obj.RadarVxSigma**2,
                          .25**2]]
 
         if not obj.obj_id in self.objects:
@@ -87,8 +87,8 @@ class KF_Node(object):
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
         result.obj_id = obj.obj_id 
         result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
-        result.obj_ax = obj.obj.radar_ax
-        result.obj_timestamp = obj.obj.radar_timestamp
+        result.obj_ax = obj.obj.RadarAx
+        result.obj_timestamp = obj.obj.RadarTimestamp
         result.obj_count = 30
 
         self.output.publish(result)
