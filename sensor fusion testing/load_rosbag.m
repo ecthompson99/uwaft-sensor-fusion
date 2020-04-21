@@ -4,15 +4,14 @@
 bag = rosbag('C:\Users\sophy\Documents\GitHub\kaiROS\sensor fusion testing\env_state.bag');
 
 %% Filter info
+
 % Select topics 
 sel_targets = select(bag, 'Topic', 'target_obj'); 
 sel_tracked = select(bag, 'Topic', 'tracked_obj'); 
 
 % Read msgs into cells
-targets = readMessages(sel_targets, 'DataFormat', 'struct');
-tracked = readMessages(sel_tracked, 'DataFormat', 'struct');
-target_struct = cell2mat(targets);
-tracked_struct = cell2mat(tracked);
+target_struct = cell2mat(readMessages(sel_targets, 'DataFormat', 'struct'));
+tracked_struct = cell2mat(readMessages(sel_tracked, 'DataFormat', 'struct'));
 
 % Create Tables, sorted by ID (3rd col)
 target_T = sortrows(struct2table(target_struct),3);
@@ -29,58 +28,50 @@ tracked_A = table2array(track_sorted(:,3:12));
 tracked_count = accumarray(target_c,1);
 target_count = accumarray(tracked_c,1);
 
+% convert to uint8 to array of doubles
 target_counts = [double(target_obj), double(tracked_count)]; % show unique ObjId and num of occurances
-tracked_counts = [double(tracked_obj), double(target_count)];
+tracked_counts = [double(tracked_obj), double(target_count)]; % show unique ObjId and num of occurances
 
-% 
-% % Find unique object nums
- 
-% A = accumarray(tar_array,1);
-% 
-% % Split to target objects
-% target1 = tar_array(tar_array(:,1)==1,:);
-% target2 = tar_array(tar_array(:,1)==2,:);
-% target3 = tar_array(tar_array(:,1)==3,:);
-% 
-% 
+%% Driving scenario for target objects
+
+scenario = drivingScenario;
+
+% create empty arrays for vehicles
+targets = cell(size(targetIds,1),1);
+waypoints = cell(size(targetIds,1),1);
+speed_calc = cell(size(targetIds,1),1);
+
+% construct a straight road segment 50 m in length.
+road(scenario, [0 0 0; 50 0 0]);
+
+temp = 0; % used to keep track of unique object
+num_targets = double(target_count); % permanent array
+
+for i = 1:size(targetIds,1)% loop through target_id 
+    targets{i} = vehicle(scenario); % create target vehicle
+    for j = temp:num_targets(i)
+        % Specify rows in target_A and specify trajectory for unique object
+        waypoints{i} = [tar_array(temp:num_targets(i), 2) tar_array(temp:num_targets(i), 5)]; % take dx and dy in columns 2 and 5 of array
+        speed_calc{i} = sqrt(double(tar_array(temp:num_targets(i), 4)).^2 + double(tar_array(temp:num_targets(i), 8)).^2); % take vx and vy in columns 4 and 8 of array
+    end 
+    temp = num_targets(i);
+end
+
+for i = 1:size(targetIds,1)% loop through target_id 
+    trajectory(targets{i},waypoints{i},speed_calc{i})
+end
+
+% add a plot for debug
+plot(s,'Centerline','on','Waypoints','on','RoadCenters','on')
+
+% Start the simulation loop
+while advance(s)
+ %fprintf('The vehicle is located at %.2f m at t=%.0f ms\n', targets{1}.Position(1), s.SimulationTime*1000)
+ pause(0.1)
+end
 
 
- %% Driving scenario
-% s = drivingScenario;
-% 
-% % create empty array of obj
-% targets = cell(size(targetIds,1),1);
-% %tracked = cell(size(targetIds,1),1);
-% 
-% % construct a straight road segment 50 m in length.
-% road(s, [0 0 0; 50 0 0]);
-% 
-% % create target vehicles
-% for ta_ids = 1:size(targetIds,1)
-%     targets{ta_ids} = vehicle(s);
-% end
-% 
-% % create tracked radar detections
-% % for tr_ids = 1:size(targetIds,1)
-% %     tracked{tr_ids} = radarDetectionGenerator('SensorIndex', tr_ids);
-% % end
-% 
-% % specify for target 1
-% speed_calc = sqrt(double(tar_array(:, 4)).^2 + double(tar_array(:, 8)).^2); % take vx and vy in columns 6 and 7 of array
-% waypoints = [tar_array(:, 2) tar_array(:, 5)]; % take dx and dy in columns 2 and 5 of array
-% trajectory(targets{1},waypoints,speed_calc)
-% 
-% % add a plot for debug
-% plot(s,'Centerline','on','Waypoints','on','RoadCenters','on')
-% 
-% % Start the simulation loop
-% while advance(s)
-%  %fprintf('The vehicle is located at %.2f m at t=%.0f ms\n', targets{1}.Position(1), s.SimulationTime*1000)
-%  pause(0.1)
-% end
-% 
-% 
-
+%% Driving scenario for tracked objects
 
 
 
