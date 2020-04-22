@@ -35,98 +35,81 @@ target_counts = [double(target_obj), double(target_count)]; % show unique ObjId 
 tracked_counts = [double(tracked_obj), double(tracked_count)]; % show unique ObjId and num of occurances
 
 %% Driving scenario for target objects
-% 
-% scenario = drivingScenario;
-% 
-% % create empty arrays for vehicles
-% targets = cell(size(target_obj,1),1);
-% waypoints = cell(size(target_obj,1),1);
-% speed_calc = cell(size(target_obj,1),1);
-% 
-% % construct a straight road segment 50 m in length.
-% road(scenario, [0 0 0; 50 0 0]);
-% 
-% counter = 0; % used to keep track of unique object
-% num_targets = double(target_count); % permanent array
-% 
-% for i = 1:size(target_obj,1)% loop through target_id 
-%     targets{i} = vehicle(scenario); % create target vehicle
-%     % Specify rows in target_A and specify trajectory for unique object
-%     waypoints{i} = [target_A((counter + 1):(counter + num_targets(i)), 2) ...
-%         target_A((counter + 1):(counter + num_targets(i)), 5)]; % take dx and dy in columns 2 and 5 of array
-%     speed_calc{i} = [sqrt(target_A((counter + 1):(counter + num_targets(i)), 4).^2 + ...
-%         target_A((counter + 1):(counter + num_targets(i)), 8).^2)]; % take vx and vy in columns 4 and 8 of array
-%     
-%     counter = counter + num_targets(i);
-% end
-% 
-% for i = 1:size(target_obj,1)% loop through target_id 
-%     trajectory(targets{i},waypoints{i},speed_calc{i}(:,1))
-% end
-% 
-% % add a plot for debug
-% plot(scenario,'Centerline','on','Waypoints','on','RoadCenters','on')
-% 
-% % Start the simulation loop
-% while advance(scenario)
-%  %fprintf('The vehicle is located at %.2f m at t=%.0f ms\n', targets{1}.Position(1), s.SimulationTime*1000)
-%  pause(0.1)
-% end
+
+% Make a figure
+hFigure = figure('Position', [0, 0, 1200, 640], 'Name', 'Sensor Fusion Output');
+movegui(hFigure, [0 -1]); % Moves the figure to the left and a little down from the top
+
+% Add a panel for a bird's-eye plot
+hBEVPanel = uipanel(hFigure, 'Position', [0.5 0 0.5 1], 'Title', 'Tracked Objects');
+hPlotPanel = uipanel(hFigure, 'Position', [0.5 0 0.5 1], 'Title', 'Target Objec');
+
+% Create bird's-eye plot for the ego car and sensor coverage
+hBEVPlot = axes(hBEVPanel);
+
+%%  Driving 
+% Create scenario
+scenario = drivingScenario;
+
+% create empty arrays for vehicles
+targets = cell(size(target_obj,1),1);
+waypoints = cell(size(target_obj,1),1);
+speed_calc = cell(size(target_obj,1),1);
+
+counter = 0; % used to keep track of unique object
+num_targets = double(target_count); % permanent array
+
+for i = 1:size(target_obj,1)% loop through target_id 
+    targets{i} = vehicle(scenario); % create target vehicle
+    % Specify rows in target_A and specify trajectory for unique object
+    waypoints{i} = [target_A((counter + 1):(counter + num_targets(i)), 2) ...
+        target_A((counter + 1):(counter + num_targets(i)), 5)]; % take dx and dy in columns 2 and 5 of array
+    speed_calc{i} = [sqrt(target_A((counter + 1):(counter + num_targets(i)), 4).^2 + ...
+        target_A((counter + 1):(counter + num_targets(i)), 8).^2)]; % take vx and vy in columns 4 and 8 of array
+    
+    counter = counter + num_targets(i);
+end
+
+for i = 1:size(target_obj,1)% loop through target_id 
+    trajectory(targets{i},waypoints{i},speed_calc{i}(:,1))
+end
+
+% add a plot for debug
+plot(scenario,'Waypoints','on')
+
+% Start the simulation loop
+while advance(scenario)
+ %fprintf('The vehicle is located at %.2f m at t=%.0f ms\n', targets{1}.Position(1), s.SimulationTime*1000)
+ pause(0.1)
+end
 
 
 %% Driving scenario for tracked objects
 
 % create empty arrays for objects
-tracked = cell(size(tracked_obj,1),1);
+tracked_pos = cell(size(tracked_obj,1),1);
+tracked_vel = cell(size(tracked_obj,1),1);
 
 counter_1 = 0; % used to keep track of unique object
 num_tracked = double(tracked_count); % permanent array
 
 % Create bird's eye plot
-bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
-radarPlotter = detectionPlotter(bep,'DisplayName','Radar Detections');
+bep = birdsEyePlot('Parent', hBEVPlot,'XLim',[0,90],'YLim',[-35,35]);
+objPlotter = detectionPlotter(bep,'DisplayName','Tracked Objects', ...
+    'MarkerEdgeColor','red', 'Marker','^');
 
-bep = birdsEyePlot('XLim', [0 60], 'YLim', [-35 35]);
-
-detectionPlotter(bep, 'DisplayName','tracked', 'MarkerEdgeColor','red', 'Marker','^');
-
-  
 for i = 1:size(tracked_obj,1)% loop through target_id 
-    tracked{i} = radarDetectionGenerator('SensorIndex', i, ...
-    'UpdateInterval', 0.01, ...
-    'SensorLocation', [tracked_A((counter_1 + 1):(counter_1 + num_tracked(i)), 2) ...
-    tracked_A((counter_1 + 1):(counter_1 + num_tracked(i)), 5)]);
- 
+    tracked_pos{i} = [tracked_A((counter_1 + 1):(counter_1 + num_tracked(i)), 2) ...
+        tracked_A((counter_1 + 1):(counter_1 + num_tracked(i)), 5)]; % take dx and dy in columns 2 and 5 of array
+    tracked_vel{i} = [tracked_A((counter_1 + 1):(counter_1 + num_tracked(i)), 4) ...
+        tracked_A((counter_1 + 1):(counter_1 + num_tracked(i)), 8)]; % take vx and vy in columns 4 and 8 of array
+    
     counter_1 = counter_1 + num_tracked(i);
     
-    % Generate detections with radar
-    simTime = 0;
-    [dets, numDets] = radarSensor([tracked{i}], simTime);
-
-    cap = coverageAreaPlotter(bep,'FaceColor','red','EdgeColor','red');
-    plotCoverageArea(cap, tracked{i}.SensorLocation);
-
 end
 
-% Plot detections
-if numDets>0
-  detPlotter = detectionPlotter(bep, 'DisplayName', 'Radar Detections');
-  detPos = cellfun(@(d)d.Measurement(1:2), dets, 'UniformOutput', false);
-  detPos = cell2mat(detPos')';
-  plotDetection(detPlotter, detPos);
+% Plot Detections
+for i = 1:size(tracked_obj,1)% loop through target_id 
+    plotDetection(objPlotter, tracked_pos{i}, tracked_vel{i});
 end
 
-
-%% Example
- %Create a birds eye plot and update it with three detections labeled
-  % 'R1', 'R2', and 'R3'; positioned in units of meters at 
-  % (30,5), (30,-10), and (30,15); with corresponding velocities (in m/s)
-  % of (-10,0), (-10,3) and (-10,-4), respectively.
-
-  bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
-  radarPlotter = detectionPlotter(bep,'DisplayName','Radar Detections');
-
-  positions = [30, 5; 30, -10; 30, 15];
-  velocities = [-10, 0; -10, 3; -10, -4];
-  labels = {'R1','R2','R3'};
-  plotDetection(radarPlotter, positions, velocities, labels);
