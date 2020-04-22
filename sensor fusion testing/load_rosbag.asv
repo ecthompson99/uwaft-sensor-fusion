@@ -34,21 +34,21 @@ tracked_count = accumarray(tracked_c,1);
 target_counts = [double(target_obj), double(target_count)]; % show unique ObjId and num of occurances
 tracked_counts = [double(tracked_obj), double(tracked_count)]; % show unique ObjId and num of occurances
 
-%% Driving scenario for target objects
+%% Create Figure
 
 % Make a figure
-hFigure = figure('Position', [0, 0, 1200, 640], 'Name', 'Sensor Fusion Output');
+hFigure = figure('Position', [0, 0, 1200, 640], 'Name', 'Sensor Fusion Output'); % x,y,xlength,ylength
 movegui(hFigure, [0 -1]); % Moves the figure to the left and a little down from the top
 
 % Add a panel for a bird's-eye plot
-hBEVPanel = uipanel(hFigure, 'Position', [0.5 0 0.5 1], 'Title', 'Tracked Objects');
-hPlotPanel = uipanel(hFigure, 'Position', [0.5 0 0.5 1], 'Title', 'Target Objec');
+hBEVPlot = uipanel(hFigure, 'Position', [0 0 0.5 1], 'Title', 'Tracked Objects');
+hCarPlot = uipanel(hFigure, 'Position', [0.5 0 0.5 1], 'Title', 'Target Objects');
 
 % Create bird's-eye plot for the ego car and sensor coverage
-hBEVPlot = axes(hBEVPanel);
+hTracked = axes(hBEVPlot);
+hTarget = axes(hCarPlot);
 
-%%  Driving 
-% Create scenario
+%%  Driving scenario for targets
 scenario = drivingScenario;
 
 % create empty arrays for vehicles
@@ -75,7 +75,9 @@ for i = 1:size(target_obj,1)% loop through target_id
 end
 
 % add a plot for debug
-plot(scenario,'Waypoints','on')
+plot(scenario,'Parent', hTarget,'Waypoints','on')
+
+hold on
 
 % Start the simulation loop
 while advance(scenario)
@@ -89,12 +91,13 @@ end
 % create empty arrays for objects
 tracked_pos = cell(size(tracked_obj,1),1);
 tracked_vel = cell(size(tracked_obj,1),1);
+labels = cell(size(tracked_obj,1),1);
 
 counter_1 = 0; % used to keep track of unique object
 num_tracked = double(tracked_count); % permanent array
 
 % Create bird's eye plot
-bep = birdsEyePlot('Parent', hBEVPlot,'XLim',[0,90],'YLim',[-35,35]);
+bep = birdsEyePlot('Parent', hTracked,'XLim',[0,90],'YLim',[-35,35]);
 objPlotter = detectionPlotter(bep,'DisplayName','Tracked Objects', ...
     'MarkerEdgeColor','red', 'Marker','^');
 
@@ -110,6 +113,7 @@ end
 
 % Plot Detections
 for i = 1:size(tracked_obj,1)% loop through target_id 
+    labels{i} = string(i;
     plotDetection(objPlotter, tracked_pos{i}, tracked_vel{i});
 end
 

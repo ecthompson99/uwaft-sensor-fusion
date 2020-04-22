@@ -41,12 +41,12 @@ hFigure = figure('Position', [0, 0, 1200, 640], 'Name', 'Sensor Fusion Output');
 movegui(hFigure, [0 -1]); % Moves the figure to the left and a little down from the top
 
 % Add a panel for a bird's-eye plot
-hCarPlot = uipanel(hFigure, 'Position', [0 0 0.5 1], 'Title', 'Tracked Objects');
-hBEVPlot = uipanel(hFigure, 'Position', [0.5 0 0.5 1], 'Title', 'Target Objects');
+hBEVPlot = uipanel(hFigure, 'Position', [0 0 0.5 1], 'Title', 'Tracked Objects');
+hCarPlot = uipanel(hFigure, 'Position', [0.5 0 0.5 1], 'Title', 'Target Objects');
 
 % Create bird's-eye plot for the ego car and sensor coverage
-hCarPlot = axes(hCarPlot);
-hTarget = axes(hBEVPlot);
+hTracked = axes(hBEVPlot);
+hTarget = axes(hCarPlot);
 
 %%  Driving scenario for targets
 scenario = drivingScenario;
@@ -77,6 +77,8 @@ end
 % add a plot for debug
 plot(scenario,'Parent', hTarget,'Waypoints','on')
 
+hold on
+
 % Start the simulation loop
 while advance(scenario)
  %fprintf('The vehicle is located at %.2f m at t=%.0f ms\n', targets{1}.Position(1), s.SimulationTime*1000)
@@ -89,12 +91,13 @@ end
 % create empty arrays for objects
 tracked_pos = cell(size(tracked_obj,1),1);
 tracked_vel = cell(size(tracked_obj,1),1);
+labels = cell(size(tracked_obj,1),1);
 
 counter_1 = 0; % used to keep track of unique object
 num_tracked = double(tracked_count); % permanent array
 
 % Create bird's eye plot
-bep = birdsEyePlot('Parent', hCarPlot,'XLim',[0,90],'YLim',[-35,35]);
+bep = birdsEyePlot('Parent', hTracked,'XLim',[0,90],'YLim',[-35,35]);
 objPlotter = detectionPlotter(bep,'DisplayName','Tracked Objects', ...
     'MarkerEdgeColor','red', 'Marker','^');
 
