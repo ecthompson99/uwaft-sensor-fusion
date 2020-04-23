@@ -35,14 +35,14 @@ class ObjectState {
     ObjectState(double x, double y) :
         dx(x), dy(y) {count = 0;}
 
-    ObjectState(unsigned long long id, double x, double y, double time) :
+    ObjectState(uint64_t id, double x, double y, double time) :
         id(id), dx(x), dy(y), timestamp(time) {}
 
     friend class DataAssociation;
 
     // virtual ~ObjectState();
 
-    uint8_t id; // object ID
+    uint64_t id; // object ID
     double dx; // longitudinal range
     uint8_t lane; // lane assignment
     double vx; // relaive longitudinal velocity

@@ -3,7 +3,7 @@
 ObjectState::ObjectState(){}
 
 // constructor for testing and initializing targetObjects[]
-ObjectState::ObjectState(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
+ObjectState::ObjectState(uint64_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
     double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp,uint8_t set_obj_track_num){ //, uint8_t set_obj_count) {
     obj_id = set_obj_id;
     obj_dx = set_obj_dx;
@@ -19,7 +19,7 @@ ObjectState::ObjectState(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_
 }
 ObjectState::~ObjectState() {}
 
-uint8_t ObjectState::get_obj_id() const { return obj_id; }
+uint64_t ObjectState::get_obj_id() const { return obj_id; }
 double ObjectState::get_obj_dx() const { return obj_dx; }
 uint8_t ObjectState::get_obj_lane() const { return obj_lane; }
 double ObjectState::get_obj_vx() const {return obj_vx;}

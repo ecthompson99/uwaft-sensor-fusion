@@ -8,7 +8,7 @@
 bool target1, target2, target3 = false;
 
 EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_node_handle(node_handle) {
-  filtered_object_sub = env_state_node_handle->subscribe("kf_dummy_data", MESSAGE_BUFFER_SIZE,
+  filtered_object_sub = env_state_node_handle->subscribe("filtered_obj", MESSAGE_BUFFER_SIZE,
                                                             &EnvironmentState::filtered_object_callback, this);
 
   target_obj_pub = env_state_node_handle->advertise<sensor_fusion::target_output_msg>("target_obj",
@@ -125,7 +125,7 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
     
     update_env_state(tracked_msg); // update id of objects in state vector
 
-    check_timestamp(tracked_msg); // removes outdated state vector
+    // check_timestamp(tracked_msg); // removes outdated state vector
   
     find_target_objects(tracked_msg);     // fill array with target objects
     
@@ -176,6 +176,7 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
       found = true;
 			index_found = index;
 		}
+	printf("%d: %f %f\n", trackedObjects[index].get_obj_id(), trackedObjects[index].get_obj_dx(), trackedObjects[index].get_obj_dy());
   }
 
   // if object has been tracked, update the object in the state vector

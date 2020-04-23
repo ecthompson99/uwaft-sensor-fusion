@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.ros.rosjava_messages.sensor_fusion_testing
 Bundle-Version: 0.0.0
 Bundle-Name: sensor_fusion_testing
 Bundle-ManifestVersion: 2
-Bnd-LastModified: 1587489290000
+Bnd-LastModified: 1587522863000
 Import-Package: org.ros.internal.message
 Created-By: 1.8.0_222 (AdoptOpenJDK)
 Tool: Bnd-2.1.0.20130426-122213
