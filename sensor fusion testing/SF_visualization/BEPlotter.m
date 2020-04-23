@@ -1,4 +1,4 @@
-classdef BirdsEyePlot %Convenience class for plotting Mobileye obstacles
+classdef BEPlotter %Convenience class for plotting Mobileye obstacles
     % and radar targets from CAN Logs
     properties (SetAccess = private)
         targetObjects %Vector of target. Used for radarTargets
@@ -14,57 +14,57 @@ classdef BirdsEyePlot %Convenience class for plotting Mobileye obstacles
     methods
            %%
         % Constructor
-        function obj = BirdsEyePlotter (targetObjects, trackedObjects, timestepSize)
+        function obj = BEPlotter (targetObjects, trackedObjects, timestepSize)
             obj.targetObjects = targetObjects;
             obj.trackedObjects = trackedObjects;
             obj.timestepSize = timestepSize;
             
-            if ~isempty(obj.targetObjects)
-                maxTimesteps = -inf;
-                for i = 1:numel(obj.targetObjects)
-                    if numTimesteps(obj.targetObjects(i)) > maxTimesteps
-                        maxTimesteps = numTimesteps(obj.targetObjects(i));
-                    end
-                end
-                obj.numTimesteps = maxTimesteps;
-            elseif ~isempty(obj.trackedObjects)
-                maxTimesteps = -inf;
-                for i = 1:numel(obj.trackedObjects)
-                    if numTimesteps(obj.trackedObjects(i)) > maxTimesteps
-                        maxTimesteps = numTimesteps(obj.trackedObjects(i));
-                    end
-                end
-                obj.numTimesteps = maxTimesteps;
-            else
-                obj.numTimesteps = 0;
-            end
+%             if ~isempty(obj.targetObjects)
+%                 maxTimesteps = -inf;
+%                 for i = 1:numel(obj.targetObjects)
+%                     if numTimesteps(obj.targetObjects(i)) > maxTimesteps
+%                         maxTimesteps = numTimesteps(obj.targetObjects(i));
+%                     end
+%                 end
+%                 obj.numTimesteps = maxTimesteps;
+%             elseif ~isempty(obj.trackedObjects)
+%                 maxTimesteps = -inf;
+%                 for i = 1:numel(obj.trackedObjects)
+%                     if numTimesteps(obj.trackedObjects(i)) > maxTimesteps
+%                         maxTimesteps = numTimesteps(obj.trackedObjects(i));
+%                     end
+%                 end
+%                 obj.numTimesteps = maxTimesteps;
+%             else
+%                 obj.numTimesteps = 0;
+%             end
             
-            %Initialize the car outline
-            carwidth = convlength(72, 'in', 'm');
-            carlength = convlength(184, 'in', 'm');
-            obj.carOutline = OutlineGroup("Our Car", [ -carlength - 0.5,0], ...
-                0, carlength, carwidth,...
-                [0 0 0]);
+%             %Initialize the car outline
+%             carwidth = convlength(72, 'in', 'm');
+%             carlength = convlength(184, 'in', 'm');
+%             obj.carOutline = OutlineGroup("Our Car", [ -carlength - 0.5,0], ...
+%                 0, carlength, carwidth,...
+%                 [0 0 0]);
             
             %Set x and y limits to the maximum and minimum x and y
             %coordinates in the position data across all plotted objects
-            detectLims = zeros(numel(obj.targetObjects) +...
-                numel(obj.targetObjects) +...
-                numel(obj.carOutline), 4);
-            for i = 1:numel(obj.targetObjects)
-                [detectLims(i, 1:2), detectLims(i, 3:4)] = bounds(obj.targetObjects(i));
-            end
-            endIdx = numel(obj.targetObjects);
-            for i = 1:numel(obj.trackedObjects)
-                [detectLims(endIdx + i, 1:2), detectLims(endIdx + i, 3:4)] = bounds(obj.trackedObjects(i));
-            end
-            detectLims(end, 1:2) = obj.carOutline.positions(1) * [1,1] +...
-                obj.carOutline.lengths/2 * [-1, 1];
-            detectLims(end, 3:4) = obj.carOutline.positions(2) * [1,1] +...
-                obj.carOutline.widths/2 * [-1, 1];
-            
-            obj.xlims = [min(detectLims(:, 1)), max(detectLims(:, 2))] + [-10, 10];
-            obj.ylims = [min(detectLims(:, 3)), max(detectLims(:, 4))] + [-10, 10];
+%             detectLims = zeros(numel(obj.targetObjects) +...
+%                 numel(obj.targetObjects) +...
+%                 numel(obj.carOutline), 4);
+%             for i = 1:numel(obj.targetObjects)
+%                 [detectLims(i, 1:2), detectLims(i, 3:4)] = bounds(obj.targetObjects(i));
+%             end
+%             endIdx = numel(obj.targetObjects);
+%             for i = 1:numel(obj.trackedObjects)
+%                 [detectLims(endIdx + i, 1:2), detectLims(endIdx + i, 3:4)] = bounds(obj.trackedObjects(i));
+%             end
+%             detectLims(end, 1:2) = obj.carOutline.positions(1) * [1,1] +...
+%                 obj.carOutline.lengths/2 * [-1, 1];
+%             detectLims(end, 3:4) = obj.carOutline.positions(2) * [1,1] +...
+%                 obj.carOutline.widths/2 * [-1, 1];
+%             
+%             obj.xlims = [min(detectLims(:, 1)), max(detectLims(:, 2))] + [-10, 10];
+%             obj.ylims = [min(detectLims(:, 3)), max(detectLims(:, 4))] + [-10, 10];
         end
         %%
         % Set the limits of the axes explicitly
@@ -75,26 +75,29 @@ classdef BirdsEyePlot %Convenience class for plotting Mobileye obstacles
         %%
         % Initialize contents of BirdsEyePlot 
         function obj = initializeBirdsEyePlot(obj)
-            obj.birdPlot = birdsEyePlot('XLim', obj.xlims, 'YLim', obj.ylims);
-            obj.carOutline = addToBirdsEyePlot(obj.carOutline, obj.birdPlot);
+            obj.birdPlot = birdsEyePlot('XLim', [-50,50], 'YLim', [-50,50]);
+           % obj.carOutline = addToBirdsEyePlot(obj.carOutline, obj.birdPlot);
             
             for i = 1:numel(obj.targetObjects)
                 obj.targetObjects(i) =...
                     addToBirdsEyePlot(obj.targetObjects(i), obj.birdPlot);
             end
-            for i = 1:numel(obj.tracke)
-                obj.obstacleGroups(i) =...
-                    addToBirdsEyePlot(obj.obstacleGroups(i), obj.birdPlot);
+            for i = 1:numel(obj.trackedObjects)
+                obj.trackedObjects(i) =...
+                    addToBirdsEyePlot(obj.trackedObjects(i), obj.birdPlot);
             end
         end
         %%
         % Plot the object positions at a specific timestep
         function obj = updateBirdsEyePlot(obj, timestepNum)
             hold on;
-            plotGroup(obj.carOutline);
+           % plotGroup(obj.carOutline);
             
-            for i = 1:numel(obj.objects)
-                plotGroup(obj.objects(i), timestepNum);
+            for i = 1:numel(obj.targetObjects)
+                plotGroup(obj.targetObjects(i), timestepNum);
+            end
+            for i = 1:numel(obj.trackedObjects)
+                plotGroup(obj.trackedObjects(i), timestepNum);
             end
             hold off;
         end
