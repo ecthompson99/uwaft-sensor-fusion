@@ -23,6 +23,8 @@ targetPlotter = detectionPlotter(bep,'DisplayName','Target Objects', ...
 trackedPlotter = detectionPlotter(bep,'DisplayName','Tracked Objects', ...
     'MarkerEdgeColor','blue', 'Marker', '+');
 
+grid on; 
+
 % create empty arrays for vehicles
 target_pos = cell(size(target_obj,1),1);
 target_vel = cell(size(target_obj,1),1);
