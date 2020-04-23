@@ -51,8 +51,6 @@ add_message_files(
    FILES
    radar_object_data_from_matlab.msg
    mobileye_object_data_from_matlab.msg
-   radar_object_data.msg
-   mobileye_object_data.msg
 )
 
 ## Generate services in the 'srv' folder

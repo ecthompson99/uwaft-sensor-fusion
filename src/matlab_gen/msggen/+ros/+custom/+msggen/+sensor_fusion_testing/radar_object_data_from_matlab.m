@@ -12,7 +12,7 @@ classdef radar_object_data_from_matlab < ros.Message
     end
     
     properties (Constant, Hidden)
-        MD5Checksum = '4da7abcd6760b6ce010af2f7c47d29e9' % The MD5 Checksum of the message definition
+        MD5Checksum = '5b3064e5b1c2e742a487836cf730a925' % The MD5 Checksum of the message definition
     end
     
     properties (Access = protected)
@@ -24,12 +24,17 @@ classdef radar_object_data_from_matlab < ros.Message
         RadarDy
         RadarVx
         RadarVy
+        RadarAx
         RadarTimestamp
+        RadarDxSigma
+        RadarDySigma
+        RadarVxSigma
+        RadarAxSigma
     end
     
     properties (Constant, Hidden)
-        PropertyList = {'RadarDx', 'RadarDy', 'RadarTimestamp', 'RadarVx', 'RadarVy'} % List of non-constant message properties
-        ROSPropertyList = {'RadarDx', 'RadarDy', 'RadarTimestamp', 'RadarVx', 'RadarVy'} % List of non-constant ROS message properties
+        PropertyList = {'RadarAx', 'RadarAxSigma', 'RadarDx', 'RadarDxSigma', 'RadarDy', 'RadarDySigma', 'RadarTimestamp', 'RadarVx', 'RadarVxSigma', 'RadarVy'} % List of non-constant message properties
+        ROSPropertyList = {'RadarAx', 'RadarAxSigma', 'RadarDx', 'RadarDxSigma', 'RadarDy', 'RadarDySigma', 'RadarTimestamp', 'RadarVx', 'RadarVxSigma', 'RadarVy'} % List of non-constant ROS message properties
     end
     
     methods
@@ -126,6 +131,18 @@ classdef radar_object_data_from_matlab < ros.Message
             obj.JavaMessage.setRadarVy(radarvy);
         end
         
+        function radarax = get.RadarAx(obj)
+            %get.RadarAx Get the value for property RadarAx
+            radarax = double(obj.JavaMessage.getRadarAx);
+        end
+        
+        function set.RadarAx(obj, radarax)
+            %set.RadarAx Set the value for property RadarAx
+            validateattributes(radarax, {'numeric'}, {'nonempty', 'scalar'}, 'radar_object_data_from_matlab', 'RadarAx');
+            
+            obj.JavaMessage.setRadarAx(radarax);
+        end
+        
         function radartimestamp = get.RadarTimestamp(obj)
             %get.RadarTimestamp Get the value for property RadarTimestamp
             radartimestamp = double(obj.JavaMessage.getRadarTimestamp);
@@ -136,6 +153,54 @@ classdef radar_object_data_from_matlab < ros.Message
             validateattributes(radartimestamp, {'numeric'}, {'nonempty', 'scalar'}, 'radar_object_data_from_matlab', 'RadarTimestamp');
             
             obj.JavaMessage.setRadarTimestamp(radartimestamp);
+        end
+        
+        function radardxsigma = get.RadarDxSigma(obj)
+            %get.RadarDxSigma Get the value for property RadarDxSigma
+            radardxsigma = double(obj.JavaMessage.getRadarDxSigma);
+        end
+        
+        function set.RadarDxSigma(obj, radardxsigma)
+            %set.RadarDxSigma Set the value for property RadarDxSigma
+            validateattributes(radardxsigma, {'numeric'}, {'nonempty', 'scalar'}, 'radar_object_data_from_matlab', 'RadarDxSigma');
+            
+            obj.JavaMessage.setRadarDxSigma(radardxsigma);
+        end
+        
+        function radardysigma = get.RadarDySigma(obj)
+            %get.RadarDySigma Get the value for property RadarDySigma
+            radardysigma = double(obj.JavaMessage.getRadarDySigma);
+        end
+        
+        function set.RadarDySigma(obj, radardysigma)
+            %set.RadarDySigma Set the value for property RadarDySigma
+            validateattributes(radardysigma, {'numeric'}, {'nonempty', 'scalar'}, 'radar_object_data_from_matlab', 'RadarDySigma');
+            
+            obj.JavaMessage.setRadarDySigma(radardysigma);
+        end
+        
+        function radarvxsigma = get.RadarVxSigma(obj)
+            %get.RadarVxSigma Get the value for property RadarVxSigma
+            radarvxsigma = double(obj.JavaMessage.getRadarVxSigma);
+        end
+        
+        function set.RadarVxSigma(obj, radarvxsigma)
+            %set.RadarVxSigma Set the value for property RadarVxSigma
+            validateattributes(radarvxsigma, {'numeric'}, {'nonempty', 'scalar'}, 'radar_object_data_from_matlab', 'RadarVxSigma');
+            
+            obj.JavaMessage.setRadarVxSigma(radarvxsigma);
+        end
+        
+        function radaraxsigma = get.RadarAxSigma(obj)
+            %get.RadarAxSigma Get the value for property RadarAxSigma
+            radaraxsigma = double(obj.JavaMessage.getRadarAxSigma);
+        end
+        
+        function set.RadarAxSigma(obj, radaraxsigma)
+            %set.RadarAxSigma Set the value for property RadarAxSigma
+            validateattributes(radaraxsigma, {'numeric'}, {'nonempty', 'scalar'}, 'radar_object_data_from_matlab', 'RadarAxSigma');
+            
+            obj.JavaMessage.setRadarAxSigma(radaraxsigma);
         end
     end
     
@@ -154,7 +219,12 @@ classdef radar_object_data_from_matlab < ros.Message
             cpObj.RadarDy = obj.RadarDy;
             cpObj.RadarVx = obj.RadarVx;
             cpObj.RadarVy = obj.RadarVy;
+            cpObj.RadarAx = obj.RadarAx;
             cpObj.RadarTimestamp = obj.RadarTimestamp;
+            cpObj.RadarDxSigma = obj.RadarDxSigma;
+            cpObj.RadarDySigma = obj.RadarDySigma;
+            cpObj.RadarVxSigma = obj.RadarVxSigma;
+            cpObj.RadarAxSigma = obj.RadarAxSigma;
         end
         
         function reload(obj, strObj)
@@ -163,7 +233,12 @@ classdef radar_object_data_from_matlab < ros.Message
             obj.RadarDy = strObj.RadarDy;
             obj.RadarVx = strObj.RadarVx;
             obj.RadarVy = strObj.RadarVy;
+            obj.RadarAx = strObj.RadarAx;
             obj.RadarTimestamp = strObj.RadarTimestamp;
+            obj.RadarDxSigma = strObj.RadarDxSigma;
+            obj.RadarDySigma = strObj.RadarDySigma;
+            obj.RadarVxSigma = strObj.RadarVxSigma;
+            obj.RadarAxSigma = strObj.RadarAxSigma;
         end
     end
     
@@ -181,7 +256,12 @@ classdef radar_object_data_from_matlab < ros.Message
             strObj.RadarDy = obj.RadarDy;
             strObj.RadarVx = obj.RadarVx;
             strObj.RadarVy = obj.RadarVy;
+            strObj.RadarAx = obj.RadarAx;
             strObj.RadarTimestamp = obj.RadarTimestamp;
+            strObj.RadarDxSigma = obj.RadarDxSigma;
+            strObj.RadarDySigma = obj.RadarDySigma;
+            strObj.RadarVxSigma = obj.RadarVxSigma;
+            strObj.RadarAxSigma = obj.RadarAxSigma;
         end
     end
     
