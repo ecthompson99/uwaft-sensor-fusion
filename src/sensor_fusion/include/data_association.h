@@ -12,12 +12,13 @@
 #include "sensor_fusion/associated_me_msg.h"
 #include "sensor_fusion/associated_radar_msg.h"
 
-#define MOBILEYE_TOPIC "mobileye_topic"
-#define RADAR_TOPIC "radar_topic"
-#define KALMAN_FILTER_RADAR_TOPIC "kf_radar"
-#define KALMAN_FILTER_ME_TOPIC "kf_me"
+#define MOBILEYE_TOPIC "mobileye_from_matlab"
+#define RADAR_TOPIC "radar_from_matlab"
+#define KALMAN_FILTER_RADAR_TOPIC "associated_radar"
+#define KALMAN_FILTER_ME_TOPIC "associated_me"
 #define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
 #define TOL 5
+#define POTENTIAL_THRESHOLD 5
 #define MESSAGE_BUFFER_SIZE 10
 
 class DataAssociation {

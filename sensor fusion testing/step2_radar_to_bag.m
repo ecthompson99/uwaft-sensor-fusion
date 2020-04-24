@@ -1,7 +1,7 @@
 rosshutdown
 clear
 clc
-load('radar.mat');
+load('~/kaiROS/sensor fusion testing/radar.mat');
 
 rosinit
 radar_pub = rospublisher('/radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
@@ -22,6 +22,7 @@ else
 end
 
 for i = start_index:2:end_index
+    input('uhh');
     fields_A=fieldnames(radar_final.Signals{i,1});
     fields_B=fieldnames(radar_final.Signals{i+1,1});
     radar_msg.RadarDx = getfield(radar_final.Signals{i,1},fields_A{7});

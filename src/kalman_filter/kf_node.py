@@ -6,6 +6,8 @@ from filterpy.kalman import KalmanFilter
 from filterpy.common import Q_discrete_white_noise
 from kalman_filter.msg import object_deletion_msg, filtered_object_msg
 from sensor_fusion.msg import associated_me_msg, associated_radar_msg
+import time
+import matplotlib.pyplot as plt
 
 def determine_lane(dy):
     if dy < -1.5:
@@ -16,27 +18,27 @@ def determine_lane(dy):
         return 1, True
 
 class KF(KalmanFilter):
-    def __init__(self, dt, initial_measurement):
-        # initial_measurement is a list containing z and R's diagonal
-        super().__init__(4, 4)
-        self.dt = dt
+    def __init__(self, initial_measurement):
+        '''initial_measurement is a list containing z and R's diagonal'''
+        super(KF, self).__init__(4, 4)
         self.x = np.asarray(initial_measurement[0])
         np.fill_diagonal(self.R, initial_measurement[1])
         # Constant velocity model
-        self.F = np.array([[1,0,dt,0],
-                           [0,1,0,dt],
+        self.F = np.array([[1,0,0,0],
+                           [0,1,0,0],
                            [0,0,1,0],
-                           [0,0,0,1]])
-        # Tunable process variance here
-        self.Q = Q_discrete_white_noise(2, self.dt, .5**2, block_size=2)
+                           [0,0,0,1]], dtype='float')
+        self.H = np.identity(4)
         np.fill_diagonal(self.P, [100 for _ in range(4)])
+        self.last_timestamp = 0
 
 class KF_Node(object):
     def me_association_callback(self, obj):
-        measurement = [[obj.obj.me_dx,
-                        obj.obj.me_dy,
-                        obj.obj.me_vx,
-                        0],
+        print('me callback called')
+        measurement = [[obj.obj.MeDx,
+                        obj.obj.MeDy,
+                        obj.obj.MeVx,
+                        20],
                         # Tunable
                         [.5**2,
                          .5**2,
@@ -44,51 +46,81 @@ class KF_Node(object):
                          .5**2]]
 
         if not obj.obj_id in self.objects:
-            self.objects[obj.obj_id] = KF(1/15, measurement)
-            self.objects[obj.obj_id]._vy = (0, 0)
+            self.objects[obj.obj_id] = KF(measurement)
+            self.objects[obj.obj_id]._past_dy = 0
+            self.objects[obj.obj_id].last_timestamp = obj.obj.MeTimestamp
+
+            print('creating object', obj.obj_id)
+            self.input_history[obj.obj_id] = np.array([measurement[0]])
+            self.output_history[obj.obj_id] = np.array([self.objects[obj.obj_id].x])
+
         else:
             hashed = self.objects[obj.obj_id]
+            hashed.dt = obj.obj.MeTimestamp - hashed.last_timestamp
+            hashed.last_timestamp = obj.obj.MeTimestamp
+            hashed.F[0][2] = hashed.F[1][3] = hashed.dt
+            self.Q = Q_discrete_white_noise(2, hashed.dt, .5**2, block_size=2)
             hashed.predict()
-            measurement[0][3] = (hashed._vy[1] - hashed._vy[0]) / hashed.dt
+            measurement[0][3] = (measurement[0][1] - hashed._past_dy) / hashed.dt
             # R is going to be constant for mobileye for now
             self.objects[obj.obj_id].update(measurement[0])
-            hashed._vy = (hashed._vy[1], hashed.x[3])
+            hashed._past_dy = measurement[0][1]
+            print('x',self.objects[0].x, 'P', self.objects[0].P, 'z', self.objects[0].z, 'R', self.objects[0].R, 'dt', self.objects[0].dt, sep='\n', end='\n--------------\n')
+
+            self.input_history[obj.obj_id] = np.append(self.input_history[obj.obj_id], [measurement[0]], axis=0)
+            self.output_history[obj.obj_id] = np.append(self.output_history[obj.obj_id], [hashed.x], axis=0)
 
         result = filtered_object_msg()
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
         result.obj_id = obj.obj_id 
         result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
-        result.obj_ax = obj.obj.me_ax
-        result.obj_timestamp = obj.obj.me_timestamp
+        # result.obj_ax = obj.obj.me_ax
+        result.obj_timestamp = obj.obj.MeTimestamp
         result.obj_count = 30
         
         self.output.publish(result)
 
     def radar_association_callback(self, obj):
-        measurement = [[obj.obj.radar_dx,
-                        obj.obj.radar_dy,
-                        obj.obj.radar_vx,
-                        obj.obj.radar_vy],
+        print('radar callback called', obj.obj_id)
+        measurement = [[obj.obj.RadarDx,
+                        obj.obj.RadarDy,
+                        obj.obj.RadarVx,
+                        obj.obj.RadarVy],
                         # Tunable
-                        [obj.obj.radar_dx_sigma**2,
-                         obj.obj.radar_dy_sigma**2,
-                         obj.obj.radar_vx_sigma**2,
+                        [obj.obj.RadarDxSigma**2,
+                         obj.obj.RadarDySigma**2,
+                         obj.obj.RadarVxSigma**2,
                          .25**2]]
 
         if not obj.obj_id in self.objects:
-            self.objects[obj.obj_id] = KF(1/50, measurement)
+            self.objects[obj.obj_id] = KF(measurement)
+            self.objects[obj.obj_id].last_timestamp = obj.obj.RadarTimestamp
+
+            print('creating object', obj.obj_id)
+            self.input_history[obj.obj_id] = np.array([measurement[0]])
+            self.output_history[obj.obj_id] = np.array([self.objects[obj.obj_id].x])
+
         else:
             hashed = self.objects[obj.obj_id]
+            hashed.dt = obj.obj.RadarTimestamp - hashed.last_timestamp
+            hashed.last_timestamp = obj.obj.RadarTimestamp
+            hashed.F[0][2] = hashed.F[1][3] = hashed.dt
+            hashed.Q = Q_discrete_white_noise(2, hashed.dt, .5**2, block_size=2)
             hashed.predict()
             np.fill_diagonal(hashed.R, measurement[1])
             hashed.update(measurement[0])
+
+            print('x',self.objects[0].x, 'P', self.objects[0].P, 'z', self.objects[0].z, 'R', self.objects[0].R, 'dt', self.objects[0].dt, sep='\n', end='\n--------------\n')
+
+            self.input_history[obj.obj_id] = np.append(self.input_history[obj.obj_id], [measurement[0]], axis=0)
+            self.output_history[obj.obj_id] = np.append(self.output_history[obj.obj_id], [hashed.x], axis=0)
 
         result = filtered_object_msg()
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
         result.obj_id = obj.obj_id 
         result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
-        result.obj_ax = obj.obj.radar_ax
-        result.obj_timestamp = obj.obj.radar_timestamp
+        result.obj_ax = obj.obj.RadarAx
+        result.obj_timestamp = obj.obj.RadarTimestamp
         result.obj_count = 30
 
         self.output.publish(result)
@@ -104,6 +136,23 @@ class KF_Node(object):
         rospy.Subscriber('obj_deletion', object_deletion_msg, callback=self.object_deletion_callback)
         self.output = rospy.Publisher('filtered_obj', filtered_object_msg, queue_size=10)
 
+        self.input_history, self.output_history = {}, {}
+        self.start = time.time()
+
+    def plot_history(self, id):
+        print(self.input_history[id])
+        x = np.arange(len(self.input_history[id]))
+        plt.plot(x, self.input_history[id][:,0], 'r--', x, self.output_history[id][:,0], 'b-')
+        plt.show()
+        plt.plot(x, self.input_history[id][:,1], 'r--', x, self.output_history[id][:,1], 'b-')
+        plt.show()
+
 if __name__ == '__main__':
-    KF_Node()
-    rospy.spin()
+    node = KF_Node()
+
+    while not rospy.core.is_shutdown():
+        arg = raw_input()
+        if arg[0] == 'r':
+            node.plot_history(int(arg[1:]))
+
+    # rospy.spin()

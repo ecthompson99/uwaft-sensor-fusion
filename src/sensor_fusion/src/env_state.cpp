@@ -8,7 +8,7 @@
 bool target1, target2, target3 = false;
 
 EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_node_handle(node_handle) {
-  filtered_object_sub = env_state_node_handle->subscribe("kf_dummy_data", MESSAGE_BUFFER_SIZE,
+  filtered_object_sub = env_state_node_handle->subscribe("filtered_obj", MESSAGE_BUFFER_SIZE,
                                                             &EnvironmentState::filtered_object_callback, this);
 
   target_obj_pub = env_state_node_handle->advertise<sensor_fusion::target_output_msg>("target_obj",
@@ -125,7 +125,7 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
     
     update_env_state(tracked_msg); // update id of objects in state vector
 
-    check_timestamp(tracked_msg); // removes outdated state vector
+    // check_timestamp(tracked_msg); // removes outdated state vector
   
     find_target_objects(tracked_msg);     // fill array with target objects
     
@@ -185,7 +185,8 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
 	// if object has not been tracked, add the object to state vector
 	else
 	  add_object(tracked_msg);
-			
+
+	printf("%lu: %f %f\n", trackedObjects[0].get_obj_id(), trackedObjects[0].get_obj_dx(), trackedObjects[0].get_obj_dy());
 }
 void EnvironmentState::find_target_objects(const ObjectState& tracked_msg){
     
@@ -238,7 +239,7 @@ bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Requ
             res.dx.push_back(trackedObjects[i].get_obj_dx());
             res.dy.push_back(trackedObjects[i].get_obj_dy());
             res.timestamp.push_back(trackedObjects[i].get_obj_timestamp());
-            
+            printf("returned %f, %f for %lu\n", res.dx[i], res.dy[i], res.id[i]);
             //res.count.push_back(trackedObjects[i].get_obj_count());
         }
         return true;

@@ -6,10 +6,10 @@
 class ObjectState {
  public:
   ObjectState();
-  ObjectState(uint8_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
+  ObjectState(uint64_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
     double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp,uint8_t set_obj_track_num); //, uint8_t set_obj_count) {
   virtual ~ObjectState();
-  uint8_t get_obj_id() const;
+  uint64_t get_obj_id() const;
   double get_obj_dx() const;
   uint8_t get_obj_lane() const;
   double get_obj_vx() const;
@@ -23,7 +23,7 @@ class ObjectState {
   void copy_info(const sensor_fusion::filtered_object_msg& filtered_msg);
   
  private:
-  uint8_t obj_id; // object ID
+  uint64_t obj_id; // object ID
   double obj_dx; // longitudinal range
   uint8_t obj_lane; // lane assignment: 0-ego, 1-left, 2-right
   double obj_vx; // relaive longitudinal velocity
