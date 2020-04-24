@@ -22,7 +22,7 @@ else
 end
 
 for i = start_index:2:end_index
-    input('uhh');
+    % input('uhh');
     fields_A=fieldnames(radar_final.Signals{i,1});
     fields_B=fieldnames(radar_final.Signals{i+1,1});
     radar_msg.RadarDx = getfield(radar_final.Signals{i,1},fields_A{7});

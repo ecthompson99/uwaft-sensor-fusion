@@ -43,9 +43,9 @@ class KF_Node(object):
                         0],
                         # Tunable
                         [.25**2,
+                         .1**2,
                          .25**2,
-                         .25**2,
-                         2**2]]
+                         1**2]]
 
         if not obj.obj_id in self.objects:
             self.objects[obj.obj_id] = KF(measurement)
@@ -64,7 +64,7 @@ class KF_Node(object):
                 self.Q = Q_discrete_white_noise(2, hashed.dt, .5**2, block_size=2)
                 hashed.predict()
                 measurement[0][3] = (measurement[0][1] - hashed._last_dy) / hashed.dt
-                # R is going to be constant for mobileye for now
+                np.fill_diagonal(hashed.R, measurement[1])
                 self.objects[obj.obj_id].update(measurement[0])
                 hashed._last_dy = measurement[0][1]
                 print(measurement[0][1])
@@ -148,6 +148,7 @@ class KF_Node(object):
 
     def plot_history(self, id):
         print(self.input_history[id])
+        print('-----\n',self.output_history[id])
         x = np.arange(len(self.input_history[id]))
         plt.plot(x, self.input_history[id][:,0], 'r--', x, self.output_history[id][:,0], 'b-')
         plt.show()
