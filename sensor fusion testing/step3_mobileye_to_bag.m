@@ -1,7 +1,7 @@
 rosshutdown
 clear
 clc
-load('mobileye.mat');
+load('~/kaiROS/sensor fusion testing/mobileye.mat');
 
 rosinit
 me_pub = rospublisher('/mobileye_from_matlab','sensor_fusion_testing/mobileye_object_data_from_matlab');
@@ -25,7 +25,7 @@ else
 end
 
 for i = start_index:3:9000
-    input();
+    input('uhh');
     fields_A=fieldnames(me_final.Signals{i,1});
     me_msg.MeDx = getfield(me_final.Signals{i,1},fields_A{9});
     me_msg.MeDy = getfield(me_final.Signals{i,1},fields_A{8});

@@ -30,25 +30,26 @@ class KF(KalmanFilter):
                            [0,0,0,1]], dtype='float')
         self.H = np.identity(4)
         np.fill_diagonal(self.P, [100 for _ in range(4)])
-        self.last_timestamp = 0
+        self.last_radar_timestamp = 0
+        self.last_me_timestamp = 0
+        self._last_dy = 0
 
 class KF_Node(object):
     def me_association_callback(self, obj):
-        print('me callback called')
+        print('me callback called', obj.obj_id)
         measurement = [[obj.obj.MeDx,
                         obj.obj.MeDy,
                         obj.obj.MeVx,
-                        20],
+                        0],
                         # Tunable
-                        [.5**2,
-                         .5**2,
-                         .5**2,
-                         .5**2]]
+                        [.25**2,
+                         .25**2,
+                         .25**2,
+                         2**2]]
 
         if not obj.obj_id in self.objects:
             self.objects[obj.obj_id] = KF(measurement)
-            self.objects[obj.obj_id]._past_dy = 0
-            self.objects[obj.obj_id].last_timestamp = obj.obj.MeTimestamp
+            self.objects[obj.obj_id].last_me_timestamp = obj.obj.MeTimestamp
 
             print('creating object', obj.obj_id)
             self.input_history[obj.obj_id] = np.array([measurement[0]])
@@ -56,16 +57,20 @@ class KF_Node(object):
 
         else:
             hashed = self.objects[obj.obj_id]
-            hashed.dt = obj.obj.MeTimestamp - hashed.last_timestamp
-            hashed.last_timestamp = obj.obj.MeTimestamp
-            hashed.F[0][2] = hashed.F[1][3] = hashed.dt
-            self.Q = Q_discrete_white_noise(2, hashed.dt, .5**2, block_size=2)
-            hashed.predict()
-            measurement[0][3] = (measurement[0][1] - hashed._past_dy) / hashed.dt
-            # R is going to be constant for mobileye for now
-            self.objects[obj.obj_id].update(measurement[0])
-            hashed._past_dy = measurement[0][1]
-            print('x',self.objects[0].x, 'P', self.objects[0].P, 'z', self.objects[0].z, 'R', self.objects[0].R, 'dt', self.objects[0].dt, sep='\n', end='\n--------------\n')
+            if hashed.last_me_timestamp:
+                hashed.dt = obj.obj.MeTimestamp - hashed.last_me_timestamp
+                hashed.last_me_timestamp = obj.obj.MeTimestamp
+                hashed.F[0][2] = hashed.F[1][3] = hashed.dt
+                self.Q = Q_discrete_white_noise(2, hashed.dt, .5**2, block_size=2)
+                hashed.predict()
+                measurement[0][3] = (measurement[0][1] - hashed._last_dy) / hashed.dt
+                # R is going to be constant for mobileye for now
+                self.objects[obj.obj_id].update(measurement[0])
+                hashed._last_dy = measurement[0][1]
+                print(measurement[0][1])
+                print('x',self.objects[0].x, 'P', self.objects[0].P, 'z', self.objects[0].z, 'R', self.objects[0].R, 'dt', self.objects[0].dt, sep='\n', end='\n--------------\n')
+            else:
+                hashed.last_me_timestamp = obj.obj.MeTimestamp
 
             self.input_history[obj.obj_id] = np.append(self.input_history[obj.obj_id], [measurement[0]], axis=0)
             self.output_history[obj.obj_id] = np.append(self.output_history[obj.obj_id], [hashed.x], axis=0)
@@ -94,7 +99,7 @@ class KF_Node(object):
 
         if not obj.obj_id in self.objects:
             self.objects[obj.obj_id] = KF(measurement)
-            self.objects[obj.obj_id].last_timestamp = obj.obj.RadarTimestamp
+            self.objects[obj.obj_id].last_radar_timestamp = obj.obj.RadarTimestamp
 
             print('creating object', obj.obj_id)
             self.input_history[obj.obj_id] = np.array([measurement[0]])
@@ -102,15 +107,17 @@ class KF_Node(object):
 
         else:
             hashed = self.objects[obj.obj_id]
-            hashed.dt = obj.obj.RadarTimestamp - hashed.last_timestamp
-            hashed.last_timestamp = obj.obj.RadarTimestamp
-            hashed.F[0][2] = hashed.F[1][3] = hashed.dt
-            hashed.Q = Q_discrete_white_noise(2, hashed.dt, .5**2, block_size=2)
-            hashed.predict()
-            np.fill_diagonal(hashed.R, measurement[1])
-            hashed.update(measurement[0])
-
-            print('x',self.objects[0].x, 'P', self.objects[0].P, 'z', self.objects[0].z, 'R', self.objects[0].R, 'dt', self.objects[0].dt, sep='\n', end='\n--------------\n')
+            if hashed.last_radar_timestamp:
+                hashed.dt = obj.obj.RadarTimestamp - hashed.last_radar_timestamp
+                hashed.last_radar_timestamp = obj.obj.RadarTimestamp
+                hashed.F[0][2] = hashed.F[1][3] = hashed.dt
+                hashed.Q = Q_discrete_white_noise(2, hashed.dt, .5**2, block_size=2)
+                hashed.predict()
+                np.fill_diagonal(hashed.R, measurement[1])
+                hashed.update(measurement[0])
+                # print('x',self.objects[0].x, 'P', self.objects[0].P, 'z', self.objects[0].z, 'R', self.objects[0].R, 'dt', self.objects[0].dt, sep='\n', end='\n--------------\n')
+            else:
+                hashed.last_radar_timestamp = obj.obj.RadarTimestamp
 
             self.input_history[obj.obj_id] = np.append(self.input_history[obj.obj_id], [measurement[0]], axis=0)
             self.output_history[obj.obj_id] = np.append(self.output_history[obj.obj_id], [hashed.x], axis=0)
