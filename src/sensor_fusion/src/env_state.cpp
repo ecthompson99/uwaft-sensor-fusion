@@ -176,7 +176,6 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
       found = true;
 			index_found = index;
 		}
-	printf("%d: %f %f\n", trackedObjects[index].get_obj_id(), trackedObjects[index].get_obj_dx(), trackedObjects[index].get_obj_dy());
   }
 
   // if object has been tracked, update the object in the state vector
@@ -186,7 +185,8 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
 	// if object has not been tracked, add the object to state vector
 	else
 	  add_object(tracked_msg);
-			
+
+	printf("%lu: %f %f\n", trackedObjects[0].get_obj_id(), trackedObjects[0].get_obj_dx(), trackedObjects[0].get_obj_dy());
 }
 void EnvironmentState::find_target_objects(const ObjectState& tracked_msg){
     
@@ -239,7 +239,7 @@ bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Requ
             res.dx.push_back(trackedObjects[i].get_obj_dx());
             res.dy.push_back(trackedObjects[i].get_obj_dy());
             res.timestamp.push_back(trackedObjects[i].get_obj_timestamp());
-            
+            printf("returned %f, %f for %lu\n", res.dx[i], res.dy[i], res.id[i]);
             //res.count.push_back(trackedObjects[i].get_obj_count());
         }
         return true;
