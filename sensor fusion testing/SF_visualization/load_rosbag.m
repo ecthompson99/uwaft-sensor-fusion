@@ -50,11 +50,11 @@ while startTime < endTime
 %          Second row of tracked_objects show dx, dy of each object at a time stamp
            dx = tracked_A_time((counter + 1):(counter + num_unique(index)), 2); % dx is column 2
            dy = tracked_A_time((counter + 1):(counter + num_unique(index)), 5); % dx is column 5
-           tracked_objects{2,index} = [5,7;8,9];
+           tracked_objects{2,index} = [dx,dy];
            
+           counter = counter + num_unique(index);
        end
        
-       counter = counter + num_unique(index);
    end
    
    startTime = startTime + timeStep;
