@@ -4,6 +4,8 @@ data_radar = blfread("ACCGapTestMed_20191103_155525_CAN.blf", 3,...
                 "Database", candb_radar, "CANStandardFilter", (1285:1658));
 time_in_sec = seconds(data_radar.Time);
 radar_final = addvars(data_radar,time_in_sec);
+writetimetable(radar_final,'testing.xlsx','Sheet',1);
+
 clear candb_radar;
 clear data_radar;
 clear time_in_sec;
@@ -19,3 +21,5 @@ clear candb_me;
 clear data_me;
 clear time_in_sec;
 save('mobileye.mat');
+writetimetable(me_final,'testing.xlsx','Sheet',2);
+
