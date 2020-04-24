@@ -37,7 +37,7 @@ void DataAssociation::delete_potential_objects() {
 
 
 bool DataAssociation::objects_match(ObjectState obj, double sensor_dx, double sensor_dy) {
-    int dist = sqrt(pow((obj.dx - sensor_dx), 2) + (pow((obj.dy - sensor_dy), 2)));
+    double dist = sqrt(pow((obj.dx - sensor_dx), 2) + (pow((obj.dy - sensor_dy), 2)));
 
     if (dist <= TOL) {
         std::cout << "objects match with a distance of " << dist << std::endl;
@@ -72,7 +72,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
     std::vector<ObjectState> stateVector;
 
     if (client.call(srv)){
-        std::cout<<"HEY\n";
+        std::cout<<"HEY service is called successfully\n";
         for(int i = 0; i < srv.response.id.size(); i++){
             
             ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.dy[i], srv.response.timestamp[i]);
@@ -84,6 +84,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
 
         for (auto obj : stateVector) {
             if (objects_match(obj, recvd_data.RadarDx, recvd_data.RadarDy)) {
+                printf("%lu matched, sending now\n", obj.id);
                 sensor_fusion::associated_radar_msg matched;
                 matched.obj = recvd_data;
                 matched.obj_id = obj.id;
@@ -104,13 +105,13 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
             potential_objs[i].dy = recvd_data.RadarDy;
             potential_objs[i].count++;
 
-            if (potential_objs[i].count > 5) {
+            if (potential_objs[i].count > POTENTIAL_THRESHOLD) {
                 sensor_fusion::associated_radar_msg matched;
                 matched.obj = recvd_data;
                 matched.obj_id = next_id++;
                 radar_to_kf_pub.publish(matched);
                 potential_objs.erase (potential_objs.begin()+i);
-                std::cout << "DELETED OBJ CUZ COUNT > 5" << std::endl;
+                std::cout << "Publishing new object that passed threshold and removing from potential queue" << std::endl;
             }
 
             return;
@@ -142,9 +143,7 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
             ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.dy[i], srv.response.timestamp[i]);
         
             envState.push_back(someObj); 
-        } 
-        std::cout << envState[0].id << std::endl; //6
-        std::cout << envState[2].dx << std::endl;    //should return 8.3   
+        }
 
         // if the object we received is already in the envState, send it to kf
         for (auto obj : envState) {
@@ -170,7 +169,7 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
             potential_objs[i].dy = recvd_data.MeDy;
             potential_objs[i].count++;
 
-            if (potential_objs[i].count > 5) {
+            if (potential_objs[i].count > POTENTIAL_THRESHOLD) {
                 sensor_fusion::associated_me_msg matched;
                 matched.obj = recvd_data;
                 matched.obj_id = next_id++;

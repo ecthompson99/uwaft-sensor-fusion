@@ -1,7 +1,7 @@
 rosshutdown
 clear
 clc
-load('radar.mat');
+load('~/kaiROS/sensor fusion testing/radar.mat');
 
 rosinit
 radar_pub = rospublisher('/radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
