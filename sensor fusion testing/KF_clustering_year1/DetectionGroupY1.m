@@ -1,4 +1,4 @@
-classdef DetectionGroup %Convenience class for the detectionPlotter object 
+classdef DetectionGroupY1 %Convenience class for the detectionPlotter object 
                         %and plotDetection function for Mobileye radar
                         %objects
     properties (SetAccess = private)
@@ -14,20 +14,20 @@ classdef DetectionGroup %Convenience class for the detectionPlotter object
     methods
         %%
         %Constructor
-        function obj = DetectionGroup(logFilename, name,  xRegex,...
+        function obj = DetectionGroupY1(logFilename, name,  xRegex,...
                 yRegex, marker, color)
             validateattributes(logFilename, {'string'}, {'scalar'},...
-                "DetectionGroup", "logFilename");
+                "DetectionGroupY1", "logFilename");
             validateattributes(name, {'string'}, {'scalar'},...
-                "DetectionGroup", "name");
+                "DetectionGroupY1", "name");
             validateattributes(xRegex, {'string'}, {'scalar'},...
-                "DetectionGroup", "xRegex");
+                "DetectionGroupY1", "xRegex");
             validateattributes(yRegex, {'string'}, {'scalar'},...
-                "DetectionGroup", "yRegex");
+                "DetectionGroupY1", "yRegex");
             validateattributes(marker, {'char'}, {'scalar'},...
-                "DetectionGroup", "marker");
+                "DetectionGroupY1", "marker");
             validateattributes(color, {'double'}, {'size', [1,3]},...
-                "DetectionGroup", "color");
+                "DetectionGroupY1", "color");
             
             obj.name = name;
             obj.marker = marker;
@@ -47,7 +47,7 @@ classdef DetectionGroup %Convenience class for the detectionPlotter object
             if(numel(xCoordObjNames) ~= numel(yCoordObjNames))
                 disp("Error: xRegex retrieved a different number of" +...
                     "arrays than yRegex");
-                obj = DetectionGroup.empty(0,1);
+                obj = DetectionGroupY1.empty(0,1);
                 return;
             end
             

@@ -77,6 +77,10 @@ classdef BirdEyePlotterY1 %Convenience class for plotting Mobileye obstacles
                 obj.detectionGroups(i) =...
                     addToBirdsEyePlot(obj.detectionGroups(i), obj.birdPlot);
             end
+            for i = 1:numel(obj.obstacleGroups)
+                obj.obstacleGroups(i) =...
+                    addToBirdsEyePlot(obj.obstacleGroups(i), obj.birdPlot);
+            end
         end
         %%
         % Plot the object positions at a specific timestep
@@ -86,6 +90,9 @@ classdef BirdEyePlotterY1 %Convenience class for plotting Mobileye obstacles
             
             for i = 1:numel(obj.detectionGroups)
                 plotGroup(obj.detectionGroups(i), timestepNum);
+            end
+            for i = 1:numel(obj.obstacleGroups)
+                plotGroup(obj.obstacleGroups(i), timestepNum);
             end
             hold off;
         end
