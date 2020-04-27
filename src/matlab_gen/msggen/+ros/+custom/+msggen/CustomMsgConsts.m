@@ -25,18 +25,6 @@ classdef CustomMsgConsts
         master_task_sudo_driver_input_msg = 'master_task/sudo_driver_input_msg'
         sensor_diagnostic_check_sensor_diagnostic_data_msg = 'sensor_diagnostic_check/sensor_diagnostic_data_msg'
         sensor_diagnostic_check_sensor_diagnostic_flag_msg = 'sensor_diagnostic_check/sensor_diagnostic_flag_msg'
-        sensor_fusion_associated_me_msg = 'sensor_fusion/associated_me_msg'
-        sensor_fusion_associated_radar_msg = 'sensor_fusion/associated_radar_msg'
-        sensor_fusion_dummy_msg = 'sensor_fusion/dummy_msg'
-        sensor_fusion_env_state_srv = 'sensor_fusion/env_state_srv'
-        sensor_fusion_env_state_srvRequest = 'sensor_fusion/env_state_srvRequest'
-        sensor_fusion_env_state_srvResponse = 'sensor_fusion/env_state_srvResponse'
-        sensor_fusion_filtered_object_msg = 'sensor_fusion/filtered_object_msg'
-        sensor_fusion_mobileye_object_data = 'sensor_fusion/mobileye_object_data'
-        sensor_fusion_radar_object_data = 'sensor_fusion/radar_object_data'
-        sensor_fusion_sensor_diagnostic_flag_msg = 'sensor_fusion/sensor_diagnostic_flag_msg'
-        sensor_fusion_target_output_msg = 'sensor_fusion/target_output_msg'
-        sensor_fusion_tracked_output_msg = 'sensor_fusion/tracked_output_msg'
         sensor_fusion_testing_mobileye_object_data_from_matlab = 'sensor_fusion_testing/mobileye_object_data_from_matlab'
         sensor_fusion_testing_radar_object_data_from_matlab = 'sensor_fusion_testing/radar_object_data_from_matlab'
     end
@@ -48,7 +36,7 @@ classdef CustomMsgConsts
             
             persistent msgList
             if isempty(msgList)
-                msgList = cell(32, 1);
+                msgList = cell(21, 1);
                 msgList{1} = 'can_tx_rx/can_comms_data_msg';
                 msgList{2} = 'can_tx_rx/drive_ctrl_input_msg';
                 msgList{3} = 'can_tx_rx/raw_sensor_object_data_msg';
@@ -68,19 +56,8 @@ classdef CustomMsgConsts
                 msgList{17} = 'master_task/sudo_driver_input_msg';
                 msgList{18} = 'sensor_diagnostic_check/sensor_diagnostic_data_msg';
                 msgList{19} = 'sensor_diagnostic_check/sensor_diagnostic_flag_msg';
-                msgList{20} = 'sensor_fusion/associated_me_msg';
-                msgList{21} = 'sensor_fusion/associated_radar_msg';
-                msgList{22} = 'sensor_fusion/dummy_msg';
-                msgList{23} = 'sensor_fusion/env_state_srvRequest';
-                msgList{24} = 'sensor_fusion/env_state_srvResponse';
-                msgList{25} = 'sensor_fusion/filtered_object_msg';
-                msgList{26} = 'sensor_fusion/mobileye_object_data';
-                msgList{27} = 'sensor_fusion/radar_object_data';
-                msgList{28} = 'sensor_fusion/sensor_diagnostic_flag_msg';
-                msgList{29} = 'sensor_fusion/target_output_msg';
-                msgList{30} = 'sensor_fusion/tracked_output_msg';
-                msgList{31} = 'sensor_fusion_testing/mobileye_object_data_from_matlab';
-                msgList{32} = 'sensor_fusion_testing/radar_object_data_from_matlab';
+                msgList{20} = 'sensor_fusion_testing/mobileye_object_data_from_matlab';
+                msgList{21} = 'sensor_fusion_testing/radar_object_data_from_matlab';
             end
             
             messageList = msgList;
@@ -92,8 +69,7 @@ classdef CustomMsgConsts
             
             persistent svcList
             if isempty(svcList)
-                svcList = cell(1, 1);
-                svcList{1} = 'sensor_fusion/env_state_srv';
+                svcList = cell(0, 1);
             end
             
             % The message list was already sorted, so don't need to sort

@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <ctime>
 
+double global_clk = 0;
+
 DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(node_handle) {
     
     client = node_handle->serviceClient<sensor_fusion::env_state_srv>("env_service_topic");
@@ -20,14 +22,14 @@ DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(nod
 
 // Not called
 bool oldObject(ObjectState obj) {
-    const int secondsToDelete = 5;
+    #define secondsToDelete 5
 
     // epoch seconds
-    if ((double)std::time(nullptr) - obj.timestamp > secondsToDelete) { // works because we swap entire object including timestamp when match
+    if (global_clk - obj.timestamp > secondsToDelete) { // works because we swap entire object including timestamp when match
         std::cout << "DELETED OBJ CUZ TOO OLD" << std::endl;
     }
     
-    return (double)std::time(nullptr) - obj.timestamp > secondsToDelete;
+    return global_clk - obj.timestamp > secondsToDelete;
 }
 
 // Not called
@@ -48,6 +50,10 @@ bool DataAssociation::objects_match(ObjectState obj, double sensor_dx, double se
 
 
 void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_object_data& recvd_data) {
+    if (recvd_data.RadarDx < 7 && !recvd_data.RadarDy)
+        return;
+    global_clk = recvd_data.RadarTimestamp;
+
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
     // for (auto obj : potential_objs) {
     //     std::cout << "obj dx: " << obj.dx << " ";
@@ -131,6 +137,10 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
     // std::cout << "MeVx: " << recvd_data.MeVx << " ";
     // std::cout << "MeTimestamp: " << (time_t)recvd_data.MeTimestamp << " ";
     // std::cout << std::endl << std::endl;
+    if (!recvd_data.MeDx && !recvd_data.MeDy)
+        return;
+    global_clk = recvd_data.MeTimestamp;
+
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
     sensor_fusion::env_state_srv srv;
@@ -198,5 +208,10 @@ int main(int argc, char** argv){
     ros::init(argc, argv, "data_association");
     ros::NodeHandle data_association_handle;
     DataAssociation data_assc = DataAssociation(&data_association_handle);
-    ros::spin();
+    while (ros::ok()) {
+        data_assc.delete_potential_objects();
+        ros::Rate(10).sleep();
+        ros::spinOnce();
+    }
+    // ros::spin();
 }

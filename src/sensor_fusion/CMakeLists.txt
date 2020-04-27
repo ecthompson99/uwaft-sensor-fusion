@@ -77,6 +77,7 @@ find_package(
    filtered_object_msg.msg
    target_output_msg.msg
    tracked_output_msg.msg
+   binary_class_msg.msg
 )
 
 ## Generate services in the 'srv' folder

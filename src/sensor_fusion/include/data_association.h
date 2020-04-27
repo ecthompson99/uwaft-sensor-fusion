@@ -17,7 +17,7 @@
 #define KALMAN_FILTER_RADAR_TOPIC "associated_radar"
 #define KALMAN_FILTER_ME_TOPIC "associated_me"
 #define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
-#define TOL 5
+#define TOL 2
 #define POTENTIAL_THRESHOLD 5
 #define MESSAGE_BUFFER_SIZE 10
 
