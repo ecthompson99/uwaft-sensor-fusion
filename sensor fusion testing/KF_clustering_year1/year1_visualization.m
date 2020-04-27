@@ -75,17 +75,27 @@ for i = 1:num_frames
     time = time + timestepSize;
 end 
 
+% 
+% for i = 1:num_frames
+%     bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
+%     blazerPlotter = detectionPlotter(bep,'DisplayName','Blazer Objects', 'Marker', 'o');
+%     
+%     positions = zeros(results(i).Num_Objects,2);
+%     for j = 1:results(i).Num_Objects
+%         positions(1,1:2) = results(i).Objects(1,j).Measurement;
+%     end
+%     
+%     plotDetection(blazerPlotter, positions);
+%     title(gca, char(num2str(results(i).Time + " seconds"))); % start from 0
+%     grid on;
+%     
+%     % save png images
+%     file = strcat(path,num2str(i),'.png');
+%     saveas(gcf,file);
+%      
+%     % write video and delete saved png images
+%     writeVideo(newVid,imread(file));%within the for loop saving one frame at a time
+%     delete(file);
+% end
 
-% Create bird's eye plot
-bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
-
-trackedPlotter = detectionPlotter(bep,'DisplayName','Blazer Objects', 'Marker', 'o');
-
-for i = 1:num_frames
-    positions = zeros(results(i).Num_Objects,2);
-    for j = 1:results(i).Num_Objects
-        positions(1,1:2) = results(i).Objects(1,j).Measurement;
-    end
-    plotDetection(trackedPlotter, positions);
-    pause(0.1);
-end
+save('ground_truth','results');
