@@ -3,12 +3,8 @@ function detectionObjects = clusterDetectionsY1(detections, vehicleSize)
     distances = zeros(N);
     for i = 1:N
         for j = i+1:N
-            if detections(i).SensorIndex == detections(j).SensorIndex
-                distances(i,j) = norm(detections(i).Measurement(1:2) - ...
-                    detections(j).Measurement(1:2));
-            else
-                distances(i,j) = inf;
-            end
+            distances(i,j) = norm(detections(i).Measurement(1:2) - ...
+                detections(j).Measurement(1:2));
         end
     end
     leftToCheck = 1:N;
@@ -31,11 +27,11 @@ function detectionObjects = clusterDetectionsY1(detections, vehicleSize)
     end
     detectionObjects(i+1:end) = [];
 
-    % Since the detections are now for clusters, modify the noise to 
-    % represent that they are of the whole car
-    for i = 1:numel(detectionObjects)
-        measNoise(1:2,1:2) = vehicleSize^2 * eye(2);
-        measNoise(3:4,3:4) = eye(2) * 100 * vehicleSize^2;
-        detectionObjects(i).MeasurementNoise = measNoise;
-    end
+%     % Since the detections are now for clusters, modify the noise to 
+%     % represent that they are of the whole car
+%     for i = 1:numel(detectionObjects)
+%         measNoise(1:2,1:2) = vehicleSize^2 * eye(2);
+%         measNoise(3:4,3:4) = eye(2) * 100 * vehicleSize^2;
+%         detectionObjects(i).MeasurementNoise = measNoise;
+%     end
 end

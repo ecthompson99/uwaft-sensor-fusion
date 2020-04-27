@@ -5,9 +5,9 @@ clc
 %[scenario, sensors, egoCar] = generateScenario1();
 logFilename = "ACCGapTestLong_20191103_160048_CAN.mat"; %CAN Log .mat File to load
 
-tracker = multiObjectTracker('FilterInitializationFcn', @initKF, ...
-    'AssignmentThreshold', 27, 'ConfirmationParameters', [4 5], ...
-    'MaxNumSensors', 2); %blazer radar and vision sensors
+% tracker = multiObjectTracker('FilterInitializationFcn', @initKF, ...
+%     'AssignmentThreshold', 27, 'ConfirmationParameters', [4 5], ...
+%     'MaxNumSensors', 2); %blazer radar and vision sensors
 
 blazerRadarObjectsName = "Blazer Radar Objects"; %Legend label for obstacles
 blazerRadarObjectsMarker = '*';%Plot marker for radar objects
@@ -36,11 +36,12 @@ visionObjectPositions = blazerVisionObjects.positions;
 timestepSize = 0.1; %Timestep size in seconds.determined by the blf to .mat 
                     %conversion
                     
-results = struct('Time',[],'Objects', []);
+results = struct('Time',[],'Objects', [], 'Num_Objects', []);
 current_step = 1;
 time = 0;
+num_frames = size(radarObjectPositions,2); %Number of timesteps
 
-for i = 1:size(radarObjectPositions,2)
+for i = 1:num_frames
     % Update the tracker at each timestep
     detections = objectDetection.empty(10,0);
     
@@ -50,32 +51,41 @@ for i = 1:size(radarObjectPositions,2)
     detections(1) = visionObject;
     
     % Add radar objects to detections
-    radarObjects = radarObjectPositions{1,1};
-    for j = 2:size(radarObjects,1)+1
-        measurement = [3,12];
-        object = objectDetection(time,measurement);
-        detections(j) = object;
+    radarTime = cell2mat(blazerRadarObjects.positions(1,i));
+    for j = 1:size(radarTime,1)
+        measurement = radarTime(j,1:2);
+        if abs(measurement(1,1))<35 || measurement(1,2)<90
+            object = objectDetection(time,measurement);
+            detections(j) = object;
+        end
     end
     
     % Detection clustering
     vehicleLength = 4.7;
     detectionObjects = clusterDetectionsY1(detections, vehicleLength);
-    confirmedTracks = updateTracks(tracker, detectionObjects, time);
+%     confirmedTracks = updateTracks(tracker, detectionObjects, time);
     
     % Save all data into a struct so the values can be checked after the
     % simulation
     results(current_step).Time = time;
     results(current_step).Objects = detectionObjects;
+    results(current_step).Num_Objects = size(detectionObjects,2);
 
     current_step = current_step + 1;
     time = time + timestepSize;
 end 
 
-% r = BirdsEyePlotter(detectionObjects, timestepSize);
-% startSeconds = 0; %The starting time, in seconds, rounded to the nearest 
-%                   %timestepSize. Values before the first available timestep.
-%                   
-% endSeconds = 300000; %The ending time, in seconds, rounded to the nearest 
-%                   %timestepSize. Values exceeding the available data play
-%                   %the log to its end.
-% replay(r, startSeconds, endSeconds);
+
+% Create bird's eye plot
+bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
+
+trackedPlotter = detectionPlotter(bep,'DisplayName','Blazer Objects', 'Marker', 'o');
+
+for i = 1:num_frames
+    positions = zeros(results(i).Num_Objects,2);
+    for j = 1:results(i).Num_Objects
+        positions(1,1:2) = results(i).Objects(1,j).Measurement;
+    end
+    plotDetection(trackedPlotter, positions);
+    pause(0.1);
+end
