@@ -41,6 +41,7 @@ current_step = 1;
 time = 0;
 num_frames = size(radarObjectPositions,2); %Number of timesteps
 
+%% Detection Clustering
 for i = 1:num_frames
     % Update the tracker at each timestep
     detections = objectDetection.empty(10,0);
@@ -60,7 +61,6 @@ for i = 1:num_frames
         end
     end
     
-    % Detection clustering
     vehicleLength = 4.7;
     detectionObjects = clusterDetectionsY1(detections, vehicleLength);
 %     confirmedTracks = updateTracks(tracker, detectionObjects, time);
@@ -75,27 +75,41 @@ for i = 1:num_frames
     time = time + timestepSize;
 end 
 
-% 
-% for i = 1:num_frames
-%     bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
-%     blazerPlotter = detectionPlotter(bep,'DisplayName','Blazer Objects', 'Marker', 'o');
-%     
-%     positions = zeros(results(i).Num_Objects,2);
-%     for j = 1:results(i).Num_Objects
-%         positions(1,1:2) = results(i).Objects(1,j).Measurement;
-%     end
-%     
-%     plotDetection(blazerPlotter, positions);
-%     title(gca, char(num2str(results(i).Time + " seconds"))); % start from 0
-%     grid on;
-%     
-%     % save png images
-%     file = strcat(path,num2str(i),'.png');
-%     saveas(gcf,file);
-%      
-%     % write video and delete saved png images
-%     writeVideo(newVid,imread(file));%within the for loop saving one frame at a time
-%     delete(file);
-% end
+%% Plot objects in video
 
+set(0,'DefaultFigureVisible','off');
+
+vid_path = strcat(pwd, '\KF_clustering_year1\blazer_sensors.avi');
+newVid = VideoWriter(vid_path);
+newVid.FrameRate = 10;
+newVid.Quality = 100;
+open(newVid);
+
+pic_path = strcat(pwd, '\KF_clustering_year1\plot');
+
+
+for i = 1:num_frames
+    %took x, y, limits from sf_visualization
+    bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
+    blazerPlotter = detectionPlotter(bep,'DisplayName','Blazer Objects', 'Marker', 'o');
+    
+    positions = zeros(results(i).Num_Objects,2);
+    for j = 1:results(i).Num_Objects
+        positions(j,1:2) = results(i).Objects(1,j).Measurement;
+    end
+    
+    plotDetection(blazerPlotter, positions);
+    title(gca, char(num2str(results(i).Time + " seconds"))); % start from 0
+    grid on;
+    
+    % save png images
+    file = strcat(pic_path,num2str(i),'.png');
+    saveas(gcf,file);
+     
+    % write video and delete saved png images
+    writeVideo(newVid,imread(file));%within the for loop saving one frame at a time
+    delete(file);
+end
+
+close(newVid);
 save('ground_truth','results');
