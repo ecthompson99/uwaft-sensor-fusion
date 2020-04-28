@@ -1,3 +1,7 @@
+clear all
+close all
+clc 
+
 %% Assuming in kaiROS\sensor fusion testing
 
 % Load ground truth
@@ -23,12 +27,12 @@ THRESHOLD = 11;
 
 % remember to change that 9000 (number of frames)
 % Go through every timestep
-for i = 1:9000
+for i = 1:300
 
     % Loop through ground truth objects
     for a = 1:size(ground_truth(i).Objects) 
 
-        sf_flags = false(size(output{i}.Dx));
+        sf_flags = false(size(output{i,1}.Dx));
         gt_flags = false(size(ground_truth(i).Objects));
 
         gt_object = ground_truth(i).Objects(1,a);
