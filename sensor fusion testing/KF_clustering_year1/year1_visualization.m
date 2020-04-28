@@ -2,78 +2,106 @@ clear all
 close all
 clc 
 
-%[scenario, sensors, egoCar] = generateScenario1();
-logFilename = "ACCGapTestLong_20191103_160048_CAN.mat"; %CAN Log .mat File to load
-
-% tracker = multiObjectTracker('FilterInitializationFcn', @initKF, ...
-%     'AssignmentThreshold', 27, 'ConfirmationParameters', [4 5], ...
-%     'MaxNumSensors', 2); %blazer radar and vision sensors
-
-blazerRadarObjectsName = "Blazer Radar Objects"; %Legend label for obstacles
-blazerRadarObjectsMarker = '*';%Plot marker for radar objects
-
-blazerVisionObjectsName = "Blazer Vision Objects"; %Legend label for obstacles
-blazerVisionObjectsMarker = '+';%Plot marker for radar objects
-
-detectionMarkers = [blazerRadarObjectsMarker, blazerVisionObjectsMarker];
-
-contrastingColors = [[0 0.4470 0.7410];...
-                [0.8500 0.3250 0.0980];[0.9290 0.6940 0.1250];...
-                [0.4940 0.1840 0.5560];[0.4660 0.6740 0.1880];...
-                [0.3010 0.7450 0.9330];[0.6350 0.0780 0.1840]];
-
-blazerRadarObjects = DetectionGroupY1(logFilename, ...
-    blazerRadarObjectsName, "FLRRTrk.*Azimuth", "FLRRTrk.*Range$", ...
-    detectionMarkers(1), contrastingColors(1, :));
-blazerVisionObjects = DetectionGroupY1(logFilename, ...
-    blazerVisionObjectsName, "FwdVsnAzmthTrk1Rev", "FwdVsnRngTrk1Rev", ...
-    detectionMarkers(2), contrastingColors(2, :));
-
-%create matrices with row columns, dx/dy, each column is a single timestep
-radarObjectPositions = blazerRadarObjects.positions;
-visionObjectPositions = blazerVisionObjects.positions;
-
-timestepSize = 0.1; %Timestep size in seconds.determined by the blf to .mat 
-                    %conversion
+%% Load Data
+load('blazer_sensor.mat'); %vehicle_final
                     
 results = struct('Time',[],'Objects', [], 'Num_Objects', []);
 current_step = 1;
-time = 0;
-num_frames = size(radarObjectPositions,2); %Number of timesteps
+timestep = 0.1;
+clock = 1; % in seconds
+vehicle_size = 4.7;
+x_tol = 5;
+y_tol = 2;
+detections = objectDetection.empty(1,0);
+det_count = 1;
+buffer = struct('Time',[NaN],'Dx',[NaN],'Dy',[NaN],'Count',[NaN],'Temp',[NaN]);
 
-%% Detection Clustering
-for i = 1:num_frames
-    % Update the tracker at each timestep
-    detections = objectDetection.empty(10,0);
+for i = 1:size(vehicle_final,1)
+    % Add detections within 0.1 seconds
     
-    % Add vision objects to detections
-    measurement = cell2mat(blazerVisionObjects.positions(1,1));
-    visionObject = objectDetection(time,measurement);
-    detections(1) = visionObject;
-    
-    % Add radar objects to detections
-    radarTime = cell2mat(blazerRadarObjects.positions(1,i));
-    for j = 1:size(radarTime,1)
-        measurement = radarTime(j,1:2);
-        if abs(measurement(1,1))<35 || measurement(1,2)<90
-            object = objectDetection(time,measurement);
-            detections(j) = object;
+    if vehicle_final.time_in_sec(i) < clock+timestep
+        
+        % Find index of dx and dy depending on Vision or Radar signal
+        track_num = strtok(reverse(vehicle_final.Name(i)),'_');
+        track_num = reverse(track_num);
+        if contains(vehicle_final.Name(i),'F_Vision')            
+            dy_name = strcat('FwdVsnAzmthTrk',track_num,'Rev');
+            dx_name = strcat('FwdVsnRngTrk',track_num,'Rev');
+
+        else
+            dy_name = strcat('FLRRTrk',track_num,'Azimuth');
+            dx_name = strcat('FLRRTrk',track_num,'Range');
+            
         end
+        
+        dx = vehicle_final.Signals{i,1}.(dx_name{1});
+        dy = vehicle_final.Signals{i,1}.(dy_name{1});
+        
+        % Add to detections if valid object
+        if dx ~= 0 && dy~=0 % check valid measurements
+
+            % remove temp detections after 5 seconds
+            tracked = false;
+            total_obj = size(buffer.Time,2);
+            for j = 1:total_obj 
+                if buffer.Temp(j) == true & vehicle_final.time_in_sec(i)-buffer.Time(j) > 3
+                    buffer.Time(j) = NaN;
+                    buffer.Dx(j) = NaN;
+                    buffer.Dy(j) = NaN;
+                    buffer.Count(j) = NaN;
+                    buffer.Temp(j) = NaN;
+                    break;
+            
+                % check current detection to buffer
+                elseif ((buffer.Dx(j) - dx)^2 + (buffer.Dy(j) - dy)^2)^0.5 <vehicle_size ...
+                       | ((abs(buffer.Dx(j) - dx) < x_tol) & (abs(buffer.Dy(j) - dy) < y_tol))
+                    buffer.Count(j) = buffer.Count(j) + 1;
+                    buffer.Time(j) = vehicle_final.time_in_sec(i);
+                    buffer.Dx(j) = dx;
+                    buffer.Dy(j) = dy;
+                    tracked = true;
+                    if buffer.Count(j) >= 5
+                        detections(det_count) = objectDetection(clock,[dx;dy]);
+                        buffer.Time(j) = NaN;
+                        buffer.Dx(j) = NaN;
+                        buffer.Dy(j) = NaN;
+                        buffer.Temp(j) = false;
+                        det_count = det_count + 1;
+                    end
+                end
+            end
+            
+            % New object
+            if tracked == false
+               buffer.Time(total_obj+1) = vehicle_final.time_in_sec(i);
+               buffer.Dx(total_obj+1) = dx;
+               buffer.Dy(total_obj+1) = dy;
+               buffer.Count(total_obj+1) = 1;
+               buffer.Temp(total_obj+1) = true;
+            end
+
+        end
+        
+    % Cluster detections and iterate to next timestep
+    else
+        
+        objects = clusterDetectionsY1(detections,vehicle_size);
+        
+        if size(detections,2) > 1
+            % Save data to struct 
+            results(current_step).Time = clock;
+            results(current_step).Objects = objects;
+            results(current_step).Num_Objects = size(objects,2);
+            current_step = current_step + 1;
+        end
+        
+        clock = clock + 0.1;
+        detections = objectDetection.empty(1,0);
+        det_count = 1;
     end
     
-    vehicleLength = 4.7;
-    detectionObjects = clusterDetectionsY1(detections, vehicleLength);
-%     confirmedTracks = updateTracks(tracker, detectionObjects, time);
-    
-    % Save all data into a struct so the values can be checked after the
-    % simulation
-    results(current_step).Time = time;
-    results(current_step).Objects = detectionObjects;
-    results(current_step).Num_Objects = size(detectionObjects,2);
+end
 
-    current_step = current_step + 1;
-    time = time + timestepSize;
-end 
 
 %% Plot objects in video
 
@@ -88,14 +116,14 @@ open(newVid);
 pic_path = strcat(pwd, '\KF_clustering_year1\plot');
 
 
-for i = 1:num_frames
-    %took x, y, limits from sf_visualization
+for i = 100:200
+
     bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
     blazerPlotter = detectionPlotter(bep,'DisplayName','Blazer Objects', 'Marker', 'o');
     
     positions = zeros(results(i).Num_Objects,2);
     for j = 1:results(i).Num_Objects
-        positions(j,1:2) = results(i).Objects(1,j).Measurement;
+        positions(j,1:2) = results(i).Objects(1,j).Measurement(:,1);
     end
     
     plotDetection(blazerPlotter, positions);
