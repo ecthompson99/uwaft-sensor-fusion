@@ -38,13 +38,13 @@ for i = 1:size(vehicle_final,1)
         dy = vehicle_final.Signals{i,1}.(dy_name{1});
         
         % Add to detections if valid object
-        if dx ~= 0 && dy~=0 % check valid measurements
+        if dx > 5 && dx < 75 && abs(dy) < 20 % check valid measurements
 
             % remove temp detections after 5 seconds
             tracked = false;
             total_obj = size(buffer.Time,2);
             for j = 1:total_obj 
-                if buffer.Temp(j) == true & vehicle_final.time_in_sec(i)-buffer.Time(j) > 3
+                if buffer.Temp(j) == true & vehicle_final.time_in_sec(i)-buffer.Time(j) > 5
                     buffer.Time(j) = NaN;
                     buffer.Dx(j) = NaN;
                     buffer.Dy(j) = NaN;
@@ -116,7 +116,7 @@ open(newVid);
 pic_path = strcat(pwd, '\KF_clustering_year1\plot');
 
 
-for i = 100:200
+for i = 100:200 % sample plot for now
 
     bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
     blazerPlotter = detectionPlotter(bep,'DisplayName','Blazer Objects', 'Marker', 'o');
