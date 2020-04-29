@@ -27,7 +27,7 @@ THRESHOLD = 11;
 
 % remember to change that 9000 (number of frames)
 % Go through every timestep
-for i = 1:500
+for i = 1:3000
 
     % Loop through ground truth objects
     for a = 1:size(ground_truth(i).Num_Objects) 
