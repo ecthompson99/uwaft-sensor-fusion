@@ -25,7 +25,7 @@ for i = 1:size(vehicle_final,1)
         
         if size(detections,2) > 1
             % Save data to struct 
-            results(current_step).Time = clock;
+            results(current_step).Time = clock + 0.1;
             results(current_step).Objects = objects;
             results(current_step).Num_Objects = size(objects,2);
             current_step = current_step + 1;
@@ -54,13 +54,13 @@ for i = 1:size(vehicle_final,1)
     dy = vehicle_final.Signals{i,1}.(dy_name{1});
 
     % Add to detections if valid object
-    if dx > 0 && dx < 75 && abs(dy) < 20 % check valid measurements
+    if dx > 0 && dx < 250 && abs(dy) < 128 % check valid measurements
 
         % remove temp detections after 5 seconds
         tracked = false;
         total_obj = size(buffer.Time,2);
         for j = 1:total_obj 
-            if det_time-buffer.Time(j) > 3
+            if det_time-buffer.Time(j) > 5
                 buffer.Time(j) = NaN;
                 buffer.Dx(j) = NaN;
                 buffer.Dy(j) = NaN;

@@ -1,17 +1,17 @@
 %% Plot objects in video
-load('ground_truth.mat');
+load('ground_truth_test10.mat');
 set(0,'DefaultFigureVisible','off');
 
-vid_path = strcat(pwd, '\KF_clustering_year1\blazer_sensors.avi');
+vid_path = strcat(pwd, '\KF_clustering_year1\blazer_sensors_test10.avi');
 newVid = VideoWriter(vid_path);
-newVid.FrameRate = 10;
+newVid.FrameRate = 1;
 newVid.Quality = 100;
 open(newVid);
 
 pic_path = strcat(pwd, '\KF_clustering_year1\plot');
 
 
-for i = 500:700 % sample plot for now
+for i = 1:10:size(results,2) % sample plot for now
 
     bep = birdsEyePlot('XLim',[0,90],'YLim',[-35,35]);
     blazerPlotter = detectionPlotter(bep,'DisplayName','Blazer Objects', 'Marker', 'o');
