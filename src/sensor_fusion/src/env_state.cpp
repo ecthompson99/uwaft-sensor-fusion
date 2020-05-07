@@ -133,18 +133,21 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
 		first_timestamp = 0;
 	}
 	else if (filtered_msg.obj_timestamp > global_clk + 0.1) {
-		publish_binary_class();
+		publish_binary_class(filtered_msg.obj_timestamp);
+		publish_target_obj();
 		publish_tracked_obj();
 	}
     
 }
 
-void EnvironmentState::publish_binary_class() {
+void EnvironmentState::publish_binary_class(double t) {
 	sensor_fusion::binary_class_msg out;
 	for (auto i : trackedObjects) {
 		out.dx.push_back(i.get_obj_dx());
 		out.dy.push_back(i.get_obj_dy());
 	}
+	out.global_clk = global_clk;
+	out.timestamp = t;
 	binary_class_pub.publish(out);
 	global_clk += 0.1;
 }

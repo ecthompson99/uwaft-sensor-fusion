@@ -23,7 +23,7 @@ class EnvironmentState {
   virtual ~EnvironmentState();
   void publish_target_obj();
   void publish_tracked_obj();
-  void publish_binary_class();
+  void publish_binary_class(double);
   void filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg);
   sensor_fusion::target_output_msg get_target_output_msg();
   sensor_fusion::tracked_output_msg get_tracked_output_msg();
