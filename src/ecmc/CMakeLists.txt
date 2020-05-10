@@ -17,6 +17,8 @@ add_compile_options(
   -std=c++11
 )
 
+link_directories(/usr/lib)
+
 ## Coverage flags
 SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
 SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
@@ -178,8 +180,8 @@ add_dependencies(raw_data_subscriber ${${PROJECT_NAME}_EXPORTED_TARGETS})
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(raw_data_publisher ${catkin_LIBRARIES})
-target_link_libraries(raw_data_subscriber ${catkin_LIBRARIES})
+target_link_libraries(raw_data_publisher ${catkin_LIBRARIES} canlib)
+target_link_libraries(raw_data_subscriber ${catkin_LIBRARIES} canlib)
 
 target_compile_definitions(
     raw_data_publisher
