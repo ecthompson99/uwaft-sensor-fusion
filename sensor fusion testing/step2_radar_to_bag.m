@@ -6,23 +6,9 @@ load('~/kaiROS/sensor fusion testing/radar.mat');
 rosinit
 radar_pub = rospublisher('/radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
 radar_msg = rosmessage(radar_pub);
-
-timetable_height=height(radar_final);
-
-if mod(radar_final.ID(1),2) == 0
-    start_index = 2;
-else
-    start_index = 1;
-end
-
-if mod(radar_final.ID(timetable_height),2) == 0
-    end_index = timetable_height;
-else
-    end_index = timetable_height-1;
-end
-
-for i = start_index:2:end_index
-    input('uhh');
+input('uhh')
+for i = 49:2:height(radar_final)
+    % input('uhh');
     fields_A=fieldnames(radar_final.Signals{i,1});
     fields_B=fieldnames(radar_final.Signals{i+1,1});
     radar_msg.RadarDx = getfield(radar_final.Signals{i,1},fields_A{7});

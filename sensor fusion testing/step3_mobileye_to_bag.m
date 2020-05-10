@@ -23,9 +23,9 @@ elseif mod(me_final.ID(timetable_height)-1848,3) == 1
 else
     end_index = timetable_height-2;
 end
-
-for i = start_index:3:9000
-    input('uhh');
+input('uhh');
+for i = start_index:3:height(me_final)
+    % input('uhh');
     fields_A=fieldnames(me_final.Signals{i,1});
     me_msg.MeDx = getfield(me_final.Signals{i,1},fields_A{9});
     me_msg.MeDy = getfield(me_final.Signals{i,1},fields_A{8});

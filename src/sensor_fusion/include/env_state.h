@@ -6,6 +6,7 @@
 #include "sensor_fusion/filtered_object_msg.h" // sub
 #include "sensor_fusion/target_output_msg.h"  // pub
 #include "sensor_fusion/tracked_output_msg.h"  // pub
+#include "sensor_fusion/binary_class_msg.h"
 #include <vector>
 #include "sensor_fusion/env_state_srv.h"  //service
 
@@ -22,6 +23,7 @@ class EnvironmentState {
   virtual ~EnvironmentState();
   void publish_target_obj();
   void publish_tracked_obj();
+  void publish_binary_class(double);
   void filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg);
   sensor_fusion::target_output_msg get_target_output_msg();
   sensor_fusion::tracked_output_msg get_tracked_output_msg();
@@ -40,9 +42,11 @@ class EnvironmentState {
   ros::Subscriber filtered_object_sub;
   ros::Publisher target_obj_pub;
 	ros::Publisher tracked_obj_pub;
+  ros::Publisher binary_class_pub;
   sensor_fusion::target_output_msg target_output_msg;
   sensor_fusion::tracked_output_msg tracked_output_msg;
   ros::ServiceServer service;
+  double global_clk;
 };
 
 #endif  // __ENV_STATE_H__

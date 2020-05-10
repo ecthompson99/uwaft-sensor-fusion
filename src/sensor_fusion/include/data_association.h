@@ -17,8 +17,12 @@
 #define KALMAN_FILTER_RADAR_TOPIC "associated_radar"
 #define KALMAN_FILTER_ME_TOPIC "associated_me"
 #define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
-#define TOL 5
+#define DX_TOL 5
+#define DY_TOL 1.5
+#define DX_RANGE 100
+#define DY_RANGE 10
 #define POTENTIAL_THRESHOLD 5
+#define secondsToDelete 5
 #define MESSAGE_BUFFER_SIZE 10
 
 class DataAssociation {
@@ -52,6 +56,8 @@ class DataAssociation {
 		std::vector<ObjectState> potential_objs;
 
 		bool objects_match(ObjectState obj, double sensor_dx, double sensor_dy);
+
+		bool radar_match(ObjectState obj, double sensor_dx, double sensor_dy);
 
 		unsigned long long next_id;
 
