@@ -47,3 +47,4 @@ logs/*
 .ipynb_checkpoints
 
 matlab_gen
+SF_visualization
