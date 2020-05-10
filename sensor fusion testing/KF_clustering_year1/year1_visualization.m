@@ -43,18 +43,17 @@ for i = 1:size(vehicle_final,1)
     if contains(vehicle_final.Name(i),'F_Vision')            
         dy_name = strcat('FwdVsnAzmthTrk',track_num,'Rev');
         dx_name = strcat('FwdVsnRngTrk',track_num,'Rev');
-
+        dx = vehicle_final.Signals{i,1}.(dx_name{1})+3.5;
+        dy = vehicle_final.Signals{i,1}.(dy_name{1});
     else
         dy_name = strcat('FLRRTrk',track_num,'Azimuth');
         dx_name = strcat('FLRRTrk',track_num,'Range');
-
+        dx = vehicle_final.Signals{i,1}.(dx_name{1});
+        dy = vehicle_final.Signals{i,1}.(dy_name{1});
     end
 
-    dx = vehicle_final.Signals{i,1}.(dx_name{1});
-    dy = vehicle_final.Signals{i,1}.(dy_name{1});
-
     % Add to detections if valid object
-    if dx > 0 && dx < 250 && abs(dy) < 128 % check valid measurements
+    if dx > 0 && dx < 100 && abs(dy) < 5 % check valid measurements
 
         % remove temp detections after 5 seconds
         tracked = false;

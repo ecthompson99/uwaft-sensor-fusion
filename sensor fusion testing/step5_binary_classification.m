@@ -5,12 +5,12 @@ clc
 %% Assuming in kaiROS\sensor fusion testing
 
 % Load ground truth
-file_path = strcat(pwd, '\ground_truth_test10.mat');
+file_path = strcat(pwd, '\FTR_ground_truth_100_10.mat');
 temp = load(file_path);
 ground_truth = temp.results;
 
 % Load sensor fusion output
-bag_path = strcat(pwd, '\goteam-da-5-2.bag');
+bag_path = strcat(pwd, '\goteam-thresh-5.bag');
 bag = rosbag(bag_path);
 temp = select(bag, 'Topic', '/binary_class');
 output = readMessages(temp, 'DataFormat', 'struct');
@@ -22,11 +22,10 @@ TN = 0;
 
 total = 0;
 
-sf_offset = 5;
+sf_offset = 6;
 % threshold taken from year 1
 THRESHOLD = 11;
 
-% remember to change that 9000 (number of frames)
 % Go through every timestep
 for i = 1:size(output,1)
     gt_ind = i+sf_offset;
