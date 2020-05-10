@@ -6,360 +6,472 @@
 
 #include "ros/ros.h"
 
-#include "can_tx_rx/ext_log_data2_2_32.c"
-#include "can_tx_rx/ext_log_data2_2_32.h"
 
-#include "can_tx_rx/mobileye_object_data_msg.h"
+#include "can_tx_rx/bosch_xgu_corner_radar.c"
+#include "can_tx_rx/bosch_xgu_corner_radar.h"
+
+#include "can_tx_rx/raw_sensor_object_data_msg.h"
+#include "can_tx_rx/sensor_diagnostic_data_msg.h"
+
+#include "can_tx_rx/output_structs.h"
 
 static const uint16_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
-static const uint64_t FRAME_INTERVAL = 50;
 
-bool time_control (std::string frame, bool &publish_choice, uint64_t&obj_time, uint64_t time) {
-    if (frame == "A") {
-        obj_time = time;
-        publish_choice = 1;
-        return true;
-    }
-    
-    else if (frame == "B") {
-        if (time - obj_time > FRAME_INTERVAL) {
-            publish_choice = 0;
-            return false;
-        }
-        else {
-            obj_time = time;
-            return true;
-        }
-    }
-    else if (frame == "C") {
-        if (!publish_choice) {
-            return false;
-        }
-        else if (time - obj_time > FRAME_INTERVAL) {
-            publish_choice = 0;
-            return false;
-        }
-        else {
-            obj_time = time;
-            return true;
-        }
-    }
-    else {}
+void get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n) {
+  if (id == 1985 || id == 1958 || id == 1879 || id == 1957) {
+    case_n = 1;
+  } else if (id > 1604 && id < 1659) {
+    case_n = 2;
+  } else if (id == 1665 || id == 1667 || id == 1280 || id == 1282 || id == 1670 || id == 1672) {
+    case_n = 3;
+  } else if (id > 1284 && id < 1599) {
+    case_n = 4;
+  } else {
+    case_n = 0;
+  }
+
+  switch (case_n) {
+    case 1:
+      if (id == 1985 || id == 1879) {
+        radar_n = 1;
+      } else {
+        radar_n = 2;
+      }
+      break;
+
+    case 2:
+      if (id % 10 == 5 || id % 10 == 6) {
+        radar_n = 1;
+      } else {
+        radar_n = 2;
+      }
+
+      if (id % 10 == 5 || id % 10 == 7) {
+        frame_n = 1;
+      } else {
+        frame_n = 2;
+      }
+
+      target_obj_n = (id - 1600 - (id % 10)) / 10;
+
+      break;
+
+    case 3:
+      if (id == 1665 || id == 1280 || id == 1670) {
+        radar_n = 1;
+      } else {
+        radar_n = 2;
+      }
+      break;
+
+    case 4:
+      if (id % 10 == 5 || id % 10 == 6) {
+        radar_n = 1;
+      } else {
+        radar_n = 2;
+      }
+
+      if (id % 10 == 5 || id % 10 == 7) {
+        frame_n = 1;
+      } else {
+        frame_n = 2;
+      }
+
+      obj_n = (id - 1280 - (id % 10)) / 10;
+
+      break;
+  }
 }
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "can_tx_rx_CH4");
-    ros::NodeHandle can_tx_rx_CH4_handle;
+  ros::init(argc, argv, "can_tx_rx_CH4");
+  ros::NodeHandle can_tx_rx_CH4_handle;
 
-    ros::Publisher data_pub = can_tx_rx_CH4_handle.advertise<can_tx_rx::mobileye_object_data_msg>(
-    "mobileye_object_data", TX_RX_MESSAGE_BUFFER_SIZE);
+  ros::Publisher diag_data_pub = can_tx_rx_CH4_handle.advertise<can_tx_rx::sensor_diagnostic_data_msg>(
+      "sensor_diagnostic_data", TX_RX_MESSAGE_BUFFER_SIZE);
 
-    can_tx_rx::mobileye_object_data_msg msg;
+  ros::Publisher raw_obj_data_pub = can_tx_rx_CH4_handle.advertise<can_tx_rx::raw_sensor_object_data_msg>(
+      "raw_sensor_object_data", TX_RX_MESSAGE_BUFFER_SIZE);
 
-    canHandle hnd;
-    
-    canInitializeLibrary();
+  can_tx_rx::sensor_diagnostic_data_msg diag_data_msg;
+  can_tx_rx::raw_sensor_object_data_msg raw_obj_data_msg;
 
-    hnd = canOpenChannel(3, canOPEN_EXCLUSIVE);
+  canHandle hnd;
 
-    if (hnd < 0) {
-        char msg[64];
-        canGetErrorText((canStatus)hnd, msg, sizeof(msg));
-        fprintf(stderr, "canOpenChannel failed (%s)\n", msg);
-        exit(1);
-    }
-    
-    canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
-    canSetBusOutputControl(hnd, canDRIVER_NORMAL);
-    canBusOn(hnd);
+  canInitializeLibrary();
 
-    long int id;
-    unsigned int dlc;
-    unsigned int flag;
-    uint64_t time = 0; // time from CANread
-    uint8_t obj_num = -1; // 0 to 31 = valid
-    uint8_t size_of_msg = 8;
-    uint8_t can_data[8] = {0};
+  hnd = canOpenChannel(2, canOPEN_EXCLUSIVE);
 
-    int unpack_return;
+  if (hnd < 0) {
+    char msg[64];
+    canGetErrorText((canStatus)hnd, msg, sizeof(msg));
+    fprintf(stderr, "canOpenChannel failed (%s)\n", msg);
+    exit(1);
+  }
 
-    uint64_t obj_time = 0; // time for msg
-    bool publish_choice = 0;
+  canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
+  canSetBusOutputControl(hnd, canDRIVER_NORMAL);
+  canBusOn(hnd);
 
-    while (ros::ok()) {
-        canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
-        if (canOK == stat) {
-            switch (id) {
-                //A-frames
-                case 1849:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a1_t target_a1_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a1_unpack(&target_a1_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a1_obstacle_pos_x_decode(target_a1_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a1_obstacle_pos_y_decode(target_a1_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a1_obstacle_vel_x_decode(target_a1_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a1_obstacle_id_decode(target_a1_obj.obstacle_id);
-                    break;
-                case 1852:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a2_t target_a2_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a2_unpack(&target_a2_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a2_obstacle_pos_x_decode(target_a2_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a2_obstacle_pos_y_decode(target_a2_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a2_obstacle_vel_x_decode(target_a2_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a2_obstacle_id_decode(target_a2_obj.obstacle_id);
-                    break;
-                case 1855:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a3_t target_a3_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a3_unpack(&target_a3_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a3_obstacle_pos_x_decode(target_a3_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a3_obstacle_pos_y_decode(target_a3_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a3_obstacle_vel_x_decode(target_a3_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a3_obstacle_id_decode(target_a3_obj.obstacle_id);
-                    break;
-                case 1858:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a4_t target_a4_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a4_unpack(&target_a4_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a4_obstacle_pos_x_decode(target_a4_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a4_obstacle_pos_y_decode(target_a4_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a4_obstacle_vel_x_decode(target_a4_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a4_obstacle_id_decode(target_a4_obj.obstacle_id);
-                    break;
-                case 1861:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a5_t target_a5_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a5_unpack(&target_a5_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a5_obstacle_pos_x_decode(target_a5_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a5_obstacle_pos_y_decode(target_a5_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a5_obstacle_vel_x_decode(target_a5_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a5_obstacle_id_decode(target_a5_obj.obstacle_id);
-                    break;
-                case 1864:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a6_t target_a6_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a6_unpack(&target_a6_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a6_obstacle_pos_x_decode(target_a6_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a6_obstacle_pos_y_decode(target_a6_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a6_obstacle_vel_x_decode(target_a6_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a6_obstacle_id_decode(target_a6_obj.obstacle_id);
-                    break;
-                case 1867:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a7_t target_a7_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a7_unpack(&target_a7_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a7_obstacle_pos_x_decode(target_a7_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a7_obstacle_pos_y_decode(target_a7_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a7_obstacle_vel_x_decode(target_a7_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a7_obstacle_id_decode(target_a7_obj.obstacle_id);
-                    break;
-                case 1870:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a8_t target_a8_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a8_unpack(&target_a8_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a8_obstacle_pos_x_decode(target_a8_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a8_obstacle_pos_y_decode(target_a8_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a8_obstacle_vel_x_decode(target_a8_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a8_obstacle_id_decode(target_a8_obj.obstacle_id);\
-                    break;
-                case 1873:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a9_t target_a9_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a9_unpack(&target_a9_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a9_obstacle_pos_x_decode(target_a9_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a9_obstacle_pos_y_decode(target_a9_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a9_obstacle_vel_x_decode(target_a9_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a9_obstacle_id_decode(target_a9_obj.obstacle_id);
-                    break;
-                case 1876:
-                    time_control ("A", publish_choice, obj_time, time);
-                    ext_log_data2_2_32_obstacle_data_a10_t target_a10_obj;
-                    unpack_return = ext_log_data2_2_32_obstacle_data_a10_unpack(&target_a10_obj, can_data, size_of_msg);
-                    msg.me_dx = ext_log_data2_2_32_obstacle_data_a10_obstacle_pos_x_decode(target_a10_obj.obstacle_pos_x);
-                    msg.me_dy = ext_log_data2_2_32_obstacle_data_a10_obstacle_pos_y_decode(target_a10_obj.obstacle_pos_y);
-                    msg.me_vx = ext_log_data2_2_32_obstacle_data_a10_obstacle_vel_x_decode(target_a10_obj.obstacle_vel_x);
-                    msg.me_object_id = ext_log_data2_2_32_obstacle_data_a10_obstacle_id_decode(target_a10_obj.obstacle_id);
-                    break;
-                
-                //B-frames
-                case 1850:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b1_t target_b1_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b1_unpack(&target_b1_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b1_obstacle_lane_decode(target_b1_obj.obstacle_lane);
-                    }
-                    break;
-                case 1853:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b2_t target_b2_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b2_unpack(&target_b2_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b2_obstacle_lane_decode(target_b2_obj.obstacle_lane);
-                    }
-                    break;
-                case 1856:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b3_t target_b3_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b3_unpack(&target_b3_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b3_obstacle_lane_decode(target_b3_obj.obstacle_lane);
-                    }
-                    break;
-                case 1859:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b4_t target_b4_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b4_unpack(&target_b4_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b4_obstacle_lane_decode(target_b4_obj.obstacle_lane);
-                    }
-                    break;
-                case 1862:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b5_t target_b5_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b5_unpack(&target_b5_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b5_obstacle_lane_decode(target_b5_obj.obstacle_lane);
-                    }
-                    break;
-                case 1865:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b6_t target_b6_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b6_unpack(&target_b6_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b6_obstacle_lane_decode(target_b6_obj.obstacle_lane);
-                    }
-                    break;
-                case 1868:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b7_t target_b7_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b7_unpack(&target_b7_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b7_obstacle_lane_decode(target_b7_obj.obstacle_lane);
-                    }
-                    break;
-                case 1871:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b8_t target_b8_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b8_unpack(&target_b8_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b8_obstacle_lane_decode(target_b8_obj.obstacle_lane);
-                    }
-                    break;
-                case 1874:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b9_t target_b9_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b9_unpack(&target_b9_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b9_obstacle_lane_decode(target_b9_obj.obstacle_lane);
-                    }
-                    break;
-                case 1877:
-                    if (time_control ("B", publish_choice, obj_time, time)) {
-                        ext_log_data2_2_32_obstacle_data_b10_t target_b10_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_b10_unpack(&target_b10_obj, can_data, size_of_msg);
-                        msg.me_object_lane = ext_log_data2_2_32_obstacle_data_b10_obstacle_lane_decode(target_b10_obj.obstacle_lane);
-                    }
-                    break;
-                
-                //C-frames with publishing
-                case 1851:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c1_t target_c1_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c1_unpack(&target_c1_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c1_object_accel_x_decode(target_c1_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                    }
-                    break;
-                case 1854:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c2_t target_c2_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c2_unpack(&target_c2_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c2_object_accel_x_decode(target_c2_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                    }
-                    break;
-                case 1857:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c3_t target_c3_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c3_unpack(&target_c3_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c3_object_accel_x_decode(target_c3_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                        }
-                    break;
-                case 1860:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c4_t target_c4_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c4_unpack(&target_c4_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c4_object_accel_x_decode(target_c4_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                    }
-                    break;
-                case 1863:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c5_t target_c5_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c5_unpack(&target_c5_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c5_object_accel_x_decode(target_c5_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                    }
-                    break;
-                case 1866:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c6_t target_c6_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c6_unpack(&target_c6_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c6_object_accel_x_decode(target_c6_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                    }
-                    break;
-                case 1869:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c7_t target_c7_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c7_unpack(&target_c7_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c7_object_accel_x_decode(target_c7_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                        }
-                    break;
-                case 1872:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c8_t target_c8_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c8_unpack(&target_c8_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c8_object_accel_x_decode(target_c8_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                        }
-                    break;
-                case 1875:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c9_t target_c9_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c9_unpack(&target_c9_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c9_object_accel_x_decode(target_c9_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                        }
-                    break;
-                case 1878:
-                    if (time_control ("C", publish_choice, obj_time, time)) {
-                        msg.me_timestamp = obj_time;
-                        ext_log_data2_2_32_obstacle_data_c10_t target_c10_obj;
-                        unpack_return = ext_log_data2_2_32_obstacle_data_c10_unpack(&target_c10_obj, can_data, size_of_msg);
-                        msg.me_ax = ext_log_data2_2_32_obstacle_data_c10_object_accel_x_decode(target_c10_obj.object_accel_x);
-                        data_pub.publish(msg);
-                        ros::spinOnce();
-                        }
-                    break;
-            }
-        }
+  long int id;
+  unsigned int dlc;
+  unsigned int flag;
+  unsigned long time;
+  uint8_t case_num = 0;
+  uint8_t radar_num = 0;           // 1 or 2 = valid
+  uint8_t frame_num = 0;           // 1 = Frame_A, 2 = Frame_B, 3 = general, other = error
+  uint8_t obj_num = -1;            // 0 to 31 = valid
+  uint8_t target_object_num = -1;  // 0 to 5 = valid
+  uint8_t size_of_msg = 8;
+  uint8_t can_data[8] = {0};
+
+  int unpack_return = -1;  // 0 is successful, negative error code
+
+  uint8_t serialized_radar_diag_response[sizeof(diag_response)];
+  uint8_t serialized_radar_info[sizeof(radar_info)];
+  uint8_t serialized_target_info[sizeof(target_info)];
+  uint8_t serialized_all_object_info[sizeof(all_object_info)];
+
+  diag_response.channel_number = 3;
+  radar_info.channel_number = 3;
+  target_info.channel_number = 3;
+  all_object_info.channel_number = 3;
+
+  while (ros::ok()) {
+    canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
+
+    if (canOK == stat) {
+      // Left corner radar = radar_1 and right corner radar = radar_2
+      get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num);
+      switch (case_num) {
+        case 1:
+          switch (id) {
+            case 1985:
+              bosch_xgu_corner_radar_radar1_diag_response_t r1_diag_response_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_diag_response_unpack(&r1_diag_response_obj, can_data, size_of_msg);
+              diag_response.diagnostic_decoded = bosch_xgu_corner_radar_radar1_diag_response_r1_diag_response_decode(
+                  r1_diag_response_obj.r1_diag_response);
+              diag_response.diagnostic_is_in_range =
+                  bosch_xgu_corner_radar_radar1_diag_response_r1_diag_response_is_in_range(
+                      r1_diag_response_obj.r1_diag_response);
+              break;
+          }
+          diag_response.timestamp = time;
+          diag_response.radar_number = radar_num;
+          memcpy(serialized_radar_diag_response, &diag_response, sizeof(diag_response));
+          (diag_data_msg.radar_diag_input)
+              .insert((diag_data_msg.radar_diag_input).begin(), std::begin(serialized_radar_diag_response),
+                      std::end(serialized_radar_diag_response));
+          diag_data_pub.publish(diag_data_msg);
+          break;
+        case 2:
+          switch (id) {
+            case 1605:
+              bosch_xgu_corner_radar_radar1_target00_a_t r1_target00_a_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target00_a_unpack(&r1_target00_a_obj, can_data, size_of_msg);
+              target_info.target_dx_decoded = bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_dx_decode(
+                  r1_target00_a_obj.radar1_target00_dx);
+              target_info.target_dx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_dx_is_in_range(
+                      r1_target00_a_obj.radar1_target00_dx);
+              target_info.target_vx_decode = bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_vx_decode(
+                  r1_target00_a_obj.radar1_target00_vx);
+              target_info.target_vx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_vx_is_in_range(
+                      r1_target00_a_obj.radar1_target00_vx);
+              target_info.target_dy_decode = bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_dy_decode(
+                  r1_target00_a_obj.radar1_target00_dy);
+              target_info.target_dy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target00_a_radar1_target00_dy_is_in_range(
+                      r1_target00_a_obj.radar1_target00_dy);
+              break;
+            case 1606:
+              bosch_xgu_corner_radar_radar1_target00_b_t r1_target00_b_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target00_b_unpack(&r1_target00_b_obj, can_data, size_of_msg);
+              target_info.target_vy_decoded = bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vy_decode(
+                  r1_target00_b_obj.radar1_target00_vy);
+              target_info.target_vy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vy_is_in_range(
+                      r1_target00_b_obj.radar1_target00_vy);
+              target_info.target_dx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dx_sigma_decode(
+                      r1_target00_b_obj.radar1_target00_dx_sigma);
+              target_info.target_dx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dx_sigma_is_in_range(
+                      r1_target00_b_obj.radar1_target00_dx_sigma);
+              target_info.target_vx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vx_sigma_decode(
+                      r1_target00_b_obj.radar1_target00_vx_sigma);
+              target_info.target_vx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vx_sigma_is_in_range(
+                      r1_target00_b_obj.radar1_target00_vx_sigma);
+              target_info.target_dy_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dy_sigma_decode(
+                      r1_target00_b_obj.radar1_target00_dy_sigma);
+              target_info.target_dy_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dy_sigma_is_in_range(
+                      r1_target00_b_obj.radar1_target00_dy_sigma);
+              break;
+            
+            case 1615:
+              bosch_xgu_corner_radar_radar1_target01_a_t r1_target01_a_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target01_a_unpack(&r1_target01_a_obj, can_data, size_of_msg);
+              target_info.target_dx_decoded = bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_dx_decode(
+                  r1_target01_a_obj.radar1_target01_dx);
+              target_info.target_dx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_dx_is_in_range(
+                      r1_target01_a_obj.radar1_target01_dx);
+              target_info.target_vx_decode = bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_vx_decode(
+                  r1_target01_a_obj.radar1_target01_vx);
+              target_info.target_vx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_vx_is_in_range(
+                      r1_target01_a_obj.radar1_target01_vx);
+              target_info.target_dy_decode = bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_dy_decode(
+                  r1_target01_a_obj.radar1_target01_dy);
+              target_info.target_dy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_a_radar1_target01_dy_is_in_range(
+                      r1_target01_a_obj.radar1_target01_dy);
+              break;
+            case 1616:
+              bosch_xgu_corner_radar_radar1_target01_b_t r1_target01_b_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target01_b_unpack(&r1_target01_b_obj, can_data, size_of_msg);
+              target_info.target_vy_decoded = bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vy_decode(
+                  r1_target01_b_obj.radar1_target01_vy);
+              target_info.target_vy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vy_is_in_range(
+                      r1_target01_b_obj.radar1_target01_vy);
+              target_info.target_dx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dx_sigma_decode(
+                      r1_target01_b_obj.radar1_target01_dx_sigma);
+              target_info.target_dx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dx_sigma_is_in_range(
+                      r1_target01_b_obj.radar1_target01_dx_sigma);
+              target_info.target_vx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vx_sigma_decode(
+                      r1_target01_b_obj.radar1_target01_vx_sigma);
+              target_info.target_vx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_vx_sigma_is_in_range(
+                      r1_target01_b_obj.radar1_target01_vx_sigma);
+              target_info.target_dy_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dy_sigma_decode(
+                      r1_target01_b_obj.radar1_target01_dy_sigma);
+              target_info.target_dy_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target01_b_radar1_target01_dy_sigma_is_in_range(
+                      r1_target01_b_obj.radar1_target01_dy_sigma);
+              break;
+            
+            case 1625:
+              bosch_xgu_corner_radar_radar1_target02_a_t r1_target02_a_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target02_a_unpack(&r1_target02_a_obj, can_data, size_of_msg);
+              target_info.target_dx_decoded = bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_dx_decode(
+                  r1_target02_a_obj.radar1_target02_dx);
+              target_info.target_dx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_dx_is_in_range(
+                      r1_target02_a_obj.radar1_target02_dx);
+              target_info.target_vx_decode = bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_vx_decode(
+                  r1_target02_a_obj.radar1_target02_vx);
+              target_info.target_vx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_vx_is_in_range(
+                      r1_target02_a_obj.radar1_target02_vx);
+              target_info.target_dy_decode = bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_dy_decode(
+                  r1_target02_a_obj.radar1_target02_dy);
+              target_info.target_dy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target02_a_radar1_target02_dy_is_in_range(
+                      r1_target02_a_obj.radar1_target02_dy);
+              break;
+            case 1626:
+              bosch_xgu_corner_radar_radar1_target02_b_t r1_target02_b_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target02_b_unpack(&r1_target02_b_obj, can_data, size_of_msg);
+              target_info.target_vy_decoded = bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_vy_decode(
+                  r1_target02_b_obj.radar1_target02_vy);
+              target_info.target_vy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_vy_is_in_range(
+                      r1_target02_b_obj.radar1_target02_vy);
+              target_info.target_dx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_dx_sigma_decode(
+                      r1_target02_b_obj.radar1_target02_dx_sigma);
+              target_info.target_dx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_dx_sigma_is_in_range(
+                      r1_target02_b_obj.radar1_target02_dx_sigma);
+              target_info.target_vx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_vx_sigma_decode(
+                      r1_target02_b_obj.radar1_target02_vx_sigma);
+              target_info.target_vx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_vx_sigma_is_in_range(
+                      r1_target02_b_obj.radar1_target02_vx_sigma);
+              target_info.target_dy_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_dy_sigma_decode(
+                      r1_target02_b_obj.radar1_target02_dy_sigma);
+              target_info.target_dy_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target02_b_radar1_target02_dy_sigma_is_in_range(
+                      r1_target02_b_obj.radar1_target02_dy_sigma);
+              break;
+           
+            case 1635:
+              bosch_xgu_corner_radar_radar1_target03_a_t r1_target03_a_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target03_a_unpack(&r1_target03_a_obj, can_data, size_of_msg);
+              target_info.target_dx_decoded = bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_dx_decode(
+                  r1_target03_a_obj.radar1_target03_dx);
+              target_info.target_dx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_dx_is_in_range(
+                      r1_target03_a_obj.radar1_target03_dx);
+              target_info.target_vx_decode = bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_vx_decode(
+                  r1_target03_a_obj.radar1_target03_vx);
+              target_info.target_vx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_vx_is_in_range(
+                      r1_target03_a_obj.radar1_target03_vx);
+              target_info.target_dy_decode = bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_dy_decode(
+                  r1_target03_a_obj.radar1_target03_dy);
+              target_info.target_dy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target03_a_radar1_target03_dy_is_in_range(
+                      r1_target03_a_obj.radar1_target03_dy);
+              break;
+            case 1636:
+              bosch_xgu_corner_radar_radar1_target03_b_t r1_target03_b_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target03_b_unpack(&r1_target03_b_obj, can_data, size_of_msg);
+              target_info.target_vy_decoded = bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_vy_decode(
+                  r1_target03_b_obj.radar1_target03_vy);
+              target_info.target_vy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_vy_is_in_range(
+                      r1_target03_b_obj.radar1_target03_vy);
+              target_info.target_dx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_dx_sigma_decode(
+                      r1_target03_b_obj.radar1_target03_dx_sigma);
+              target_info.target_dx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_dx_sigma_is_in_range(
+                      r1_target03_b_obj.radar1_target03_dx_sigma);
+              target_info.target_vx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_vx_sigma_decode(
+                      r1_target03_b_obj.radar1_target03_vx_sigma);
+              target_info.target_vx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_vx_sigma_is_in_range(
+                      r1_target03_b_obj.radar1_target03_vx_sigma);
+              target_info.target_dy_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_dy_sigma_decode(
+                      r1_target03_b_obj.radar1_target03_dy_sigma);
+              target_info.target_dy_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target03_b_radar1_target03_dy_sigma_is_in_range(
+                      r1_target03_b_obj.radar1_target03_dy_sigma);
+              break;
+           
+            case 1645:
+              bosch_xgu_corner_radar_radar1_target04_a_t r1_target04_a_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target04_a_unpack(&r1_target04_a_obj, can_data, size_of_msg);
+              target_info.target_dx_decoded = bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_dx_decode(
+                  r1_target04_a_obj.radar1_target04_dx);
+              target_info.target_dx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_dx_is_in_range(
+                      r1_target04_a_obj.radar1_target04_dx);
+              target_info.target_vx_decode = bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_vx_decode(
+                  r1_target04_a_obj.radar1_target04_vx);
+              target_info.target_vx_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_vx_is_in_range(
+                      r1_target04_a_obj.radar1_target04_vx);
+              target_info.target_dy_decode = bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_dy_decode(
+                  r1_target04_a_obj.radar1_target04_dy);
+              target_info.target_dy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target04_a_radar1_target04_dy_is_in_range(
+                      r1_target04_a_obj.radar1_target04_dy);
+              break;
+            case 1646:
+              bosch_xgu_corner_radar_radar1_target04_b_t r1_target04_b_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_target04_b_unpack(&r1_target04_b_obj, can_data, size_of_msg);
+              target_info.target_vy_decoded = bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_vy_decode(
+                  r1_target04_b_obj.radar1_target04_vy);
+              target_info.target_vy_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_vy_is_in_range(
+                      r1_target04_b_obj.radar1_target04_vy);
+              target_info.target_dx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_dx_sigma_decode(
+                      r1_target04_b_obj.radar1_target04_dx_sigma);
+              target_info.target_dx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_dx_sigma_is_in_range(
+                      r1_target04_b_obj.radar1_target04_dx_sigma);
+              target_info.target_vx_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_vx_sigma_decode(
+                      r1_target04_b_obj.radar1_target04_vx_sigma);
+              target_info.target_vx_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_vx_sigma_is_in_range(
+                      r1_target04_b_obj.radar1_target04_vx_sigma);
+              target_info.target_dy_sigma_decoded =
+                  bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_dy_sigma_decode(
+                      r1_target04_b_obj.radar1_target04_dy_sigma);
+              target_info.target_dy_sigma_is_in_range =
+                  bosch_xgu_corner_radar_radar1_target04_b_radar1_target04_dy_sigma_is_in_range(
+                      r1_target04_b_obj.radar1_target04_dy_sigma);
+              break;
+          }
+          target_info.timestamp = time;
+          target_info.radar_number = radar_num;
+          target_info.target_object_number = target_object_num;
+          memcpy(serialized_target_info, &diag_response, sizeof(target_info));
+          (raw_obj_data_msg.target_info)
+              .insert((raw_obj_data_msg.target_info).begin(), std::begin(serialized_target_info),
+                      std::end(serialized_target_info));
+          raw_obj_data_pub.publish(raw_obj_data_msg);
+          break;
+        case 3:
+          switch (id) {
+            case 1665:
+              bosch_xgu_corner_radar_radar1_object_ender_t r1_obj_ender_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_object_ender_unpack(&r1_obj_ender_obj, can_data, size_of_msg);
+              radar_info.radar_timestamp_decoded =
+                  bosch_xgu_corner_radar_radar1_object_ender_radar1_timestamp_decode(r1_obj_ender_obj.radar1_timestamp);
+              radar_info.radar_timestamp_is_in_range =
+                  bosch_xgu_corner_radar_radar1_object_ender_radar1_timestamp_is_in_range(
+                      r1_obj_ender_obj.radar1_timestamp);
+              break;
+            
+            case 1280:
+              bosch_xgu_corner_radar_radar1_object_starter_t r1_obj_starter_obj;
+              unpack_return =
+                  bosch_xgu_corner_radar_radar1_object_starter_unpack(&r1_obj_starter_obj, can_data, size_of_msg);            
+              break;
+            
+            case 1670:
+              bosch_xgu_corner_radar_radar1_status_t r1_status;
+              unpack_return = bosch_xgu_corner_radar_radar1_status_unpack(&r1_status, can_data, size_of_msg);
+              break;
+          }
+          radar_info.timestamp = time;
+          radar_info.radar_number = radar_num;
+          memcpy(serialized_radar_info, &radar_info, sizeof(radar_info));
+          (diag_data_msg.radar_info)
+              .insert((diag_data_msg.radar_info).begin(), std::begin(serialized_radar_info),
+                      std::end(serialized_radar_info));
+          diag_data_pub.publish(diag_data_msg);
+          break;
+        
+          all_object_info.timestamp = time;
+          all_object_info.radar_number = radar_num;
+          all_object_info.object_number = obj_num;
+          memcpy(serialized_all_object_info, &radar_info, sizeof(all_object_info));
+          (raw_obj_data_msg.obj_info)
+              .insert((raw_obj_data_msg.obj_info).begin(), std::begin(serialized_all_object_info),
+                      std::end(serialized_all_object_info));
+          raw_obj_data_pub.publish(raw_obj_data_msg);
+          break;
+      }
+
     }
     canBusOff(hnd);
     canClose(hnd);
 
-    return 0;
+
+    ros::spinOnce();
+  }
+  return 0;
 }
+
