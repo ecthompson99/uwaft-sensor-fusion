@@ -1,12 +1,16 @@
+clear all
+close all
+clc 
+
 %% Assuming in kaiROS\sensor fusion testing
 
 % Load ground truth
-file_path = strcat(pwd, '\ground_truth.mat');
+file_path = strcat(pwd, '\FTR_ground_truth_100_10.mat');
 temp = load(file_path);
 ground_truth = temp.results;
 
 % Load sensor fusion output
-bag_path = strcat(pwd, '\2020-04-27-00-44-09.bag');
+bag_path = strcat(pwd, '\goteam-thresh-5.bag');
 bag = rosbag(bag_path);
 temp = select(bag, 'Topic', '/binary_class');
 output = readMessages(temp, 'DataFormat', 'struct');
@@ -18,43 +22,43 @@ TN = 0;
 
 total = 0;
 
+sf_offset = 6;
 % threshold taken from year 1
 THRESHOLD = 11;
 
-% remember to change that 9000 (number of frames)
 % Go through every timestep
-for i = 1:9000
-
+for i = 1:size(output,1)
+    gt_ind = i+sf_offset;
     % Loop through ground truth objects
-    for a = 1:size(ground_truth(i).Objects) 
+    for a = 1:ground_truth(gt_ind).Num_Objects 
+
+        sf_flags = false(size(output{i}.Dx,1),1);
+        gt_flags = false(ground_truth(gt_ind).Num_Objects,1);
+
+        gt_object = ground_truth(gt_ind).Objects(1,a);
 
         % Loop through sensor fusion output objects
-        for b = 1:size(output{i,1}.Dx,1) 
-            gt_object = ground_truth(i).Objects(1,a);
-            sf_vector = [output{i,1}.Dx(b,1), output{i,1}.Dy(b,1)];
+        for b = 1:size(output{i}.Dx,1) 
+            sf_vector = [output{i}.Dx(b,1); output{i,1}.Dy(b,1)];
 
             % Check distance between vectors
             if norm(sf_vector - gt_object.Measurement) < THRESHOLD
-                % Remove matched object from both matrices
-                ground_truth(i).Objects(:,a) = [];
-                output{i}.Dx(b) = [];
-
                 % True Positives = number of objects detected by both outputs
+                sf_flags(b,1) = true;
+                gt_flags(a,1) = true;
                 TP = TP + 1;
                 total = total + 1;
-                break;
+%                 break;
             end
         end
 
         % False Negatives = number of objects left in ground truth
-        for b = 1:size(ground_truth(i).Objects)
-            FN = FN + 1;
-            total = total + 1;
-        end
+        FN = FN + sum(gt_flags == false);
+        total = total + sum(gt_flags == false);
 
         % False Positives = number of objects left in sensor fusion algorithm
-        FP = FP + size(output{i,1}.Dx,1);
-        total = total + size(output{i,1}.Dx,1);
+        FP = FP + sum(sf_flags == false);
+        total = total + sum(sf_flags == false);
     end
 end
 

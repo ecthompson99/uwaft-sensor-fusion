@@ -37,6 +37,15 @@
 #Bag files
 *.bag
 
+#Mat files
+*.mat
+
+#Avi files
+*.avi
+
+#Excel files
+*.xlsx
+
 # Build directories
 build/*
 devel/*
