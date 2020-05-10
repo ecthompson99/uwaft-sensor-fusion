@@ -53,6 +53,7 @@ find_package(catkin REQUIRED COMPONENTS
    drive_ctrl_input_msg.msg
    sensor_diagnostic_data_msg.msg
    raw_sensor_object_data_msg.msg
+   mobileye_object_data_msg.msg
  )
 
 ## Generate services in the 'srv' folder

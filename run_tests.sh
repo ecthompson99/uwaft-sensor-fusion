@@ -20,7 +20,7 @@ SENSOR_DIAGNOSTIC_CHECK="sensor_diagnostic_check"
 SENSOR_FUSION="sensor_fusion"
 packages=(
     # $ECMC
-    $MASTER_TASK
+    #$MASTER_TASK
     $SENSOR_FUSION
     # $SENSOR_DIAGNOSTIC_CHECK
 )

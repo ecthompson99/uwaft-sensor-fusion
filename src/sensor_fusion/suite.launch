@@ -1,0 +1,8 @@
+<launch>
+    <!-- <node name="grand_input_node" pkg="kalman_filter" type="dummy_input.py"/> -->
+
+    <node name="data_association" pkg="sensor_fusion" type="data_association"/>
+    <node name="kf_node" pkg="kalman_filter" type="kf_node.py"/>
+    <node name="env_state" pkg="sensor_fusion" type="environment_state"/>
+
+</launch>

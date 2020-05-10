@@ -6,6 +6,7 @@
 
 #include "ros/ros.h"
 
+
 #include "can_tx_rx/bosch_xgu_corner_radar.c"
 #include "can_tx_rx/bosch_xgu_corner_radar.h"
 
@@ -463,11 +464,14 @@ int main(int argc, char **argv) {
           raw_obj_data_pub.publish(raw_obj_data_msg);
           break;
       }
+
     }
     canBusOff(hnd);
     canClose(hnd);
+
 
     ros::spinOnce();
   }
   return 0;
 }
+

@@ -34,8 +34,28 @@
 # Build files
 *.bin
 
+#Bag files
+*.bag
+
+#Mat files
+*.mat
+
+#Avi files
+*.avi
+
+#Excel files
+*.xlsx
+
 # Build directories
 build/*
 devel/*
 logs/*
 .catkin_tools/*
+
+.vscode
+.ipynb_checkpoints
+
+matlab_gen
+SF_visualization
+*.xlsx
+*.mat
