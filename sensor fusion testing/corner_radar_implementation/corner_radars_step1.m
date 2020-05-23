@@ -17,8 +17,43 @@ right_time_sec = seconds(right_radar.Time);
 left_final = addvars(left_radar,left_time_sec);
 right_final = addvars(right_radar,right_time_sec);
 
-%writetimetable(left_final,'left_corner_radar.xlsx','Sheet',1);
-%writetimetable(right_final,'right_corner_radar.xlsx','Sheet',1);
+
+%% Check validity of CAN frames
+
+size_left_final = size(left_final);
+
+for i = 1:size_left_final(1)
+    % check A
+    if i < size_left_final(1)
+        if contains(left_final.Name(i),'_A')
+           if contains(left_final.Name(i+1),'_A') && ...
+               contains(left_final.Name(i-1),'_B')
+                left_final(i,:) = []; % remove row
+                size_left_final = size_left_final - 1; % reduce size by 1
+           end
+        end
+    end
+end
+
+size_right_final = size(right_final);
+
+for i = 1:size_right_final(1)
+    % check A
+    if i < size_right_final(1)
+        if contains(right_final.Name(i),'_A')
+           if contains(right_final.Name(i+1),'_A') && ...
+               contains(right_final.Name(i-1),'_B')
+                right_final(i,:) = []; % remove row
+                size_right_final = size_right_final - 1; % reduce size by 1
+           end
+        end
+    end
+end
+
+
+%% Save data    
+writetimetable(left_final,'left_corner_radar.xlsx','Sheet',1);
+writetimetable(right_final,'right_corner_radar.xlsx','Sheet',1);
 
 save('left_radar.mat');
 save('right_radar.mat');
