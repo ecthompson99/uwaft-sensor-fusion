@@ -10,7 +10,7 @@ left_radar = blfread("bve_testing_2019-11-08_13-25-36.blf",1,...
 
 % filter for right radar input and desired signals
 right_radar = blfread("bve_testing_2019-11-08_13-25-36.blf",2,...
-    "Database", candb_cr, "CANStandardFilter", (1287:1657));
+    "Database", candb_cr, "CANStandardFilter", (1285:1655));
 
 left_time_sec = seconds(left_radar.Time);
 right_time_sec = seconds(right_radar.Time);

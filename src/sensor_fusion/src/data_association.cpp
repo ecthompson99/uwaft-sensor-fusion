@@ -12,8 +12,12 @@ DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(nod
     
     sensor_me_data_obj_sub = node_handle->subscribe(MOBILEYE_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_me_data_obj_callback, this);
     
-    sensor_radar_data_obj_sub = node_handle->subscribe(RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
+    sensor_front_radar_data_obj_sub = node_handle->subscribe(FRONT_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_sub, this);
     
+    sensor_left_corner_radar_sub = node_handle->subscribe(LEFT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_sub, this);
+    
+    sensor_right_corner_radar_sub = node_handle->subscribe(RIGHT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_sub, this);
+
     radar_to_kf_pub = node_handle->advertise<sensor_fusion::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
     me_to_kf_pub = node_handle->advertise<sensor_fusion::associated_me_msg>(KALMAN_FILTER_ME_TOPIC, 10);
 
@@ -46,7 +50,7 @@ bool DataAssociation::objects_match(ObjectState obj, double sensor_dx, double se
 }
 
 bool DataAssociation::radar_match(ObjectState obj, double sensor_dx, double sensor_dy) {
-    if (abs(sensor_dx - obj.dx) < 15 && abs(sensor_dy - obj.dy) < DY_TOL) {
+    if (abs(sensor_dx - obj.dx) < 5 && abs(sensor_dy - obj.dy) < DY_TOL) {
         printf("Object matched with dx of %f and dy of %f\n", sensor_dx - obj.dx, sensor_dy - obj.dy);
         return 1;
     }

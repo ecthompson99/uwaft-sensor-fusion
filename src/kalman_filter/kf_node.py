@@ -166,8 +166,8 @@ class KF_Node(object):
         self.start = time.time()
 
     def plot_history(self, id):
-        print(self.input_history[id])
-        print('-----\n',self.output_history[id])
+        # print(self.input_history[id])
+        # print('-----\n',self.output_history[id])
         x = np.arange(len(self.input_history[id]))
         plt.figure(1)
         plt.suptitle('Kalman Filter Object Tracking Performance')
