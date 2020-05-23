@@ -17,8 +17,8 @@ right_time_sec = seconds(right_radar.Time);
 left_final = addvars(left_radar,left_time_sec);
 right_final = addvars(right_radar,right_time_sec);
 
-writetimetable(left_final,'left_corner_radar.xlsx','Sheet',1);
-writetimetable(right_final,'right_corner_radar.xlsx','Sheet',1);
+%writetimetable(left_final,'left_corner_radar.xlsx','Sheet',1);
+%writetimetable(right_final,'right_corner_radar.xlsx','Sheet',1);
 
 save('left_radar.mat');
 save('right_radar.mat');
