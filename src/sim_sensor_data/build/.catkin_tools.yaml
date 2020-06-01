@@ -1,0 +1,6 @@
+devel_space: /home/joannadiao/kaiROS/src/sim_sensor_data/devel
+install: false
+install_space: /home/joannadiao/kaiROS/src/sim_sensor_data/install
+profile: default
+source_space: /home/joannadiao/kaiROS/src/sim_sensor_data/src
+workspace: /home/joannadiao/kaiROS/src/sim_sensor_data
