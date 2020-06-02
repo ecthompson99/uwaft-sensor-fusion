@@ -1,0 +1,2 @@
+set(can_tx_rx_MESSAGE_FILES "/home/joannadiao/kaiROS/src/can_tx_rx/msg/can_comms_data_msg.msg;/home/joannadiao/kaiROS/src/can_tx_rx/msg/drive_ctrl_input_msg.msg;/home/joannadiao/kaiROS/src/can_tx_rx/msg/sensor_diagnostic_data_msg.msg;/home/joannadiao/kaiROS/src/can_tx_rx/msg/raw_sensor_object_data_msg.msg;/home/joannadiao/kaiROS/src/can_tx_rx/msg/mobileye_object_data_msg.msg")
+set(can_tx_rx_SERVICE_FILES "")
