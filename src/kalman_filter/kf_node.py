@@ -30,7 +30,7 @@ class KF(KalmanFilter):
 
 class KF_Node(object):
     def me_association_callback(self, obj):
-        rospy.loginfo('me callback called', obj.obj_id, obj.obj.MeDx, obj.obj.MeDy)
+        rospy.loginfo('me callback called %d @ %f, %f' % (obj.obj_id, obj.obj.MeDx, obj.obj.MeDy))
         measurement = [obj.obj.MeDx,
                        obj.obj.MeDy,
                        obj.obj.MeVx]
@@ -41,7 +41,7 @@ class KF_Node(object):
             self.objects[obj.obj_id] = KF(measurement)
             self.objects[obj.obj_id].last_me_timestamp = obj.obj.MeTimestamp
 
-            rospy.loginfo('creating object', obj.obj_id)
+            rospy.loginfo('creating object %d' % obj.obj_id)
             self.input_history[obj.obj_id] = np.array([[measurement[0], measurement[1]]])
             self.output_history[obj.obj_id] = np.array([self.objects[obj.obj_id].x])
 
@@ -88,7 +88,7 @@ class KF_Node(object):
         self.output.publish(result)
 
     def radar_association_callback(self, obj):
-        rospy.loginfo('radar callback called', obj.obj_id, obj.obj.RadarDx, obj.obj.RadarDy)
+        rospy.loginfo('radar callback called %d @ %f, %f' % (obj.obj_id, obj.obj.RadarDx, obj.obj.RadarDy))
         measurement = [obj.obj.RadarDx,
                        obj.obj.RadarDy,
                        obj.obj.RadarVx,
@@ -100,7 +100,7 @@ class KF_Node(object):
             self.objects[obj.obj_id] = KF(measurement)
             self.objects[obj.obj_id].last_radar_timestamp = obj.obj.RadarTimestamp
 
-            rospy.loginfo('creating object', obj.obj_id)
+            rospy.loginfo('creating object %d' % obj.obj_id)
             self.input_history[obj.obj_id] = np.array([[measurement[0], measurement[1]]])
             self.output_history[obj.obj_id] = np.array([self.objects[obj.obj_id].x])
 
@@ -166,8 +166,8 @@ class KF_Node(object):
         self.start = time.time()
 
     def plot_history(self, id):
-        print(self.input_history[id])
-        print('-----\n',self.output_history[id])
+        # print(self.input_history[id])
+        # print('-----\n',self.output_history[id])
         x = np.arange(len(self.input_history[id]))
         plt.figure(1)
         plt.suptitle('Kalman Filter Object Tracking Performance')

@@ -12,8 +12,8 @@
 #include "sensor_fusion/associated_me_msg.h"
 #include "sensor_fusion/associated_radar_msg.h"
 
-#define MOBILEYE_TOPIC "mobileye_from_matlab"
-#define RADAR_TOPIC "radar_from_matlab"
+#define MOBILEYE_TOPIC "/mobileye_can_rx"
+#define RADAR_TOPIC "/radar_can_rx"
 #define KALMAN_FILTER_RADAR_TOPIC "associated_radar"
 #define KALMAN_FILTER_ME_TOPIC "associated_me"
 #define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
