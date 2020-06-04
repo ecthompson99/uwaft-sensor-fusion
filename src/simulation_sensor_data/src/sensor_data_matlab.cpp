@@ -28,7 +28,7 @@ void matread(const char *file, std::vector<double>& v)
     // extract the specified variable
     
     mxArray *arr;
-    arr = matGetVariable(pmat, "Time");
+    arr = matGetVariable(pmat, "sensor_data");
 
     std::cout << "number of cells is " << mxGetNumberOfElements(arr) << std::endl;
     
