@@ -12,11 +12,11 @@ DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(nod
     
     sensor_me_data_obj_sub = node_handle->subscribe(MOBILEYE_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_me_data_obj_callback, this);
     
-    sensor_front_radar_data_obj_sub = node_handle->subscribe(FRONT_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_sub, this);
+    sensor_front_radar_data_obj_sub = node_handle->subscribe(FRONT_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
     
-    sensor_left_corner_radar_sub = node_handle->subscribe(LEFT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_sub, this);
+    sensor_left_corner_radar_sub = node_handle->subscribe(LEFT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
     
-    sensor_right_corner_radar_sub = node_handle->subscribe(RIGHT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_sub, this);
+    sensor_right_corner_radar_sub = node_handle->subscribe(RIGHT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
 
     radar_to_kf_pub = node_handle->advertise<sensor_fusion::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
     me_to_kf_pub = node_handle->advertise<sensor_fusion::associated_me_msg>(KALMAN_FILTER_ME_TOPIC, 10);
