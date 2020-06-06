@@ -11,8 +11,6 @@
 
 #include "can_tx_rx/mobileye_object_data_msg.h"
 
-#include "can_tx_rx/output_structs.h"
-
 static const uint16_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
 
 
@@ -50,11 +48,6 @@ int main(int argc, char **argv) {
   uint8_t can_data[8] = {0};
 
   int unpack_return = -1;  // 0 is successful, negative error code
-
-  diag_response.channel_number = 3;
-  radar_info.channel_number = 3;
-  target_info.channel_number = 3;
-  all_object_info.channel_number = 3;
 
   while (ros::ok()) {
     canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
