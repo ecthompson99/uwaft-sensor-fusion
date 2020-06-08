@@ -3,8 +3,8 @@ clear
 clc
 load('right_radar.mat');
 load('left_radar.mat');
-load('~/kaiROS/sensor fusion testing/mobileye.mat')
-load('~/kaiROS/sensor fusion testing/radar.mat')
+load('front_radar.mat')
+load('me.mat')
 
 rosinit
 left_radar_pub = rospublisher('/left_radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
