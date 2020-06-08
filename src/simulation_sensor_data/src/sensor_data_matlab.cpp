@@ -62,11 +62,9 @@ int main(int argc, char **argv)
     //     cout << endl;
     // }
     
-    double time = 0;
-
     for (int x = 0; x < sensor_data.size(); x++)
     {
-        time = sensor_data[x][0];
+        ros::Time time(sensor_data[x][0]);
         simulation_sensor_data::radar1_data radar1;
         simulation_sensor_data::radar2_data radar2;
         simulation_sensor_data::radar3_data radar3;
