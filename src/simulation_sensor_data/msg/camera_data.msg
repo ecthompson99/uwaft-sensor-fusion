@@ -1,0 +1,4 @@
+float64 camera_dx_
+float64 camera_dy_
+float64 camera_vx_
+float64 camera_vy_

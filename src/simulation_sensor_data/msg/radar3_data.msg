@@ -1,0 +1,4 @@
+float64 radar3_dx_
+float64 radar3_dy_
+float64 radar3_vx_
+float64 radar3_vy_

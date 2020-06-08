@@ -9,6 +9,9 @@ project(simulation_sensor_data)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rosbag
+  std_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -45,11 +48,14 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
+add_message_files(
+   FILES
+   radar1_data.msg
+   radar2_data.msg
+   radar3_data.msg
+   camera_data.msg
 #   Message2.msg
-# )
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -66,10 +72,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+   DEPENDENCIES
+   std_msgs  # Or other packages containing msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -110,7 +116,7 @@ catkin_package(
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES simulation_sensor_data
-  CATKIN_DEPENDS roscpp std_msgs
+  CATKIN_DEPENDS roscpp std_msgs message_runtime
 #  DEPENDS system_lib
 )
 
@@ -124,7 +130,7 @@ catkin_package(
 include_directories(
  #include
   ${catkin_INCLUDE_DIRS}
-  /usr/local/MATLAB/R2019b/extern/include
+ # /usr/local/MATLAB/R2019b/extern/include
 )
 
 
@@ -156,8 +162,8 @@ add_executable(sensor_data_matlab src/sensor_data_matlab.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(sensor_data_matlab
    ${catkin_LIBRARIES}
-   /usr/local/MATLAB/R2019b/bin/glnxa64/libmat.so
-   /usr/local/MATLAB/R2019b/bin/glnxa64/libmx.so
+  # /usr/local/MATLAB/R2019b/bin/glnxa64/libmat.so
+  # /usr/local/MATLAB/R2019b/bin/glnxa64/libmx.so
  )
 
 #############
