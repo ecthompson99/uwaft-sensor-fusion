@@ -10,29 +10,29 @@ rosinit
 left_radar_pub = rospublisher('/left_radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
 right_radar_pub = rospublisher('/right_radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
 me_pub = rospublisher('/mobileye_from_matlab','sensor_fusion_testing/mobileye_object_data_from_matlab');
-radar_pub = rospublisher('/radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
+front_radar_pub = rospublisher('/front_radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
 
 left_radar_msg = rosmessage(left_radar_pub);
 right_radar_msg = rosmessage(right_radar_pub);
 me_msg = rosmessage(me_pub);
-radar_msg = rosmessage(radar_pub);
+front_radar_msg = rosmessage(front_radar_pub);
 
 left_index = 1;
 right_index = 1;
-radar_index = 49;
+front_index = 1;
 me_index = 1;
 clk = 0;
 pub_rate = 0.001;
 
 left_radar_msg.RadarTimestamp = left_final.left_time_sec(left_index);
 right_radar_msg.RadarTimestamp = right_final.right_time_sec(right_index);
-radar_msg.RadarTimestamp = radar_final.time_in_sec(radar_index);
+front_radar_msg.RadarTimestamp = front_final.time_in_sec(front_index);
 me_msg.MeTimestamp = me_final.time_in_sec(me_index);
 
 while true
 
     while left_radar_msg.RadarTimestamp > clk + pub_rate && right_radar_msg.RadarTimestamp > clk + pub_rate &&...
-            radar_msg.RadarTimestamp > clk + pub_rate && me_msg.MeTimestamp > clk + pub_rate  
+            front_radar_msg.RadarTimestamp > clk + pub_rate && me_msg.MeTimestamp > clk + pub_rate  
         clk = clk + pub_rate;
     end
 
@@ -72,22 +72,22 @@ while true
         right_radar_msg.RadarTimestamp = right_final.right_time_sec(right_index);
     end
     
-    if radar_msg.RadarTimestamp < clk + pub_rate
-        fields_A=fieldnames(radar_final.Signals{radar_index,1});
-        fields_B=fieldnames(radar_final.Signals{radar_index+1,1});
+    if front_radar_msg.RadarTimestamp < clk + pub_rate
+        fields_A=fieldnames(front_final.Signals{radar_index,1});
+        fields_B=fieldnames(front_final.Signals{radar_index+1,1});
        
-        radar_msg.RadarDx = getfield(radar_final.Signals{radar_index,1},fields_A{7});
-        radar_msg.RadarDy = getfield(radar_final.Signals{radar_index,1},fields_A{6});
-        radar_msg.RadarVx = getfield(radar_final.Signals{radar_index,1},fields_A{5});
-        radar_msg.RadarVy = getfield(radar_final.Signals{radar_index+1,1},fields_B{8});
-        radar_msg.RadarAx = getfield(radar_final.Signals{radar_index,1},fields_A{4});
-        radar_msg.RadarDxSigma = getfield(radar_final.Signals{radar_index+1,1},fields_B{10});
-        radar_msg.RadarDySigma = getfield(radar_final.Signals{radar_index+1,1},fields_B{3});
-        radar_msg.RadarVxSigma = getfield(radar_final.Signals{radar_index+1,1},fields_B{9});
-        radar_msg.RadarAxSigma = getfield(radar_final.Signals{radar_index+1,1},fields_B{11});
-        send(radar_pub,radar_msg);
+        front_radar_msg.RadarDx = getfield(front_final.Signals{radar_index,1},fields_A{7});
+        front_radar_msg.RadarDy = getfield(front_final.Signals{radar_index,1},fields_A{6});
+        front_radar_msg.RadarVx = getfield(front_final.Signals{radar_index,1},fields_A{5});
+        front_radar_msg.RadarVy = getfield(front_final.Signals{radar_index+1,1},fields_B{8});
+        front_radar_msg.RadarAx = getfield(front_final.Signals{radar_index,1},fields_A{4});
+        front_radar_msg.RadarDxSigma = getfield(front_final.Signals{radar_index+1,1},fields_B{10});
+        front_radar_msg.RadarDySigma = getfield(front_final.Signals{radar_index+1,1},fields_B{3});
+        front_radar_msg.RadarVxSigma = getfield(front_final.Signals{radar_index+1,1},fields_B{9});
+        front_radar_msg.RadarAxSigma = getfield(front_final.Signals{radar_index+1,1},fields_B{11});
+        send(radar_pub,front_radar_msg);
         radar_index = radar_index + 2;
-        radar_msg.RadarTimestamp = radar_final.time_in_sec(radar_index);
+        front_radar_msg.RadarTimestamp = front_final.time_in_sec(radar_index);
     end
 
     if me_msg.MeTimestamp < clk + pub_rate
