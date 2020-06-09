@@ -1236,7 +1236,7 @@ struct ext_log_data_obstacle_data_b_t {
      * Scale: 0.5
      * Offset: 0
      */
-    uint8_t obstacle_lenght;
+    uint8_t obstacle_length;
 
     /**
      * Range: 0..250 (0..12.5 m)
@@ -3167,7 +3167,7 @@ int ext_log_data_obstacle_data_b_unpack(
  *
  * @return Encoded signal.
  */
-uint8_t ext_log_data_obstacle_data_b_obstacle_lenght_encode(double value);
+uint8_t ext_log_data_obstacle_data_b_obstacle_length_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -3176,7 +3176,7 @@ uint8_t ext_log_data_obstacle_data_b_obstacle_lenght_encode(double value);
  *
  * @return Decoded signal.
  */
-double ext_log_data_obstacle_data_b_obstacle_lenght_decode(uint8_t value);
+double ext_log_data_obstacle_data_b_obstacle_length_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -3185,7 +3185,7 @@ double ext_log_data_obstacle_data_b_obstacle_lenght_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool ext_log_data_obstacle_data_b_obstacle_lenght_is_in_range(uint8_t value);
+bool ext_log_data_obstacle_data_b_obstacle_length_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.

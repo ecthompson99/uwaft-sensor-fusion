@@ -1248,7 +1248,7 @@ int ext_log_data_obstacle_data_b_pack(
 
     memset(&dst_p[0], 0, 8);
 
-    dst_p[0] |= pack_left_shift_u8(src_p->obstacle_lenght, 0u, 0xffu);
+    dst_p[0] |= pack_left_shift_u8(src_p->obstacle_length, 0u, 0xffu);
     dst_p[1] |= pack_left_shift_u8(src_p->obstacle_width, 0u, 0xffu);
     dst_p[2] |= pack_left_shift_u8(src_p->obstacle_age, 0u, 0xffu);
     dst_p[3] |= pack_left_shift_u8(src_p->obstacle_lane, 0u, 0x03u);
@@ -1277,7 +1277,7 @@ int ext_log_data_obstacle_data_b_unpack(
 
     memset(dst_p, 0, sizeof(*dst_p));
 
-    dst_p->obstacle_lenght |= unpack_right_shift_u8(src_p[0], 0u, 0xffu);
+    dst_p->obstacle_length |= unpack_right_shift_u8(src_p[0], 0u, 0xffu);
     dst_p->obstacle_width |= unpack_right_shift_u8(src_p[1], 0u, 0xffu);
     dst_p->obstacle_age |= unpack_right_shift_u8(src_p[2], 0u, 0xffu);
     dst_p->obstacle_lane |= unpack_right_shift_u8(src_p[3], 0u, 0x03u);
@@ -1299,17 +1299,17 @@ int ext_log_data_obstacle_data_b_unpack(
     return (0);
 }
 
-uint8_t ext_log_data_obstacle_data_b_obstacle_lenght_encode(double value)
+uint8_t ext_log_data_obstacle_data_b_obstacle_length_encode(double value)
 {
     return (uint8_t)(value / 0.5);
 }
 
-double ext_log_data_obstacle_data_b_obstacle_lenght_decode(uint8_t value)
+double ext_log_data_obstacle_data_b_obstacle_length_decode(uint8_t value)
 {
     return ((double)value * 0.5);
 }
 
-bool ext_log_data_obstacle_data_b_obstacle_lenght_is_in_range(uint8_t value)
+bool ext_log_data_obstacle_data_b_obstacle_length_is_in_range(uint8_t value)
 {
     return (value <= 63u);
 }
