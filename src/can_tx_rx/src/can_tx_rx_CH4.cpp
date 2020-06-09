@@ -55,12 +55,13 @@ int main(int argc, char **argv) {
     if (canOK == stat) {
 
     }
-    canBusOff(hnd);
-    canClose(hnd);
-
 
     ros::spinOnce();
   }
+  
+  canBusOff(hnd);
+  canClose(hnd);
+
   return 0;
 }
 
