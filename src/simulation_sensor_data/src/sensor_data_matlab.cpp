@@ -1,4 +1,3 @@
-//#include "rapidcsv.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -37,8 +36,6 @@ void read_sensor_data_csv(string filename, vector<vector<double> >& v2d)
         }
     }
 }
-
-
 
 
 int main(int argc, char **argv)
@@ -87,10 +84,10 @@ int main(int argc, char **argv)
         camera.camera_vx_ = sensor_data[x][15];
         camera.camera_vy_ = sensor_data[x][16];
 
-        bag.write("radar1_topic", time, radar1);
-        bag.write("radar2_topic", time, radar2);
-        bag.write("radar3_topic", time, radar3);
-        bag.write("camera_topic", time, camera);        
+        bag.write("RADAR_TOPIC", time, radar1);
+        bag.write("LEFT_CORNER_RADAR_TOPIC", time, radar2);
+        bag.write("RIGHT_CORNER_RADAR_TOPIC", time, radar3);
+        bag.write("MOBILEYE_TOPIC", time, camera);        
         
     }
     bag.close();
