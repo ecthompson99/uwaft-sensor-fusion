@@ -30,6 +30,7 @@ find_package(
     roscpp
     std_msgs
     message_generation
+    common
 )
 
 ## System dependencies are found with CMake's conventions
@@ -66,13 +67,13 @@ find_package(
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-    FILES
-    can_comms_data_msg.msg
-    drive_ctrl_input_msg.msg
-    sensor_diagnostic_flag_msg.msg
-    sudo_driver_input_msg.msg
-)
+# add_message_files(
+#     FILES
+#     can_comms_data_msg.msg
+#     drive_ctrl_input_msg.msg
+#     sensor_diagnostic_flag_msg.msg
+#     sudo_driver_input_msg.msg
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -89,10 +90,10 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-    DEPENDENCIES
-    std_msgs  # Or other packages containing msgs
-)
+# generate_messages(
+#     DEPENDENCIES
+#     std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -173,6 +174,7 @@ add_executable(
 add_dependencies(
     ${PROJECT_NAME}
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    common
 )
 
 ## Specify libraries to link a library or executable target against
@@ -241,7 +243,7 @@ if (CATKIN_ENABLE_TESTING)
             ${catkin_LIBRARIES}
         )
     endif()
-    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
+    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
     target_compile_definitions(
         ${PROJECT_NAME}-test
         PUBLIC

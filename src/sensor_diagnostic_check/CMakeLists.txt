@@ -21,6 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
+  common
 )
 
 ## System dependencies are found with CMake's conventions
@@ -57,11 +58,11 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  sensor_diagnostic_flag_msg.msg #publish to this topic
-  sensor_diagnostic_data_msg.msg #subscribe to this topic
-)
+# add_message_files(
+#   FILES
+#   sensor_diagnostic_flag_msg.msg #publish to this topic
+#   sensor_diagnostic_data_msg.msg #subscribe to this topic
+# )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -78,10 +79,10 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs  # Or other packages containing msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -155,7 +156,7 @@ add_executable(sensor_diagnostic src/sensor_diag.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(sensor_diagnostic ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_dependencies(sensor_diagnostic ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node

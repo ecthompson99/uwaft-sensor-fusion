@@ -6,9 +6,9 @@
 
 #include "sensor_fusion/env_state_srv.h"
 
-#include "sensor_fusion/mobileye_object_data.h"
-#include "sensor_fusion/radar_object_data.h"
-#include "sensor_fusion/sensor_diagnostic_flag_msg.h"
+#include "common/mobileye_object_data.h"
+#include "common/radar_object_data.h"
+#include "common/sensor_diagnostic_flag_msg.h"
 #include "sensor_fusion/associated_me_msg.h"
 #include "sensor_fusion/associated_radar_msg.h"
 
@@ -49,13 +49,13 @@ class DataAssociation {
 		ros::Subscriber sensor_front_radar_data_obj_sub;
 		ros::Subscriber sensor_left_corner_radar_sub;
 		ros::Subscriber sensor_right_corner_radar_sub;
-		void sensor_radar_data_obj_callback(const sensor_fusion::radar_object_data& sensor_data);
+		void sensor_radar_data_obj_callback(const common::radar_object_data& sensor_data);
 
 		ros::Subscriber sensor_me_data_obj_sub;
-		void sensor_me_data_obj_callback(const sensor_fusion::mobileye_object_data& sensor_data);
+		void sensor_me_data_obj_callback(const common::mobileye_object_data& sensor_data);
 
 		ros::Subscriber sensor_diag_sub;
-		void sensor_diagnostics_callback(const sensor_fusion::sensor_diagnostic_flag_msg& sensor_diag);
+		void sensor_diagnostics_callback(const common::sensor_diagnostic_flag_msg& sensor_diag);
 
 		std::vector<ObjectState> potential_objs;
 

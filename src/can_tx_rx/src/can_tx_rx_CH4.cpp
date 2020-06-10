@@ -9,7 +9,7 @@
 #include "can_tx_rx/ext_log_data.c"
 #include "can_tx_rx/ext_log_data.h"
 
-#include "can_tx_rx/mobileye_object_data_msg.h"
+#include "common/mobileye_object_data_msg.h"
 
 static const uint16_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
 
@@ -18,10 +18,10 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "can_tx_rx_CH4");
   ros::NodeHandle can_tx_rx_CH4_handle;
 
-  ros::Publisher raw_obj_data_pub = can_tx_rx_CH4_handle.advertise<can_tx_rx::mobileye_object_data_msg>(
+  ros::Publisher raw_obj_data_pub = can_tx_rx_CH4_handle.advertise<common::mobileye_object_data_msg>(
       "mobileye_object_data", TX_RX_MESSAGE_BUFFER_SIZE);
 
-  can_tx_rx::mobileye_object_data_msg obj_data;
+  common::mobileye_object_data_msg obj_data;
 
   canHandle hnd;
 

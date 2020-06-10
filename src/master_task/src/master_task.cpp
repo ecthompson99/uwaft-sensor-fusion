@@ -10,14 +10,14 @@ MasterTask::MasterTask(ros::NodeHandle* nodeHandle) : nh(nodeHandle) {
   sudo_driver_input_sub =
       nh->subscribe("sudo_driver_input", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::sudo_driver_input_msg_callback, this);
 
-  master_task_pub = nh->advertise<master_task::can_comms_data_msg>("can_comms_data", MASTER_MESSAGE_BUFFER_SIZE);
+  master_task_pub = nh->advertise<common::can_comms_data_msg>("can_comms_data", MASTER_MESSAGE_BUFFER_SIZE);
 }
 
 MasterTask::~MasterTask() {}
 
 void MasterTask::publish_can_comms_msg() { master_task_pub.publish(can_comms_msg); }
 
-void MasterTask::drive_ctrl_msg_callback(const master_task::drive_ctrl_input_msg& drive_ctrl_msg) {
+void MasterTask::drive_ctrl_msg_callback(const common::drive_ctrl_input_msg& drive_ctrl_msg) {
   can_comms_msg.acc_switch_status = drive_ctrl_msg.acc_enable;
   can_comms_msg.aeb_switch_status = drive_ctrl_msg.aeb_enable;
   can_comms_msg.lc_switch_status = drive_ctrl_msg.lc_enable;
@@ -31,7 +31,7 @@ void MasterTask::drive_ctrl_msg_callback(const master_task::drive_ctrl_input_msg
                   << "ACC dist set point " << drive_ctrl_msg.acc_dist_set_point << "\n");
 }
 
-void MasterTask::sensor_diag_flag_msg_callback(const master_task::sensor_diagnostic_flag_msg& sensor_msg) {
+void MasterTask::sensor_diag_flag_msg_callback(const common::sensor_diagnostic_flag_msg& sensor_msg) {
   // temporary workaround for array
   int first = sensor_msg.radar_reliability[0];
   int second = sensor_msg.radar_reliability[1];
@@ -60,7 +60,7 @@ void MasterTask::sensor_diag_flag_msg_callback(const master_task::sensor_diagnos
                   << "6th sensor " << sixth << "\n");
 }
 
-void MasterTask::sudo_driver_input_msg_callback(const master_task::sudo_driver_input_msg& input_msg) {
+void MasterTask::sudo_driver_input_msg_callback(const common::sudo_driver_input_msg& input_msg) {
   can_comms_msg.aeb_override = input_msg.aeb_override;
   can_comms_msg.target_accel = input_msg.target_accel;
   can_comms_msg.wheel_angle = input_msg.wheel_angle;
@@ -71,4 +71,4 @@ void MasterTask::sudo_driver_input_msg_callback(const master_task::sudo_driver_i
                   << "Wheel angle " << input_msg.wheel_angle << "\n");
 }
 
-master_task::can_comms_data_msg MasterTask::get_can_comms_msg() { return can_comms_msg; }
+common::can_comms_data_msg MasterTask::get_can_comms_msg() { return can_comms_msg; }

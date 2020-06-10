@@ -1,37 +1,15 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(sensor_fusion)
-
-## Verbosity level
-# ROSCONSOLE_SEVERITY_DEBUG
-# ROSCONSOLE_SEVERITY_INFO
-# ROSCONSOLE_SEVERITY_WARN
-# ROSCONSOLE_SEVERITY_ERROR
-# ROSCONSOLE_SEVERITY_FATAL
-# ROSCONSOLE_SEVERITY_NONE
-SET(SENSOR_FUSION_VERBOSITY ROSCONSOLE_SEVERITY_DEBUG)
-SET(SENSOR_FUSION_TEST_VERBOSITY ROSCONSOLE_SEVERITY_WARN)
+cmake_minimum_required(VERSION 3.0.2)
+project(common)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(
-    -std=c++11
-)
-
-## Coverage flags
-SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
-SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
-SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}")
-SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}")
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(
-	catkin REQUIRED COMPONENTS
-	roscpp
-	std_msgs
-	message_generation
-    rospy
-    common
+find_package(catkin REQUIRED COMPONENTS
+  std_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -68,19 +46,29 @@ find_package(
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-   associated_radar_msg.msg
-   associated_me_msg.msg
-   filtered_object_msg.msg
-   binary_class_msg.msg
+add_message_files(
+  FILES
+  can_comms_data_msg.msg
+  drive_ctrl_input_msg.msg
+  filtered_object_msg.msg
+  mobileye_object_data.msg
+  mobileye_object_data_msg.msg
+  object_deletion_msg.msg
+  radar_object_data.msg
+  raw_sensor_object_data_msg.msg
+  sensor_diagnostic_data_msg.msg
+  sensor_diagnostic_flag_msg.msg
+  sudo_driver_input_msg.msg
+  target_output_msg.msg
+  tracked_output_msg.msg
 )
 
 ## Generate services in the 'srv' folder
- add_service_files(
-    FILES
-    env_state_srv.srv
-)
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -90,11 +78,10 @@ find_package(
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs  # Or other packages containing msgs
-   common
- )
+generate_messages(
+  DEPENDENCIES
+  std_msgs  # Or other packages containing msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -127,9 +114,7 @@ find_package(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  #LIBRARIES sensor_fusion
-  CATKIN_DEPENDS roscpp message_runtime std_msgs rospy
-  #DEPENDS system_lib
+  CATKIN_DEPENDS std_msgs message_runtime
 )
 
 ###########
@@ -139,13 +124,13 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
- include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/env_state.cpp
+#   src/${PROJECT_NAME}/common.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -156,41 +141,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/sensor_fusion_node.cpp)
-
-add_executable(
-    data_association
-    src/data_association.cpp
-)
-
-add_executable(
-    environment_state
-    src/env_state.cpp
-    src/object_state.cpp
-)
-
-add_dependencies(data_association ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
-add_dependencies(environment_state ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
-
-target_link_libraries(
-    environment_state
-    ${catkin_LIBRARIES}
-)
-
-target_link_libraries(
-    data_association
-    ${catkin_LIBRARIES}
-)
-
-
-# add_executable(client src/client.cpp)
-# add_dependencies(client ${${PROJECT_NAME}_EXPORTED_TARGETS})
-# target_link_libraries(client ${catkin_LIBRARIES})
-
-# add_executable(server src/server.cpp)
-# add_dependencies(server ${${PROJECT_NAME}_EXPORTED_TARGETS})
-# target_link_libraries(server ${catkin_LIBRARIES})
-
+# add_executable(${PROJECT_NAME}_node src/common_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -202,29 +153,14 @@ target_link_libraries(
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-
-####add_dependencies(
-    ####${PROJECT_NAME}
-    ####${${PROJECT_NAME}_EXPORTED_TARGETS}
-####)
-
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
 
-####target_link_libraries(
-    ####${PROJECT_NAME}
-    ####${catkin_LIBRARIES}
-####)
-
-#####target_compile_definitions(
-    #####${PROJECT_NAME}
-    #####PUBLIC
-    #####ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_VERBOSITY}
-#####)
-
-
+add_executable(initialize_msg src/initialize_msg.cpp)
+add_dependencies(initialize_msg ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(initialize_msg ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -235,7 +171,7 @@ target_link_libraries(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
+# catkin_install_python(PROGRAMS
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
@@ -270,30 +206,13 @@ target_link_libraries(
 
 #############
 ## Testing ##
-##############
-#if (CATKIN_ENABLE_TESTING)
-#    ## Add gtest based cpp test target and link libraries
-#    catkin_add_gtest(
-#        ${PROJECT_NAME}-test
-#        test/test_sensor_fusion.cpp
-#        src/sensor_fusion_main.cpp
-#        src/server.cpp
-#        src/client.cpp
-#        src/data_association.cpp
-#    )
-#    if(TARGET ${PROJECT_NAME}-test)
-#        target_link_libraries(
-#            ${PROJECT_NAME}-test
-#            ${catkin_LIBRARIES}
-#        )
-#    endif()
-#    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
-#    target_compile_definitions(
-#        ${PROJECT_NAME}-test
-#        PUBLIC
-#        ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_TEST_VERBOSITY}
-#    )
-#endif(CATKIN_ENABLE_TESTING)
+#############
+
+## Add gtest based cpp test target and link libraries
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_common.cpp)
+# if(TARGET ${PROJECT_NAME}-test)
+#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
+# endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

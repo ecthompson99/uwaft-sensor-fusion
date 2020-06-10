@@ -58,7 +58,7 @@ bool DataAssociation::radar_match(ObjectState obj, double sensor_dx, double sens
 }
 
 
-void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_object_data& recvd_data) {
+void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_data& recvd_data) {
     if (recvd_data.RadarDx < 1 || recvd_data.RadarDx > DX_RANGE || recvd_data.RadarDy < -DY_RANGE || recvd_data.RadarDy > DY_RANGE)
         return;
     double adjusted_dy = recvd_data.RadarDy - 1;
@@ -121,7 +121,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const sensor_fusion::radar_
     potential_objs.emplace_back(ObjectState(recvd_data.RadarDx, adjusted_dy));
 }
 
-void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_object_data& recvd_data) {
+void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_data& recvd_data) {
     if (recvd_data.MeDx > DX_RANGE || recvd_data.MeDy < -DY_RANGE || recvd_data.MeDy > DY_RANGE)
         return;
     double adjusted_dy = recvd_data.MeDy - 2;
@@ -181,7 +181,7 @@ void DataAssociation::sensor_me_data_obj_callback(const sensor_fusion::mobileye_
     potential_objs.emplace_back(ObjectState(recvd_data.MeDx, adjusted_dy));
 }
 
-void DataAssociation::sensor_diagnostics_callback(const sensor_fusion::sensor_diagnostic_flag_msg& sensor_diag) {
+void DataAssociation::sensor_diagnostics_callback(const common::sensor_diagnostic_flag_msg& sensor_diag) {
     const uint8_t reliability_threshold = 10;
 
     for (int i = 0; i < 6; ++i) {

@@ -3,12 +3,12 @@
 
 #include "ros/ros.h"
 
-#include "sensor_diagnostic_check/sensor_diagnostic_data_msg.h"
-#include "sensor_diagnostic_check/sensor_diagnostic_flag_msg.h"
+#include "common/sensor_diagnostic_data_msg.h"
+#include "common/sensor_diagnostic_flag_msg.h"
 
 static const uint16_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
 
-void can_msg_callback(const sensor_diagnostic_check::sensor_diagnostic_data_msg& message) {
+void can_msg_callback(const common::sensor_diagnostic_data_msg& message) {
 
     //temporary workaround for int and bool as the values in them do not get properly printed using ROS_INFO_STREAM  
     bool hardware_failure = message.hardware_fail;
@@ -39,9 +39,9 @@ int main(int argc, char** argv) {
     ros::Subscriber sensor_diag_sub = sensor_diag_handle.subscribe("sensor_diagnostic_data", TX_RX_MESSAGE_BUFFER_SIZE,
         can_msg_callback);
   
-    ros:: Publisher sensor_diag_pub = sensor_diag_handle.advertise<sensor_diagnostic_check::sensor_diagnostic_flag_msg>("sensor_diagnostic_flags", TX_RX_MESSAGE_BUFFER_SIZE);
+    ros:: Publisher sensor_diag_pub = sensor_diag_handle.advertise<common::sensor_diagnostic_flag_msg>("sensor_diagnostic_flags", TX_RX_MESSAGE_BUFFER_SIZE);
   
-    sensor_diagnostic_check::sensor_diagnostic_flag_msg radar_msg; 
+    common::sensor_diagnostic_flag_msg radar_msg; 
   
     //assign the array random values to test its interface. Will need to be worked on for the actual node.
     radar_msg.radar_reliability = {0,5,15,100,200,255};

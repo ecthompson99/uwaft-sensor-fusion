@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 from __future__ import division, print_function
 import rospy
-from sensor_fusion.msg import radar_object_data, mobileye_object_data
+from common/sensor_fusion.msg import radar_object_data, mobileye_object_data
 from numpy.random import randn
 
 rospy.init_node('grand_input_node')
