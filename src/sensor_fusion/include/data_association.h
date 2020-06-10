@@ -12,8 +12,10 @@
 #include "sensor_fusion/associated_me_msg.h"
 #include "sensor_fusion/associated_radar_msg.h"
 
-#define MOBILEYE_TOPIC "/mobileye_can_rx"
-#define RADAR_TOPIC "/radar_can_rx"
+#define MOBILEYE_TOPIC "mobileye_from_matlab"
+#define FRONT_RADAR_TOPIC "radar_from_matlab"
+#define LEFT_CORNER_RADAR_TOPIC "left_radar_from_matlab"
+#define RIGHT_CORNER_RADAR_TOPIC "right_radar_from_matlab"
 #define KALMAN_FILTER_RADAR_TOPIC "associated_radar"
 #define KALMAN_FILTER_ME_TOPIC "associated_me"
 #define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
@@ -44,7 +46,9 @@ class DataAssociation {
 		ros::Publisher radar_to_kf_pub;
 		ros::Publisher me_to_kf_pub;
 
-		ros::Subscriber sensor_radar_data_obj_sub;
+		ros::Subscriber sensor_front_radar_data_obj_sub;
+		ros::Subscriber sensor_left_corner_radar_sub;
+		ros::Subscriber sensor_right_corner_radar_sub;
 		void sensor_radar_data_obj_callback(const sensor_fusion::radar_object_data& sensor_data);
 
 		ros::Subscriber sensor_me_data_obj_sub;

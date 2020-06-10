@@ -2,7 +2,7 @@ function [A, t_sort] = load_rosbag()
 
 % ADDINS NEEDED: 'Robotics System Toolbox' 
 % Load rosbag
-bag = rosbag('C:\Users\sophy\Documents\GitHub\kaiROS\sensor fusion testing\SF_visualization\goteam-thresh-5.bag');
+bag = rosbag('C:\Users\sophy\Documents\GitHub\kaiROS\sensor fusion testing\SF_visualization\test3.bag');
 %bag_info = rosbag('info','C:\Users\sophy\Documents\GitHub\kaiROS\sensor fusion testing\SF_visualization\goteam-range-150-10.bag');
 
 % Select topics 
