@@ -1,4 +1,6 @@
-float64 radar3_dx_
-float64 radar3_dy_
-float64 radar3_vx_
-float64 radar3_vy_
+float64 RadarDx
+float64 RadarDy
+float64 RadarVx
+float64 RadarVy
+float64 RadarAx
+float64 RadarTimestamp

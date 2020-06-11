@@ -1,4 +1,4 @@
-float64 camera_dx_
-float64 camera_dy_
-float64 camera_vx_
-float64 camera_vy_
+float64 MeDx
+float64 MeDy
+float64 MeVx
+float64 MeTimestamp
