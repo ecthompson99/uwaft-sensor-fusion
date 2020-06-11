@@ -1,8 +1,0 @@
-prefix=/home/joannadiao/kaiROS/src/build/devel
-
-Name: can_tx_rx
-Description: Description of can_tx_rx
-Version: 0.0.0
-Cflags: -I/home/joannadiao/kaiROS/src/build/devel/include -I/home/joannadiao/kaiROS/src/can_tx_rx/include
-Libs: -L${prefix}/lib 
-Requires: roscpp std_msgs message_runtime

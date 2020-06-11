@@ -1,2 +1,0 @@
-set(ecmc_MESSAGE_FILES "/home/joannadiao/kaiROS/src/ecmc/msg/can_comms_data_msg.msg;/home/joannadiao/kaiROS/src/ecmc/msg/drive_control_input_msg.msg;/home/joannadiao/kaiROS/src/ecmc/msg/fused_object_data_msg.msg;/home/joannadiao/kaiROS/src/ecmc/msg/sensor_diagnostic_flag_msg.msg;/home/joannadiao/kaiROS/src/ecmc/msg/raw_sensor_object_data_msg.msg;/home/joannadiao/kaiROS/src/ecmc/msg/sensor_diagnostic_data_msg.msg;/home/joannadiao/kaiROS/src/ecmc/msg/sudo_driver_input_msg.msg")
-set(ecmc_SERVICE_FILES "")
