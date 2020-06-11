@@ -11,7 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rosbag
   std_msgs
-  message_generation
+  common
 )
 
 ## System dependencies are found with CMake's conventions
@@ -48,14 +48,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-   FILES
-   radar1_data.msg
-   radar2_data.msg
-   radar3_data.msg
-   camera_data.msg
+#add_message_files(
+#  FILES
 #   Message2.msg
-)
+#)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -72,10 +68,10 @@ add_message_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-   DEPENDENCIES
-   std_msgs  # Or other packages containing msgs
-)
+#generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+#)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -106,12 +102,12 @@ generate_messages(
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
-catkin_package(
+#catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES simulation_sensor_data
 #  CATKIN_DEPENDS roscpp
 #  DEPENDS system_lib
-)
+#)
 
 catkin_package(
   INCLUDE_DIRS include
@@ -142,7 +138,7 @@ include_directories(
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(sensor_data_matlab ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context

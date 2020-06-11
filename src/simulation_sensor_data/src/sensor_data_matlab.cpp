@@ -5,10 +5,8 @@
 #include "ros/ros.h"
 #include <rosbag/bag.h>
 #include <time.h>
-#include <simulation_sensor_data/radar1_data.h>
-#include <simulation_sensor_data/radar2_data.h>
-#include <simulation_sensor_data/radar3_data.h>
-#include <simulation_sensor_data/camera_data.h>
+#include <common/mobileye_object_data.h>
+#include <common/radar_object_data.h>
 using namespace std;
 
 
@@ -63,10 +61,10 @@ int main(int argc, char **argv)
     for (int x = 0; x < sensor_data.size(); x++)
     {
         ros::Time time(sensor_data[x][0]);
-        simulation_sensor_data::radar1_data radar1;
-        simulation_sensor_data::radar2_data radar2;
-        simulation_sensor_data::radar3_data radar3;
-        simulation_sensor_data::camera_data camera;
+        common::radar_object_data radar1;
+        common::radar_object_data radar2;
+        common::radar_object_data radar3;
+        common::mobileye_object_data camera;
 
         radar1.RadarDx = sensor_data[x][1];
         radar1.RadarDy = sensor_data[x][2];
@@ -74,6 +72,10 @@ int main(int argc, char **argv)
         radar1.RadarVy = sensor_data[x][4];
         radar1.RadarAx = sensor_data[x][5];
         radar1.RadarTimestamp = sensor_data[x][0];
+        radar1.RadarAxSigma = 0;
+        radar1.RadarDxSigma = 0;
+        radar1.RadarDySigma = 0;
+        radar1.RadarVxSigma = 0;
 
         radar2.RadarDx = sensor_data[x][6];
         radar2.RadarDy = sensor_data[x][7];
@@ -81,6 +83,10 @@ int main(int argc, char **argv)
         radar2.RadarVy = sensor_data[x][9];
         radar2.RadarAx = sensor_data[x][10];
         radar2.RadarTimestamp = sensor_data[x][0];
+        radar2.RadarAxSigma = 0;
+        radar2.RadarDxSigma = 0;
+        radar2.RadarDySigma = 0;
+        radar2.RadarVxSigma = 0;
 
         radar3.RadarDx = sensor_data[x][11];
         radar3.RadarDy = sensor_data[x][12];
@@ -88,6 +94,10 @@ int main(int argc, char **argv)
         radar3.RadarVy = sensor_data[x][14];
         radar3.RadarAx = sensor_data[x][15];
         radar3.RadarTimestamp = sensor_data[x][0];
+        radar3.RadarAxSigma = 0;
+        radar3.RadarDxSigma = 0;
+        radar3.RadarDySigma = 0;
+        radar3.RadarVxSigma = 0;
 
         camera.MeDx = sensor_data[x][16];
         camera.MeDy = sensor_data[x][17];
