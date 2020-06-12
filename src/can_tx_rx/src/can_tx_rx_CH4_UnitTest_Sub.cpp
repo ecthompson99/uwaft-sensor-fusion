@@ -1,7 +1,7 @@
 #include "ros/ros.h"
-#include "can_tx_rx/ext_log_data.h"
+#include "can_tx_rx/output_structs.h"
 
-void CallBack(const can_tx_rx::ext_log_data& msg){
+void CallBack(const can_tx_rx::mobileye_object_data_msg &msg){
     ROS_INFO_STREAM("Position X: " << msg.me_dx << "\n" << "Position Y: " << msg.me_dy << "\n" << "Velocity X: "<< msg.me_vx << "\n" << "Acceleration X: " << msg.me_ax << "\n");
 }
 

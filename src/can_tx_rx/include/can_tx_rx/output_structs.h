@@ -1,3 +1,15 @@
+#include <canlib.h>
+
+#include <stdio.h>
+#include <sstream>
+#include <vector>
+#include "ros/ros.h"
+#include "can_tx_rx/ext_log_data.c"
+#include "can_tx_rx/ext_log_data.h"
+#include "can_tx_rx/output_structs.h"
+
+#include "can_tx_rx/mobileye_object_data_msg.h"
+
 struct radar_diagnostic_response {
   double diagnostic_decoded;
   bool diagnostic_is_in_range;
