@@ -1,1 +1,8 @@
-*    @sumeetkler @jassib @julianlowery @yiwei72 @sophyli100 @jcwong26 @stephenwang5 @rileythomp @MaahirG
+# These owners will be the default owners for everything in
+# the repo. They will be requested automatically for review
+# when a pull request is open
+*       @yiwei72 @sophyli100
+
+# These people own any files in the src directory and
+# its subdirectories.
+*       @jcwong26 @stephenwang5 @MaahirG @rtanary	@JoannaDiao	
