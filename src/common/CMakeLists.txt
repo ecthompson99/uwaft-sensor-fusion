@@ -52,7 +52,6 @@ add_message_files(
   drive_ctrl_input_msg.msg
   filtered_object_msg.msg
   mobileye_object_data.msg
-  mobileye_object_data_msg.msg
   object_deletion_msg.msg
   radar_object_data.msg
   raw_sensor_object_data_msg.msg

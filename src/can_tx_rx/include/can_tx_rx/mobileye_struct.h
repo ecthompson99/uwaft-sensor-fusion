@@ -8,11 +8,11 @@
 #include "can_tx_rx/ext_log_data.c"
 #include "can_tx_rx/ext_log_data.h"
 
-#include "common/mobileye_object_data_msg.h"
+//#include "common/mobileye_object_data_msg.h"
 
 #define UNIT_TEST_SUBSCRIBER "can_tx_rx_CH4_UnitTest_Sub"
 #define TX_RX_MESSAGE_BUFFER_SIZE 1000
-#define canBITRATE_250K -3
+//#define canBITRATE_250K -3
 #define canDRIVER_NORMAL 4
 #define SIZE_OF_MSG 8 
 
