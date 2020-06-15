@@ -1,26 +1,20 @@
-#include <canlib.h>
-
-#include <stdio.h>
-#include <sstream>
-#include <vector>
-
-#include "ros/ros.h"
-
-#include "can_tx_rx/ext_log_data.c"
-#include "can_tx_rx/ext_log_data.h"
-
-#include "common/mobileye_object_data_msg.h"
+#include "can_tx_rx/mobileye_struct.h"
 //add the structs to the header file
 static const uint16_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
 
-void get_nums(int id, uint8_t &case_n) {
-  if(id >=1824 && id <=1830){
+Mobileye_RX::Mobileye_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
+  sub = node_handle->subscribe(UNIT_TEST_SUBSCRIBER,TX_RX_MESSAGE_BUFFER_SIZE, &Mobileye_RX::sub_callback, this);
+  pub = node_handle->advertise();
+}
+
+void Mobileye_RX::get_nums(mobileye_object mobileye_obj, int id, uint8_t &case_n) {
+  if(mobileye_obj.id >=1824 && mobileye_obj.id <=1830){
     case_n = 1; //Traffic Sensor 
-  } else if(id >= 1849 && id <= 1876 && id % 3 == 1){
+  } else if(mobileye_obj.id >= 1849 && mobileye_obj.id <= 1876 && mobileye_obj.id % 3 == 1){
     case_n = 2; //Obstacle A Frame
-  } else if(id >= 1850 && id <= 1877 && id % 3 == 2){
+  } else if(mobileye_obj.id >= 1850 && mobileye_obj.id <= 1877 && mobileye_obj.id % 3 == 2){
     case_n = 3; //Obstacle B Frame
-  } else if(id >= 1851 && id <= 1878 && id % 3 == 0){
+  } else if(mobileye_obj.id >= 1851 && mobileye_obj.id <= 1878 && mobileye_obj.id % 3 == 0){
     case_n = 4; //Obstacle C Frame
   } else{
     case_n = 0; 
@@ -31,8 +25,10 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "can_tx_rx_CH4");
   ros::NodeHandle can_tx_rx_CH4_handle;
 
-  ros::Publisher raw_obj_data_pub = can_tx_rx_CH4_handle.advertise<common::mobileye_object_data_msg>(
-      "mobileye_object_data", TX_RX_MESSAGE_BUFFER_SIZE);
+  Mobileye_RX mobeye_rx = Mobileye_RX(&can_tx_rx_CH4_handle); 
+
+  //ros::Publisher raw_obj_data_pub = can_tx_rx_CH4_handle.advertise<common::mobileye_object_data_msg>(
+  //    "mobileye_object_data", TX_RX_MESSAGE_BUFFER_SIZE);
 
   common::mobileye_object_data_msg obj_data;
 
