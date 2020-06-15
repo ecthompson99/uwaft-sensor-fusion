@@ -6,8 +6,8 @@
 
 #include "ros/ros.h"
 
-#include "can_tx_rx/xgu.c"
-#include "can_tx_rx/xgu.h"
+#include "can_tx_rx/radar.c"
+#include "can_tx_rx/radar.h"
 
 #include "can_tx_rx/raw_sensor_object_data_msg.h"
 #include "can_tx_rx/sensor_diagnostic_data_msg.h"
