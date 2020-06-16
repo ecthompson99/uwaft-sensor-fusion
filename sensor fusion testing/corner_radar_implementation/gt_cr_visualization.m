@@ -115,7 +115,7 @@ for i = 1:size(combined_sorted,1)
     
 end
 
-save('ground_truth','results');
+save('mat files\ground_truth.mat','results');
 
 %% Plot data and record video
 set(0,'DefaultFigureVisible','off');
