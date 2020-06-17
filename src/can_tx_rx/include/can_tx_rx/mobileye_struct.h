@@ -14,7 +14,7 @@
 
 class Mobileye_RX{
     public: 
-        Mobileye_RX Mobileye_RX(ros::NodeHandle* node_handle);
+        Mobileye_RX(ros::NodeHandle* node_handle);
         struct mobileye_object{
             
             double obstacle_pos_x_decode;
