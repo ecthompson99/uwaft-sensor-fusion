@@ -6,7 +6,7 @@
 
 Mobileye_RX::Mobileye_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
   //sub = node_handle->subscribe(UNIT_TEST_SUBSCRIBER,TX_RX_MESSAGE_BUFFER_SIZE, &Mobileye_RX::sub_callback, this);
-  //mob_pub = node_handle->advertise<common::mobileye_obj_data>("Topic_Name",TX_RX_MESSAGE_BUFFER_SIZE);
+  mob_pub = node_handle->advertise<common::mobileye_object_data>("Topic",TX_RX_MESSAGE_BUFFER_SIZE);
 }
 
 uint8_t Mobileye_RX::get_nums(mobileye_object mobileye_obj) {
@@ -38,7 +38,6 @@ int main(int argc, char **argv) {
   Mobileye_RX mobeye_rx = Mobileye_RX(&can_tx_rx_CH4_handle); 
   common::mobileye_object_data obj_data; //Processed values 
   Mobileye_RX::mobileye_object mobileye_obj[3]; //one for each message (Frame A, B,C)
-  //Mobileye_RX mobileye = Mobileye_Rx(); 
   canHandle hnd;
   canInitializeLibrary();
 
@@ -92,11 +91,11 @@ int main(int argc, char **argv) {
               mobileye_obj[index].obstacle_vel_x_is_in_range = ext_log_data_obstacle_data_a_obstacle_vel_x_is_in_range(mobeye_rx.frame_a_unpacked.obstacle_vel_x);
               obj_data.MeVx = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_vel_x_decode, mobileye_obj[index].obstacle_vel_x_is_in_range); 
 
-              mobileye_obj[index].obstacle_pos_y_decode = ext_log_data_obstacle_data_a_obstacle_pos_y_decode(&mobeye_rx.frame_a_unpacked.obstacle_pos_y);
+              mobileye_obj[index].obstacle_pos_y_decode = ext_log_data_obstacle_data_a_obstacle_pos_y_decode(mobeye_rx.frame_a_unpacked.obstacle_pos_y);
               mobileye_obj[index].obstacle_pos_y_is_in_range = ext_log_data_obstacle_data_a_obstacle_pos_y_is_in_range(mobeye_rx.frame_a_unpacked.obstacle_pos_y);
               obj_data.MeDx = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_pos_y_decode, mobileye_obj[index].obstacle_pos_y_is_in_range); 
 
-              mobileye_obj[index].obstacle_pos_x_decode = ext_log_data_obstacle_data_a_obstacle_pos_x_decode(&mobeye_rx.frame_a_unpacked.obstacle_pos_x);
+              mobileye_obj[index].obstacle_pos_x_decode = ext_log_data_obstacle_data_a_obstacle_pos_x_decode(mobeye_rx.frame_a_unpacked.obstacle_pos_x);
               mobileye_obj[index].obstacle_pos_x_is_in_range = ext_log_data_obstacle_data_a_obstacle_pos_x_is_in_range(mobeye_rx.frame_a_unpacked.obstacle_pos_x);
               obj_data.MeDy = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_pos_x_decode, mobileye_obj[index].obstacle_pos_x_is_in_range);
 
@@ -105,12 +104,12 @@ int main(int argc, char **argv) {
             }          
           case 3:
             {
-              int ext_log_data_obstacle_data_b_unpack_status = ext_log_data_obstacle_data_b_unpack(mobeye_rx.frame_b_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG); 
+              int ext_log_data_obstacle_data_b_unpack_status = ext_log_data_obstacle_data_b_unpack(&mobeye_rx.frame_b_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG); 
               break;
             }
           case 4:
             {
-              int ext_log_data_obstacle_data_c_unpack_status = ext_log_data_obstacle_data_c_unpack(mobeye_rx.frame_c_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG);
+              int ext_log_data_obstacle_data_c_unpack_status = ext_log_data_obstacle_data_c_unpack(&mobeye_rx.frame_c_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG);
               break;
             }
             //if in range, use value, if not, remove the data (0)

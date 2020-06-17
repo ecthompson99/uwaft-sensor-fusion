@@ -33,7 +33,7 @@ class Mobileye_RX{
             //double obstacle_lane_decode; 
             //bool obstacle_lane_is_in_range; 
 
-            uint8_t id; 
+            long id; 
             uint8_t can_data[8]; 
             unsigned long time_stamp; 
             unsigned int dlc; 
