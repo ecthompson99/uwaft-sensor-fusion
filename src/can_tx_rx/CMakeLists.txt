@@ -69,10 +69,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs  # Or other packages containing msgs
+   common
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -136,17 +137,21 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/can_tx_rx_node.cpp)
 
-add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp)
-add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
-target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES})
+#add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp)
+#add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES})
 
-add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp)
-add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
-target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES})
+#add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp)
+#add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES})
 
 add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp)
 add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH4 ${catkin_LIBRARIES})
+
+#add_executable(can_tx_rx_CH4_UnitTest src/can_tx_rx_CH4_UnitTest_Sub.cpp)
+#add_dependencies(can_tx_rx_CH4_UnitTest ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#target_link_libraries(can_tx_rx_CH4_UnitTest ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -164,8 +169,8 @@ target_link_libraries(can_tx_rx_CH4 ${catkin_LIBRARIES})
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(${PROJECT_NAME}_CH2 ${catkin_LIBRARIES} canlib)
-target_link_libraries(${PROJECT_NAME}_CH3 ${catkin_LIBRARIES} canlib)
+#target_link_libraries(${PROJECT_NAME}_CH2 ${catkin_LIBRARIES} canlib)
+#target_link_libraries(${PROJECT_NAME}_CH3 ${catkin_LIBRARIES} canlib)
 target_link_libraries(${PROJECT_NAME}_CH4 ${catkin_LIBRARIES} canlib)
 
 #############
