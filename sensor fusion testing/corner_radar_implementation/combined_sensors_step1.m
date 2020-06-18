@@ -1,10 +1,11 @@
-clear
+clear all
+close all
 clc
 
 % import CAN databases
-candb_cr = canDatabase("Bosch_XGU_CornerRadar.dbc");
-candb_fr = canDatabase("XGU.dbc");
-candb_me = canDatabase('ExtLogData2_2.32.dbc');
+candb_cr = canDatabase('dbc files\Bosch_XGU_CornerRadar.dbc');
+candb_fr = canDatabase('dbc files\XGU.dbc');
+candb_me = canDatabase('dbc files\ExtLogData2_2.32.dbc');
 
 %filter for left radar input and desired signals
 left_radar = blfread("bve_testing_2019-11-08_13-25-36.blf",1,...
@@ -78,13 +79,22 @@ for i = 1:size_front_final(1)
         end
     end
 end
-%% Save data    
-writetimetable(left_final,'sensor_data_valid.xlsx','Sheet',1);
-writetimetable(right_final,'sensor_data_valid.xlsx','Sheet',2);
-writetimetable(front_final,'sensor_data_valid.xlsx','Sheet',3);
-writetimetable(me_final,'sensor_data_valid.xlsx','Sheet',4);
+%% Save matfiles for publishing    
+% writetimetable(left_final,'sensor_data_valid.xlsx','Sheet',1);
+% writetimetable(right_final,'sensor_data_valid.xlsx','Sheet',2);
+% writetimetable(front_final,'sensor_data_valid.xlsx','Sheet',3);
+% writetimetable(me_final,'sensor_data_valid.xlsx','Sheet',4);
 
-save('left_radar.mat');
-save('right_radar.mat');
-save('front_radar.mat');
-save('me.mat');
+save('mat files\left_radar.mat');
+save('mat files\right_radar.mat');
+save('mat files\front_radar.mat');
+save('mat files\me.mat');
+
+%% Save matfile for visualization
+combined = [left_radar; right_radar; front_radar; me]; % combine tables
+in_sec = seconds(combined.Time); % convert time to double sec
+combined_add_time = addvars(combined,in_sec);
+combined_sorted = sortrows(combined_add_time(:,:),9); % sort by time
+
+save('mat files\sensors.mat', 'combined_sorted');
+%writetimetable(combined_sorted,'sensor_data_valid.xlsx','Sheet',5);
