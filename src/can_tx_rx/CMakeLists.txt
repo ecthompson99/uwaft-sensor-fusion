@@ -136,13 +136,13 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/can_tx_rx_node.cpp)
 
-add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp)
-add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
-target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES})
+#add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp)
+#add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+#target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES})
 
-add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp)
-add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
-target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES})
+#add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp)
+#add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+#target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES})
 
 add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp)
 add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
@@ -168,8 +168,8 @@ target_link_libraries(virtual_can_tx ${catkin_LIBRARIES})
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(${PROJECT_NAME}_CH2 ${catkin_LIBRARIES} canlib)
-target_link_libraries(${PROJECT_NAME}_CH3 ${catkin_LIBRARIES} canlib)
+#target_link_libraries(${PROJECT_NAME}_CH2 ${catkin_LIBRARIES} canlib)
+#target_link_libraries(${PROJECT_NAME}_CH3 ${catkin_LIBRARIES} canlib)
 target_link_libraries(${PROJECT_NAME}_CH4 ${catkin_LIBRARIES} canlib)
 target_link_libraries(virtual_can_tx ${catkin_LIBRARIES} canlib)
 
