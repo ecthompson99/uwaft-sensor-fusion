@@ -4,8 +4,8 @@ import rospy
 import numpy as np 
 from filterpy.kalman import KalmanFilter
 from filterpy.common import Q_discrete_white_noise
-from common/kalman_filter.msg import object_deletion_msg, filtered_object_msg
-from common/sensor_fusion.msg import associated_me_msg, associated_radar_msg
+from common.msg import object_deletion_msg, filtered_object_msg
+from common.msg import associated_me_msg, associated_radar_msg
 import time
 import matplotlib.pyplot as plt
 from threading import Lock

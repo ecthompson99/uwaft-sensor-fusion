@@ -18,8 +18,8 @@ DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(nod
     
     sensor_right_corner_radar_sub = node_handle->subscribe(RIGHT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
 
-    radar_to_kf_pub = node_handle->advertise<sensor_fusion::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
-    me_to_kf_pub = node_handle->advertise<sensor_fusion::associated_me_msg>(KALMAN_FILTER_ME_TOPIC, 10);
+    radar_to_kf_pub = node_handle->advertise<common::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
+    me_to_kf_pub = node_handle->advertise<common::associated_me_msg>(KALMAN_FILTER_ME_TOPIC, 10);
 
     next_id = 0;
 }
@@ -81,7 +81,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
         for (auto obj : stateVector) {
             if (radar_match(obj, recvd_data.RadarDx, adjusted_dy)) {
                 printf("%lu matched, sending now\n", obj.id);
-                sensor_fusion::associated_radar_msg matched;
+                common::associated_radar_msg matched;
                 matched.obj = recvd_data;
                 matched.obj.RadarDy = adjusted_dy;
                 matched.obj_id = obj.id;
@@ -103,7 +103,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
             potential_objs[i].count++;
 
             if (potential_objs[i].count > POTENTIAL_THRESHOLD) {
-                sensor_fusion::associated_radar_msg matched;
+                common::associated_radar_msg matched;
                 matched.obj = recvd_data;
                 matched.obj_id = next_id++;
                 radar_to_kf_pub.publish(matched);
@@ -144,7 +144,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
         // if the object we received is already in the envState, send it to kf
         for (auto obj : envState) {
             if (objects_match(obj, recvd_data.MeDx, adjusted_dy)) {
-                sensor_fusion::associated_me_msg matched;
+                common::associated_me_msg matched;
                 matched.obj = recvd_data;
                 matched.obj.MeDy = adjusted_dy;
                 matched.obj_id = obj.id;
@@ -167,7 +167,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
             potential_objs[i].count++;
 
             if (potential_objs[i].count > POTENTIAL_THRESHOLD) {
-                sensor_fusion::associated_me_msg matched;
+                common::associated_me_msg matched;
                 matched.obj = recvd_data;
                 matched.obj_id = next_id++;
                 me_to_kf_pub.publish(matched);
