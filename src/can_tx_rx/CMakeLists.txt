@@ -152,6 +152,10 @@ add_executable(virtual_can_tx src/virtual_can_tx.cpp)
 add_dependencies(virtual_can_tx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(virtual_can_tx ${catkin_LIBRARIES})
 
+add_executable(virtual_can_rx src/virtual_can_rx.cpp)
+add_dependencies(virtual_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+target_link_libraries(virtual_can_rx ${catkin_LIBRARIES})
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -172,6 +176,7 @@ target_link_libraries(virtual_can_tx ${catkin_LIBRARIES})
 #target_link_libraries(${PROJECT_NAME}_CH3 ${catkin_LIBRARIES} canlib)
 target_link_libraries(${PROJECT_NAME}_CH4 ${catkin_LIBRARIES} canlib)
 target_link_libraries(virtual_can_tx ${catkin_LIBRARIES} canlib)
+target_link_libraries(virtual_can_rx ${catkin_LIBRARIES} canlib)
 
 #############
 ## Install ##
