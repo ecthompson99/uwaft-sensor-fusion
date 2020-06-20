@@ -1,0 +1,2 @@
+uint64 obj_id
+mobileye_object_data obj
