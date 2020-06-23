@@ -26,7 +26,7 @@ void raw_data_recv_callback(const ecmc::raw_sensor_object_data_msg& msg) {
 int main(int argc, char** argv) {
   ros::init(argc, argv, "data_sub_node");
   ros::NodeHandle test_data_sub_nh;
-  ros::Subscriber test_data_sub = test_data_sub_nh.subscribe("raw_data_test", sub_buffer_size, raw_data_recv_callback);
+  //ros::Subscriber test_data_sub = test_data_sub_nh.subscribe("raw_data_test", sub_buffer_size, raw_data_recv_callback);
 
   canHandle hnd;
   canInitializeLibrary();
