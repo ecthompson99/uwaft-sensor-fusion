@@ -138,20 +138,25 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/can_tx_rx_node.cpp)
 
 #add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp)
-#add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 #target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES})
 
 #add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp)
-#add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+
 #target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES})
 
 add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp)
 add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH4 ${catkin_LIBRARIES})
 
-#add_executable(can_tx_rx_CH4_UnitTest src/can_tx_rx_CH4_UnitTest_Sub.cpp)
-#add_dependencies(can_tx_rx_CH4_UnitTest ${${PROJECT_NAME}_EXPORTED_TARGETS})
-#target_link_libraries(can_tx_rx_CH4_UnitTest ${catkin_LIBRARIES})
+add_executable(virtual_can_tx src/virtual_can_tx.cpp)
+add_dependencies(virtual_can_tx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+target_link_libraries(virtual_can_tx ${catkin_LIBRARIES})
+
+add_executable(virtual_can_rx src/virtual_can_rx.cpp)
+add_dependencies(virtual_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+target_link_libraries(virtual_can_rx ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -172,6 +177,8 @@ target_link_libraries(can_tx_rx_CH4 ${catkin_LIBRARIES})
 #target_link_libraries(${PROJECT_NAME}_CH2 ${catkin_LIBRARIES} canlib)
 #target_link_libraries(${PROJECT_NAME}_CH3 ${catkin_LIBRARIES} canlib)
 target_link_libraries(${PROJECT_NAME}_CH4 ${catkin_LIBRARIES} canlib)
+target_link_libraries(virtual_can_tx ${catkin_LIBRARIES} canlib)
+target_link_libraries(virtual_can_rx ${catkin_LIBRARIES} canlib)
 
 #############
 ## Install ##
