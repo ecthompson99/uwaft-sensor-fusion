@@ -34,7 +34,11 @@ while (ros::ok())
 {
     canStatus stat = canRead(hnd, &id, can_msg, &dlc, &flags, &timestamp);
     if (stat == canOK) {
-      ROS_INFO_STREAM(can_msg);
+      std::cout << can_msg << std::endl;
+      std::cout << "id is " << id << std::endl;
+    }
+    else {
+      std::cout << "no msg" << std::endl;
     }
     // if (stat != canERR_NOMSG) {
     //     std::cout << "Failed, status == " << stat << std::endl;
@@ -42,7 +46,7 @@ while (ros::ok())
     ros::spinOnce();
     ros::Duration(0.5).sleep();
 }
-std::cout << "id is " << id << std::endl;
+
 
 struct ext_log_data_obstacle_data_a_t a;
 struct ext_log_data_obstacle_data_a_t *frame_a = &a;
@@ -53,9 +57,9 @@ struct ext_log_data_obstacle_data_a_t *frame_a = &a;
 // std::cout << ext_log_data_obstacle_data_a_obstacle_pos_y_decode(a.obstacle_pos_y) << std::endl;
 // std::cout << ext_log_data_obstacle_data_a_obstacle_vel_x_decode(a.obstacle_vel_x) << std::endl;
 // std:: cout << frame_a->obstacle_pos_x << std::endl;
-std::cout << a.obstacle_pos_x << std::endl;
-std::cout << a.obstacle_pos_y << std::endl;
-std::cout << a.obstacle_vel_x << std::endl;
+// std::cout << a.obstacle_pos_x << std::endl;
+// std::cout << a.obstacle_pos_y << std::endl;
+// std::cout << a.obstacle_vel_x << std::endl;
 
 canBusOff(hnd);
 canClose(hnd);

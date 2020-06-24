@@ -47,11 +47,13 @@ int main(int argc, char **argv)
     // uint8_t can_msg[8] = {0};
     // size_t size = 8u;
     // int pack_return = ext_log_data_obstacle_data_a_pack(can_msg, frame_a, size);
-    char *can_msg = "HELLO!";
+
+    // char *can_msg = [HELLO!];
 
     while (ros::ok()) 
     {
-        canStatus stat = canWrite(hnd, 123, (void *)can_msg, 6, 0);
+        canStatus stat = canWrite(hnd, 123, "HELLO!", 6, 0);
+        std::cout << can_msg << std::endl;
         canStatus queue_status = canWriteSync(hnd, 1000);
         //if (queue_status == canOK) std::cout << "Queue emptied" << std::endl;
         if (stat < 0)
