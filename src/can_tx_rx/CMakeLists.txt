@@ -69,10 +69,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs  # Or other packages containing msgs
+   common
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -142,6 +143,7 @@ include_directories(
 
 #add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp)
 #add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+
 #target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES})
 
 add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp)

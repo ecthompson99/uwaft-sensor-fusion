@@ -3,7 +3,7 @@ from __future__ import division, print_function, generators
 import rospy
 from math import sin, cos, pi, atan
 from numpy.random import randn
-from sensor_fusion.msg import radar_object_data, mobileye_object_data
+from common.msg import radar_object_data, mobileye_object_data
 
 # This scenario will last 3 mins, global_clk is a float in sec
 radar_refresh = 1/16.7
