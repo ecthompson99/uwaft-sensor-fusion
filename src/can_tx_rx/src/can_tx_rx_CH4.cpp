@@ -44,13 +44,13 @@ int main(int argc, char **argv) {
   
   //uint8_t obj_num = -1; //0 to 63 is accepted
   for (int index = 0; index < 3;index++){
-    mobileye_obj[index].channel_number = 2; 
+    mobileye_obj[index].channel_number = 0; 
   }
   
 
   //hnd = canOpenChannel(mobileye_obj[0].channel_number, mobileye_obj[0].flag+mobileye_obj[1].flag+mobileye_obj[2].flag);
   //marked for failure 
-  hnd = canOpenChannel(mobileye_obj[0].channel_number, canOPEN_EXCLUSIVE); 
+  hnd = canOpenChannel(mobileye_obj[0].channel_number, canOPEN_ACCEPT_VIRTUAL); 
 
   if (hnd < 0) {
     char msg[64];
@@ -68,8 +68,10 @@ int main(int argc, char **argv) {
     canStatus stat; 
     for (int index= 0; index < 3; index++){
       stat = canRead(hnd, &mobileye_obj[index].id, &mobileye_obj[index].can_data, &mobileye_obj[index].dlc, &mobileye_obj[index].flag, &mobileye_obj[index].time_stamp);
-      if(canOK==stat){
+      
+      if(stat == canOK){
         frame_num = mobeye_rx.get_nums(mobileye_obj[index]); //1 = TRS 2 = Frame A, 3 = Frame B, 4 = Frame C, others = error 
+        std::cout << "canOK" << std::endl;
         if(frame_num-2 != index){
           frame_num = 0; //If not in the proper order, will automatically ignore the response (A-> B -> C)
         }
@@ -79,8 +81,8 @@ int main(int argc, char **argv) {
           }//Based on mobileye id, the new mobileye obj num should be the same if it is 1 less 
 
         }
-      }
-      switch(frame_num){
+        std::cout << "id is " << mobileye_obj[0].id << std::endl;
+        switch(frame_num){
           case 1://currently not in use 
             {
               int ext_log_data_tsr_t_unpack_status = ext_log_data_tsr_unpack(&mobeye_rx.frame_tsr_unpacked, mobileye_obj[index].can_data, SIZE_OF_MSG);
@@ -122,10 +124,21 @@ int main(int argc, char **argv) {
             //if in range, use value, if not, remove the data (0)
             //create the processed struct based on the above criteria 
             //send that to the subscriber
-       }   
-      //std::cout >> "Hey a loop finished";
+       } 
       }
-      ros::spinOnce();     
+      else if (stat == canERR_NOMSG) {
+        std::cout << "no msg" << std::endl;
+      }
+      else if (stat == canERR_NOTFOUND) {
+        std::cout << "device or channel not found" << std::endl;
+      }
+      else if (stat == canERR_NOCHANNELS) {
+        std::cout << "channel not available" << std::endl;
+      }
+
+      }
+      ros::spinOnce();
+      ros::Duration(0.5).sleep();
     }
   canBusOff(hnd);
   canClose(hnd);
