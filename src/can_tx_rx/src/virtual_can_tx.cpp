@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 
     canHandle hnd;
     canInitializeLibrary();
-    hnd = canOpenChannel(4, canOPEN_EXCLUSIVE);
+    hnd = canOpenChannel(3, canOPEN_EXCLUSIVE);
     if (hnd < 0) {
         char msg[64];
         canGetErrorText((canStatus)hnd, msg, sizeof(msg));

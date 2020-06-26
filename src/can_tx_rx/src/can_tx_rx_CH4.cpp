@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
   
   //uint8_t obj_num = -1; //0 to 63 is accepted
   for (int index = 0; index < 3;index++){
-    mobileye_obj[index].channel_number = 3; 
+    mobileye_obj[index].channel_number = 2; 
   }
   
 
@@ -103,7 +103,9 @@ int main(int argc, char **argv) {
 
               obj_data.MeTimestamp = mobileye_obj[index].time_stamp;
 
-              std::cout << can_msg << std::endl;
+              std::cout << obj_data.MeVx << std::endl;
+              std::cout << obj_data.MeDx << std::endl;
+              std::cout << obj_data.MeDy << std::endl;
               
               break; 
             }          
