@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 
     canHandle hnd;
     canInitializeLibrary();
-    hnd = canOpenChannel(0, canOPEN_EXCLUSIVE);
+    hnd = canOpenChannel(4, canOPEN_EXCLUSIVE);
     if (hnd < 0) {
         char msg[64];
         canGetErrorText((canStatus)hnd, msg, sizeof(msg));
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
             std::cout << "Failed, status = " << stat << std::endl;
         }
         ros::spinOnce();
-        ros::Duration(0.3).sleep();
+        ros::Duration(0.5).sleep();
     }
     
     canBusOff(hnd);

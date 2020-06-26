@@ -48,7 +48,9 @@ int main(int argc, char **argv) {
   }
   
 
-  hnd = canOpenChannel(mobileye_obj[0].channel_number, mobileye_obj[0].flag+mobileye_obj[1].flag+mobileye_obj[2].flag);
+  //hnd = canOpenChannel(mobileye_obj[0].channel_number, mobileye_obj[0].flag+mobileye_obj[1].flag+mobileye_obj[2].flag);
+  //marked for failure 
+  hnd = canOpenChannel(mobileye_obj[0].channel_number, canOPEN_EXCLUSIVE); 
 
   if (hnd < 0) {
     char msg[64];
@@ -100,6 +102,9 @@ int main(int argc, char **argv) {
               obj_data.MeDy = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_pos_x_decode, mobileye_obj[index].obstacle_pos_x_is_in_range);
 
               obj_data.MeTimestamp = mobileye_obj[index].time_stamp;
+
+              std::cout << can_msg << std::endl;
+              
               break; 
             }          
           case 3:
