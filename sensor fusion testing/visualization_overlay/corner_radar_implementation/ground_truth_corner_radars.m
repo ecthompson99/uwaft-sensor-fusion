@@ -24,7 +24,7 @@ for i = 1:size(combined_sorted,1)
     det_time = combined_sorted.in_sec(i);
     if det_time > clock+timestep
         % Cluster detections and iterate to next timestep        
-        objects = cluster_detections(detections,vehicle_size);
+        objects = clusterDetectionsY1(detections,vehicle_size);
         
         if size(detections,2) > 1
             % Save data to struct 
@@ -115,44 +115,4 @@ for i = 1:size(combined_sorted,1)
     
 end
 
-save('mat files\ground_truth.mat','results');
-
-%% Plot data and record video
-set(0,'DefaultFigureVisible','off');
-
-vid_path = strcat(pwd, '\recording\sensors.avi');
-newVid = VideoWriter(vid_path);
-newVid.FrameRate = 1;
-newVid.Quality = 100;
-open(newVid);
-step_size = 10;
-start = 10;
-end_loop = size(results,2);
-
-pic_path = strcat(pwd, '\plot\plot');
-
-
-for i = start:step_size:end_loop % sample plot for now
-
-    bep = birdsEyePlot('XLim',[0,100],'YLim',[-5,10]);
-    blazerPlotter = detectionPlotter(bep,'DisplayName','Ground Truth Objects', 'Marker', 'o');
-    
-    positions = zeros(results(i).Num_Objects,2);
-    for j = 1:results(i).Num_Objects
-        positions(j,1:2) = results(i).Objects(1,j).Measurement(:,1);
-    end
-    
-    plotDetection(blazerPlotter, positions);
-    title(gca, char(num2str(results(i).Time + " seconds"))); % start from 0
-    grid on;
-    
-    % save png images
-    file = strcat(pic_path,num2str(i),'.png');
-    saveas(gcf,file);
-     
-    % write video and delete saved png images
-    writeVideo(newVid,imread(file));%within the for loop saving one frame at a time
-    delete(file);
-end
-
-close(newVid);
+save('mat files\ground_truth_cr.mat','results');
