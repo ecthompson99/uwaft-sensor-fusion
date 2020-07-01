@@ -1,17 +1,13 @@
 %% Plot objects in video
-load('ground_truth_offset.mat');
+load('FTR_ground_truth.mat');
 set(0,'DefaultFigureVisible','off');
 
-vid_path = strcat(pwd, '\KF_clustering_year1\blazer_sensors.avi');
-newVid = VideoWriter(vid_path);
+newVid = VideoWriter('tracked_objects.avi');
 newVid.FrameRate = 1;
 newVid.Quality = 100;
 open(newVid);
 
-pic_path = strcat(pwd, '\KF_clustering_year1\plot');
-
-
-for i = 10:10:size(results,2) % sample plot for now
+for i = 10:10:100%size(results,2) % sample plot for now (start:iteration:end)
 
     bep = birdsEyePlot('XLim',[0,100],'YLim',[-5,10]);
     blazerPlotter = detectionPlotter(bep,'DisplayName','Blazer Objects', 'Marker', 'o');
@@ -25,13 +21,8 @@ for i = 10:10:size(results,2) % sample plot for now
     title(gca, char(num2str(results(i).Time + " seconds"))); % start from 0
     grid on;
     
-    % save png images
-    file = strcat(pic_path,num2str(i),'.png');
-    saveas(gcf,file);
-     
-    % write video and delete saved png images
-    writeVideo(newVid,imread(file));%within the for loop saving one frame at a time
-    delete(file);
+    frame = getframe(gcf);
+    writeVideo(newVid,frame);
 end
 
 close(newVid);
