@@ -1,5 +1,5 @@
 %% Plot objects in video
-load('FTR_ground_truth.mat');
+load('ground_truth/FTR_ground_truth.mat');
 set(0,'DefaultFigureVisible','off');
 
 newVid = VideoWriter('tracked_objects.avi');
