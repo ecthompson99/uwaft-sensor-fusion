@@ -64,69 +64,64 @@ int main(int argc, char **argv) {
   while (ros::ok()) {
     //Check the validity of all three frames simultaneously
     canStatus stat; 
-    for (int index= 0; index < 3; index++){
-      stat = canRead(hnd, &mobileye_obj[index].id, &mobileye_obj[index].can_data, &mobileye_obj[index].dlc, &mobileye_obj[index].flag, &mobileye_obj[index].time_stamp);
-      std::cout << "Stat = "<< stat << std::endl;
-      if(canOK==stat){
-        frame_num = mobeye_rx.get_nums(mobileye_obj[index]); //1 = TRS 2 = Frame A, 3 = Frame B, 4 = Frame C, others = error 
-        if(frame_num-2 != index){
-          frame_num = 0; //If not in the proper order, will automatically ignore the response (A-> B -> C)
-        }
-        else if(index != 0){
-          if(mobileye_obj[index].id-mobileye_obj[index-1].id==1){
-            frame_num = 0; 
-          }//Based on mobileye id, the new mobileye obj num should be the same if it is 1 less 
-
-        }
+    int index = 0; 
+    stat = canRead(hnd, &mobileye_obj[index].id, &mobileye_obj[index].can_data, &mobileye_obj[index].dlc, &mobileye_obj[index].flag, &mobileye_obj[index].time_stamp);
+    if(canOK==stat){
+      frame_num = mobeye_rx.get_nums(mobileye_obj[index]); //1 = TRS 2 = Frame A, 3 = Frame B, 4 = Frame C, others = error 
+      //std::cout << "Frame Num = " << frame_num << std::endl; 
+      if(frame_num-2 != index){
+        frame_num = 0; //If not in the proper order, will automatically ignore the response (A-> B -> C)
       }
-      switch(frame_num){
-          case 1://currently not in use 
-            {
-              int ext_log_data_tsr_t_unpack_status = ext_log_data_tsr_unpack(&mobeye_rx.frame_tsr_unpacked, mobileye_obj[index].can_data, SIZE_OF_MSG);
-              break;
-            }
-          case 2:
-            {
-              int ext_log_data_obstacle_data_a_unpack_status = ext_log_data_obstacle_data_a_unpack(&mobeye_rx.frame_a_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG); 
-              mobileye_obj[index].obstacle_vel_x_decode = ext_log_data_obstacle_data_a_obstacle_vel_x_decode(mobeye_rx.frame_a_unpacked.obstacle_vel_x);
-              mobileye_obj[index].obstacle_vel_x_is_in_range = ext_log_data_obstacle_data_a_obstacle_vel_x_is_in_range(mobeye_rx.frame_a_unpacked.obstacle_vel_x);
-              obj_data.MeVx = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_vel_x_decode, mobileye_obj[index].obstacle_vel_x_is_in_range); 
+      else if(index != 0){
+        if(mobileye_obj[index].id-mobileye_obj[index-1].id==1){
+          frame_num = 0; 
+        }//Based on mobileye id, the new mobileye obj num should be the same if it is 1 less 
 
-              mobileye_obj[index].obstacle_pos_y_decode = ext_log_data_obstacle_data_a_obstacle_pos_y_decode(mobeye_rx.frame_a_unpacked.obstacle_pos_y);
-              mobileye_obj[index].obstacle_pos_y_is_in_range = ext_log_data_obstacle_data_a_obstacle_pos_y_is_in_range(mobeye_rx.frame_a_unpacked.obstacle_pos_y);
-              obj_data.MeDx = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_pos_y_decode, mobileye_obj[index].obstacle_pos_y_is_in_range); 
+      }
+    }
+    switch(frame_num){
+        case 1://currently not in use 
+          {
+            int ext_log_data_tsr_t_unpack_status = ext_log_data_tsr_unpack(&mobeye_rx.frame_tsr_unpacked, mobileye_obj[index].can_data, SIZE_OF_MSG);
+            break;
+          }
+        case 2:
+          {
+            int ext_log_data_obstacle_data_a_unpack_status = ext_log_data_obstacle_data_a_unpack(&mobeye_rx.frame_a_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG); 
+            mobileye_obj[index].obstacle_vel_x_decode = ext_log_data_obstacle_data_a_obstacle_vel_x_decode(mobeye_rx.frame_a_unpacked.obstacle_vel_x);
+            mobileye_obj[index].obstacle_vel_x_is_in_range = ext_log_data_obstacle_data_a_obstacle_vel_x_is_in_range(mobeye_rx.frame_a_unpacked.obstacle_vel_x);
+            obj_data.MeVx = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_vel_x_decode, mobileye_obj[index].obstacle_vel_x_is_in_range); 
 
-              mobileye_obj[index].obstacle_pos_x_decode = ext_log_data_obstacle_data_a_obstacle_pos_x_decode(mobeye_rx.frame_a_unpacked.obstacle_pos_x);
-              mobileye_obj[index].obstacle_pos_x_is_in_range = ext_log_data_obstacle_data_a_obstacle_pos_x_is_in_range(mobeye_rx.frame_a_unpacked.obstacle_pos_x);
-              obj_data.MeDy = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_pos_x_decode, mobileye_obj[index].obstacle_pos_x_is_in_range);
+            mobileye_obj[index].obstacle_pos_y_decode = ext_log_data_obstacle_data_a_obstacle_pos_y_decode(mobeye_rx.frame_a_unpacked.obstacle_pos_y);
+            mobileye_obj[index].obstacle_pos_y_is_in_range = ext_log_data_obstacle_data_a_obstacle_pos_y_is_in_range(mobeye_rx.frame_a_unpacked.obstacle_pos_y);
+            obj_data.MeDx = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_pos_y_decode, mobileye_obj[index].obstacle_pos_y_is_in_range); 
 
-              obj_data.MeTimestamp = mobileye_obj[index].time_stamp;
+            mobileye_obj[index].obstacle_pos_x_decode = ext_log_data_obstacle_data_a_obstacle_pos_x_decode(mobeye_rx.frame_a_unpacked.obstacle_pos_x);
+            mobileye_obj[index].obstacle_pos_x_is_in_range = ext_log_data_obstacle_data_a_obstacle_pos_x_is_in_range(mobeye_rx.frame_a_unpacked.obstacle_pos_x);
+            obj_data.MeDy = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_pos_x_decode, mobileye_obj[index].obstacle_pos_x_is_in_range);
 
-              std::cout << obj_data.MeVx << std::endl;
-              std::cout << obj_data.MeDx << std::endl;
-              std::cout << obj_data.MeDy << std::endl;
-              std::cout <<obj_data.MeTimestamp << std::endl; 
-              
-              break; 
-            }          
-          case 3:
-            {
-              int ext_log_data_obstacle_data_b_unpack_status = ext_log_data_obstacle_data_b_unpack(&mobeye_rx.frame_b_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG); 
-              break;
-            }
-          case 4:
-            {
-              int ext_log_data_obstacle_data_c_unpack_status = ext_log_data_obstacle_data_c_unpack(&mobeye_rx.frame_c_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG);
-              break;
-            }
-            //if in range, use value, if not, remove the data (0)
-            //create the processed struct based on the above criteria 
-            //send that to the subscriber
-       }   
-      //std::cout >> "Hey a loop finished";
+            obj_data.MeTimestamp = mobileye_obj[index].time_stamp;
+
+            std::cout << obj_data.MeVx << std::endl;
+            std::cout << obj_data.MeDx << std::endl;
+            std::cout << obj_data.MeDy << std::endl;
+            std::cout <<obj_data.MeTimestamp << std::endl; 
+            
+            break; 
+          }          
+        case 3:
+          {
+            int ext_log_data_obstacle_data_b_unpack_status = ext_log_data_obstacle_data_b_unpack(&mobeye_rx.frame_b_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG); 
+            break;
+          }
+        case 4:
+          {
+            int ext_log_data_obstacle_data_c_unpack_status = ext_log_data_obstacle_data_c_unpack(&mobeye_rx.frame_c_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG);
+            break;
+          }
       }
       ros::spinOnce();
-      ros::Duration(0.5).sleep();
+      ros::Duration(0.5).sleep(); 
     }
   canBusOff(hnd);
   canClose(hnd);

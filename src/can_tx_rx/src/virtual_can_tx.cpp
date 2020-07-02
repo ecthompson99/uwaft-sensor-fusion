@@ -54,30 +54,33 @@ int main(int argc, char **argv)
     size_t size = 8u;
     int pack_return = ext_log_data_obstacle_data_a_pack(&*can_msg, frame_a, size);
     
-    // char *can_msg = "HELLO!";
-
+    int index = 1849;
+    //goes through all valid id messages 
     while (ros::ok()) 
     {
-        for (int index = 0; index<3; index++){
-            //Making the CAN Message IDs Frame A, Frame B, Frame C
-            canStatus stat; 
-            if(index ==0){
-                stat = canWrite(hnd, 1849+index, can_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
-                std::cout << can_msg << std::endl; 
-            }
-            else{
-                stat = canWrite(hnd, 1849+index, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
-            }
-            canStatus queue_status = canWriteSync(hnd, 1000);
-            if (stat < 0)
-            {
-                std::cout << "Failed, status = " << stat << std::endl;
-                std::cout << "Failed on message = " << 1849+index << std::endl; 
-            }
+         if(index > 1872){
+             index = 1849; 
+         }
+        
+        canStatus stat; 
+        if(index%3==1){ //A Frame
+            stat = canWrite(hnd, index, can_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
+        }
+        else if (index%3==2){ //B Frame
+            stat = canWrite(hnd, index, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
+        }
+        else if (index%3==0){//C Frame
+            stat = canWrite(hnd, index, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
+        }
+        canStatus queue_status = canWriteSync(hnd, 1000);
+        if (stat < 0)
+        {
+            std::cout << "Failed, status = " << stat << std::endl;
         }
         //if (queue_status == canOK) std::cout << "Queue emptied" << std::endl;
         ros::spinOnce();
         ros::Duration(0.5).sleep();
+        index++; 
     }
     
     canBusOff(hnd);
