@@ -37,39 +37,50 @@ int main(int argc, char **argv)
 
     canHandle hnd;
     canInitializeLibrary();
-    hnd = canOpenChannel(3, canOPEN_EXCLUSIVE);
+    hnd = canOpenChannel(3, canOPEN_ACCEPT_VIRTUAL);
     if (hnd < 0) {
         char msg[64];
         canGetErrorText((canStatus)hnd, msg, sizeof(msg));
         fprintf(stderr, "canOpenChannel failed (%s)\n", msg);
         exit(1);
     }
+
     canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
     canSetBusOutputControl(hnd, canDRIVER_NORMAL);
     canBusOn(hnd);
 
     uint8_t can_msg[8] = {0};
+    uint8_t blank_msg[8] = {0}; 
     size_t size = 8u;
-    int pack_return = ext_log_data_obstacle_data_a_pack(can_msg, frame_a, size);
+    int pack_return = ext_log_data_obstacle_data_a_pack(&*can_msg, frame_a, size);
     
     // char *can_msg = "HELLO!";
 
     while (ros::ok()) 
     {
-        canStatus stat = canWrite(hnd, 123, (void *)can_msg, 8, 0);
-        // std::cout << can_msg << std::endl;
-        canStatus queue_status = canWriteSync(hnd, 1000);
-        //if (queue_status == canOK) std::cout << "Queue emptied" << std::endl;
-        if (stat < 0)
-        {
-            std::cout << "Failed, status = " << stat << std::endl;
+        for (int index = 0; index<3; index++){
+            //Making the CAN Message IDs Frame A, Frame B, Frame C
+            canStatus stat; 
+            if(index ==0){
+                stat = canWrite(hnd, 1849+index, can_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
+                std::cout << can_msg << std::endl; 
+            }
+            else{
+                stat = canWrite(hnd, 1849+index, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
+            }
+            canStatus queue_status = canWriteSync(hnd, 1000);
+            if (stat < 0)
+            {
+                std::cout << "Failed, status = " << stat << std::endl;
+                std::cout << "Failed on message = " << 1849+index << std::endl; 
+            }
         }
+        //if (queue_status == canOK) std::cout << "Queue emptied" << std::endl;
         ros::spinOnce();
         ros::Duration(0.5).sleep();
     }
     
     canBusOff(hnd);
     canClose(hnd);
-
 }
 
