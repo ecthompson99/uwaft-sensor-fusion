@@ -96,10 +96,10 @@ int main(int argc, char **argv) {
 
             obj_data.MeTimestamp = mobileye_obj[index].time_stamp;
 
-            std::cout << obj_data.MeVx << std::endl;
-            std::cout << obj_data.MeDx << std::endl;
-            std::cout << obj_data.MeDy << std::endl;
-            std::cout <<obj_data.MeTimestamp << std::endl; 
+            std::cout << "Velocity: " << obj_data.MeVx << std::endl;
+            std::cout << "Longitudinal Distance: " << obj_data.MeDx << std::endl;
+            std::cout << "Lateral Distance: " << obj_data.MeDy << std::endl;
+            std::cout << "Message sent at " << obj_data.MeTimestamp << std::endl; 
             
             break; 
           }          

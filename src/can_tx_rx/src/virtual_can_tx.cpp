@@ -20,9 +20,9 @@ int main(int argc, char **argv)
     a.obstacle_vel_x = 100;
 
     std::cout << "Original data is: " << std::endl;
-    std::cout << a.obstacle_pos_x << std::endl;
-    std::cout << a.obstacle_pos_y << std::endl;
-    std::cout << a.obstacle_vel_x << std::endl;
+    std::cout << "Longitudinal Position: " << a.obstacle_pos_x << std::endl;
+    std::cout << "Lateral Position: " << a.obstacle_pos_y << std::endl;
+    std::cout << "Velocity: " << a.obstacle_vel_x << std::endl;
 
     a.obstacle_pos_x = ext_log_data_obstacle_data_a_obstacle_pos_x_encode(a.obstacle_pos_x);
     a.obstacle_pos_y = ext_log_data_obstacle_data_a_obstacle_pos_y_encode(a.obstacle_pos_y);
@@ -54,23 +54,24 @@ int main(int argc, char **argv)
     size_t size = 8u;
     int pack_return = ext_log_data_obstacle_data_a_pack(&*can_msg, frame_a, size);
     
-    int index = 1849;
-    //goes through all valid id messages 
+    int id = 1830;
+    //goes through all valid id messages, sending the packed can message when appropriate  
+    // starts at lower id messages above 1849, then goes back to sending appropriate messages
     while (ros::ok()) 
     {
-         if(index > 1872){
-             index = 1849; 
+         if(id > 1900){
+             id = 1849; 
          }
         
         canStatus stat; 
-        if(index%3==1){ //A Frame
-            stat = canWrite(hnd, index, can_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
+        if(id%3==1){ //A Frame
+            stat = canWrite(hnd, id, can_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
         }
-        else if (index%3==2){ //B Frame
-            stat = canWrite(hnd, index, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
+        else if (id%3==2){ //B Frame
+            stat = canWrite(hnd, id, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
         }
-        else if (index%3==0){//C Frame
-            stat = canWrite(hnd, index, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
+        else if (id%3==0){//C Frame
+            stat = canWrite(hnd, id, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
         }
         canStatus queue_status = canWriteSync(hnd, 1000);
         if (stat < 0)
@@ -80,7 +81,8 @@ int main(int argc, char **argv)
         //if (queue_status == canOK) std::cout << "Queue emptied" << std::endl;
         ros::spinOnce();
         ros::Duration(0.5).sleep();
-        index++; 
+        std::cout << "id = " << id << std::endl; 
+        id++; 
     }
     
     canBusOff(hnd);
