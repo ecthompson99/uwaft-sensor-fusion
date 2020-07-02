@@ -43,12 +43,7 @@ int main(int argc, char **argv) {
     mobileye_obj[index].channel_number = 3; 
   }
   
-
-  //hnd = canOpenChannel(mobileye_obj[0].channel_number, mobileye_obj[0].flag+mobileye_obj[1].flag+mobileye_obj[2].flag);
-  //marked for failure 
-  //canOPEN_ACCEPT_VIRTUAL
-  //canOPEN_EXCLUSIVE
-  hnd = canOpenChannel(mobileye_obj[0].channel_number,canOPEN_ACCEPT_VIRTUAL); 
+  hnd = canOpenChannel(mobileye_obj[0].channel_number, canOPEN_ACCEPT_VIRTUAL); 
 
   if (hnd < 0) {
     char msg[64];
@@ -62,7 +57,6 @@ int main(int argc, char **argv) {
   canBusOn(hnd);
   int frame_num = 0; 
   while (ros::ok()) {
-    //Check the validity of all three frames simultaneously
     canStatus stat; 
     int index = 0; 
     stat = canRead(hnd, &mobileye_obj[index].id, &mobileye_obj[index].can_data, &mobileye_obj[index].dlc, &mobileye_obj[index].flag, &mobileye_obj[index].time_stamp);
