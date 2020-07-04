@@ -31,7 +31,7 @@ for count = 1:data_size
     object = objectDetection(tracked_obj_struct(count).GlobalClk,...
         [tracked_obj_struct(count).Dx; tracked_obj_struct(count).Dy]);
     
-    if isempty(sf_results(count).Objects())
+    if isempty(sf_results(count).Objects(),1) == 0
             sf_results(count).Objects = object;  
     else
             sf_results(count).Objects(1,size(sf_results(count).Objects,1)+1) = object; 
