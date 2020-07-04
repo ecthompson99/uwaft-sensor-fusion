@@ -10,36 +10,29 @@ tracked_obj_bag = select(bag, 'Topic', 'binary_class');
 % Save rosbag as struct
 tracked_obj_struct = cell2mat(readMessages(tracked_obj_bag, 'DataFormat', 'struct'));
 
-%% Refactor data
-sf_results = struct('Time',[],'Objects', [], 'Num_Objects', []);
+%% Save data
 data_size = size(tracked_obj_struct,1);
-time = zeros(data_size,1);
+sf_results = struct('Time',[],'Objects', [], 'Num_Objects', []);
 
-for size = 1:data_size
-    time(size) = tracked_obj_struct(size).GlobalClk;
-end
-
-[unique_bins,~,obj_c] = unique(time(:,1),'rows');
-num_obj = accumarray(obj_c,1);
-
-%% Populate mat file
-%Populate time, num objects, and object array
-for count = 1:data_size
-    sf_results(count).Time = time(count);
-    sf_results(count).Num_Objects = num_obj(count);
+for i = 1:data_size
+    % Populate time
+    sf_results(i).Time = tracked_obj_struct(i).GlobalClk;
     
-    object = objectDetection(tracked_obj_struct(count).GlobalClk,...
-        [tracked_obj_struct(count).Dx; tracked_obj_struct(count).Dy]);
+    % Populate num_obj w/ size of Dx
+    sf_results(i).Num_Objects = size(tracked_obj_struct(i).Dx,1);
     
-    if isempty(sf_results(count).Objects())
-            sf_results(count).Objects = object;  
-    else
-            sf_results(count).Objects(1,size(sf_results(count).Objects,1)+1) = object; 
+    % Populate objects
+    for j = 1:size(tracked_obj_struct(i).Dx,1)
+        object = objectDetection(tracked_obj_struct(i).GlobalClk,...
+        [tracked_obj_struct(i).Dx(j); tracked_obj_struct(i).Dy(j)]);
+    
+       if size(sf_results(i).Objects,2) == 0
+           sf_results(i).Objects = object;  
+       else
+            sf_results(i).Objects(1,size(sf_results(i).Objects,2)+1) = object; 
+       end
     end
-    %sf_results(count).Objects(1,1) = object;  
-    
 end
 
 save('sf_output','sf_results');
-
 
