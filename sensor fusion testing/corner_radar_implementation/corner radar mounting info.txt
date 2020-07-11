@@ -1,2 +1,0 @@
-radar 1 = left (positive y, postive dx)-> mount ID 490
-radar 2 = right (negative y, postive dx)-> mount ID 492
