@@ -1,18 +1,15 @@
 Header header
 
-bool acc_switch_status
-bool aeb_switch_status
-bool lc_switch_status
-
-float64 target_accel
-bool acc_valid
-bool hold_target_speed
-float64 speed_setpoint
-
-bool aeb_valid
-bool aeb_override
-
-bool lc_valid
-float64 wheel_angle
-
+float64 long_accel
+float64 lcc_steer
+bool acc_active
+bool aeb_active
+bool lcc_active
+bool acc_fault
+bool aeb_fault
+bool lcc_fault
+bool front_radar_fault
+bool left_radar_fault
+bool right_radar_fault
+bool mobileye_fault
 uint64 alive_rolling_counter
