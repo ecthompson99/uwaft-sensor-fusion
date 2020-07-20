@@ -25,10 +25,7 @@ class MasterTask {
   void acc_output_msg_callback(const common::acc_output_msg& acc_msg);
   void aeb_output_msg_callback(const common::aeb_output_msg& aeb_msg);
   void lcc_output_msg_callback(const common::lcc_output_msg& lcc_msg);
-  bool sensor_diagnostic_CH2(common::sensor_diagnostic_flag_CH2::Request &req);
-  bool sensor_diagnostic_CH3(common::sensor_diagnostic_flag_CH2::Request &req);
-  bool sensor_diagnostic_CH4(common::sensor_diagnostic_flag_CH2::Request &req);
-
+  bool sensor_diagnostic_callback(common::sensor_diagnostic_flag_CH2::Request &req_CH2, common::sensor_diagnostic_flag_CH3::Request &req_CH3, common::sensor_diagnostic_flag_CH4::Request &req_CH4);
   common::can_comms_data_msg get_can_comms_msg();
 
  protected:
@@ -39,9 +36,9 @@ class MasterTask {
   ros::Subscriber aeb_sub;
   ros::Subscriber lcc_sub;
   ros::Publisher master_task_pub;
-  ros::ServiceClient sensor_diagnostic_CH2_client;
-  ros::ServiceClient sensor_diagnostic_CH3_client;
-  ros::ServiceClient sensor_diagnostic_CH4_client;
+  ros::ServiceServer sensor_diagnostic_CH2_server;
+  ros::ServiceServer sensor_diagnostic_CH3_server;
+  ros::ServiceServer sensor_diagnostic_CH4_server;
   common::can_comms_data_msg can_comms_msg;
 };
 
