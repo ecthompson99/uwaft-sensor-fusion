@@ -161,7 +161,7 @@ int main(int argc, char **argv)
         else if(id==1897){ //LKA Right B
             stat = canWrite(hnd,id, can_msg_right_b, 8, canOPEN_ACCEPT_VIRTUAL);
         }
-        else if (id%3==2||id%3==0){ //B or C Frame
+        else{ //B or C Frame
             stat = canWrite(hnd, id, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
         }
         canStatus queue_status = canWriteSync(hnd, 1000);
