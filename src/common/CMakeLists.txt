@@ -55,6 +55,7 @@ add_message_files(
   object_deletion_msg.msg
   radar_object_data.msg
   raw_sensor_object_data_msg.msg
+  raw_lane_data.msg
   sensor_diagnostic_data_msg.msg
   sensor_diagnostic_flag_msg.msg
   sudo_driver_input_msg.msg
