@@ -3,8 +3,19 @@
 MasterTask::MasterTask(ros::NodeHandle* nodeHandle) : nh(nodeHandle) {
   drive_ctrl_sub =
       nh->subscribe("drive_control_input", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::drive_ctrl_msg_callback, this);
-
-  //add controller pubs
+  acc_sub = 
+      nh->subscribe("acc_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::acc_output_msg_callback, this);
+  aeb_sub = 
+      nh->subscribe("aeb_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::aeb_output_msg_callback, this);
+  lcc_sub = 
+      nh->subscribe("lcc_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::lcc_output_msg_callback, this);
+  sensor_diagnostic_CH2_client = 
+      nh->serviceClient<common::sensor_diagnostic_flag_CH2>("sensor_diagnostic_CH2");
+  sensor_diagnostic_CH3_client = 
+      nh->serviceClient<common::sensor_diagnostic_flag_CH3>("sensor_diagnostic_CH3");
+  sensor_diagnostic_CH4_client = 
+      nh->serviceClient<common::sensor_diagnostic_flag_CH4>("sensor_diagnostic_CH4");
+  
   master_task_pub = nh->advertise<common::can_comms_data_msg>("can_comms_data", MASTER_MESSAGE_BUFFER_SIZE);
 }
 
