@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     a.obstacle_vel_x = 100;
 
     struct lcc_protocol_lka_left_lane_a_t left_a; 
-    left_a.lane_type = 1; 
+    left_a.lane_type = 4; 
     left_a.quality = 1; 
     left_a.position = 100; 
     left_a.curvature = 0.01; 
@@ -42,12 +42,14 @@ int main(int argc, char **argv)
     right_b.heading_angle = 0.35; 
 
     std::cout << "Original data is: " << std::endl;
+    /*
     std::cout << "Longitudinal Position: " << a.obstacle_pos_x << std::endl;
     std::cout << "Lateral Position: " << a.obstacle_pos_y << std::endl;
     std::cout << "Velocity: " << a.obstacle_vel_x << std::endl;
-
+    */
     std::cout << "Left Lane: " << std::endl;
     std::cout << "Lane Type: " << left_a.lane_type << std::endl;
+    /*
     std::cout << "Quality: " << left_a.quality << std::endl;
     std::cout << "Position: " << left_a.position << std::endl;
     std::cout << "Curvature: " << left_a.curvature << std::endl;
@@ -61,11 +63,11 @@ int main(int argc, char **argv)
     std::cout << "Curvature: " << right_a.curvature << std::endl;
     std::cout << "Curvature Derivative: " << right_a.curvature_derivative << std::endl;
     std::cout << "Heading Angle: " << right_b.heading_angle << std::endl;   
-
+    */
     a.obstacle_pos_x = ext_log_data_obstacle_data_a_obstacle_pos_x_encode(a.obstacle_pos_x);
     a.obstacle_pos_y = ext_log_data_obstacle_data_a_obstacle_pos_y_encode(a.obstacle_pos_y);
     a.obstacle_vel_x = ext_log_data_obstacle_data_a_obstacle_vel_x_encode(a.obstacle_vel_x);
-
+    
     left_a.lane_type = lcc_protocol_lka_left_lane_a_lane_type_encode(left_a.lane_type); 
     left_a.quality = lcc_protocol_lka_left_lane_a_quality_encode(left_a.quality); 
     left_a.position = lcc_protocol_lka_left_lane_a_position_encode(left_a.position); 
@@ -81,12 +83,14 @@ int main(int argc, char **argv)
     right_b.heading_angle = lcc_protocol_lka_right_lane_b_heading_angle_encode(right_b.heading_angle);
 
     std::cout << "Data after encoding is: " << std::endl;
+    /*
     std::cout << "Longitudinal Position: " << a.obstacle_pos_x << std::endl;
     std::cout << "Lateral Position: " << a.obstacle_pos_y << std::endl;
     std::cout << "Velocity: " << a.obstacle_vel_x << std::endl;
-    
+    */
     std::cout << "Left Lane: " << std::endl;
     std::cout << "Lane Type: " << left_a.lane_type << std::endl;
+    /*
     std::cout << "Quality: " << left_a.quality << std::endl;
     std::cout << "Position: " << left_a.position << std::endl;
     std::cout << "Curvature: " << left_a.curvature << std::endl;
@@ -100,7 +104,7 @@ int main(int argc, char **argv)
     std::cout << "Curvature: " << right_a.curvature << std::endl;
     std::cout << "Curvature Derivative: " << right_a.curvature_derivative << std::endl;
     std::cout << "Heading Angle: " << right_b.heading_angle << std::endl;  
-
+    */
     const struct ext_log_data_obstacle_data_a_t *frame_a = &a;
 
     const struct lcc_protocol_lka_left_lane_a_t *frame_left_a = &left_a;
@@ -130,20 +134,22 @@ int main(int argc, char **argv)
 
     uint8_t blank_msg[8] = {0}; 
     size_t size = 8u;
-    int pack_return_a = ext_log_data_obstacle_data_a_pack(&*can_msg_a, frame_a, size);
-    int pack_return_left_a = lcc_protocol_lka_left_lane_a_pack(&*can_msg_left_a, frame_left_a,size);
-    int pack_return_left_b = lcc_protocol_lka_left_lane_b_pack(&*can_msg_left_b, frame_left_b, size);
-    int pack_return_right_a = lcc_protocol_lka_right_lane_a_pack(&*can_msg_right_a, frame_right_a, size);
-    int pack_return_right_b = lcc_protocol_lka_right_lane_b_pack(&*can_msg_right_b, frame_right_b, size);
+    int pack_return_a = ext_log_data_obstacle_data_a_pack(can_msg_a, frame_a, size);
+    int pack_return_left_a = lcc_protocol_lka_left_lane_a_pack(can_msg_left_a, frame_left_a,size);
+    int pack_return_left_b = lcc_protocol_lka_left_lane_b_pack(can_msg_left_b, frame_left_b, size);
+    int pack_return_right_a = lcc_protocol_lka_right_lane_a_pack(can_msg_right_a, frame_right_a, size);
+    int pack_return_right_b = lcc_protocol_lka_right_lane_b_pack(can_msg_right_b, frame_right_b, size);
 
-    int id = 1830;
+    int id = 1894;
+    //1830
     //goes through all valid id messages, sending the packed can message when appropriate  
     // starts at lower id messages above 1849, then goes back to sending appropriate messages
     while (ros::ok()) 
     {
+         /*
          if(id > 1900){
              id = 1849; 
-         }
+         }*/
         
         canStatus stat; 
         if(id%3==1){ //A Frame
@@ -172,8 +178,8 @@ int main(int argc, char **argv)
         //if (queue_status == canOK) std::cout << "Queue emptied" << std::endl;
         ros::spinOnce();
         ros::Duration(0.5).sleep();
-        std::cout << "id = " << id << std::endl; 
-        id++; 
+        //std::cout << "id = " << id << std::endl; 
+        //id++; 
     }
     
     canBusOff(hnd);
