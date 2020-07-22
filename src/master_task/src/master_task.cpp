@@ -10,11 +10,11 @@ MasterTask::MasterTask(ros::NodeHandle* nodeHandle) : nh(nodeHandle) {
   lcc_sub = 
       nh->subscribe("lcc_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::lcc_output_msg_callback, this);
   sensor_diagnostic_CH2_server = 
-      nh->advertiseService("sensor_diagnostic_CH2", sensor_diagnostic_callback_CH2);
+      nh->advertiseService("sensor_diagnostic_CH2", &MasterTask::sensor_diagnostic_callback_CH2, this);
   sensor_diagnostic_CH3_server = 
-      nh->advertiseService("sensor_diagnostic_CH3", sensor_diagnostic_callback_CH3);
+      nh->advertiseService("sensor_diagnostic_CH3", &MasterTask::sensor_diagnostic_callback_CH3, this);
   sensor_diagnostic_CH4_server = 
-      nh->advertiseService("sensor_diagnostic_CH4", sensor_diagnostic_callback_CH4);
+      nh->advertiseService("sensor_diagnostic_CH4", &MasterTask::sensor_diagnostic_callback_CH4, this);
   
   master_task_pub = nh->advertise<common::can_comms_data_msg>("can_comms_data", MASTER_MESSAGE_BUFFER_SIZE);
 }
@@ -56,22 +56,31 @@ void MasterTask::lcc_output_msg_callback(const common::lcc_output_msg& lcc_msg)
                   << "LCC steer is " << lcc_msg.lcc_steer << "\n");
 }
 
-void MasterTask::sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request &req_CH2)
+bool MasterTask::sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request &req_CH2, std_srvs::Empty::Response& response)
 {
     ROS_INFO_STREAM("\n"
                   << "Front radar fault? " << unsigned(req_CH2.front_radar) << "\n");
+
+    if (req_CH2.front_radar)    return true;
+    else    return false;
 }
 
-void MasterTask::sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request &req_CH3)
+bool MasterTask::sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request &req_CH3, std_srvs::Empty::Response& response)
 {
     ROS_INFO_STREAM("\n"
                   << "Left radar fault? " << unsigned(req_CH3.left_corner_radar) << "\n"
                   << "Right radar fault? " << unsigned(req_CH3.right_corner_radar) << "\n");
+    
+    if (req_CH3.left_corner_radar && req_CH3.right_corner_radar)    return true;
+    else    return false;
 }
 
-void MasterTask::sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request &req_CH4)
+bool MasterTask::sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request &req_CH4, std_srvs::Empty::Response& response)
 {
     ROS_INFO_STREAM("\n"
                   << "Mobileye fault? " << unsigned(req_CH4.mobileye) << "\n");
+    
+    if (req_CH4.mobileye)    return true;
+    else    return false;
 }
 common::can_comms_data_msg MasterTask::get_can_comms_msg() { return can_comms_msg; }
