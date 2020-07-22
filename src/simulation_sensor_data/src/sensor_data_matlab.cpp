@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 
         if (time.toNSec() == 0) time = ros::TIME_MIN;
 
-        bag.write("RADAR_TOPIC", time, radar1);
+        bag.write("FRONT_RADAR_TOPIC", time, radar1);
         bag.write("LEFT_CORNER_RADAR_TOPIC", time, radar2);
         bag.write("RIGHT_CORNER_RADAR_TOPIC", time, radar3);
         bag.write("MOBILEYE_TOPIC", time, camera);        
