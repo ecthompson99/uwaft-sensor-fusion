@@ -11,6 +11,7 @@
 #include "common/acc_output_msg.h"
 #include "common/aeb_output_msg.h"
 #include "common/lcc_output_msg.h"
+#include "std_srvs/Empty.h"
 
 static const uint8_t MASTER_MESSAGE_BUFFER_SIZE = 10;
 
@@ -25,7 +26,9 @@ class MasterTask {
   void acc_output_msg_callback(const common::acc_output_msg& acc_msg);
   void aeb_output_msg_callback(const common::aeb_output_msg& aeb_msg);
   void lcc_output_msg_callback(const common::lcc_output_msg& lcc_msg);
-  bool sensor_diagnostic_callback(common::sensor_diagnostic_flag_CH2::Request &req_CH2, common::sensor_diagnostic_flag_CH3::Request &req_CH3, common::sensor_diagnostic_flag_CH4::Request &req_CH4);
+  bool sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request &req_CH2, common::sensor_diagnostic_flag_CH2::Response &res_CH2);
+  bool sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request &req_CH3, common::sensor_diagnostic_flag_CH3::Response &res_CH3);
+  bool sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request &req_CH4, common::sensor_diagnostic_flag_CH4::Response &res_CH4);
   common::can_comms_data_msg get_can_comms_msg();
 
  protected:

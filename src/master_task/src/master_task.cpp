@@ -56,7 +56,7 @@ void MasterTask::lcc_output_msg_callback(const common::lcc_output_msg& lcc_msg)
                   << "LCC steer is " << lcc_msg.lcc_steer << "\n");
 }
 
-bool MasterTask::sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request &req_CH2, std_srvs::Empty::Response& response)
+bool MasterTask::sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request &req_CH2, common::sensor_diagnostic_flag_CH2::Response &res_CH2)
 {
     ROS_INFO_STREAM("\n"
                   << "Front radar fault? " << unsigned(req_CH2.front_radar) << "\n");
@@ -65,7 +65,7 @@ bool MasterTask::sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_C
     else    return false;
 }
 
-bool MasterTask::sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request &req_CH3, std_srvs::Empty::Response& response)
+bool MasterTask::sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request &req_CH3, common::sensor_diagnostic_flag_CH3::Response &res_CH3)
 {
     ROS_INFO_STREAM("\n"
                   << "Left radar fault? " << unsigned(req_CH3.left_corner_radar) << "\n"
@@ -75,7 +75,7 @@ bool MasterTask::sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_C
     else    return false;
 }
 
-bool MasterTask::sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request &req_CH4, std_srvs::Empty::Response& response)
+bool MasterTask::sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request &req_CH4, common::sensor_diagnostic_flag_CH4::Response &res_CH4)
 {
     ROS_INFO_STREAM("\n"
                   << "Mobileye fault? " << unsigned(req_CH4.mobileye) << "\n");
