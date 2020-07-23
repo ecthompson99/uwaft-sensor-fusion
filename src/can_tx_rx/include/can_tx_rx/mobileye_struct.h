@@ -7,8 +7,6 @@
 
 #include "can_tx_rx/ext_log_data.c"
 #include "can_tx_rx/ext_log_data.h"
-#include "can_tx_rx/lcc_protocol.c"
-#include "can_tx_rx/lcc_protocol.h"
 
 #include "common/mobileye_object_data.h"
 #include "common/raw_lane_data.h"
@@ -68,15 +66,14 @@ class Mobileye_RX{
         //void sub_callback(const common::mobileye_object_data& output_obj);
         double signal_in_range(double val, bool cond);
 
-        ext_log_data_tsr_t frame_tsr_unpacked; 
         ext_log_data_obstacle_data_a_t frame_a_unpacked; 
         ext_log_data_obstacle_data_b_t frame_b_unpacked; 
         ext_log_data_obstacle_data_c_t frame_c_unpacked; 
 
-        lcc_protocol_lka_left_lane_a_t left_a_unpacked; 
-        lcc_protocol_lka_right_lane_a_t right_a_unpacked;
-        lcc_protocol_lka_left_lane_b_t left_b_unpacked; 
-        lcc_protocol_lka_right_lane_b_t right_b_unpacked;  
+        ext_log_data_lka_left_lane_a_t left_a_unpacked; 
+        ext_log_data_lka_right_lane_a_t right_a_unpacked;
+        ext_log_data_lka_left_lane_b_t left_b_unpacked; 
+        ext_log_data_lka_right_lane_b_t right_b_unpacked;  
 
         ros::NodeHandle* node_handle;
         ros::Publisher mob_pub;

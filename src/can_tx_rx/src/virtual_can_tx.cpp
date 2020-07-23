@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include "can_tx_rx/lcc_protocol.c"
-#include "can_tx_rx/lcc_protocol.h"
 #include "can_tx_rx/ext_log_data.c"
 #include "can_tx_rx/ext_log_data.h"
 
@@ -21,29 +19,26 @@ int main(int argc, char **argv)
     a.obstacle_pos_x = 240;
     a.obstacle_pos_y = 32;
     a.obstacle_vel_x = 100;
-    a.cut_in_and_out = 5; 
 
-    std::cout << "Cut in test: " << a.cut_in_and_out << std::endl; 
-
-    struct lcc_protocol_lka_left_lane_a_t left_a; 
+    struct ext_log_data_lka_left_lane_a_t left_a; 
     left_a.lane_type = 4;
-    left_a.quality = 1; 
+    left_a.quality = 3; 
     left_a.position = 100; 
-    left_a.curvature = 0.01; 
-    left_a.curvature_derivative = -0.0001; 
+    left_a.curvature = 600; 
+    left_a.curvature_derivative = 5; 
     
-    struct lcc_protocol_lka_left_lane_b_t left_b;
-    left_b.heading_angle = -0.2; 
+    struct ext_log_data_lka_left_lane_b_t left_b;
+    left_b.heading_angle = 32420; 
 
-    struct lcc_protocol_lka_right_lane_a_t right_a; 
+    struct ext_log_data_lka_right_lane_a_t right_a; 
     right_a.lane_type = 2; 
-    right_a.quality = 4; 
+    right_a.quality = 0; 
     right_a.position = 50; 
-    right_a.curvature = -0.01; 
-    right_a.curvature_derivative = -0.00009;
+    right_a.curvature = 65000; 
+    right_a.curvature_derivative = 6;
 
-    struct lcc_protocol_lka_right_lane_b_t right_b;
-    right_b.heading_angle = 0.35; 
+    struct ext_log_data_lka_right_lane_b_t right_b;
+    right_b.heading_angle = 33132; 
 
     std::cout << "Original data is: " << std::endl;
     /*
@@ -52,39 +47,38 @@ int main(int argc, char **argv)
     std::cout << "Velocity: " << a.obstacle_vel_x << std::endl;
     */
     std::cout << "Left Lane: " << std::endl;
-    std::cout << "Lane Type: " << left_a.lane_type << std::endl;
-    /*
-    std::cout << "Quality: " << left_a.quality << std::endl;
+    std::cout << "Lane Type: " << left_a.lane_type+0 << std::endl;
+    std::cout << "Quality: " << left_a.quality+0 << std::endl;
     std::cout << "Position: " << left_a.position << std::endl;
     std::cout << "Curvature: " << left_a.curvature << std::endl;
     std::cout << "Curvature Derivative: " << left_a.curvature_derivative << std::endl;
     std::cout << "Heading Angle: " << left_b.heading_angle << std::endl;   
     
     std::cout << "Right Lane: " << std::endl;
-    std::cout << "Lane Type: " << right_a.lane_type << std::endl;
-    std::cout << "Quality: " << right_a.quality << std::endl;
+    std::cout << "Lane Type: " << right_a.lane_type+0 << std::endl;
+    std::cout << "Quality: " << right_a.quality+0 << std::endl;
     std::cout << "Position: " << right_a.position << std::endl;
     std::cout << "Curvature: " << right_a.curvature << std::endl;
     std::cout << "Curvature Derivative: " << right_a.curvature_derivative << std::endl;
     std::cout << "Heading Angle: " << right_b.heading_angle << std::endl;   
-    */
+
     a.obstacle_pos_x = ext_log_data_obstacle_data_a_obstacle_pos_x_encode(a.obstacle_pos_x);
     a.obstacle_pos_y = ext_log_data_obstacle_data_a_obstacle_pos_y_encode(a.obstacle_pos_y);
     a.obstacle_vel_x = ext_log_data_obstacle_data_a_obstacle_vel_x_encode(a.obstacle_vel_x);
     
-    left_a.lane_type = lcc_protocol_lka_left_lane_a_lane_type_encode(left_a.lane_type); 
-    left_a.quality = lcc_protocol_lka_left_lane_a_quality_encode(left_a.quality); 
-    left_a.position = lcc_protocol_lka_left_lane_a_position_encode(left_a.position); 
-    left_a.curvature = lcc_protocol_lka_left_lane_a_curvature_encode(left_a.curvature);
-    left_a.curvature_derivative = lcc_protocol_lka_left_lane_a_curvature_derivative_encode(left_a.curvature_derivative);
-    left_b.heading_angle = lcc_protocol_lka_left_lane_b_heading_angle_encode(left_b.heading_angle);
+    left_a.lane_type = ext_log_data_lka_left_lane_a_lane_type_encode(left_a.lane_type); 
+    left_a.quality = ext_log_data_lka_left_lane_a_quality_encode(left_a.quality); 
+    left_a.position = ext_log_data_lka_left_lane_a_position_encode(left_a.position); 
+    left_a.curvature = ext_log_data_lka_left_lane_a_curvature_encode(left_a.curvature);
+    left_a.curvature_derivative = ext_log_data_lka_left_lane_a_curvature_derivative_encode(left_a.curvature_derivative);
+    left_b.heading_angle = ext_log_data_lka_left_lane_b_heading_angle_encode(left_b.heading_angle);
 
-    right_a.lane_type = lcc_protocol_lka_right_lane_a_lane_type_encode(right_a.lane_type); 
-    right_a.quality = lcc_protocol_lka_right_lane_a_quality_encode(right_a.quality); 
-    right_a.position = lcc_protocol_lka_right_lane_a_position_encode(right_a.position); 
-    right_a.curvature = lcc_protocol_lka_right_lane_a_curvature_encode(right_a.curvature);
-    right_a.curvature_derivative = lcc_protocol_lka_right_lane_a_curvature_derivative_encode(right_a.curvature_derivative);
-    right_b.heading_angle = lcc_protocol_lka_right_lane_b_heading_angle_encode(right_b.heading_angle);
+    right_a.lane_type = ext_log_data_lka_right_lane_a_lane_type_encode(right_a.lane_type); 
+    right_a.quality = ext_log_data_lka_right_lane_a_quality_encode(right_a.quality); 
+    right_a.position = ext_log_data_lka_right_lane_a_position_encode(right_a.position); 
+    right_a.curvature = ext_log_data_lka_right_lane_a_curvature_encode(right_a.curvature);
+    right_a.curvature_derivative = ext_log_data_lka_right_lane_a_curvature_derivative_encode(right_a.curvature_derivative);
+    right_b.heading_angle = ext_log_data_lka_right_lane_b_heading_angle_encode(right_b.heading_angle);
 
     std::cout << "Data after encoding is: " << std::endl;
     /*
@@ -93,28 +87,27 @@ int main(int argc, char **argv)
     std::cout << "Velocity: " << a.obstacle_vel_x << std::endl;
     */
     std::cout << "Left Lane: " << std::endl;
-    std::cout << "Lane Type: " << left_a.lane_type << std::endl;
-    /*
-    std::cout << "Quality: " << left_a.quality << std::endl;
+    std::cout << "Lane Type: " << left_a.lane_type+0 << std::endl;
+    std::cout << "Quality: " << left_a.quality+0 << std::endl;
     std::cout << "Position: " << left_a.position << std::endl;
     std::cout << "Curvature: " << left_a.curvature << std::endl;
     std::cout << "Curvature Derivative: " << left_a.curvature_derivative << std::endl;
     std::cout << "Heading Angle: " << left_b.heading_angle << std::endl;   
     
     std::cout << "Right Lane: " << std::endl;
-    std::cout << "Lane Type: " << right_a.lane_type << std::endl;
-    std::cout << "Quality: " << right_a.quality << std::endl;
+    std::cout << "Lane Type: " << right_a.lane_type+0 << std::endl;
+    std::cout << "Quality: " << right_a.quality+0 << std::endl;
     std::cout << "Position: " << right_a.position << std::endl;
     std::cout << "Curvature: " << right_a.curvature << std::endl;
     std::cout << "Curvature Derivative: " << right_a.curvature_derivative << std::endl;
     std::cout << "Heading Angle: " << right_b.heading_angle << std::endl;  
-    */
+    
     const struct ext_log_data_obstacle_data_a_t *frame_a = &a;
 
-    const struct lcc_protocol_lka_left_lane_a_t *frame_left_a = &left_a;
-    const struct lcc_protocol_lka_left_lane_b_t *frame_left_b = &left_b;  
-    const struct lcc_protocol_lka_right_lane_a_t *frame_right_a = &right_a;
-    const struct lcc_protocol_lka_right_lane_b_t *frame_right_b = &right_b;  
+    const struct ext_log_data_lka_left_lane_a_t *frame_left_a = &left_a;
+    const struct ext_log_data_lka_left_lane_b_t *frame_left_b = &left_b;  
+    const struct ext_log_data_lka_right_lane_a_t *frame_right_a = &right_a;
+    const struct ext_log_data_lka_right_lane_b_t *frame_right_b = &right_b;  
 
     canHandle hnd;
     canInitializeLibrary();
@@ -139,10 +132,10 @@ int main(int argc, char **argv)
     uint8_t blank_msg[8] = {0}; 
     size_t size = 8u;
     int pack_return_a = ext_log_data_obstacle_data_a_pack(can_msg_a, frame_a, size);
-    int pack_return_left_a = lcc_protocol_lka_left_lane_a_pack(can_msg_left_a, frame_left_a,size);
-    int pack_return_left_b = lcc_protocol_lka_left_lane_b_pack(can_msg_left_b, frame_left_b, size);
-    int pack_return_right_a = lcc_protocol_lka_right_lane_a_pack(can_msg_right_a, frame_right_a, size);
-    int pack_return_right_b = lcc_protocol_lka_right_lane_b_pack(can_msg_right_b, frame_right_b, size);
+    int pack_return_left_a = ext_log_data_lka_left_lane_a_pack(can_msg_left_a, frame_left_a,size);
+    int pack_return_left_b = ext_log_data_lka_left_lane_b_pack(can_msg_left_b, frame_left_b, size);
+    int pack_return_right_a = ext_log_data_lka_right_lane_a_pack(can_msg_right_a, frame_right_a, size);
+    int pack_return_right_b = ext_log_data_lka_right_lane_b_pack(can_msg_right_b, frame_right_b, size);
 
     int id = 1894;
     //1830
