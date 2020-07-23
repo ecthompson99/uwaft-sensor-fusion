@@ -3,10 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include "can_tx_rx/ext_log_data.c"
-#include "can_tx_rx/ext_log_data.h"
 #include "can_tx_rx/lcc_protocol.c"
 #include "can_tx_rx/lcc_protocol.h"
+#include "can_tx_rx/ext_log_data.c"
+#include "can_tx_rx/ext_log_data.h"
+
 using namespace std;
 
 static const uint32_t pub_buffer_size = 100;
@@ -18,11 +19,14 @@ int main(int argc, char **argv)
     
     struct ext_log_data_obstacle_data_a_t a;
     a.obstacle_pos_x = 240;
-    a.obstacle_pos_y = 31;
+    a.obstacle_pos_y = 32;
     a.obstacle_vel_x = 100;
+    a.cut_in_and_out = 5; 
+
+    std::cout << "Cut in test: " << a.cut_in_and_out << std::endl; 
 
     struct lcc_protocol_lka_left_lane_a_t left_a; 
-    left_a.lane_type = 4; 
+    left_a.lane_type = 4;
     left_a.quality = 1; 
     left_a.position = 100; 
     left_a.curvature = 0.01; 

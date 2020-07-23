@@ -4,10 +4,11 @@
 #include <vector>
 
 #include "ros/ros.h"
-#include "can_tx_rx/lcc_protocol.c"
-#include "can_tx_rx/lcc_protocol.h"
+
 #include "can_tx_rx/ext_log_data.c"
 #include "can_tx_rx/ext_log_data.h"
+#include "can_tx_rx/lcc_protocol.c"
+#include "can_tx_rx/lcc_protocol.h"
 
 #include "common/mobileye_object_data.h"
 #include "common/raw_lane_data.h"

@@ -29,7 +29,6 @@
  */
 
 #include <string.h>
-
 #include "lcc_protocol.h"
 
 static inline uint8_t pack_left_shift_u8(
