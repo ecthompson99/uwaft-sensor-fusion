@@ -41,11 +41,11 @@ int main(int argc, char **argv)
     right_b.heading_angle = 33132; 
 
     std::cout << "Original data is: " << std::endl;
-    /*
+    
     std::cout << "Longitudinal Position: " << a.obstacle_pos_x << std::endl;
     std::cout << "Lateral Position: " << a.obstacle_pos_y << std::endl;
     std::cout << "Velocity: " << a.obstacle_vel_x << std::endl;
-    */
+    
     std::cout << "Left Lane: " << std::endl;
     std::cout << "Lane Type: " << left_a.lane_type+0 << std::endl;
     std::cout << "Quality: " << left_a.quality+0 << std::endl;
@@ -81,11 +81,10 @@ int main(int argc, char **argv)
     right_b.heading_angle = ext_log_data_lka_right_lane_b_heading_angle_encode(right_b.heading_angle);
 
     std::cout << "Data after encoding is: " << std::endl;
-    /*
     std::cout << "Longitudinal Position: " << a.obstacle_pos_x << std::endl;
     std::cout << "Lateral Position: " << a.obstacle_pos_y << std::endl;
     std::cout << "Velocity: " << a.obstacle_vel_x << std::endl;
-    */
+    
     std::cout << "Left Lane: " << std::endl;
     std::cout << "Lane Type: " << left_a.lane_type+0 << std::endl;
     std::cout << "Quality: " << left_a.quality+0 << std::endl;
@@ -143,26 +142,35 @@ int main(int argc, char **argv)
     // starts at lower id messages above 1849, then goes back to sending appropriate messages
     while (ros::ok()) 
     {
-         /*
+         
          if(id > 1900){
-             id = 1849; 
-         }*/
+             id = 1894;
+             //1849 
+        }
         
         canStatus stat; 
-        if(id%3==1){ //A Frame
-            stat = canWrite(hnd, id, can_msg_a, 8, canOPEN_ACCEPT_VIRTUAL); 
-        }
-        else if(id ==1894){ //LKA Left A 
+        if(id ==1894){ //LKA Left A 
             stat = canWrite(hnd,id, can_msg_left_a, 8, canOPEN_ACCEPT_VIRTUAL);
+            std::cout << id << std::endl; 
+            std::cout << can_msg_left_a << std::endl; 
         }
         else if(id==1895){ //LKA Left B
             stat = canWrite(hnd,id, can_msg_left_b, 8, canOPEN_ACCEPT_VIRTUAL);
+            std::cout << id << std::endl; 
+            std::cout << can_msg_left_b << std::endl; 
         }
         else if(id ==1896){ //LKA Right A 
             stat = canWrite(hnd,id, can_msg_right_a, 8, canOPEN_ACCEPT_VIRTUAL);
+            std::cout << id << std::endl; 
+            std::cout << can_msg_right_a << std::endl; 
         }
         else if(id==1897){ //LKA Right B
             stat = canWrite(hnd,id, can_msg_right_b, 8, canOPEN_ACCEPT_VIRTUAL);
+            std::cout << id << std::endl; 
+            std::cout << can_msg_right_b << std::endl; 
+        }
+        if(id%3==1){ //A Frame
+            stat = canWrite(hnd, id, can_msg_a, 8, canOPEN_ACCEPT_VIRTUAL); 
         }
         else{ //B or C Frame
             stat = canWrite(hnd, id, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
@@ -176,7 +184,7 @@ int main(int argc, char **argv)
         ros::spinOnce();
         ros::Duration(0.5).sleep();
         //std::cout << "id = " << id << std::endl; 
-        //id++; 
+        id++; 
     }
     
     canBusOff(hnd);

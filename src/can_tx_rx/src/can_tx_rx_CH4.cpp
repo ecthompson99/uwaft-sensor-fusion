@@ -105,7 +105,6 @@ int main(int argc, char **argv) {
         case 5:
           {
             int ext_log_data_lka_left_lane_a_unpack_status = ext_log_data_lka_left_lane_a_unpack(&mobeye_rx.left_a_unpacked, mobileye_obj.can_data,SIZE_OF_MSG);
-            std::cout << "Lane Type Encoded: " << mobeye_rx.left_a_unpacked.lane_type << std::endl; 
             mobileye_obj.left_lane_type_decode =  ext_log_data_lka_left_lane_a_lane_type_decode(mobeye_rx.left_a_unpacked.lane_type); 
             mobileye_obj.left_lane_type_is_in_range =  ext_log_data_lka_left_lane_a_lane_type_is_in_range(mobeye_rx.left_a_unpacked.lane_type); 
             raw_lane.Lane_Type_L = mobeye_rx.signal_in_range(mobileye_obj.left_lane_type_decode, mobileye_obj.left_lane_type_is_in_range);
@@ -142,7 +141,7 @@ int main(int argc, char **argv) {
             mobileye_obj.left_heading_angle_is_in_range =  ext_log_data_lka_left_lane_b_heading_angle_is_in_range(mobeye_rx.left_b_unpacked.heading_angle); 
             raw_lane.Head_Ang_L = mobeye_rx.signal_in_range(mobileye_obj.left_heading_angle_decode, mobileye_obj.left_heading_angle_is_in_range);
             
-            //std::cout << "Left Heading Angle: " << raw_lane.Head_Ang_L << std::endl;
+            std::cout << "Left Heading Angle: " << raw_lane.Head_Ang_L << std::endl;
 
             break;
           }
@@ -168,8 +167,9 @@ int main(int argc, char **argv) {
           mobileye_obj.right_curvature_derivative_decode =  ext_log_data_lka_right_lane_a_curvature_derivative_decode(mobeye_rx.right_a_unpacked.curvature_derivative); 
           mobileye_obj.right_curvature_derivative_is_in_range =  ext_log_data_lka_right_lane_a_curvature_derivative_is_in_range(mobeye_rx.right_a_unpacked.curvature_derivative); 
           raw_lane.Curv_Deriv_R = mobeye_rx.signal_in_range(mobileye_obj.right_curvature_derivative_decode, mobileye_obj.right_curvature_derivative_is_in_range);
-          /*
+          
           std::cout << "Right Lane Type: " << raw_lane.Lane_Type_R << std::endl;
+          /*
           std::cout << "Right Quality: " << raw_lane.Qual_R << std::endl;
           std::cout << "Right Position: " << raw_lane.LatPos_R << std::endl;
           std::cout << "Right Curvature: " << raw_lane.Curv_R << std::endl; 
