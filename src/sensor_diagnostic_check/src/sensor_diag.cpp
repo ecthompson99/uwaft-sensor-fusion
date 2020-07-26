@@ -32,6 +32,27 @@ void can_msg_callback(const common::sensor_diagnostic_data_msg& message) {
                     << "messageCRC " << msg_crc << "\n");
 }
 
+
+/*
+CAN ID 1280 & 1282
+RadarN_MessStarterConsistBit (save value (needs to match other consist))
+Veh_psiDt (?)
+*/
+
+/*
+for loop 
+1285 -> 1595 (+10) R1_MessAconsistbit (save value (needs to match other consist))
+1287 -> 1597 (+10) R2_MessAconsistbit (save value (needs to match other consist)
+
+1286 -> 1596 (+10) R1_MessAconsistbit (save value (needs to match other consist))
+1288 -> 1598 (+10) R2_MessAconsistbit (save value (needs to match other consist)
+*/
+
+/*
+CAN ID 1665 & 1667
+
+*/
+
 int main(int argc, char** argv) {
     ros::init(argc, argv, "sensor_diag");
     ros::NodeHandle sensor_diag_handle;
