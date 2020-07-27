@@ -1,53 +1,49 @@
-#include <stdio.h>
-#include <sstream>
+#include "sensor_diag.h"
 
-#include "ros/ros.h"
-
-#include "common/sensor_diagnostic_data_msg.h"
-#include "common/sensor_diagnostic_flag_msg.h"
-
-static const uint16_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
-
-void can_msg_callback(const common::sensor_diagnostic_data_msg& message) {
-
-    //temporary workaround for int and bool as the values in them do not get properly printed using ROS_INFO_STREAM  
-    bool hardware_failure = message.hardware_fail;
-    bool sgu_failure = message.sgu_fail;
-    uint8_t msg_counter = message.message_counter;
-    uint32_t msg_crc = message.message_crc;
-
-    ROS_INFO_STREAM("\n"
-                    << "starterConsistency " << message.starter_consistency << "\n"
-                    << "timeStamp " << message.time_stamp << "\n"
-                    << "enderConsistency " << message.ender_consistency << "\n"
-                    << "counter " << message.counter << "\n"
-                    << "checkSum " << message.check_sum << "\n"
-                    << "horizontalMisalign " << message.horizontal_misalign << "\n"
-                    << "absorbBlind " << message.absorb_blind << "\n"
-                    << "distortBlind " << message.distort_blind << "\n"
-                    << "ITCinfo " << message.itc_info << "\n"
-                    << "HWfail " << hardware_failure << "\n"
-                    << "SGUFail " << sgu_failure << "\n"
-                    << "messageCounter " << unsigned(msg_counter) << "\n"
-                    << "messageCRC " << msg_crc << "\n");
+SensorDiagnostics::SensorDiagnostics(ros::NodeHandle* diag_nodehandle) : diag_nodehandle(diag_nodehandle) {
+    sub_CAN_data = diag_nodehandle.subscribe("sensor_diag_data", TX_RX_MESSAGE_BUFFER_SIZE, sub_CAN_data_callback);
+    sub_CAN_flag = diag_nodehandle.subscribe("sensor_diag_flag", TX_RX_MESSAGE_BUFFER_SIZE, sub_CAN_flag_callback);
+    
+    client_ch2 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH2>("sensor_diagnostic_CH2"); //locate srv file and specify topic
+    client_ch3 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH3>("sensor_diagnostic_CH3"); //locate srv file and specify topic
+    client_ch4 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH4>("sensor_diagnostic_CH4"); //locate srv file and specify topic
 }
 
-int main(int argc, char** argv) {
-    ros::init(argc, argv, "sensor_diag");
-    ros::NodeHandle sensor_diag_handle;
-  
-    ros::Subscriber sensor_diag_sub = sensor_diag_handle.subscribe("sensor_diagnostic_data", TX_RX_MESSAGE_BUFFER_SIZE,
-        can_msg_callback);
-  
-    ros:: Publisher sensor_diag_pub = sensor_diag_handle.advertise<common::sensor_diagnostic_flag_msg>("sensor_diagnostic_flags", TX_RX_MESSAGE_BUFFER_SIZE);
-  
-    common::sensor_diagnostic_flag_msg radar_msg; 
-  
-    //assign the array random values to test its interface. Will need to be worked on for the actual node.
-    radar_msg.radar_reliability = {0,5,15,100,200,255};
+void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& data_msg){
+    // temporary workaround for int and bool as the values in them do not get properly printed using ROS_INFO_STREAM  
 
-    while (ros::ok()) {    
-        sensor_diag_pub.publish(radar_msg);
-        ros::spinOnce();
+    common::sensor_diagnostic_flag_CH2 srv_ch2; // service objects
+    common::sensor_diagnostic_flag_CH3 srv_ch3; // service objects
+    common::sensor_diagnostic_flag_CH4 srv_ch4; // service objects
+    
+    bool hardware_failure = data_msg.hardware_fail;
+    bool sgu_failure = data_msg.sgu_fail;
+    uint8_t msg_counter = data_msg.message_counter;
+    uint32_t msg_crc = data_msg.message_crc;
+    
+    //EXAMPLE!
+    if(hardware_failure || sgu_failure){
+        srv_ch2.request.front_radar = hardware_failure; // send srv request FAILED with no response needed.
+        srv_ch3.request.left_corner_radar = 0;
+        srv_ch3.request.right_corner_radar = 0;
+        srv_ch4.request.mobileye = 0;
+
+        bool troubleShootClient = client_ch2.call(srv_ch2); // service request initiated (SENDING data through 'service request')
+        bool troubleShootClient = client_ch3.call(srv_ch3); // service request initiated (SENDING data through 'service request')
+        bool troubleShootClient = client_ch4.call(srv_ch4); // service request initiated (SENDING data through 'service request')
+
+        cout << troubleShootClient << endl;
     }
+}
+
+void sub_CAN_flag_callback(const common::sensor_diagnostic_flag_msg& flag_msg){
+    //nothing yet ?
+}
+
+int main(int argc, char** argv){
+    ros::init(argc, argv, "sensor_diag");
+    ros::NodeHandle diag_nodehandle;
+    SensorDiagnostics sensDiag = SensorDiagnostics(&diag_nodehandle);
+    
+    ros::spin();
 }
