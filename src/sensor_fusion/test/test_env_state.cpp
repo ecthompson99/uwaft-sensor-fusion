@@ -264,22 +264,27 @@ TEST(FindTargetObjects, validLogic){
 
 }
 
-// bool target_output_cb_called = false;
-// void test_target_obj_cb(const common::target_output_msg& target_output_msg){target_output_cb_called = true;}
+bool target_output_cb_called = false;
+void test_target_obj_cb(const common::target_output_msg& target_output_msg){target_output_cb_called = true;}
 
-// TEST(PubTargetObj, validLogic){
-//  ros::NodeHandle env_state_node_handle;
-//  EnvironmentState env_state_test(&env_state_node_handle);
+TEST(PubTargetObj, validLogic){
+ ros::NodeHandle env_state_node_handle;
+ EnvironmentState env_state_test(&env_state_node_handle);
 
-//  ros::NodeHandle target_obj_node_handle;
-//  ros::Subscriber sub = target_obj_node_handle.subscribe("target_obj", MESSAGE_BUFFER_SIZE, &test_target_obj_cb);
+ ros::NodeHandle target_obj_node_handle;
+ ros::Subscriber sub = target_obj_node_handle.subscribe("target_obj", MESSAGE_BUFFER_SIZE, &test_target_obj_cb);
 
-//  env_state_test.publish_target_obj();
-//  ros::spinOnce();
+ env_state_test.publish_target_obj();
+ ros::spinOnce();
 
-//  ASSERT_EQ(target_output_cb_called, false);
-
-// }
+ ASSERT_EQ(target_output_cb_called, false);
+ ASSERT_EQ(env_state_test.targetObjects[0].get_obj_id(), 0);
+ ASSERT_EQ(env_state_test.targetObjects[1].get_obj_id(), 0);
+ ASSERT_EQ(env_state_test.targetObjects[2].get_obj_id(), 0);
+ ASSERT_EQ(env_state_test.targetObjects[0].get_obj_dx(), 255);
+ ASSERT_EQ(env_state_test.targetObjects[1].get_obj_dx(), 255);
+ ASSERT_EQ(env_state_test.targetObjects[2].get_obj_dx(), 255);
+}
 
 bool tracked_output_cb_called = false;
 void test_tracked_obj_cb(const common::tracked_output_msg& tracked_output_msg){tracked_output_cb_called = true;}
