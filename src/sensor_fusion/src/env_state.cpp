@@ -37,34 +37,19 @@ EnvironmentState::~EnvironmentState() {}
 
 void EnvironmentState::publish_target_obj() {
 	for (int lane = 0; lane < 3; lane++){
-		if ((lane == 0 && !target1) || (lane == 1 && !target2) || (lane == 2 && !target3)){
-			// default message
-			target_output_msg.obj_id = 0;
-			target_output_msg.obj_dx = 255;
-			target_output_msg.obj_lane = 0; // 0 to 2
-			target_output_msg.obj_vx = 0;
-			target_output_msg.obj_dy = 0;
-			target_output_msg.obj_ax = 0;
-			target_output_msg.obj_path = 2;
-			target_output_msg.obj_vy = 0;
-			target_output_msg.obj_timestamp = 0;
-			target_output_msg.obj_track_num = 0; // 1 to 3
-
-		}
-		else{
-			target_output_msg.obj_id = targetObjects[lane].get_obj_id();
-			target_output_msg.obj_dx = targetObjects[lane].get_obj_dx();
-			target_output_msg.obj_lane = targetObjects[lane].get_obj_lane(); // 0 to 2
-			target_output_msg.obj_vx = targetObjects[lane].get_obj_vx();
-			target_output_msg.obj_dy = targetObjects[lane].get_obj_dy();
-			target_output_msg.obj_ax = targetObjects[lane].get_obj_ax();
-			target_output_msg.obj_path = targetObjects[lane].get_obj_path();
-			target_output_msg.obj_vy = targetObjects[lane].get_obj_vy();
-			target_output_msg.obj_timestamp = targetObjects[lane].get_obj_timestamp();
-			target_output_msg.obj_track_num = targetObjects[lane].get_obj_lane() + 1; // 1 to 3
-		}
+		// don't need to implement default msgs because of initialization
+		target_output_msg.obj_id = targetObjects[lane].get_obj_id();
+		target_output_msg.obj_dx = targetObjects[lane].get_obj_dx();
+		target_output_msg.obj_lane = targetObjects[lane].get_obj_lane(); // 0 to 2
+		target_output_msg.obj_vx = targetObjects[lane].get_obj_vx();
+		target_output_msg.obj_dy = targetObjects[lane].get_obj_dy();
+		target_output_msg.obj_ax = targetObjects[lane].get_obj_ax();
+		target_output_msg.obj_path = targetObjects[lane].get_obj_path();
+		target_output_msg.obj_vy = targetObjects[lane].get_obj_vy();
+		target_output_msg.obj_timestamp = targetObjects[lane].get_obj_timestamp();
+		target_output_msg.obj_track_num = targetObjects[lane].get_obj_lane() + 1; // 1 to 3
 	
-//	 TESTING-------------------------------------------------------
+		//TESTING-------------------------------------------------------
 		printf("Target Output Msg\n");
 		printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
 		target_output_msg.obj_id, target_output_msg.obj_dx, target_output_msg.obj_lane, 
