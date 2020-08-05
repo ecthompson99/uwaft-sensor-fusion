@@ -37,8 +37,9 @@
 #Bag files
 *.bag
 
-#Mat files
+#Matlab files
 *.mat
+*.asv
 
 #Avi files
 *.avi
