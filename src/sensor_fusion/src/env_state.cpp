@@ -95,7 +95,7 @@ void EnvironmentState::publish_tracked_obj() {
 	// default message
 	else if (trackedObjects.size() == 0 ){
 		   tracked_output_msg.obj_id = 0;
-		   tracked_output_msg.obj_dx = 0;
+		   tracked_output_msg.obj_dx = 255;
 		   tracked_output_msg.obj_lane = 0; // 0 to 2
 		   tracked_output_msg.obj_vx = 0;
 		   tracked_output_msg.obj_dy = 0;
