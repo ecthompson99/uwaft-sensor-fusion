@@ -25,6 +25,9 @@ class Mobileye_RX{
             double obstacle_vel_x_decode;
             bool obstacle_vel_x_is_in_range; 
 
+            double obstacle_lane_decode;
+            bool obstacle_lane_decode_is_in_range;
+
             //double object_accel_x_decode; 
             //bool obstacle_accel_x_is_in_range; 
 
