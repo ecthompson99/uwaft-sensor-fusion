@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 #include "env_state.h"
 
-//TEST(FiltObjCallback, validLogic){
+// TEST(FiltObjCallback, validLogic){
 //  ros::NodeHandle env_state_node_handle;
 //  EnvironmentState env_state_test(&env_state_node_handle);
 
-//  sensor_fusion::object_output_msg output_msg_expected;
+//  common::tracked_output_msg output_msg_expected;
 //  output_msg_expected.obj_id = 1;
 //  output_msg_expected.obj_dx = 2;
 //  output_msg_expected.obj_lane = 0;
@@ -16,7 +16,7 @@
 //  output_msg_expected.obj_vy = 2;
 //  output_msg_expected.obj_timestamp = 2;
 //  output_msg_expected.obj_track_num = 0;
-//  
+ 
 //  sensor_fusion::filtered_object_msg filtered_msg;
 //  filtered_msg.obj_id = 1;
 //  filtered_msg.obj_dx = 2;
@@ -27,10 +27,10 @@
 //  filtered_msg.obj_path = 0;
 //  filtered_msg.obj_vy = 2;
 //  filtered_msg.obj_timestamp = 2;
-//  
+
 //  env_state_test.filtered_object_callback(filtered_msg);
 
-//  sensor_fusion::object_output_msg output_msg = env_state_test.get_object_output_msg();
+//  common::tracked_output_msg output_msg = env_state_test.get_tracked_output_msg();
 
 //  ASSERT_EQ(output_msg_expected.obj_id, output_msg.obj_id);
 //  ASSERT_EQ(output_msg_expected.obj_dx, output_msg.obj_dx);
@@ -42,9 +42,9 @@
 //  ASSERT_EQ(output_msg_expected.obj_vy, output_msg.obj_vy);
 //  ASSERT_EQ(output_msg_expected.obj_timestamp, output_msg.obj_timestamp);
 //  ASSERT_EQ(output_msg_expected.obj_track_num, output_msg.obj_track_num);
-//}
+// }
 
-//TEST(FiltObjCallback, validCallback){
+// TEST(FiltObjCallback, validCallback){
 //  ros::NodeHandle env_state_node_handle;
 //  EnvironmentState env_state_test(&env_state_node_handle);
 
@@ -52,7 +52,7 @@
 //  ros::Publisher pub = filtered_object_node_handle.advertise<sensor_fusion::filtered_object_msg>(
 //    "kf_dummy_data", MESSAGE_BUFFER_SIZE);
 
-//  sensor_fusion::object_output_msg output_msg_expected;
+//  common::tracked_output_msg output_msg_expected;
 //  output_msg_expected.obj_id = 1;
 //  output_msg_expected.obj_dx = 2;
 //  output_msg_expected.obj_lane = 0;
@@ -63,7 +63,7 @@
 //  output_msg_expected.obj_vy = 2;
 //  output_msg_expected.obj_timestamp = 2;
 //  output_msg_expected.obj_track_num = 0;
-//  
+ 
 //  sensor_fusion::filtered_object_msg filtered_msg;
 //  filtered_msg.obj_id = 1;
 //  filtered_msg.obj_dx = 2;
@@ -78,7 +78,7 @@
 //  pub.publish(filtered_msg);
 //  ros::spinOnce();
 
-//  sensor_fusion::object_output_msg output_msg = env_state_test.get_object_output_msg();
+//  common::tracked_output_msg output_msg = env_state_test.get_tracked_output_msg();
 
 //  ASSERT_EQ(output_msg_expected.obj_id, output_msg.obj_id);
 //  ASSERT_EQ(output_msg_expected.obj_dx, output_msg.obj_dx);
@@ -89,7 +89,7 @@
 //  ASSERT_EQ(output_msg_expected.obj_path, output_msg.obj_path);
 //  ASSERT_EQ(output_msg_expected.obj_vy, output_msg.obj_vy);
 //  ASSERT_EQ(output_msg_expected.obj_track_num, output_msg.obj_track_num);
-//}
+// }
 
 TEST(AddObject, validLogic) {
   ros::NodeHandle env_state_node_handle;
@@ -140,13 +140,13 @@ TEST(CheckTimestamp, validLogic){
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state_test(&env_state_node_handle);
 
-  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 35, 1);
-  ObjectState new_object_2(3, 56, 2, 3, 56, 14, 1, 67, 37, 1);
+  ObjectState new_object_1(4, 10, 1, 4, 15, 12, 0, 6, 26, 1);
+  ObjectState new_object_2(3, 56, 2, 3, 56, 14, 1, 67, 31, 1);
   ObjectState new_object_3(7, 96, 1, 5, 76, 34, 0, 77, 100, 1);
   
   ObjectState tracked_object_1(1, 12, 2, 23, 46, 45, 1, 67, 25, 1);
-  ObjectState tracked_object_2(6, 40, 0, 29, 45, 21, 0, 26, 30, 1);
-  ObjectState tracked_object_3(5, 10, 1, 27, 34, 87, 1, 90, 28, 1);
+  ObjectState tracked_object_2(6, 40, 0, 29, 45, 21, 0, 26, 26, 1);
+  ObjectState tracked_object_3(5, 10, 1, 27, 34, 87, 1, 90, 26, 1);
 
   ASSERT_EQ(env_state_test.trackedObjects.size(), 0);
   env_state_test.add_object(tracked_object_1);
@@ -264,39 +264,44 @@ TEST(FindTargetObjects, validLogic){
 
 }
 
-//bool target_output_cb_called = false;
-//void test_target_obj_cb(const sensor_fusion::target_obj_pub& target_output_msg){target_output_cb_called = true;}
+bool target_output_cb_called = false;
+void test_target_obj_cb(const common::target_output_msg& target_output_msg){target_output_cb_called = true;}
 
-//TEST(PublishOutputObj, validLogic){
-//  ros::NodeHandle env_state_node_handle;
-//  EnvironmentState env_state_test(&env_state_node_handle);
+TEST(PubTargetObj, validLogic){
+ ros::NodeHandle env_state_node_handle;
+ EnvironmentState env_state_test(&env_state_node_handle);
 
-//  ros::NodeHandle target_obj_node_handle;
-//  ros::Subscriber sub = target_obj_node_handle.subscribe("target_obj", MESSAGE_BUFFER_SIZE, &test_target_obj_cb);
+ ros::NodeHandle target_obj_node_handle;
+ ros::Subscriber sub = target_obj_node_handle.subscribe("target_obj", MESSAGE_BUFFER_SIZE, &test_target_obj_cb);
 
-//  env_state_test.publish_target_obj();
-//  ros::spinOnce();
+ env_state_test.publish_target_obj();
+ ros::spinOnce();
 
-//  ASSERT_EQ(target_output_cb_called, false);
+ ASSERT_EQ(target_output_cb_called, false);
+ ASSERT_EQ(env_state_test.targetObjects[0].get_obj_id(), 0);
+ ASSERT_EQ(env_state_test.targetObjects[1].get_obj_id(), 0);
+ ASSERT_EQ(env_state_test.targetObjects[2].get_obj_id(), 0);
+ ASSERT_EQ(env_state_test.targetObjects[0].get_obj_dx(), 255);
+ ASSERT_EQ(env_state_test.targetObjects[1].get_obj_dx(), 255);
+ ASSERT_EQ(env_state_test.targetObjects[2].get_obj_dx(), 255);
+}
 
-//}
+bool tracked_output_cb_called = false;
+void test_tracked_obj_cb(const common::tracked_output_msg& tracked_output_msg){tracked_output_cb_called = true;}
 
-//bool tracked_output_cb_called = false;
-//void test_tracked_obj_cb(const sensor_fusion::tracked_obj_pub& tracked_output_msg){tracked_output_cb_called = true;}
+TEST(PubTrackedObj, validLogic){
+ ros::NodeHandle env_state_node_handle;
+ EnvironmentState env_state_test(&env_state_node_handle);
 
-//TEST(PublishOutputObj, validLogic){
-//  ros::NodeHandle env_state_node_handle;
-//  EnvironmentState env_state_test(&env_state_node_handle);
+ ros::NodeHandle tracked_obj_node_handle;
+ ros::Subscriber sub = tracked_obj_node_handle.subscribe("tracked_obj", MESSAGE_BUFFER_SIZE, &test_tracked_obj_cb);
 
-//  ros::NodeHandle tracked_obj_node_handle;
-//  ros::Subscriber sub = tracked_obj_node_handle.subscribe("tracked_obj", MESSAGE_BUFFER_SIZE, &test_tracked_obj_cb);
+ env_state_test.publish_tracked_obj();
+ ros::spinOnce();
 
-//  env_state_test.publish_tracked_obj();
-//  ros::spinOnce();
+ ASSERT_EQ(tracked_output_cb_called, false);
 
-//  ASSERT_EQ(tracked_output_cb_called, false);
-
-//}
+}
 
 
 int main(int argc, char **argv) {
