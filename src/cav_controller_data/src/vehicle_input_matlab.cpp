@@ -75,8 +75,8 @@ int main(int argc, char **argv)
 
         if (time.toNSec() == 0) time = ros::TIME_MIN;
 
-        bag.write("DRIVE_CTRL_INPUT", time, drive_ctrl);
-        bag.write("TARGET_OBJECT_OUTPUT", time, target_output);
+        bag.write("drive_ctrl_input", time, drive_ctrl);
+        bag.write("target_output", time, target_output);
         
     }
     bag.close();
