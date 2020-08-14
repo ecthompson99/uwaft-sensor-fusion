@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.0
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Wed Aug 12 14:05:24 2020
+// C/C++ source code generated on : Thu Aug 13 16:50:59 2020
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -2849,7 +2849,7 @@ void ACC_step(void)
      default:
       if (((ACC_B.In1.ObjDx < 1.4 * ACC_B.In1_p.VehSpd + 9.9) &&
            (ACC_B.In1_p.VehSpd > 0.0)) || ((ACC_B.In1.ObjVx < -20.0) &&
-           (ACC_B.In1.ObjDx <= 255.0))) {
+           (ACC_B.In1.ObjDx < 255.0))) {
         ACC_DW.is_ACC_Normal = ACC_IN_NO_ACTIVE_CHILD;
         ACC_DW.is_Standard = ACC_IN_NO_ACTIVE_CHILD;
         ACC_DW.durationLastReferenceTick_1_e = ACC_DW.chartAbsoluteTimeCounter;
@@ -3015,7 +3015,8 @@ void ACC_initialize(void)
                 sizeof(DW_ACC_T));
 
   {
-    static const char_T tmp[8] = { '/', 'P', 'u', 'b', 'l', 'i', 's', 'h' };
+    static const char_T tmp[15] = { '/', 'a', 'c', 'c', '_', 'o', 'u', 't', 'p',
+      'u', 't', '_', 'm', 's', 'g' };
 
     static const char_T tmp_0[17] = { '/', 'd', 'r', 'i', 'v', 'e', '_', 'c',
       't', 'r', 'l', '_', 'i', 'n', 'p', 'u', 't' };
@@ -3023,7 +3024,7 @@ void ACC_initialize(void)
     static const char_T tmp_1[14] = { '/', 't', 'a', 'r', 'g', 'e', 't', '_',
       'o', 'u', 't', 'p', 'u', 't' };
 
-    char_T tmp_2[9];
+    char_T tmp_2[16];
     char_T tmp_3[18];
     char_T tmp_4[15];
     int32_T i;
@@ -3071,11 +3072,11 @@ void ACC_initialize(void)
     ACC_DW.obj.matlabCodegenIsDeleted = false;
     ACC_DW.obj.isSetupComplete = false;
     ACC_DW.obj.isInitialized = 1;
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < 15; i++) {
       tmp_2[i] = tmp[i];
     }
 
-    tmp_2[8] = '\x00';
+    tmp_2[15] = '\x00';
     Pub_ACC_136.createPublisher(tmp_2, 1);
     ACC_DW.obj.isSetupComplete = true;
 

@@ -67,7 +67,7 @@ int main(int argc, char **argv)
 
         drive_ctrl.veh_spd = vehicle_data[x][1];
         drive_ctrl.acc_gap_level = 2; 
-        drive_ctrl.acc_speed_set_point = 72; 
+        drive_ctrl.acc_speed_set_point = 90; 
 
         target_output.obj_vx = vehicle_data[x][2];
         target_output.obj_dx = vehicle_data[x][3];
