@@ -208,9 +208,11 @@ void MasterTask::CAV_2_2() {
 void MasterTask::LCC_1() {
     if (LCC_STEER > 30) {
         can_comms_msg.lcc_steer = 30;
+        std::cout << "LCC_1 lcc_steer = 30" << std::endl;
     }
     else if (LCC_STEER < -30) {
         can_comms_msg.lcc_steer = -30;
+        std::cout << "LCC_1 lcc_steer = -30" << std::endl;
     }
 }
 

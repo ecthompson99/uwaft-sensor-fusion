@@ -7,6 +7,7 @@ int main(int argc, char** argv) {
 
   while (ros::ok()) {
     
+    master_task.LCC_1();
     master_task.AEB_24();
     master_task.LCC_10();
     master_task.LCC_3();
@@ -25,7 +26,7 @@ int main(int argc, char** argv) {
     
     master_task.publish_can_comms_msg();
     ros::spinOnce();
-    ros::Duration(1).sleep();
+    // ros::Duration(1).sleep();
   }
 
   return 0;
