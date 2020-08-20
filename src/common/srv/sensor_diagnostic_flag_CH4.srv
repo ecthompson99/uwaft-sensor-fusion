@@ -1,2 +1,2 @@
-bool mobileye = true;
+bool mobileye;
 ---
