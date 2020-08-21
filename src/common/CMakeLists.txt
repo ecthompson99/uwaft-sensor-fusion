@@ -56,21 +56,23 @@ add_message_files(
   radar_object_data.msg
   raw_sensor_object_data_msg.msg
   raw_lane_data.msg
-  sensor_diagnostic_data_msg.msg
-  sensor_diagnostic_flag_msg.msg
   sudo_driver_input_msg.msg
   target_output_msg.msg
   tracked_output_msg.msg
   associated_me_msg.msg
   associated_radar_msg.msg
+  acc_output_msg.msg
+  aeb_output_msg.msg
+  lcc_output_msg.msg
 )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+  FILES
+  sensor_diagnostic_flag_CH2.srv
+  sensor_diagnostic_flag_CH3.srv
+  sensor_diagnostic_flag_CH4.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(

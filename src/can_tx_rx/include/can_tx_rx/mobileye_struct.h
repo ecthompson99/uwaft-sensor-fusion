@@ -50,6 +50,17 @@ class Mobileye_RX{
             bool right_lane_type_is_in_range; 
             double right_quality_decode; 
             bool right_quality_is_in_range; 
+            
+            double obstacle_lane_decode;
+            bool obstacle_lane_decode_is_in_range;
+
+            //double object_accel_x_decode; 
+            //bool obstacle_accel_x_is_in_range; 
+
+            //double obstacle_id_decode;
+            //bool obstacle_id_is_in_range; 
+            //double obstacle_lane_decode; 
+            //bool obstacle_lane_is_in_range; 
 
             long id; 
             uint8_t can_data[8]; 

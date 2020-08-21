@@ -143,42 +143,35 @@ int main(int argc, char **argv)
     int pack_return_right_a = ext_log_data_lka_right_lane_a_pack(can_msg_right_a, frame_right_a, size);
     int pack_return_right_b = ext_log_data_lka_right_lane_b_pack(can_msg_right_b, frame_right_b, size);
 
-    int id = 1894;
-    //1830
+    int id = 1830;
     //goes through all valid id messages, sending the packed can message when appropriate  
     // starts at lower id messages above 1849, then goes back to sending appropriate messages
     while (ros::ok()) 
     {
          
          if(id > 1900){
-             id = 1894;
-             //1849 
+             id = 1849;
         }
         
         canStatus stat; 
         if(id ==1894){ //LKA Left A 
             stat = canWrite(hnd,id, can_msg_left_a, 8, canOPEN_ACCEPT_VIRTUAL);
-            std::cout << id << std::endl; 
         }
         else if(id==1895){ //LKA Left B
             stat = canWrite(hnd,id, can_msg_left_b, 8, canOPEN_ACCEPT_VIRTUAL);
-            std::cout << id << std::endl; 
         }
         else if(id ==1896){ //LKA Right A 
             stat = canWrite(hnd,id, can_msg_right_a, 8, canOPEN_ACCEPT_VIRTUAL);
-            std::cout << id << std::endl; 
         }
         else if(id==1897){ //LKA Right B
             stat = canWrite(hnd,id, can_msg_right_b, 8, canOPEN_ACCEPT_VIRTUAL);
-            std::cout << id << std::endl; 
         }
-        /*
-        if(id%3==1){ //A Frame
+        else if(id%3==1){ //A Frame
             stat = canWrite(hnd, id, can_msg_a, 8, canOPEN_ACCEPT_VIRTUAL); 
         }
         else{ //B or C Frame
             stat = canWrite(hnd, id, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
-        }*/
+        }
         canStatus queue_status = canWriteSync(hnd, 1000);
         if (stat < 0)
         {
@@ -187,7 +180,7 @@ int main(int argc, char **argv)
         //if (queue_status == canOK) std::cout << "Queue emptied" << std::endl;
         ros::spinOnce();
         ros::Duration(0.5).sleep();
-        //std::cout << "id = " << id << std::endl; 
+        std::cout << "id = " << id << std::endl; 
         id++; 
     }
     

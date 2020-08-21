@@ -161,6 +161,7 @@ add_executable(
     src/master_task_main.cpp
     src/master_task.cpp
 )
+add_executable(unit_test src/unit_test.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -185,6 +186,7 @@ target_link_libraries(
     ${PROJECT_NAME}
     ${catkin_LIBRARIES}
 )
+target_link_libraries(unit_test ${catkin_LIBRARIES})
 
 target_compile_definitions(
     ${PROJECT_NAME}

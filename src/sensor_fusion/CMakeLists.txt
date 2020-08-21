@@ -275,11 +275,11 @@ target_link_libraries(
 #    ## Add gtest based cpp test target and link libraries
 #    catkin_add_gtest(
 #        ${PROJECT_NAME}-test
-#        test/test_sensor_fusion.cpp
-#        src/sensor_fusion_main.cpp
-#        src/server.cpp
-#        src/client.cpp
-#        src/data_association.cpp
+##        test/test_sensor_fusion.cpp
+##        src/sensor_fusion_main.cpp
+##        src/server.cpp
+##        src/client.cpp
+##        src/data_association.cpp
 #    )
 #    if(TARGET ${PROJECT_NAME}-test)
 #        target_link_libraries(
