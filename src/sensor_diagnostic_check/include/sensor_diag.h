@@ -16,6 +16,9 @@
 
 #define TX_RX_MESSAGE_BUFFER_SIZE 1000
 
+// CAN message constants
+
+
 class SensorDiagnostics {
     public: 
         SensorDiagnostics(ros::NodeHandle* diag_nodehandle);    //constructor - pointer handle
