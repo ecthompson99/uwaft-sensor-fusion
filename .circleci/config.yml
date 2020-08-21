@@ -28,4 +28,5 @@ jobs:
             mkdir src
             make
             sudo make install
+            cd ..
             catkin build
