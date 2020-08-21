@@ -16,10 +16,10 @@ jobs:
             rosdep update
             echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
             source ~/.bashrc
-            sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
-            sudo apt install python-catkin-tools
+            sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential python-catkin-tools
             pip install catkin_pkg
             pip install pyyaml
+            pip install empy
             sudo apt-get install build-essential
             sudo apt-get install linux-headers-`uname -r`
             wget --content-disposition "https://www.kvaser.com/download/?utm_source=software&utm_ean=7330130980754&utm_status=latest"
