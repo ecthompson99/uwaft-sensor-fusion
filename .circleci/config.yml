@@ -18,4 +18,5 @@ jobs:
             source ~/.bashrc
             sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
             sudo apt install python-catkin-tools
+            sudo apt install python-catkin-pkg
             catkin build
