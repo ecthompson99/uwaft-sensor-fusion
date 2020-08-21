@@ -19,36 +19,38 @@ int main(int argc, char **argv)
    srv3.request.right_corner_radar = true;
    srv4.request.mobileye = true;
 
-   if (client2.call(srv2))
-   {
-     ROS_INFO("srv2 successfully called!");
-   }
-   else
-   {
-     ROS_ERROR("Failed to call service srv2");
-     return 1;
-   }
-
-   if (client3.call(srv3))
-   {
-     ROS_INFO("srv3 successfully called!");
-   }
-   else
-   {
-     ROS_ERROR("Failed to call service srv3");
-     return 1;
-   }
-
-   if (client4.call(srv4))
-   {
-     ROS_INFO("srv4 successfully called!");
-   }
-   else
-   {
-     ROS_ERROR("Failed to call service srv4");
-     return 1;
-   }
-
+      if (client2.call(srv2))
+      {
+        ROS_INFO("srv2 successfully called!");
+      }
+      else
+      {
+        ROS_ERROR("Failed to call service srv2");
+        return 1;
+      }
+   
+     if (client3.call(srv3))
+      {
+        ROS_INFO("srv3 successfully called!");
+      }
+      else
+      {
+        ROS_ERROR("Failed to call service srv3");
+        return 1;
+      }
+   
+   
+      if (client4.call(srv4))
+      {
+        ROS_INFO("srv4 successfully called!");
+      }
+      else
+      {
+        ROS_ERROR("Failed to call service srv4");
+        return 1;
+      }
+   
+   
 
    ros::Publisher drive_crtl_pub = n.advertise<common::drive_ctrl_input_msg>("drive_control_input", 1000);
    ros::Publisher acc_pub = n.advertise<common::acc_output_msg>("acc_output", 1000);
@@ -62,12 +64,35 @@ int main(int argc, char **argv)
     * a unique string for each message.
     */
    int count = 0;
+   ros::WallTime beginning = ros::WallTime::now();
    while (ros::ok())
    {
      common::drive_ctrl_input_msg drive_ctrl_msg;
      common::acc_output_msg acc_msg;
      common::aeb_output_msg aeb_msg;
      common::lcc_output_msg lcc_msg;
+     
+    //  ros::WallTime current = ros::WallTime::now();
+    //  if ((current.toSec() - beginning.toSec()) < 6) {
+    //    drive_ctrl_msg.acc_activation = 1;
+    //    std::cout << "acc_activation = 1" << std::endl;
+    //  }
+    //  else {
+    //    drive_ctrl_msg.acc_activation = 0;
+    //    std::cout << "acc_activation = 0" << std::endl;
+    //  }
+
+    //  if ((current.toSec() - beginning.toSec()) < 6) {
+    //    drive_ctrl_msg.acc_activation = 0;
+    //  }
+    //  else if ((current.toSec() - beginning.toSec()) > 6 && (current.toSec() - beginning.toSec()) < 8) {
+    //    drive_ctrl_msg.acc_activation = 1;
+    //    std::cout << "acc_activation = 1" << std::endl;
+    //  }
+    //  else {
+    //    drive_ctrl_msg.acc_activation = 0;
+    //    std::cout << "acc_activation = 0" << std::endl;
+    //  }
 
      drive_ctrl_msg.acc_activation = 1;
      drive_ctrl_msg.aeb_activation = 1;
@@ -75,19 +100,17 @@ int main(int argc, char **argv)
      drive_ctrl_msg.acc_allowed = 1;
      drive_ctrl_msg.aeb_allowed = 1;
      drive_ctrl_msg.lcc_allowed = 1;
-     drive_ctrl_msg.alive_rolling_counter_MABx = 2;
-     drive_ctrl_msg.alive_rolling_counter_Jetson = 2;
      drive_ctrl_msg.acc_gap_level = 2;
      drive_ctrl_msg.str_ang = 10.5;
      drive_ctrl_msg.acc_speed_set_point = 30.5;
      drive_ctrl_msg.veh_spd = 25.5;
 
      acc_msg.acc_fault = false;
-     acc_msg.acc_accel = 4;
+     acc_msg.acc_accel = 2;
 
      aeb_msg.aeb_fault = false;
      aeb_msg.aeb_engaged = true;
-     aeb_msg.aeb_accel = 4;
+     aeb_msg.aeb_accel = -2;
 
      lcc_msg.lcc_fault = false;
      lcc_msg.lcc_steer = 2.5;
@@ -106,6 +129,7 @@ int main(int argc, char **argv)
      ros::spinOnce();
  
      loop_rate.sleep();
+    // ros::Duration(0.1).sleep();
      ++count;
    }
  

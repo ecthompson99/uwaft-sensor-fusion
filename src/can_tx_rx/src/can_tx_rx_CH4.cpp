@@ -106,6 +106,9 @@ int main(int argc, char **argv) {
         case 3:
           {
             int ext_log_data_obstacle_data_b_unpack_status = ext_log_data_obstacle_data_b_unpack(&mobeye_rx.frame_b_unpacked,mobileye_obj[index].can_data,SIZE_OF_MSG); 
+            mobileye_obj[index].obstacle_lane_decode = ext_log_data_obstacle_data_b_obstacle_lane_decode(mobeye_rx.frame_b_unpacked.obstacle_lane);
+            mobileye_obj[index].obstacle_lane_decode_is_in_range = ext_log_data_obstacle_data_b_obstacle_lane_is_in_range(mobeye_rx.frame_b_unpacked.obstacle_lane);
+            obj_data.MeLane = mobeye_rx.signal_in_range(mobileye_obj[index].obstacle_lane_decode, mobileye_obj[index].obstacle_lane_decode_is_in_range);
             break;
           }
         case 4:

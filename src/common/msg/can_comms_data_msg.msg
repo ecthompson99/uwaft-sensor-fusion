@@ -2,9 +2,9 @@ Header header
 
 float64 long_accel
 float64 lcc_steer
-bool acc_active
-bool aeb_active
-bool lcc_active
+bool acc_valid
+bool aeb_valid
+bool lcc_valid
 bool acc_fault
 bool aeb_fault
 bool lcc_fault
