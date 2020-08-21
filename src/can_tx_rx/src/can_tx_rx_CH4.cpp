@@ -84,12 +84,12 @@ int main(int argc, char **argv) {
             obj_data.MeDy = mobeye_rx.signal_in_range(mobileye_obj.obstacle_pos_x_decode, mobileye_obj.obstacle_pos_x_is_in_range);
 
             obj_data.MeTimestamp = mobileye_obj.time_stamp;
-            /*
+
             std::cout << "Velocity: " << obj_data.MeVx << std::endl;
             std::cout << "Longitudinal Distance: " << obj_data.MeDx << std::endl;
             std::cout << "Lateral Distance: " << obj_data.MeDy << std::endl;
             std::cout << "Message sent at " << obj_data.MeTimestamp << std::endl; 
-            */
+            
             break; 
           }          
         case 3:
@@ -126,12 +126,11 @@ int main(int argc, char **argv) {
             raw_lane.Curv_Deriv_L = mobeye_rx.signal_in_range(mobileye_obj.left_curvature_derivative_decode, mobileye_obj.left_curvature_derivative_is_in_range);
             
             std::cout << "Left Lane Type: " << raw_lane.Lane_Type_L << std::endl;
-            /*
             std::cout << "Left Quality: " << raw_lane.Qual_L << std::endl;
-            std::cout << "Left Position: " << raw_lane.LatPos_L << std::endl;
-            std::cout << "Left Curvature " << raw_lane.Curv_L << std::endl; 
-            std::cout << "Left Curvature Derivative: " << raw_lane.Curv_Deriv_L << std::endl;
-            */
+            std::cout << std::setprecision(7) << "Left Position: " << raw_lane.LatPos_L << std::endl;
+            std::cout << std::setprecision(7) << "Left Curvature " << raw_lane.Curv_L << std::endl; 
+            std::cout << std::setprecision(7) << "Left Curvature Derivative: " << raw_lane.Curv_Deriv_L << std::endl;
+
             break; 
           }
         case 6:
@@ -141,7 +140,7 @@ int main(int argc, char **argv) {
             mobileye_obj.left_heading_angle_is_in_range =  ext_log_data_lka_left_lane_b_heading_angle_is_in_range(mobeye_rx.left_b_unpacked.heading_angle); 
             raw_lane.Head_Ang_L = mobeye_rx.signal_in_range(mobileye_obj.left_heading_angle_decode, mobileye_obj.left_heading_angle_is_in_range);
             
-            std::cout << "Left Heading Angle: " << raw_lane.Head_Ang_L << std::endl;
+            std::cout << std::setprecision(7) << "Left Heading Angle: " << raw_lane.Head_Ang_L << std::endl;
 
             break;
           }
@@ -169,12 +168,10 @@ int main(int argc, char **argv) {
           raw_lane.Curv_Deriv_R = mobeye_rx.signal_in_range(mobileye_obj.right_curvature_derivative_decode, mobileye_obj.right_curvature_derivative_is_in_range);
           
           std::cout << "Right Lane Type: " << raw_lane.Lane_Type_R << std::endl;
-          /*
           std::cout << "Right Quality: " << raw_lane.Qual_R << std::endl;
-          std::cout << "Right Position: " << raw_lane.LatPos_R << std::endl;
-          std::cout << "Right Curvature: " << raw_lane.Curv_R << std::endl; 
-          std::cout << "Right Curvature Derivative: " << raw_lane.Curv_Deriv_R << std::endl;
-          */
+          std::cout << std::setprecision(7) << "Right Position: " << raw_lane.LatPos_R << std::endl;
+          std::cout << std::setprecision(7) << "Right Curvature: " << raw_lane.Curv_R << std::endl; 
+          std::cout << std::setprecision(7) << "Right Curvature Derivative: " << raw_lane.Curv_Deriv_R << std::endl;
           break; 
         }
       case 8:
@@ -183,8 +180,6 @@ int main(int argc, char **argv) {
           mobileye_obj.right_heading_angle_decode =  ext_log_data_lka_right_lane_b_heading_angle_decode(mobeye_rx.right_b_unpacked.heading_angle); 
           mobileye_obj.right_heading_angle_is_in_range =  ext_log_data_lka_right_lane_b_heading_angle_is_in_range(mobeye_rx.right_b_unpacked.heading_angle); 
           raw_lane.Head_Ang_R = mobeye_rx.signal_in_range(mobileye_obj.right_heading_angle_decode, mobileye_obj.right_heading_angle_is_in_range);
-          
-          //std::cout << "Right Heading Angle: " << raw_lane.Head_Ang_R << std::endl;
 
           break;
         }
