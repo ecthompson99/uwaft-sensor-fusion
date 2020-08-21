@@ -69,11 +69,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs  # Or other packages containing msgs
-   common
- )
+ #generate_messages(
+  # DEPENDENCIES
+  # std_msgs  # Or other packages containing msgs
+  # common
+ #)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -147,15 +147,15 @@ include_directories(
 #target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES})
 
 add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp)
-add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+#add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH4 ${catkin_LIBRARIES})
 
 add_executable(virtual_can_tx src/virtual_can_tx.cpp)
-add_dependencies(virtual_can_tx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+#add_dependencies(virtual_can_tx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(virtual_can_tx ${catkin_LIBRARIES})
 
 add_executable(virtual_can_rx src/virtual_can_rx.cpp)
-add_dependencies(virtual_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+#add_dependencies(virtual_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(virtual_can_rx ${catkin_LIBRARIES})
 
 ## Rename C++ executable without prefix
