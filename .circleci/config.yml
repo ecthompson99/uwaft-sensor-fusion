@@ -25,6 +25,7 @@ jobs:
             wget --content-disposition "https://www.kvaser.com/download/?utm_source=software&utm_ean=7330130980754&utm_status=latest"
             tar xvzf linuxcan.tar.gz
             cd linuxcan
+            mkdir src
             make
             sudo make install
             sudo make load
