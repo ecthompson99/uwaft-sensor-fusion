@@ -30,4 +30,3 @@ jobs:
             sudo make install
             cd ..
             catkin build
-            catkin build
