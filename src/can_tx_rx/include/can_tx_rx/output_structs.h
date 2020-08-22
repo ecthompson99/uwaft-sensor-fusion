@@ -60,6 +60,7 @@ struct radar_information {
   uint8_t channel_number;
   unsigned long timestamp;
   uint8_t radar_number;
+  uint8_t calculated_checksum;
 } radar_info;
 
 struct target_tracking_info {

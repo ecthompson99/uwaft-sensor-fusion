@@ -18,7 +18,7 @@ uint8_t left_prev_mc = 0;
 uint8_t rght_prev_tc_counter = 0; // Right Radar counter trackers
 uint8_t rght_prev_mc = 0;
 
-// CRC and checksum calculation would be best added to CAN RX since all messages are availibe there 
+
 uint8_t crc8bit_calculation(const uint8_t* crc_dataPtr, uint32_t crc_length, uint8_t crc_bytePos){
     unsigned char crc = 0xFF;
 
