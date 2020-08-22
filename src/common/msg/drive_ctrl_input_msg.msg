@@ -8,8 +8,8 @@ bool acc_allowed
 bool aeb_allowed
 bool lcc_allowed
 
-bool MABx_alive;
-bool Jetson_alive;
+uint64 alive_rolling_counter_MABx
+uint64 alive_rolling_counter_Jetson
 
 float64 acc_speed_set_point
 uint8 acc_gap_level
