@@ -32,7 +32,6 @@ find_package(
 	message_generation
     rospy
     common
-    ecmc
 )
 
 ## System dependencies are found with CMake's conventions
