@@ -82,6 +82,7 @@ void get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8
   }
 }
 
+
 int main(int argc, char** argv) {
   ros::init(argc, argv, "can_tx_rx_CH2");
   ros::NodeHandle can_tx_rx_CH2_handle;
@@ -138,6 +139,8 @@ int main(int argc, char** argv) {
 
   while (ros::ok()) {
     canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
+    
+    uint8_t radar_calculated_checksum;
 
     if (canOK == stat) {
       // Front radar = radar_1 and rear radar = radar_2

@@ -139,6 +139,9 @@ int main(int argc, char **argv) {
   while (ros::ok()) {
     canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
 
+    uint8_t left_radar_calculated_checksum;
+    uint8_t right_radar_calculated_checksum;
+
     if (canOK == stat) {
       // Left corner radar = radar_1 and right corner radar = radar_2
       get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num);
