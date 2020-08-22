@@ -175,7 +175,7 @@ add_executable(unit_test src/unit_test.cpp)
 add_dependencies(
     ${PROJECT_NAME}
     ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    common
+    ${catkin_EXPORTED_TARGETS}
 )
 
 ## Specify libraries to link a library or executable target against
@@ -245,7 +245,7 @@ if (CATKIN_ENABLE_TESTING)
             ${catkin_LIBRARIES}
         )
     endif()
-    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
     target_compile_definitions(
         ${PROJECT_NAME}-test
         PUBLIC

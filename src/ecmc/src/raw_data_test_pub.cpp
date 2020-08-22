@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
     canSetBusOutputControl(hnd, canDRIVER_NORMAL);
     canBusOn(hnd);
-    char *can_msg = "HELLO!";
+    char can_msg[] = "HELLO!";
 
     while(ros::ok()) {
         test_data_pub.publish(msg);

@@ -144,9 +144,9 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/env_state.cpp
-# )
+add_library(${PROJECT_NAME}
+  src/env_state.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -169,8 +169,8 @@ add_executable(
     src/object_state.cpp
 )
 
-add_dependencies(data_association ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
-add_dependencies(environment_state ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+add_dependencies(data_association ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(environment_state ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(
     environment_state

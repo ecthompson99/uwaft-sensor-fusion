@@ -74,9 +74,7 @@ add_message_files(
    can_comms_data_msg.msg
    drive_control_input_msg.msg
    fused_object_data_msg.msg
-   sensor_diagnostic_flag_msg.msg
    raw_sensor_object_data_msg.msg
-   sensor_diagnostic_data_msg.msg
    sudo_driver_input_msg.msg
  )
 
