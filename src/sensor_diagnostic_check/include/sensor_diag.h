@@ -7,7 +7,6 @@
 #include <cstdlib>
 // subscriber includes
 #include "common/sensor_diagnostic_data_msg.h"  // will be unpacked can messages - emulating CANRXTX Node
-#include "common/sensor_diagnostic_flag_msg.h"  // will be unpacked can messages - emulating CANRXTX Node
 
 // srv files
 #include "common/sensor_diagnostic_flag_CH2.h"  
@@ -24,7 +23,7 @@ class SensorDiagnostics {
         SensorDiagnostics(ros::NodeHandle* diag_nodehandle);    //constructor - pointer handle
     private: 
         ros::NodeHandle* diag_nodehandle;
-        ros::ServiceClient client_ch2; //
+        ros::ServiceClient client_ch2;
         ros::ServiceClient client_ch3;
         ros::ServiceClient client_ch4;
 

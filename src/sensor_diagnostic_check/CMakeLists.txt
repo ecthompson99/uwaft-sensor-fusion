@@ -67,8 +67,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
-#   Service1.srv
-#   Service2.srv
+#   sensor_diagnostic_flag_CH2
+#   sensor_diagnostic_flag_CH3
+#   sensor_diagnostic_flag_CH4
 # )
 
 ## Generate actions in the 'action' folder
@@ -79,10 +80,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs  # Or other packages containing msgs
+   common
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -145,8 +147,11 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/sensor_diagnostic_check_node.cpp)
+
 add_executable(sensor_diagnostic src/sensor_diag.cpp)
 add_executable(mock_can_rx src/mock_can_rx.cpp)
+add_executable(mock_master src/mock_master.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -157,15 +162,20 @@ add_executable(mock_can_rx src/mock_can_rx.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 add_dependencies(sensor_diagnostic ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 add_dependencies(mock_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+add_dependencies(mock_master ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
+
 target_link_libraries(sensor_diagnostic ${catkin_LIBRARIES})
 target_link_libraries(mock_can_rx ${catkin_LIBRARIES})
+target_link_libraries(mock_master ${catkin_LIBRARIES})
+
 
 target_compile_definitions(
     sensor_diagnostic

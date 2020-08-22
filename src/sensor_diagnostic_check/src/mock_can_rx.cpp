@@ -1,4 +1,4 @@
-#include "sensor_diag.h"
+#include "sensor_diag.h" //message and service file declarations
 
 int main(int argc, char **argv){
 
@@ -38,6 +38,6 @@ int main(int argc, char **argv){
     msg.quality = 0;
 
     diag_pub.publish(msg);
-    ros::spinOnce();
+    ros::spin();
 
 }  
