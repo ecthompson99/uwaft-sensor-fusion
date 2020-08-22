@@ -4,6 +4,7 @@
 #include "common/filtered_object_msg.h"
 #include "common/mobileye_object_data.h"
 #include "common/object_deletion_msg.h"
+#include "common/raw_lane_data.h"
 #include "common/radar_object_data.h"
 #include "common/raw_sensor_object_data_msg.h"
 #include "common/sudo_driver_input_msg.h"
