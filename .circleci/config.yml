@@ -29,6 +29,5 @@ jobs:
             make
             sudo make install
             cd ..
-            catkin build common
-            catkin build sensor_fusion
+            catkin build
             catkin build
