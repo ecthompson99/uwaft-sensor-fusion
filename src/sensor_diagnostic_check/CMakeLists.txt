@@ -21,7 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
-  common
+  ecmc
 )
 
 ## System dependencies are found with CMake's conventions
@@ -145,7 +145,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/sensor_diagnostic_check_node.cpp)
-add_executable(sensor_diagnostic src/sensor_diag.cpp)
+add_executable(${PROJECT_NAME} src/sensor_diag.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -155,17 +155,17 @@ add_executable(sensor_diagnostic src/sensor_diag.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(sensor_diagnostic ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+#add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(sensor_diagnostic ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 target_compile_definitions(
-    sensor_diagnostic
+    ${PROJECT_NAME}
     PUBLIC
     ROSCONSOLE_MIN_SEVERITY=${SENSOR_DIAGNOSTIC_VERBOSITY}
 )

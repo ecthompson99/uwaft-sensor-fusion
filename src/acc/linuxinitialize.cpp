@@ -347,54 +347,53 @@ static void setThreadPriority(const int priority, pthread_attr_t *attr, struct s
 /* Externally visible functions */
 /* ---------------------------- */
 
-void mw_CreateTask(void (*taskHandler)(void), const char* taskName, int priority, int policy, int coreSelection, int coreNum)
-{
-    int status;
-    int inherit;
-    pthread_attr_t attr;
-    pthread_t thread;
-    struct sched_param param;
-    size_t stackSize;
-    pthread_attr_init(&attr);
-    cpu_set_t cpuset;
-    char thisTaskName[MW_MAX_TASKNAME];
+void mw_CreateTask(void *(*taskHandler)(void *), const char *taskName, int priority, int policy, int coreSelection,
+                   int coreNum) {
+  int status;
+  int inherit;
+  pthread_attr_t attr;
+  pthread_t thread;
+  struct sched_param param;
+  size_t stackSize;
+  pthread_attr_init(&attr);
+  cpu_set_t cpuset;
+  char thisTaskName[MW_MAX_TASKNAME];
 
-    /* Set thread inherit attribute */
-    inherit = PTHREAD_EXPLICIT_SCHED;
-    status = pthread_attr_setinheritsched(&attr, inherit);
-    CHECK_STATUS(status, 0, "pthread_attr_setinheritsched");
+  /* Set thread inherit attribute */
+  inherit = PTHREAD_EXPLICIT_SCHED;
+  status = pthread_attr_setinheritsched(&attr, inherit);
+  CHECK_STATUS(status, 0, "pthread_attr_setinheritsched");
 
-    /* Set thread detach attribute */
-    status = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-    CHECK_STATUS(status, 0, "pthread_attr_setdetachstate");
+  /* Set thread detach attribute */
+  status = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+  CHECK_STATUS(status, 0, "pthread_attr_setdetachstate");
 
-    /* Set thread stack size attribute */
-    stackSize = (512 > PTHREAD_STACK_MIN) ? 512:PTHREAD_STACK_MIN;
-    status = pthread_attr_setstacksize(&attr, stackSize);
-    CHECK_STATUS(status, 0, "pthread_attr_setstacksize");
+  /* Set thread stack size attribute */
+  stackSize = (512 > PTHREAD_STACK_MIN) ? 512 : PTHREAD_STACK_MIN;
+  status = pthread_attr_setstacksize(&attr, stackSize);
+  CHECK_STATUS(status, 0, "pthread_attr_setstacksize");
 
-    /* Set thread schedule policy attribute */
-    policy = SCHED_FIFO;
-    status = pthread_attr_setschedpolicy(&attr, policy);
-    CHECK_STATUS(status, 0, "pthread_attr_setschedpolicy");
+  /* Set thread schedule policy attribute */
+  policy = SCHED_FIFO;
+  status = pthread_attr_setschedpolicy(&attr, policy);
+  CHECK_STATUS(status, 0, "pthread_attr_setschedpolicy");
 
-    /* Set thread priority attribute */
-    param.sched_priority = priority;
-    status = pthread_attr_setschedparam(&attr, &param);
-    CHECK_STATUS(status, 0, "pthread_attr_setschedparam");
-    
-    /* Set the thread core affinity */
-    if (2 == coreSelection) 
-    {
-        CPU_ZERO(&cpuset);
-        CPU_SET(coreNum - 1, &cpuset); /* Cores numbered starting from 0 */
-        status =  pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), &cpuset);
-        CHECK_STATUS(status, 0, "pthread_attr_setaffinity_np");
-    }
+  /* Set thread priority attribute */
+  param.sched_priority = priority;
+  status = pthread_attr_setschedparam(&attr, &param);
+  CHECK_STATUS(status, 0, "pthread_attr_setschedparam");
 
-    /* Create the thread */
-    status = pthread_create(&thread, &attr, (void *) taskHandler, NULL);
-    CHECK_STATUS(status, 0, "pthread_create");
+  /* Set the thread core affinity */
+  if (2 == coreSelection) {
+    CPU_ZERO(&cpuset);
+    CPU_SET(coreNum - 1, &cpuset); /* Cores numbered starting from 0 */
+    status = pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), &cpuset);
+    CHECK_STATUS(status, 0, "pthread_attr_setaffinity_np");
+  }
+
+  /* Create the thread */
+  status = pthread_create(&thread, &attr, taskHandler, NULL);
+  CHECK_STATUS(status, 0, "pthread_create");
 #ifdef MW_TSKMGR_TIMER_DRIVEN_TASKS
     /* Set name of the thread */
     snprintf(thisTaskName, MW_MAX_TASKNAME, "%s", taskName);
