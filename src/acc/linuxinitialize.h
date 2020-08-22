@@ -1,7 +1,7 @@
 /* Copyright 2013-2017 The MathWorks, Inc. */
 #ifndef _LINUXINITIALIZE_H_
 #define _LINUXINITIALIZE_H_
-#define _GNU_SOURCE
+#define _GNU_SOURCE 1
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>

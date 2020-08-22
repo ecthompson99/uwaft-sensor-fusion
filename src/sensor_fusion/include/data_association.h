@@ -6,11 +6,11 @@
 
 #include "sensor_fusion/env_state_srv.h"
 
-#include "common/mobileye_object_data.h"
-#include "common/radar_object_data.h"
-#include "common/sensor_diagnostic_flag_msg.h"
 #include "common/associated_me_msg.h"
 #include "common/associated_radar_msg.h"
+#include "common/mobileye_object_data.h"
+#include "common/radar_object_data.h"
+#include "ecmc/sensor_diagnostic_flag_msg.h"
 
 #define MOBILEYE_TOPIC "MOBILEYE_TOPIC"
 #define FRONT_RADAR_TOPIC "FRONT_RADAR_TOPIC"
@@ -55,9 +55,9 @@ class DataAssociation {
 		void sensor_me_data_obj_callback(const common::mobileye_object_data& sensor_data);
 
 		ros::Subscriber sensor_diag_sub;
-		void sensor_diagnostics_callback(const common::sensor_diagnostic_flag_msg& sensor_diag);
+                void sensor_diagnostics_callback(const ecmc::sensor_diagnostic_flag_msg& sensor_diag);
 
-		std::vector<ObjectState> potential_objs;
+                std::vector<ObjectState> potential_objs;
 
 		bool objects_match(ObjectState obj, double sensor_dx, double sensor_dy);
 

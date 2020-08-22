@@ -181,14 +181,15 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
     potential_objs.emplace_back(ObjectState(recvd_data.MeDx, adjusted_dy));
 }
 
-void DataAssociation::sensor_diagnostics_callback(const common::sensor_diagnostic_flag_msg& sensor_diag) {
-    const uint8_t reliability_threshold = 10;
+void DataAssociation::sensor_diagnostics_callback(const ecmc::sensor_diagnostic_flag_msg& sensor_diag) {
+  const uint8_t reliability_threshold = 10;
 
-    for (int i = 0; i < 6; ++i) {
-        if (sensor_diag.radar_reliability[i] > reliability_threshold) {
-            std::cout << "reliability of " << unsigned(sensor_diag.radar_reliability[i]) << " is above realibility threshold of " << unsigned(reliability_threshold)<< std::endl;
-        }
+  for (int i = 0; i < 6; ++i) {
+    if (sensor_diag.radar_reliability[i] > reliability_threshold) {
+      std::cout << "reliability of " << unsigned(sensor_diag.radar_reliability[i])
+                << " is above realibility threshold of " << unsigned(reliability_threshold) << std::endl;
     }
+  }
 }
 
 int main(int argc, char** argv){
