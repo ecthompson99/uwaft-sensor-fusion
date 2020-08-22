@@ -3,8 +3,7 @@
 # kaiROS
 CAV system repo. This is the main software that will run on the Tank.
 
-https://img.shields.io/circleci/build/github/uwaft/kaiROS?token=cc2c9a2c8395746b93cead02eb170c6642d5cbf4
-
+![](https://img.shields.io/circleci/build/github/uwaft/kaiROS?token=cc2c9a2c8395746b93cead02eb170c6642d5cbf4)
 
 
 ## Instruction: From clone to build and run
