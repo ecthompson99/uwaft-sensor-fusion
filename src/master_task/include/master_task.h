@@ -72,8 +72,8 @@ class MasterTask {
   bool AEB_ALLOWED;
   bool LCC_ALLOWED;
 
-  uint64_t alive_rolling_counter_MABx;
-  uint64_t alive_rolling_counter_Jetson;
+  bool MABx_alive;
+  bool Jetson_alive;
 
   double acc_speed_set_point;
   int acc_gap_level;

@@ -33,8 +33,8 @@ void MasterTask::drive_ctrl_msg_callback(const common::drive_ctrl_input_msg& dri
     AEB_ALLOWED = drive_ctrl_msg.aeb_allowed;
     LCC_ALLOWED = drive_ctrl_msg.lcc_allowed;
 
-    alive_rolling_counter_MABx = drive_ctrl_msg.alive_rolling_counter_MABx;
-    alive_rolling_counter_Jetson = drive_ctrl_msg.alive_rolling_counter_Jetson;
+    MABx_alive = drive_ctrl_msg.MABx_alive;
+    Jetson_alive = drive_ctrl_msg.Jetson_alive;
 
     acc_speed_set_point = drive_ctrl_msg.acc_speed_set_point;
     acc_gap_level = drive_ctrl_msg.acc_gap_level;
