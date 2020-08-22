@@ -1,0 +1,32 @@
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: ubuntu-1604:202007-01
+    steps:
+      - checkout
+      - run:
+          name: "Testing"
+          command: |
+            sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+            sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+            sudo apt-get update
+            sudo apt-get install ros-kinetic-desktop-full
+            sudo rosdep init
+            rosdep update
+            echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
+            source ~/.bashrc
+            sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential python-catkin-tools
+            pip install catkin_pkg
+            pip install pyyaml
+            pip install empy
+            sudo apt-get install build-essential
+            sudo apt-get install linux-headers-`uname -r`
+            wget --content-disposition "https://www.kvaser.com/download/?utm_source=software&utm_ean=7330130980754&utm_status=latest"
+            tar xvzf linuxcan.tar.gz
+            cd linuxcan
+            mkdir src
+            make
+            sudo make install
+            cd ..
+            catkin build

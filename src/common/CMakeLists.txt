@@ -163,7 +163,7 @@ include_directories(
 # )
 
 add_executable(initialize_msg src/initialize_msg.cpp)
-add_dependencies(initialize_msg ${${PROJECT_NAME}_EXPORTED_TARGETS})
+add_dependencies(initialize_msg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(initialize_msg ${catkin_LIBRARIES})
 
 #############
