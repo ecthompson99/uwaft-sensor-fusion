@@ -6,16 +6,14 @@ class ObjectState {
 
     ObjectState(){}
 
-    ObjectState(double dx, double vx, double dy, double vy, double timestamp) :
-    dx(dx),
-    vx(vx),
-    dy(dy),
-    vy(vy),
-    timestamp(timestamp)
+    ObjectState(double in_dx, double in_vx, double in_dy, double in_vy, double in_timestamp)
+        : dx(in_dx),
+          vx(in_vx),
+          dy(in_dy),
+          vy(in_vy),
+          timestamp(in_timestamp)
 
-
-
-    // ADD MORE MEMBERS 
+    // ADD MORE MEMBERS
     // THIS IS THE SRV FILE :
     // uint8[] id
     // float64[] dx
@@ -27,16 +25,15 @@ class ObjectState {
     // float64[] vy
     // float64[] timestamp
     // uint8[] count
-    
+
     {
-        count = 0;
+      count = 0;
     }
 
-    ObjectState(double x, double y) :
-        dx(x), dy(y) {count = 0;}
+    ObjectState(double in_x, double in_y) : dx(in_x), dy(in_y) { count = 0; }
 
-    ObjectState(uint64_t id, double x, double y, double time) :
-        id(id), dx(x), dy(y), timestamp(time) {}
+    ObjectState(uint64_t in_id, double in_x, double in_y, double in_time)
+        : id(in_id), dx(in_x), dy(in_y), timestamp(in_time) {}
 
     friend class DataAssociation;
 

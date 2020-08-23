@@ -9,11 +9,11 @@ else
 	echo
 	if [[ ! "$Reply" =~ ^[Yy]$ ]]; then
 		sudo apt-get remove git
-		sudo apt-get install dh-autoreconf libcurl4-gnutls-dev libexpat1-dev \
+		sudo apt-get -y install dh-autoreconf libcurl4-gnutls-dev libexpat1-dev \
  			 gettext libz-dev libssl-dev
-		sudo apt-get install asciidoc xmlto docbook2x
-		sudo apt-get install install-info
-		sudo apt-get install lcov
+		sudo apt-get -y install asciidoc xmlto docbook2x
+		sudo apt-get -y install install-info
+		sudo apt-get -y install lcov
 		cd ~/Downloads
 		sudo wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.22.0.tar.gz
 		tar -zxf git-2.22.0.tar.gz
@@ -65,7 +65,7 @@ if [ "${#notInstalled[@]}" -gt "0" ]; then
     	sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 		sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 		sudo apt-get update
-		sudo apt-get install ros-kinetic-desktop-full
+		sudo apt-get -y install ros-kinetic-desktop-full
 		sudo rosdep init
 		rosdep update
 		echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
@@ -77,3 +77,7 @@ else
 	echo "All required packages have been installed"
 fi
 
+cd $(dirname ${BASH_SOURCE[0]})
+#Sets the default profile to use all warnings recommended by Jason Turner (See https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md)
+#Note: Removed -Wshadow to avoid excessive errors. Most are underlying design errors that will need to be resolved.
+catkin config --cmake-args -DCMAKE_CXX_FLAGS="-Werror -Wall -Wextra -Wnon-virtual-dtor -pedantic -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wuseless-cast -Wdouble-promotion -Wformat=2" &>/dev/null

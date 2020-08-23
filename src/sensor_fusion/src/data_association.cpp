@@ -4,22 +4,25 @@
 
 double global_clk = 0;
 
-DataAssociation::DataAssociation(ros::NodeHandle* node_handle) : node_handle(node_handle) {
-    
-    client = node_handle->serviceClient<sensor_fusion::env_state_srv>("env_service_topic");
-   
-    sensor_me_data_obj_sub = node_handle->subscribe(MOBILEYE_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_me_data_obj_callback, this);
-    
-    sensor_front_radar_data_obj_sub = node_handle->subscribe(FRONT_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
-    
-    sensor_left_corner_radar_sub = node_handle->subscribe(LEFT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
-    
-    sensor_right_corner_radar_sub = node_handle->subscribe(RIGHT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_radar_data_obj_callback, this);
+DataAssociation::DataAssociation(ros::NodeHandle* in_node_handle) : node_handle(in_node_handle) {
+  client = node_handle->serviceClient<sensor_fusion::env_state_srv>("env_service_topic");
 
-    radar_to_kf_pub = node_handle->advertise<common::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
-    me_to_kf_pub = node_handle->advertise<common::associated_me_msg>(KALMAN_FILTER_ME_TOPIC, 10);
+  sensor_me_data_obj_sub =
+      node_handle->subscribe(MOBILEYE_TOPIC, MESSAGE_BUFFER_SIZE, &DataAssociation::sensor_me_data_obj_callback, this);
 
-    next_id = 0;
+  sensor_front_radar_data_obj_sub = node_handle->subscribe(FRONT_RADAR_TOPIC, MESSAGE_BUFFER_SIZE,
+                                                           &DataAssociation::sensor_radar_data_obj_callback, this);
+
+  sensor_left_corner_radar_sub = node_handle->subscribe(LEFT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE,
+                                                        &DataAssociation::sensor_radar_data_obj_callback, this);
+
+  sensor_right_corner_radar_sub = node_handle->subscribe(RIGHT_CORNER_RADAR_TOPIC, MESSAGE_BUFFER_SIZE,
+                                                         &DataAssociation::sensor_radar_data_obj_callback, this);
+
+  radar_to_kf_pub = node_handle->advertise<common::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
+  me_to_kf_pub = node_handle->advertise<common::associated_me_msg>(KALMAN_FILTER_ME_TOPIC, 10);
+
+  next_id = 0;
 }
 
 // Not called
@@ -69,11 +72,10 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 
     if (client.call(srv)){
         std::cout<<"HEY service is called successfully\n";
-        for(int i = 0; i < srv.response.id.size(); i++){
-            
-            ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.dy[i], srv.response.timestamp[i]);
-        
-            stateVector.push_back(someObj); 
+        for (size_t i = 0; i < srv.response.id.size(); i++) {
+          ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.dy[i], srv.response.timestamp[i]);
+
+          stateVector.push_back(someObj); 
         } 
 
         for (auto obj : stateVector) {
@@ -93,24 +95,23 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
     }    
 
    // CHECK TEMP TRACKS
-    for (int i = 0; i < potential_objs.size(); i++) {  
-        if (radar_match(potential_objs[i], recvd_data.RadarDx, adjusted_dy)) {
+    for (auto obj_iterator = potential_objs.begin(); obj_iterator != potential_objs.end(); obj_iterator++) {
+      if (radar_match(*obj_iterator, recvd_data.RadarDx, adjusted_dy)) {
+        obj_iterator->dx = recvd_data.RadarDx;
+        obj_iterator->dy = adjusted_dy;
+        obj_iterator->count++;
 
-            potential_objs[i].dx = recvd_data.RadarDx;
-            potential_objs[i].dy = adjusted_dy;
-            potential_objs[i].count++;
-
-            if (potential_objs[i].count > POTENTIAL_THRESHOLD) {
-                common::associated_radar_msg matched;
-                matched.obj = recvd_data;
-                matched.obj_id = next_id++;
-                radar_to_kf_pub.publish(matched);
-                potential_objs.erase (potential_objs.begin()+i);
-                std::cout << "Publishing new object that passed threshold and removing from potential queue" << std::endl;
-            }
-
-            return;
+        if (obj_iterator->count > POTENTIAL_THRESHOLD) {
+          common::associated_radar_msg matched;
+          matched.obj = recvd_data;
+          matched.obj_id = next_id++;
+          radar_to_kf_pub.publish(matched);
+          potential_objs.erase(obj_iterator);
+          std::cout << "Publishing new object that passed threshold and removing from potential queue" << std::endl;
         }
+
+        return;
+      }
     }
 
     // ONLY OCCURS IF NOT IN CONFIRMED TRACKS OR TEMP TRACKS
@@ -132,11 +133,10 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
 
     if (client.call(srv)){
         std::cout<<"HEY me\n";
-        for(int i = 0; i < srv.response.id.size(); i++){
-            
-            ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.dy[i], srv.response.timestamp[i]);
-        
-            envState.push_back(someObj); 
+        for (size_t i = 0; i < srv.response.id.size(); i++) {
+          ObjectState someObj(srv.response.id[i], srv.response.dx[i], srv.response.dy[i], srv.response.timestamp[i]);
+
+          envState.push_back(someObj); 
         }
 
         // if the object we received is already in the envState, send it to kf
@@ -157,23 +157,22 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
 
     // now check if it matches any of the potential objects
 
-    for (int i = 0; i < potential_objs.size(); i++) {  
-        if (objects_match(potential_objs[i], recvd_data.MeDx, adjusted_dy)) {
+    for (auto obj_iterator = potential_objs.begin(); obj_iterator != potential_objs.end(); obj_iterator++) {
+      if (objects_match(*obj_iterator, recvd_data.MeDx, adjusted_dy)) {
+        obj_iterator->dx = recvd_data.MeDx;
+        obj_iterator->dy = adjusted_dy;
+        obj_iterator->count++;
 
-            potential_objs[i].dx = recvd_data.MeDx;
-            potential_objs[i].dy = adjusted_dy;
-            potential_objs[i].count++;
-
-            if (potential_objs[i].count > POTENTIAL_THRESHOLD) {
-                common::associated_me_msg matched;
-                matched.obj = recvd_data;
-                matched.obj_id = next_id++;
-                me_to_kf_pub.publish(matched);
-                potential_objs.erase (potential_objs.begin()+i);
-                std::cout << "DELETED OBJ CUZ COUNT > 5" << std::endl;
-            }
-            return;
+        if (obj_iterator->count > POTENTIAL_THRESHOLD) {
+          common::associated_me_msg matched;
+          matched.obj = recvd_data;
+          matched.obj_id = next_id++;
+          me_to_kf_pub.publish(matched);
+          potential_objs.erase(obj_iterator);
+          std::cout << "DELETED OBJ CUZ COUNT > 5" << std::endl;
         }
+        return;
+      }
     }
 
     potential_objs.emplace_back(ObjectState(recvd_data.MeDx, adjusted_dy));
