@@ -1,30 +1,30 @@
-uint8_t channel_number
-uint8_t radar_number
+uint8 channel_number
+uint8 radar_number
 
-uint8_t radar_mess_starter_consist_bit
+uint8 radar_mess_starter_consist_bit
 
-uint8_t radar_mess_aconsist_bit
-uint8_t radar_mess_bconsist_bit
+uint8 radar_mess_aconsist_bit
+uint8 radar_mess_bconsist_bit
 
-uint8_t radar_mess_ender_cosist_bit
-uint8_t radar_tc_counter
-uint8_t radar_packet_checksum
+uint8 radar_mess_ender_cosist_bit
+uint8 radar_tc_counter
+uint8 radar_packet_checksum
 
-uint16_t r_stat_itc_info
-uint8_t r_stat_sgu_fail
-uint8_t r_stat_hw_fail
-uint16_t r_stat_horizontal_misalignment
-uint8_t r_stat_absorption_blindness
-uint8_t r_stat_distortion_blindness
-uint8_t r_stat_mc
-uint8_t r_stat_crc
+uint16 r_stat_itc_info
+uint8 r_stat_sgu_fail
+uint8 r_stat_hw_fail
+uint16 r_stat_horizontal_misalignment
+uint8 r_stat_absorption_blindness
+uint8 r_stat_distortion_blindness
+uint8 r_stat_mc
+uint8 r_stat_crc
 
 
-uint8_t headway_valid
-uint8_t maintenance
-uint8_t failsafe
+uint8 headway_valid
+uint8 maintenance
+uint8 failsafe
 
-uint8_t quality
+uint8 quality
 
 
 

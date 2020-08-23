@@ -6,7 +6,7 @@
 #include "ros/ros.h"
 #include <cstdlib>
 // subscriber includes
-#include "common/sensor_diagnostic_data_msg.h"  // will be unpacked can messages - emulating CANRXTX Node
+#include "common/sensor_diagnostic_data_msg.h"
 
 // srv files
 #include "common/sensor_diagnostic_flag_CH2.h"  
@@ -33,7 +33,7 @@ class SensorDiagnostics {
         void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& diag_data_msg);
         void sub_CAN_flag_callback(const common::sensor_diagnostic_flag_msg& diag_flag_msg);
 
-}
+};
 
 
 // sub to cantxrx dummy node (later a function)

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(sensor_diagnostic_check)
+project(sensor_diagnostics)
 
 ## Verbosity level
 # ROSCONSOLE_SEVERITY_DEBUG
