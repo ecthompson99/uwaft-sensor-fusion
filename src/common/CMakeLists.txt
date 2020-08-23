@@ -64,6 +64,7 @@ add_message_files(
   acc_output_msg.msg
   aeb_output_msg.msg
   lcc_output_msg.msg
+  sensor_diagnostic_data_msg.msg
 )
 
 ## Generate services in the 'srv' folder
