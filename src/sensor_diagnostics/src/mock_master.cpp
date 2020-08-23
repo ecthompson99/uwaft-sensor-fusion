@@ -4,18 +4,18 @@
 #include "common/sensor_diagnostic_flag_CH4.h"
 
 bool srv_ch2_callback(common::sensor_diagnostic_flag_CH2::Request &req, common::sensor_diagnostic_flag_CH2::Response &res){
-    std::cout << "FRONT RADAR STATUS: " << req.front_radar << std::endl;
+    std::cout << "FRONT RADAR STATUS: " << +req.front_radar << std::endl;
     return true;
 }
 
 bool srv_ch3_callback(common::sensor_diagnostic_flag_CH3::Request &req, common::sensor_diagnostic_flag_CH3::Response &res){
-    std::cout << "LEFT CORNER RADAR STATUS: " << req.left_corner_radar << std::endl;
-    std::cout << "RIGHT CORNER RADAR STATUS: " << req.right_corner_radar << std::endl;
+    std::cout << "LEFT CORNER RADAR STATUS: " << +req.left_corner_radar << std::endl;
+    std::cout << "RIGHT CORNER RADAR STATUS: " << +req.right_corner_radar << std::endl;
     return true;
 }
 
 bool srv_ch4_callback(common::sensor_diagnostic_flag_CH4::Request &req, common::sensor_diagnostic_flag_CH4::Response &res){
-    std::cout << "REAR RADAR STATUS: " << req.mobileye << std::endl;
+    std::cout << "REAR RADAR STATUS: " << +req.mobileye << std::endl;
     return true;
 }
 

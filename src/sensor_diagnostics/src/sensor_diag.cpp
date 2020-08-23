@@ -8,14 +8,6 @@ SensorDiagnostics::SensorDiagnostics(ros::NodeHandle* diag_nodehandle) : diag_no
     client_ch4 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH4>("sensor_diagnostic_CH4"); //locate srv file and specify topic
 }
 
-int main(int argc, char** argv){
-    ros::init(argc, argv, "sensor_diag");
-    ros::NodeHandle diag_nodehandle;
-    SensorDiagnostics sensDiag = SensorDiagnostics(&diag_nodehandle);
-    ros::spin();
-}
-
-
 uint8_t frnt_prev_tc_counter = 0; // Front Radar counter trackers
 uint8_t frnt_prev_mc = 0;
 
@@ -91,6 +83,9 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
 
     uint8_t quality = data_msg.quality; // CAN ID 1894, 1896, 1900 -> 1916  
 
+    std::cout<<"Before switch cases" << std::endl;
+    std::cout<< +channel_number << std::endl;
+    std::cout<< +radar_mess_aconsist_bit << std::endl;
 
     switch (channel_number){
         case 2: // Front Radar
@@ -100,11 +95,15 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
                     || r_stat_sgu_fail || r_stat_hw_fail || abs(r_stat_horizontal_misalignment) > 0.0152 || r_stat_absorption_blindness >= 0.1 
                     || r_stat_distortion_blindness >= 0.1 || r_stat_mc != ++frnt_prev_mc || r_stat_crc != calculated_crc) {
                         srv_ch2.request.front_radar = false; // set to invalid
+                    std::cout<<"Invalid Ch2" << std::endl;
+
                 } else if ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit == radar_mess_ender_cosist_bit)
                     && radar_tc_counter == ++frnt_prev_tc_counter && calculated_checksum == 0 && r_stat_itc_info == 0
                     && !r_stat_sgu_fail && !r_stat_hw_fail && abs(r_stat_horizontal_misalignment) < 0.0152 && r_stat_absorption_blindness < 0.1
                     && r_stat_distortion_blindness < 0.1 && r_stat_mc == ++frnt_prev_mc && r_stat_crc == calculated_crc){
                         srv_ch2.request.front_radar = true; // set to valid
+                    std::cout<<"Valid Ch2" << std::endl;
+
                 }
 
                 frnt_prev_tc_counter++;
@@ -163,5 +162,18 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
                 std::cout << "SERVICE REQUEST CHANNEL 4 REAR RADAR FAILED" << std::endl;
             }
           
+    }
+
+    std::cout<<"After switch cases" << std::endl;
+
+}
+
+
+int main(int argc, char** argv){
+    ros::init(argc, argv, "sensor_diag");
+    ros::NodeHandle diag_nodehandle;
+    SensorDiagnostics sensDiag = SensorDiagnostics(&diag_nodehandle);
+    while (ros::ok()) {
+        ros::spinOnce();
     }
 }
