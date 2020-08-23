@@ -1,12 +1,20 @@
 #include "sensor_diag.h"
 
 SensorDiagnostics::SensorDiagnostics(ros::NodeHandle* diag_nodehandle) : diag_nodehandle(diag_nodehandle) {
-    sub_CAN_data = diag_nodehandle->subscribe("sensor_diag_data", TX_RX_MESSAGE_BUFFER_SIZE, sub_CAN_data_callback);
+    sub_CAN_data = diag_nodehandle->subscribe("sensor_diag_data", TX_RX_MESSAGE_BUFFER_SIZE, &SensorDiagnostics::sub_CAN_data_callback);
 
     client_ch2 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH2>("sensor_diagnostic_CH2"); //locate srv file and specify topic
     client_ch3 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH3>("sensor_diagnostic_CH3"); //locate srv file and specify topic
     client_ch4 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH4>("sensor_diagnostic_CH4"); //locate srv file and specify topic
 }
+
+int main(int argc, char** argv){
+    ros::init(argc, argv, "sensor_diag");
+    ros::NodeHandle diag_nodehandle;
+    SensorDiagnostics sensDiag = SensorDiagnostics(&diag_nodehandle);
+    ros::spin();
+}
+
 
 uint8_t frnt_prev_tc_counter = 0; // Front Radar counter trackers
 uint8_t frnt_prev_mc = 0;
@@ -42,7 +50,7 @@ uint8_t crc8bit_calculation(const uint8_t* crc_dataPtr, uint32_t crc_length, uin
     return crc;
 } 
 
-void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& data_msg){
+void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& data_msg){
     // temporary workaround for int and bool as the values in them do not get properly printed using ROS_INFO_STREAM
 
     common::sensor_diagnostic_flag_CH2 srv_ch2; // service objects
@@ -86,7 +94,7 @@ void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& data_msg){
 
     switch (channel_number){
         case 2: // Front Radar
-            if client.call(srv_ch2){
+            if(client_ch2.call(srv_ch2)){
                 if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit == radar_mess_ender_cosist_bit)
                     || radar_tc_counter != ++frnt_prev_tc_counter || calculated_checksum != 0 || r_stat_itc_info != 0
                     || r_stat_sgu_fail || r_stat_hw_fail || abs(r_stat_horizontal_misalignment) > 0.0152 || r_stat_absorption_blindness >= 0.1 
@@ -107,7 +115,7 @@ void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& data_msg){
                        
         case 3: // Corner Radars
             if(client_ch3.call(srv_ch3)){
-                switch (radar_number)
+                switch (radar_number){
                     case 1: // Left Radar
                         if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit == radar_mess_ender_cosist_bit)
                             || radar_tc_counter != ++frnt_prev_tc_counter || calculated_checksum != 0 || r_stat_itc_info != 0
@@ -118,7 +126,7 @@ void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& data_msg){
                             && radar_tc_counter == ++frnt_prev_tc_counter && calculated_checksum == 0 && r_stat_itc_info == 0
                             && !r_stat_sgu_fail && !r_stat_hw_fail && abs(r_stat_horizontal_misalignment) < 0.0152 && r_stat_absorption_blindness < 0.1
                             && r_stat_distortion_blindness < 0.1 && r_stat_mc == ++frnt_prev_mc && r_stat_crc == calculated_crc){
-                                srv_ch2.request.left_corner_radar = true; // set to valid
+                                srv_ch3.request.left_corner_radar = true; // set to valid
                         }
         
                         left_prev_tc_counter++;
@@ -134,11 +142,12 @@ void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& data_msg){
                             && radar_tc_counter == ++frnt_prev_tc_counter && calculated_checksum == 0 && r_stat_itc_info == 0
                             && !r_stat_sgu_fail && !r_stat_hw_fail && abs(r_stat_horizontal_misalignment) < 0.0152 && r_stat_absorption_blindness < 0.1
                             && r_stat_distortion_blindness < 0.1 && r_stat_mc == ++frnt_prev_mc && r_stat_crc == calculated_crc){
-                                srv_ch2.request.right_corner_radar = true; // set to valid
+                                srv_ch3.request.right_corner_radar = true; // set to valid
                         }
 
                         rght_prev_tc_counter++;
                         rght_prev_mc++;
+                }
             } else {
                 std::cout << "SERVICE REQUEST CHANNEL 3 SIDE RADARS FAILED" << std::endl;
             }
@@ -155,12 +164,4 @@ void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& data_msg){
             }
           
     }
-}
-
-
-int main(int argc, char** argv){
-    ros::init(argc, argv, "sensor_diag");
-    ros::NodeHandle diag_nodehandle;
-    SensorDiagnostics sensDiag = SensorDiagnostics(&diag_nodehandle);
-    ros::spin();
 }

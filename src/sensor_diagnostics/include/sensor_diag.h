@@ -21,17 +21,15 @@
 class SensorDiagnostics {
     public: 
         SensorDiagnostics(ros::NodeHandle* diag_nodehandle);    //constructor - pointer handle
-    private: 
-        ros::NodeHandle* diag_nodehandle;
         ros::ServiceClient client_ch2;
         ros::ServiceClient client_ch3;
         ros::ServiceClient client_ch4;
-
+    private: 
+        ros::NodeHandle* diag_nodehandle;
         ros::Subscriber sub_CAN_data;
         ros::Subscriber sub_CAN_flag;
 
         void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& diag_data_msg);
-        void sub_CAN_flag_callback(const common::sensor_diagnostic_flag_msg& diag_flag_msg);
 
 };
 

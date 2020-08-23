@@ -5,7 +5,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "mock_can_rx");
     ros::NodeHandle n;
 
-    ros::Publisher diag_pub = n.advertise <common::sensor_diagnostic_data_msg>("sensor_diag_data");
+    ros::Publisher diag_pub = n.advertise <common::sensor_diagnostic_data_msg>("sensor_diag_data",10);
 
     common::sensor_diagnostic_data_msg msg;
 
