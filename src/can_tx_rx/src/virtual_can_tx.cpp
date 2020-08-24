@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     right_a.curvature_derivative = 1;
 
     struct ext_log_data_lka_right_lane_b_t right_b;
-    right_b.heading_angle = 0.1; 
+    right_b.heading_angle = 1;
 
     std::cout << setiosflags(ios::fixed) << std::setprecision(7); 
 
@@ -137,11 +137,11 @@ int main(int argc, char **argv)
 
     uint8_t blank_msg[8] = {0}; 
     size_t size = 8u;
-    int pack_return_a = ext_log_data_obstacle_data_a_pack(can_msg_a, frame_a, size);
-    int pack_return_left_a = ext_log_data_lka_left_lane_a_pack(can_msg_left_a, frame_left_a,size);
-    int pack_return_left_b = ext_log_data_lka_left_lane_b_pack(can_msg_left_b, frame_left_b, size);
-    int pack_return_right_a = ext_log_data_lka_right_lane_a_pack(can_msg_right_a, frame_right_a, size);
-    int pack_return_right_b = ext_log_data_lka_right_lane_b_pack(can_msg_right_b, frame_right_b, size);
+    /*int pack_return_a = */ ext_log_data_obstacle_data_a_pack(can_msg_a, frame_a, size);
+    /*int pack_return_left_a = */ ext_log_data_lka_left_lane_a_pack(can_msg_left_a, frame_left_a, size);
+    /*int pack_return_left_b = */ ext_log_data_lka_left_lane_b_pack(can_msg_left_b, frame_left_b, size);
+    /*int pack_return_right_a = */ ext_log_data_lka_right_lane_a_pack(can_msg_right_a, frame_right_a, size);
+    /*int pack_return_right_b = */ ext_log_data_lka_right_lane_b_pack(can_msg_right_b, frame_right_b, size);
 
     int id = 1830;
     //goes through all valid id messages, sending the packed can message when appropriate  
@@ -172,12 +172,12 @@ int main(int argc, char **argv)
         else{ //B or C Frame
             stat = canWrite(hnd, id, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
         }
-        canStatus queue_status = canWriteSync(hnd, 1000);
         if (stat < 0)
         {
             std::cout << "Failed, status = " << stat << std::endl;
         }
-        //if (queue_status == canOK) std::cout << "Queue emptied" << std::endl;
+        // canStatus queue_status = canWriteSync(hnd, 1000);
+        // if (queue_status == canOK) std::cout << "Queue emptied" << std::endl;
         ros::spinOnce();
         ros::Duration(0.5).sleep();
         std::cout << "id = " << id << std::endl; 

@@ -29,7 +29,6 @@ uint8_t can_msg[8] = {0};
 unsigned int dlc, flags;
 unsigned long timestamp;
 size_t size = 8;
-
 while (ros::ok())
 {
     canStatus stat = canRead(hnd, &id, can_msg, &dlc, &flags, &timestamp);
@@ -51,21 +50,17 @@ while (ros::ok())
 struct ext_log_data_obstacle_data_a_t a;
 struct ext_log_data_obstacle_data_a_t *frame_a = &a;
 
-int unpack_return = ext_log_data_obstacle_data_a_unpack(frame_a, can_msg, size);
+/*int unpack_return = */ ext_log_data_obstacle_data_a_unpack(frame_a, can_msg, size);
 
 std::cout << "Data before decoding is: " << std::endl;
 std::cout << a.obstacle_pos_x << std::endl;
 std::cout << a.obstacle_pos_y << std::endl;
 std::cout << a.obstacle_vel_x << std::endl;
 
-a.obstacle_pos_x = ext_log_data_obstacle_data_a_obstacle_pos_x_decode(a.obstacle_pos_x);
-a.obstacle_pos_y = ext_log_data_obstacle_data_a_obstacle_pos_y_decode(a.obstacle_pos_y);
-a.obstacle_vel_x = ext_log_data_obstacle_data_a_obstacle_vel_x_decode(a.obstacle_vel_x);
-
 std::cout << "Original data is: " << std::endl;
-std::cout << a.obstacle_pos_x << std::endl;
-std::cout << a.obstacle_pos_y << std::endl;
-std::cout << a.obstacle_vel_x << std::endl;
+std::cout << ext_log_data_obstacle_data_a_obstacle_pos_x_decode(a.obstacle_pos_x) << std::endl;
+std::cout << ext_log_data_obstacle_data_a_obstacle_pos_y_decode(a.obstacle_pos_y) << std::endl;
+std::cout << ext_log_data_obstacle_data_a_obstacle_vel_x_decode(a.obstacle_vel_x) << std::endl;
 
 canBusOff(hnd);
 canClose(hnd);

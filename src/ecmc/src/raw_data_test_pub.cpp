@@ -28,10 +28,10 @@ int main(int argc, char **argv)
     canInitializeLibrary();
     hnd = canOpenChannel(0, canOPEN_EXCLUSIVE);
     if (hnd < 0) {
-      char msg[64];
-      canGetErrorText((canStatus)hnd, msg, sizeof(msg));
-      fprintf(stderr, "canOpenChannel failed (%s)\n", msg);
-      exit(1);
+      char error_buffer[64];
+      canGetErrorText((canStatus)hnd, error_buffer, sizeof(msg));
+      fprintf(stderr, "canOpenChannel failed (%s)\n", error_buffer);
+      exit(EXIT_FAILURE);
     }
     canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
     canSetBusOutputControl(hnd, canDRIVER_NORMAL);

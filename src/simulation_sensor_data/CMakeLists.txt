@@ -125,7 +125,7 @@ catkin_package(
 
 include_directories(
  #include
-  ${catkin_INCLUDE_DIRS}
+  SYSTEM ${catkin_INCLUDE_DIRS}
  # /usr/local/MATLAB/R2019b/extern/include
 )
 

@@ -21,11 +21,10 @@ void read_vehicle_data_csv(string filename, vector<vector<double> >& v2d)
     }
 
     string line, word;
-    int i = -1;
+    size_t i = 0;
 
     while (fin)
     {
-        i++;
         v2d.push_back(vector<double>());
         std::getline(fin, line, '\n');
         stringstream ss(line);
@@ -34,6 +33,7 @@ void read_vehicle_data_csv(string filename, vector<vector<double> >& v2d)
             std::getline(ss, word, ',');
             v2d[i].push_back(atof(word.c_str()));
         }
+        i++;
     }
 }
 
@@ -58,25 +58,24 @@ int main(int argc, char **argv)
     //     }
     //     cout << endl;
     // }
-    
-    for (int x = 0; x < vehicle_data.size(); x++)
-    {
-        ros::Time time(vehicle_data[x][0]);
-        common::drive_ctrl_input_msg drive_ctrl;
-        common::target_output_msg target_output;
 
-        drive_ctrl.veh_spd = vehicle_data[x][1];
-        drive_ctrl.acc_gap_level = 2; 
-        drive_ctrl.acc_speed_set_point = 90; 
+    for (size_t x = 0; x < vehicle_data.size(); x++) {
+      ros::Time time(vehicle_data[x][0]);
+      common::drive_ctrl_input_msg drive_ctrl;
+      common::target_output_msg target_output;
 
-        target_output.obj_vx = vehicle_data[x][2];
-        target_output.obj_dx = vehicle_data[x][3];
-        target_output.obj_timestamp = vehicle_data[x][0];   
+      drive_ctrl.veh_spd = vehicle_data[x][1];
+      drive_ctrl.acc_gap_level = 2;
+      drive_ctrl.acc_speed_set_point = 90;
 
-        if (time.toNSec() == 0) time = ros::TIME_MIN;
+      target_output.obj_vx = vehicle_data[x][2];
+      target_output.obj_dx = vehicle_data[x][3];
+      target_output.obj_timestamp = vehicle_data[x][0];
 
-        bag.write("drive_ctrl_input", time, drive_ctrl);
-        bag.write("target_output", time, target_output);
+      if (time.toNSec() == 0) time = ros::TIME_MIN;
+
+      bag.write("drive_ctrl_input", time, drive_ctrl);
+      bag.write("target_output", time, target_output);
         
     }
     bag.close();

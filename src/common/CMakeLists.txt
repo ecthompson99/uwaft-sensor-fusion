@@ -129,7 +129,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS}
+  SYSTEM ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -162,9 +162,9 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
-add_executable(initialize_msg src/initialize_msg.cpp)
-add_dependencies(initialize_msg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(initialize_msg ${catkin_LIBRARIES})
+#add_executable(initialize_msg src/initialize_msg.cpp)
+#add_dependencies(initialize_msg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#target_link_libraries(initialize_msg ${catkin_LIBRARIES})
 
 #############
 ## Install ##

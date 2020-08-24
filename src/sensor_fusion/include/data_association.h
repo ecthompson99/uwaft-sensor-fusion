@@ -55,7 +55,7 @@ class DataAssociation {
 
                 std::vector<ObjectState> potential_objs;
 
-		bool objects_match(ObjectState obj, double sensor_dx, double sensor_dy);
+                bool objects_match(ObjectState obj, double sensor_dx, double sensor_dy);
 
 		bool radar_match(ObjectState obj, double sensor_dx, double sensor_dy);
 

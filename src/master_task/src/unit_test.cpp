@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     * a unique string for each message.
     */
    int count = 0;
-   ros::WallTime beginning = ros::WallTime::now();
+   // ros::WallTime beginning = ros::WallTime::now();
    while (ros::ok())
    {
      common::drive_ctrl_input_msg drive_ctrl_msg;

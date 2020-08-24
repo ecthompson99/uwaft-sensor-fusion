@@ -1,4 +1,5 @@
 #include "env_state.h"
+#include <cinttypes>
 //#include "object_state.h"
 
 
@@ -47,36 +48,35 @@ void EnvironmentState::publish_target_obj() {
 		target_output_msg.obj_path = targetObjects[lane].get_obj_path();
 		target_output_msg.obj_vy = targetObjects[lane].get_obj_vy();
 		target_output_msg.obj_timestamp = targetObjects[lane].get_obj_timestamp();
-		target_output_msg.obj_track_num = targetObjects[lane].get_obj_lane() + 1; // 1 to 3
-	
-		//TESTING-------------------------------------------------------
+                target_output_msg.obj_track_num =
+                    static_cast<uint8_t>(targetObjects[lane].get_obj_lane() + 1);  // 1 to 3
+
+                //TESTING-------------------------------------------------------
 		printf("Target Output Msg\n");
-		printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
-		target_output_msg.obj_id, target_output_msg.obj_dx, target_output_msg.obj_lane, 
-		target_output_msg.obj_vx, target_output_msg.obj_dy, target_output_msg.obj_ax, 
-		target_output_msg.obj_path, target_output_msg.obj_vy, target_output_msg.obj_timestamp, 
-		target_output_msg.obj_track_num);
-	
-		target_obj_pub.publish(target_output_msg);
+                printf("%" PRIu64 ", %f, %d, %f, %f, %f, %d, %f, %f, %d \n", target_output_msg.obj_id,
+                       target_output_msg.obj_dx, target_output_msg.obj_lane, target_output_msg.obj_vx,
+                       target_output_msg.obj_dy, target_output_msg.obj_ax, target_output_msg.obj_path,
+                       target_output_msg.obj_vy, target_output_msg.obj_timestamp, target_output_msg.obj_track_num);
+
+                target_obj_pub.publish(target_output_msg);
 	}
 
 }
 
 void EnvironmentState::publish_tracked_obj() {
 	if (trackedObjects.size() >=1 ){
-		for (int lane = 0; lane < trackedObjects.size(); lane++){
-			tracked_output_msg.obj_id = trackedObjects[lane].get_obj_id();
-			tracked_output_msg.obj_dx = trackedObjects[lane].get_obj_dx();
-			tracked_output_msg.obj_lane = trackedObjects[lane].get_obj_lane(); // 0 to 2
-			tracked_output_msg.obj_vx = trackedObjects[lane].get_obj_vx();
-			tracked_output_msg.obj_dy = trackedObjects[lane].get_obj_dy();
-			tracked_output_msg.obj_ax = trackedObjects[lane].get_obj_ax();
-			tracked_output_msg.obj_path = trackedObjects[lane].get_obj_path();
-			tracked_output_msg.obj_vy = trackedObjects[lane].get_obj_vy();
-			tracked_output_msg.obj_timestamp = trackedObjects[lane].get_obj_timestamp();
-			tracked_output_msg.obj_track_num = trackedObjects[lane].get_obj_lane() + 1; // 1 to 3
-		   
-		}
+          for (size_t lane = 0; lane < trackedObjects.size(); lane++) {
+            tracked_output_msg.obj_id = trackedObjects[lane].get_obj_id();
+            tracked_output_msg.obj_dx = trackedObjects[lane].get_obj_dx();
+            tracked_output_msg.obj_lane = trackedObjects[lane].get_obj_lane();  // 0 to 2
+            tracked_output_msg.obj_vx = trackedObjects[lane].get_obj_vx();
+            tracked_output_msg.obj_dy = trackedObjects[lane].get_obj_dy();
+            tracked_output_msg.obj_ax = trackedObjects[lane].get_obj_ax();
+            tracked_output_msg.obj_path = trackedObjects[lane].get_obj_path();
+            tracked_output_msg.obj_vy = trackedObjects[lane].get_obj_vy();
+            tracked_output_msg.obj_timestamp = trackedObjects[lane].get_obj_timestamp();
+            tracked_output_msg.obj_track_num = static_cast<uint8_t>(trackedObjects[lane].get_obj_lane() + 1);  // 1 to 3
+                }
 	}
 
 	// default message when no objects are tracked
@@ -95,13 +95,12 @@ void EnvironmentState::publish_tracked_obj() {
 
 	//	 TESTING-------------------------------------------------------
 		printf("Tracked Output Msg\n");
-		printf("%d, %f, %d, %f, %f, %f, %d, %f, %f, %d \n",
-		tracked_output_msg.obj_id, tracked_output_msg.obj_dx, tracked_output_msg.obj_lane, 
-		tracked_output_msg.obj_vx, tracked_output_msg.obj_dy, tracked_output_msg.obj_ax, 
-		tracked_output_msg.obj_path, tracked_output_msg.obj_vy, tracked_output_msg.obj_timestamp, 
-		tracked_output_msg.obj_track_num);
+                printf("%" PRIu64 ", %f, %d, %f, %f, %f, %d, %f, %f, %d \n", tracked_output_msg.obj_id,
+                       tracked_output_msg.obj_dx, tracked_output_msg.obj_lane, tracked_output_msg.obj_vx,
+                       tracked_output_msg.obj_dy, tracked_output_msg.obj_ax, tracked_output_msg.obj_path,
+                       tracked_output_msg.obj_vy, tracked_output_msg.obj_timestamp, tracked_output_msg.obj_track_num);
 
-		tracked_obj_pub.publish(tracked_output_msg);
+                tracked_obj_pub.publish(tracked_output_msg);
 
 }
 
@@ -162,7 +161,7 @@ void EnvironmentState::add_object(const ObjectState& tracked_msg) {
   EnvironmentState::trackedObjects.push_back(tracked_msg); 
 }
 
-void EnvironmentState::update_object(const ObjectState& tracked_msg, int index) {
+void EnvironmentState::update_object(const ObjectState& tracked_msg, size_t index) {
   EnvironmentState::trackedObjects[index] = tracked_msg; 
 }
 
@@ -170,11 +169,12 @@ void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
 
 	bool indices[NUM_OBJECTS] = {0};
 	int count = 1;
-  
-  for (int index = 0 ;index < EnvironmentState::trackedObjects.size(); index++){	
-  	if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp()) > TIMESTAMP_TOL){ // assume more recent timestamps are larger
-  		indices[index + 1] = true; // have to add 1 since vector .begin starts at 1
-  	}
+
+        for (size_t index = 0; index < EnvironmentState::trackedObjects.size(); index++) {
+          if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp()) >
+              TIMESTAMP_TOL) {          // assume more recent timestamps are larger
+            indices[index + 1] = true;  // have to add 1 since vector .begin starts at 1
+          }
   }
   
   for (auto temp = EnvironmentState::trackedObjects.begin(); temp != EnvironmentState::trackedObjects.end(); temp++){
@@ -190,14 +190,14 @@ void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
 void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
   
 	bool found = false;
-	int index_found = 0;
+        size_t index_found = 0;
 
-  for (int index = 0; index < EnvironmentState::trackedObjects.size(); index++){
-    // if object is found in the state vector (has been tracked), update it's ID
-    if (tracked_msg.get_obj_id() == EnvironmentState::trackedObjects[index].get_obj_id()){
-      found = true;
-			index_found = index;
-		}
+        for (size_t index = 0; index < EnvironmentState::trackedObjects.size(); index++) {
+          // if object is found in the state vector (has been tracked), update it's ID
+          if (tracked_msg.get_obj_id() == EnvironmentState::trackedObjects[index].get_obj_id()) {
+            found = true;
+            index_found = index;
+          }
   }
 
   // if object has been tracked, update the object in the state vector
@@ -251,20 +251,19 @@ void EnvironmentState::find_target_objects(const ObjectState& tracked_msg){
  
 }
 
-
-bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res){
-
-        // breaking the objects stored in the vector into members and storing in multiple vectors for srv communication
-        // index refers to specific objectNum in the original vector
-        for(int i = 0; i < trackedObjects.size(); i++){
-            res.id.push_back(trackedObjects[i].get_obj_id());
-            res.dx.push_back(trackedObjects[i].get_obj_dx());
-            res.dy.push_back(trackedObjects[i].get_obj_dy());
-            res.timestamp.push_back(trackedObjects[i].get_obj_timestamp());
-            printf("returned %f, %f for %lu\n", res.dx[i], res.dy[i], res.id[i]);
-            //res.count.push_back(trackedObjects[i].get_obj_count());
-        }
-        return true;
+bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Request& /*req*/,
+                                              sensor_fusion::env_state_srv::Response& res) {
+  // breaking the objects stored in the vector into members and storing in multiple vectors for srv communication
+  // index refers to specific objectNum in the original vector
+  for (size_t i = 0; i < trackedObjects.size(); i++) {
+    res.id.push_back(trackedObjects[i].get_obj_id());
+    res.dx.push_back(trackedObjects[i].get_obj_dx());
+    res.dy.push_back(trackedObjects[i].get_obj_dy());
+    res.timestamp.push_back(trackedObjects[i].get_obj_timestamp());
+    printf("returned %f, %f for %lu\n", res.dx[i], res.dy[i], res.id[i]);
+    // res.count.push_back(trackedObjects[i].get_obj_count());
+  }
+  return true;
 }
 
 int main(int argc, char** argv){
