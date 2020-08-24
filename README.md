@@ -1,31 +1,32 @@
-
-
 # kaiROS
-CAV system repo. This is the main software that will run on the Tank.
+CAVs team system repository. This is the main software that will run on the Tank.
 
-![](https://img.shields.io/circleci/build/github/uwaft/kaiROS?token=cc2c9a2c8395746b93cead02eb170c6642d5cbf4)
+## CircleCI build status
+![CircleCI](https://img.shields.io/circleci/build/github/uwaft/kaiROS?token=cc2c9a2c8395746b93cead02eb170c6642d5cbf4)
 
 
 ## Instruction: From clone to build and run
 ### Clone the repo
-In terminal, change directory to where you want to store this repo locally using `cd`.
+The system is built in [Robot Operating System (ROS)](http://wiki.ros.org/) running in Ubuntu 16.04. You can get Ubuntu 16.04 on a Virtual Machine or Dual Booting.
 
-Before the next step, make sure you have SSH key set up for your GitHub account.
+Before we begin, make sure you have SSH key set up for your GitHub account.
 
 If you have not, please follow these two links to do so:
 
-https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+1. [Generate SSH key](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
-https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account
+2. [Add SSH key to GitHub account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account)
 
 
-Run
+Now, go to your ubuntu os and open a terminal window, change directory to where you want to store this repo locally using `cd`.
+
+Then run
 
 ```
 git clone git@github.com:uwaft/kaiROS.git
 ```
 
-### Install ROS on your local machine
+### Install tools on your local machine
 Change directory into the kaiROS folder by
 
 ```
@@ -43,26 +44,30 @@ This will install all the ROS related packages, along with the latest version of
 The same info is available on [Confluence](https://wiki.uwaterloo.ca/display/UWAFT/Intro+to+ROS).
 
 
-### Build and run
-Change directory into the cloned kaiROS folder by 'cd'.
+### Build kaiROS for the first time
+Under the kaiROS folder, 
 
 Execute
 
 ```
 catkin build
 ```
+If everything is correct, you will see
+```
+[build] Summary: All X packages succeeded!
+```
 
-To test if ROS is running properly, Execute in terminal (It could take a while):
+To test if ROS is running properly, Execute in one terminal (It could take a while):
 ```
 roscore
 ```
 Open a new terminal, then run
 ```
-rosrun ecmc hello_world_publisher
+rosrun ecmc raw_data_publisher
 ```
 
-Open another new terminal and execute
+Open a third new terminal and execute
 ```
 rosnode list
 ```
-in the new terminal. You should see hello_world_publisher running as a node.
+in the new terminal. You should see raw_data_publisher running as a node.
