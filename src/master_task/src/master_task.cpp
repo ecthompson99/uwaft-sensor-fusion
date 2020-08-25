@@ -64,27 +64,27 @@ void MasterTask::lcc_output_msg_callback(const common::lcc_output_msg& lcc_msg)
     can_comms_msg.lcc_fault = lcc_msg.lcc_fault;
 }
 
-bool MasterTask::sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request &req_CH2, common::sensor_diagnostic_flag_CH2::Response &res_CH2)
-{
-    FRONT_RADAR = req_CH2.front_radar;
-    can_comms_msg.front_radar_fault = !(req_CH2.front_radar);
-    return true;
+bool MasterTask::sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request& req_CH2,
+                                                common::sensor_diagnostic_flag_CH2::Response& /*res_CH2*/) {
+  FRONT_RADAR = req_CH2.front_radar;
+  can_comms_msg.front_radar_fault = !(req_CH2.front_radar);
+  return true;
 }
 
-bool MasterTask::sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request &req_CH3, common::sensor_diagnostic_flag_CH3::Response &res_CH3)
-{
-    LEFT_CORNER_RADAR = req_CH3.left_corner_radar;
-    RIGHT_CORNER_RADAR = req_CH3.right_corner_radar;
-    can_comms_msg.left_radar_fault = !(req_CH3.left_corner_radar);
-    can_comms_msg.right_radar_fault = !(req_CH3.right_corner_radar);
-    return true;
+bool MasterTask::sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request& req_CH3,
+                                                common::sensor_diagnostic_flag_CH3::Response& /*res_CH3*/) {
+  LEFT_CORNER_RADAR = req_CH3.left_corner_radar;
+  RIGHT_CORNER_RADAR = req_CH3.right_corner_radar;
+  can_comms_msg.left_radar_fault = !(req_CH3.left_corner_radar);
+  can_comms_msg.right_radar_fault = !(req_CH3.right_corner_radar);
+  return true;
 }
 
-bool MasterTask::sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request &req_CH4, common::sensor_diagnostic_flag_CH4::Response &res_CH4)
-{
-    MOBILEYE = req_CH4.mobileye;
-    can_comms_msg.mobileye_fault = !(req_CH4.mobileye);
-    return true;
+bool MasterTask::sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request& req_CH4,
+                                                common::sensor_diagnostic_flag_CH4::Response& /*res_CH4*/) {
+  MOBILEYE = req_CH4.mobileye;
+  can_comms_msg.mobileye_fault = !(req_CH4.mobileye);
+  return true;
 }
 common::can_comms_data_msg MasterTask::get_can_comms_msg() { return can_comms_msg; }
 

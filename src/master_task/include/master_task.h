@@ -97,7 +97,7 @@ class MasterTask {
   //sensor_diagnostic_flag_CH4
   bool MOBILEYE;
 
-  int buffer_time = 0.200; //ACC_1_1
+  double buffer_time = 0.200;  // ACC_1_1
 
   bool initial_OFF_request = true;
   bool initial_OFF_request_2 = true;
