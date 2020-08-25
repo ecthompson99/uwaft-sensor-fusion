@@ -29,4 +29,5 @@ jobs:
             make
             sudo make install
             cd ..
+            ./install_tools.sh
             catkin build
