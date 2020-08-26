@@ -106,40 +106,40 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
     std::cout << "CRC: " << +r_stat_crc << std::endl;
     std::cout << "Calc CRC: " << +calculated_crc << std::endl;
 
-    if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
-          radar_mess_ender_cosist_bit) ||
-        radar_tc_counter != ++frnt_prev_tc_counter)
+    if (radar_tc_counter != frnt_prev_tc_counter + 0x1)
       std::cout << "BAD" << std::endl;
-    else
+    else if (radar_tc_counter == frnt_prev_tc_counter + 0x1)
       std::cout << "GOOD" << std::endl;
-    
+    else
+      std::cout << "NEITHER" << std::endl;
+
     switch (channel_number){
         case 2: // Front Radar
-              if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
-                    radar_mess_ender_cosist_bit) ||
-                  /*radar_tc_counter != ++frnt_prev_tc_counter ||*/ calculated_checksum != 0 || r_stat_itc_info != 0 ||
-                  r_stat_sgu_fail != 0 || r_stat_hw_fail != 0 || abs(r_stat_horizontal_misalignment) > 0.0152 ||
-                  r_stat_absorption_blindness >= 0.1 || r_stat_distortion_blindness >= 0.1 ||
-                  /*r_stat_mc != ++frnt_prev_mc ||*/ r_stat_crc != calculated_crc) {
-                srv_ch2.request.front_radar = false;  // set to invalid
-                std::cout << "Invalid Ch2" << std::endl;
+          if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
+                radar_mess_ender_cosist_bit) ||
+              radar_tc_counter != frnt_prev_tc_counter + 0x1 || calculated_checksum != 0 || r_stat_itc_info != 0 ||
+              r_stat_sgu_fail != 0 || r_stat_hw_fail != 0 || abs(r_stat_horizontal_misalignment) > 0.0152 ||
+              r_stat_absorption_blindness >= 0.1 || r_stat_distortion_blindness >= 0.1 ||
+              r_stat_mc != frnt_prev_mc + 0x1 || r_stat_crc != calculated_crc) {
+            srv_ch2.request.front_radar = false;  // set to invalid
+            std::cout << "Invalid Ch2" << std::endl;
 
-              } else if ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
-                          radar_mess_ender_cosist_bit) &&
-                         /*radar_tc_counter == ++frnt_prev_tc_counter &&*/ calculated_checksum == 0 &&
-                         r_stat_itc_info == 0 && r_stat_sgu_fail == 0 && r_stat_hw_fail == 0 &&
-                         abs(r_stat_horizontal_misalignment) < 0.0152 && r_stat_absorption_blindness < 0.1 &&
-                         r_stat_distortion_blindness < 0.1 &&
-                         /*r_stat_mc == ++frnt_prev_mc &&*/ r_stat_crc == calculated_crc) {
-                srv_ch2.request.front_radar = true;  // set to valid
-                std::cout << "Valid Ch2" << std::endl;
+          } else if ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
+                      radar_mess_ender_cosist_bit) &&
+                     radar_tc_counter == frnt_prev_tc_counter + 0x1 && calculated_checksum == 0 &&
+                     r_stat_itc_info == 0 && r_stat_sgu_fail == 0 && r_stat_hw_fail == 0 &&
+                     abs(r_stat_horizontal_misalignment) < 0.0152 && r_stat_absorption_blindness < 0.1 &&
+                     r_stat_distortion_blindness < 0.1 && r_stat_mc == frnt_prev_mc + 0x1 &&
+                     r_stat_crc == calculated_crc) {
+            srv_ch2.request.front_radar = true;  // set to valid
+            std::cout << "Valid Ch2" << std::endl;
               } else
                 std::cout << "Neither valid Ch2" << std::endl;
 
               frnt_prev_tc_counter = radar_tc_counter;
               frnt_prev_mc = r_stat_mc;
 
-              if(!client_ch2.call(srv_ch2)){            // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
+              if (!client_ch2.call(srv_ch2)) {  // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
                 std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
               }
 
@@ -214,7 +214,6 @@ int main(int argc, char** argv){
     ros::NodeHandle diag_nodehandle;
     SensorDiagnostics sensDiag = SensorDiagnostics(&diag_nodehandle);
     while (ros::ok()) {
-        ros::Rate(10).sleep();
         ros::spinOnce();
     }
 }
