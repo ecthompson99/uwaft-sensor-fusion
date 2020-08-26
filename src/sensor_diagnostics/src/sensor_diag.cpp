@@ -112,10 +112,9 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
       std::cout << "BAD" << std::endl;
     else
       std::cout << "GOOD" << std::endl;
-
+    
     switch (channel_number){
         case 2: // Front Radar
-            if(client_ch2.call(srv_ch2)){
               if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
                     radar_mess_ender_cosist_bit) ||
                   /*radar_tc_counter != ++frnt_prev_tc_counter ||*/ calculated_checksum != 0 || r_stat_itc_info != 0 ||
@@ -139,12 +138,13 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
 
               frnt_prev_tc_counter = radar_tc_counter;
               frnt_prev_mc = r_stat_mc;
-            } else {
+
+              if(!client_ch2.call(srv_ch2)){            // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
                 std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
-            }
+              }
+
             break;
         case 3: // Corner Radars
-            if(client_ch3.call(srv_ch3)){
                 switch (radar_number){
                     case 1: // Left Radar
                         if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit == radar_mess_ender_cosist_bit)
@@ -183,13 +183,13 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
                         rght_prev_tc_counter = radar_tc_counter;
                         rght_prev_mc = r_stat_mc;
                         break;
+
+                    if(!client_ch3.call(srv_ch3)){            // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
+                        std::cout << "SERVICE REQUEST CHANNEL 3 SIDE RADARS FAILED" << std::endl;
+                    }    
                 }
-            } else {
-                std::cout << "SERVICE REQUEST CHANNEL 3 SIDE RADARS FAILED" << std::endl;
-            }
             break;
         case 4: // Mobileye
-            if(client_ch4.call(srv_ch4)){
                 if (!headway_valid || maintenance || failsafe || quality <= 1){
                     srv_ch4.request.mobileye = false;
                     std::cout << "Invalid Ch4" << std::endl;
@@ -197,13 +197,15 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
                     srv_ch4.request.mobileye = true;
                     std::cout << "Valid Ch4" << std::endl;
                 }  
-            } else {
-                std::cout << "SERVICE REQUEST CHANNEL 4 REAR RADAR FAILED" << std::endl;
-            }
+             
+                if(!client_ch4.call(srv_ch4)){
+                   std::cout << "SERVICE REQUEST CHANNEL 4 REAR RADAR FAILED" << std::endl;
+                }
             break;
     }
 
     std::cout << "After switch cases" << std::endl;
+    return;
 }
 
 
@@ -212,6 +214,7 @@ int main(int argc, char** argv){
     ros::NodeHandle diag_nodehandle;
     SensorDiagnostics sensDiag = SensorDiagnostics(&diag_nodehandle);
     while (ros::ok()) {
+        ros::Rate(10).sleep();
         ros::spinOnce();
     }
 }

@@ -16,7 +16,7 @@ int main(int argc, char **argv){
         msg.channel_number = 2;
         msg.radar_number = 1;
 
-        msg.radar_mess_starter_consist_bit = 1;
+        msg.radar_mess_starter_consist_bit = 0;
 
         msg.radar_mess_aconsist_bit = 1;
         msg.radar_mess_bconsist_bit = 1;
