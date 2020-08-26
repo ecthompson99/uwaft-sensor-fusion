@@ -1,4 +1,4 @@
-sudo add-apt-repository ppa:git-core/ppa
+sudo add-apt-repository -y ppa:git-core/ppa
 sudo apt-get update
 
 if (echo a version 2.20.0; git --version) | sort -Vk3 | tail -1 | grep -q git
