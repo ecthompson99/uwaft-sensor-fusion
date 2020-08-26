@@ -8,6 +8,7 @@ jobs:
       - run:
           name: "Testing"
           command: |
+            echo "Install ROS here"
             sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
             sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
             sudo apt-get update
@@ -20,6 +21,8 @@ jobs:
             pip install catkin_pkg
             pip install pyyaml
             pip install empy
+
+            echo "Install Kvaser SDK here"
             sudo apt-get install build-essential
             sudo apt-get install linux-headers-`uname -r`
             wget --content-disposition "https://www.kvaser.com/download/?utm_source=software&utm_ean=7330130980754&utm_status=latest"
@@ -29,5 +32,18 @@ jobs:
             make
             sudo make install
             cd ..
-            ./install_tools.sh
+            
+            echo "Set up catkin cmake-args for code styles"
+            catkin config --cmake-args -DCMAKE_CXX_FLAGS="-Werror -Wall -Wextra -Wnon-virtual-dtor -pedantic -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wnull-dereference -Wuseless-cast -Wdouble-promotion -Wformat=2" &>/dev/null
+
+            echo "Install gcc"
+            sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+            sudo apt-get update
+            sudo apt-get install gcc g++ gcc-5 g++-5 gcc-6 g++-6 gcc-7 g++-7
+            sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 90 --slave /usr/bin/g++ g++ /usr/bin/g++-5
+            sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 80 --slave /usr/bin/g++ g++ /usr/bin/g++-6
+            sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 70 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+            echo "3" | sudo update-alternatives --config gcc
+
+            echo "build kaiROS"
             catkin build
