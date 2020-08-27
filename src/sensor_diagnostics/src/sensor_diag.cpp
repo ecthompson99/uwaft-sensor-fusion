@@ -90,9 +90,9 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
     uint16_t r_stat_itc_info = data_msg.r_stat_itc_info; // CAN ID 1670 & 1672
     uint8_t r_stat_hw_fail = data_msg.r_stat_hw_fail;
     uint8_t r_stat_sgu_fail = data_msg.r_stat_sgu_fail;
-    uint16_t r_stat_horizontal_misalignment = data_msg.r_stat_horizontal_misalignment;  // uint16_t
-    uint8_t r_stat_absorption_blindness = data_msg.r_stat_absorption_blindness;         // uint8_t
-    uint8_t r_stat_distortion_blindness = data_msg.r_stat_distortion_blindness;
+    double r_stat_horizontal_misalignment = data_msg.r_stat_horizontal_misalignment;  // uint16_t
+    double r_stat_absorption_blindness = data_msg.r_stat_absorption_blindness;        // uint8_t
+    double r_stat_distortion_blindness = data_msg.r_stat_distortion_blindness;
     uint8_t r_stat_mc = data_msg.r_stat_mc;
     uint8_t r_stat_crc = data_msg.r_stat_crc;
 
@@ -141,16 +141,19 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
     switch (channel_number){
       case 2:  // Front Radar
         // Account for Radar Counter Reset
-        if (!(frnt_prev_tc_counter + 0x1 == 256)) tc_check = frnt_prev_tc_counter + 0x1;
+        if (!(frnt_prev_tc_counter + 0x1 == 256)) {
+          tc_check = frnt_prev_tc_counter + 0x1;
+        }
 
-        if (!(frnt_prev_mc + 0x2 == 16)) mc_check = frnt_prev_mc + 0x2;
+        if (!(frnt_prev_mc + 0x1 == 16)) {
+          mc_check = frnt_prev_mc + 0x1;
+        }
 
         if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
               radar_mess_ender_cosist_bit) ||
             radar_tc_counter != tc_check || calculated_checksum != 0 || r_stat_itc_info != 0 || r_stat_sgu_fail != 0 ||
-            r_stat_hw_fail != 0 || abs(r_stat_horizontal_misalignment) > 0.0152 ||
-            10 * r_stat_absorption_blindness >= 1 || 10 * r_stat_distortion_blindness >= 1 || r_stat_mc != mc_check ||
-            r_stat_crc != calculated_crc) {
+            r_stat_hw_fail != 0 || abs(r_stat_horizontal_misalignment) > 0.0152 || r_stat_absorption_blindness >= 0.1 ||
+            r_stat_distortion_blindness >= 0.1 || r_stat_mc != mc_check || r_stat_crc != calculated_crc) {
           srv_ch2.request.front_radar = false;  // set to invalid
           std::cout << "Invalid Ch2" << std::endl;
 
@@ -176,15 +179,20 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
         switch (radar_number) {
           case 1:  // Left Radar
             // Account for Radar counter reset
-            if (!(left_prev_tc_counter + 0x1 == 256)) tc_check = left_prev_tc_counter + 0x1;
+            if (!(left_prev_tc_counter + 0x1 == 256)) {
+              tc_check = left_prev_tc_counter + 0x1;
+            }
 
-            if (!(left_prev_mc + 0x2 == 16)) mc_check = left_prev_mc + 0x2;
+            if (!(left_prev_mc + 0x1 == 16)) {
+              mc_check = left_prev_mc + 0x1;
+            }
 
             if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
                   radar_mess_ender_cosist_bit) ||
-                radar_tc_counter != tc_check || calculated_checksum != 0 || r_stat_itc_info != 0 || r_stat_sgu_fail ||
-                r_stat_hw_fail || abs(r_stat_horizontal_misalignment) > 0.0152 || r_stat_absorption_blindness >= 0.1 ||
-                r_stat_distortion_blindness >= 0.1 || r_stat_mc != mc_check || r_stat_crc != calculated_crc) {
+                radar_tc_counter != tc_check || calculated_checksum != 0 || r_stat_itc_info != 0 ||
+                r_stat_sgu_fail != 0 || r_stat_hw_fail || abs(r_stat_horizontal_misalignment) > 0.0152 ||
+                r_stat_absorption_blindness >= 0.1 || r_stat_distortion_blindness >= 0.1 || r_stat_mc != mc_check ||
+                r_stat_crc != calculated_crc) {
               srv_ch3.request.left_corner_radar = false;  // set to invalid
               std::cout << "Invalid Ch3 Left" << std::endl;
 
@@ -208,9 +216,13 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
             break;
           case 2:  // Right Radar
             // Account for Radar counter reset
-            if (!(rght_prev_tc_counter + 0x1 == 256)) tc_check = rght_prev_tc_counter + 0x1;
+            if (!(rght_prev_tc_counter + 0x1 == 256)) {
+              tc_check = rght_prev_tc_counter + 0x1;
+            }
 
-            if (!(rght_prev_mc + 0x2 == 16)) mc_check = rght_prev_mc + 0x2;
+            if (!(rght_prev_mc + 0x1 == 16)) {
+              mc_check = rght_prev_mc + 0x1;
+            }
 
             if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
                   radar_mess_ender_cosist_bit) ||
