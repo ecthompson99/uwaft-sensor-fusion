@@ -16,29 +16,29 @@ int main(int argc, char **argv){
         msg.channel_number = 2;
         msg.radar_number = 1;
 
-        msg.radar_mess_starter_consist_bit = 1;
+        msg.radar_mess_starter_consist_bit = 1;  // Invalid if not all consist bits are the same
 
         msg.radar_mess_aconsist_bit = 1;
         msg.radar_mess_bconsist_bit = 1;
 
         msg.radar_mess_ender_cosist_bit = 1;
         msg.radar_tc_counter = tc_counter;
-        msg.radar_packet_checksum = 0;
+        msg.radar_packet_checksum = 0;  // Invalid if not 0
 
-        msg.r_stat_itc_info = 0;
-        msg.r_stat_sgu_fail = 0;
-        msg.r_stat_hw_fail = 0;
-        msg.r_stat_horizontal_misalignment = -0.4;
-        msg.r_stat_absorption_blindness = 0;
-        msg.r_stat_distortion_blindness = 0;
+        msg.r_stat_itc_info = 0;                 // Invalid if != 0
+        msg.r_stat_sgu_fail = 0;                 // Invalid if = 1
+        msg.r_stat_hw_fail = 0;                  // Invalid if = 1
+        msg.r_stat_horizontal_misalignment = 0;  // Invalid if abs value is greater than 0.0152
+        msg.r_stat_absorption_blindness = 0;     // Invalid if value is greater than 0.1
+        msg.r_stat_distortion_blindness = 0;     // Invalid if value is greater than 0.1
         msg.r_stat_mc = mc_counter;
-        msg.r_stat_crc = 3;
+        // msg.r_stat_crc = 0;
 
-        msg.headway_valid = 1;
-        msg.maintenance = 0;
-        msg.failsafe = 0;
+        msg.headway_valid = 1;  // Invalid if 0
+        msg.maintenance = 0;    // Invalid if 1
+        msg.failsafe = 0;       // Invalid if 1
 
-        msg.quality = 2;
+        msg.quality = 2;  // Invalid if less than
         std::cout << +msg.channel_number << std::endl;
 
         diag_pub.publish(msg);

@@ -17,30 +17,27 @@ uint8_t left_prev_mc = 0;
 uint8_t rght_prev_tc_counter = 0; // Right Radar counter trackers
 uint8_t rght_prev_mc = 0;
 
-/*uint8_t crc8bit_calculation(uint16_t itc, uint8_t hw, uint8_t sgu, uint16_t hor_misalignment, uint8_t abs, uint8_t
-dis, uint8_t mc){
-    uint8_t crc = 0xFF;
+uint8_t crc8bit_calculation(uint16_t itc, uint8_t hw, uint8_t sgu, uint16_t hor_misalignment, uint8_t abs, uint8_t dis,
+                            uint8_t mc) {
+  uint8_t crc = 0xFF;
 
-    uint8_t can1670signals[7] = {itc, hw, sgu, hor_misalignment, abs, dis, mc};
+  uint8_t can1670signals[7] = {itc, hw, sgu, hor_misalignment, abs, dis, mc};
 
-    for (int index = 0; index < 6; index++){
-        crc ^= can1670signals[index]; // Assign data to CRC
+  for (int index = 0; index < 6; index++) {
+    crc ^= can1670signals[index];  // Assign data to CRC
 
-        for (int bitIndex = 0; bitIndex < 8; bitIndex++){ // LOop through 8 bits
-            if ((crc & 0x80 != 0)){
-                crc = (crc<<1);
-                crc ^= 0x1D;
-            }
-            else{
-                crc = (crc<<1);
-            }
-
-        }
-
+    for (int bitIndex = 0; bitIndex < 8; bitIndex++) {  // LOop through 8 bits
+      if ((crc & 0x80 != 0)) {
+        crc = (crc << 1);
+        crc ^= 0x1D;
+      } else {
+        crc = (crc << 1);
+      }
     }
+  }
 
-    return crc;
-}*/
+  return crc;
+}
 
 /*Pseudo Code for CRC from documentation
 uint8_t crc8bit_calculation(const uint8_t* crc_dataPtr, uint32_t crc_length, uint8_t crc_bytePos){
@@ -96,11 +93,10 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
     uint8_t r_stat_mc = data_msg.r_stat_mc;
     uint8_t r_stat_crc = data_msg.r_stat_crc;
 
-    // uint8_t calculated_crc = crc8bit_calculation(r_stat_itc_info, r_stat_hw_fail, r_stat_sgu_fail,
-    // r_stat_horizontal_misalignment, r_stat_absorption_blindness, r_stat_absorption_blindness, r_stat_itc_info);
-
-    uint8_t calculated_crc = 3;       // Verification Calculation
-    uint8_t calculated_checksum = 0;  // data_msg.radar_calculated_checksum;
+    uint8_t calculated_checksum = data_msg.radar_calculated_checksum;  // Calculated in CAN RX
+    uint8_t calculated_crc =
+        crc8bit_calculation(r_stat_itc_info, r_stat_hw_fail, r_stat_sgu_fail, r_stat_horizontal_misalignment,
+                            r_stat_absorption_blindness, r_stat_absorption_blindness, r_stat_itc_info);
 
     //-- Mobileye Signals --//
     uint8_t headway_valid = data_msg.headway_valid; // CAN ID 1792
