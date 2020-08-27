@@ -29,7 +29,7 @@ int main(int argc, char **argv){
         msg.r_stat_sgu_fail = 0;
         msg.r_stat_hw_fail = 0;
         msg.r_stat_horizontal_misalignment = 0.01;
-        msg.r_stat_absorption_blindness = 0;
+        msg.r_stat_absorption_blindness = 0.2;
         msg.r_stat_distortion_blindness = 0;
         msg.r_stat_mc = mc_counter;
         msg.r_stat_crc = 3;
@@ -45,8 +45,7 @@ int main(int argc, char **argv){
 
         tc_counter++;
         mc_counter++;
-        if (tc_counter == 256) {
-          tc_counter = 0;
+        if (mc_counter == 16) {
           mc_counter = 0;
         }
 

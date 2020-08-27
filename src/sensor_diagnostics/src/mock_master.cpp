@@ -17,8 +17,8 @@ bool srv_ch3_callback(common::sensor_diagnostic_flag_CH3::Request &req, common::
 }
 
 bool srv_ch4_callback(common::sensor_diagnostic_flag_CH4::Request &req, common::sensor_diagnostic_flag_CH4::Response &res){
-    std::cout << "REAR RADAR STATUS: " << +req.mobileye << std::endl;
-    return true;
+  std::cout << "MOBILEYE SENSOR STATUS: " << +req.mobileye << std::endl;
+  return true;
 }
 
 int main(int argc, char **argv){
@@ -26,8 +26,8 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "mock_master");
     ros::NodeHandle n;
     ros::ServiceServer server_ch2 = n.advertiseService("sensor_diagnostic_CH2", srv_ch2_callback);
-    // ros::ServiceServer server_ch3 = n.advertiseService("sensor_diagnostic_CH3", srv_ch3_callback);
-    // ros::ServiceServer server_ch4 = n.advertiseService("sensor_diagnostic_CH4", srv_ch4_callback);
+    ros::ServiceServer server_ch3 = n.advertiseService("sensor_diagnostic_CH3", srv_ch3_callback);
+    ros::ServiceServer server_ch4 = n.advertiseService("sensor_diagnostic_CH4", srv_ch4_callback);
 
     ros::spin();
 }  
