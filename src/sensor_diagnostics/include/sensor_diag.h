@@ -17,6 +17,8 @@
 
 // CAN message constants
 
+const double BLINDNESS_LIMIT = 0.1;
+const double MISALIGNMENT_LIMIT = 0.0152;
 
 class SensorDiagnostics {
     public: 

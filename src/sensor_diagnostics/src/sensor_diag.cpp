@@ -17,11 +17,11 @@ uint8_t left_prev_mc = 0;
 uint8_t rght_prev_tc_counter = 0; // Right Radar counter trackers
 uint8_t rght_prev_mc = 0;
 
-uint8_t crc8bit_calculation(uint16_t itc, uint8_t hw, uint8_t sgu, uint16_t hor_misalignment, uint8_t abs, uint8_t dis,
-                            uint8_t mc) {
+uint8_t crc8bit_calculation(uint16_t itc, uint8_t hw, uint8_t sgu, uint16_t hor_misalignment, uint8_t absorption,
+                            uint8_t distortion, uint8_t mc) {
   uint8_t crc = 0xFF;
 
-  uint8_t can1670signals[7] = {itc, hw, sgu, hor_misalignment, abs, dis, mc};
+  uint8_t can1670signals[7] = {itc, hw, sgu, hor_misalignment, absorption, distortion, mc};
 
   for (int index = 0; index < 6; index++) {
     crc ^= can1670signals[index];  // Assign data to CRC
@@ -39,7 +39,8 @@ uint8_t crc8bit_calculation(uint16_t itc, uint8_t hw, uint8_t sgu, uint16_t hor_
   return crc;
 }
 
-/*Pseudo Code for CRC from documentation
+/* Pseudo Code for CRC from documentation
+// Z:\CAVs\Bosch Radar\Radar Technical Data\SGU_Interface_Specification.docx.pdf
 uint8_t crc8bit_calculation(const uint8_t* crc_dataPtr, uint32_t crc_length, uint8_t crc_bytePos){
     unsigned char crc = 0xFF;
 
@@ -99,37 +100,11 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
                             r_stat_absorption_blindness, r_stat_absorption_blindness, r_stat_itc_info);
 
     //-- Mobileye Signals --//
-    uint8_t headway_valid = data_msg.headway_valid; // CAN ID 1792
-    uint8_t maintenance = data_msg.maintenance;
-    uint8_t failsafe = data_msg.failsafe;
+    bool headway_valid = data_msg.headway_valid;  // CAN ID 1792
+    bool maintenance = data_msg.maintenance;
+    bool failsafe = data_msg.failsafe;
 
     uint8_t quality = data_msg.quality; // CAN ID 1894, 1896, 1900 -> 1916
-
-    // Outputs to verify for testing
-    /*std::cout << "BEFORE switch cases" << std::endl;
-    std::cout << "Channel: " << +channel_number << std::endl;
-    std::cout << "Radar: " << +radar_number << std::endl;
-    std::cout << "St bit: " << +radar_mess_starter_consist_bit << std::endl;
-    std::cout << "A bit: " << +radar_mess_aconsist_bit << std::endl;
-    std::cout << "B bit: " << +radar_mess_bconsist_bit << std::endl;
-    std::cout << "End bit: " << +radar_mess_ender_cosist_bit << std::endl;
-    std::cout << "TC: " << +radar_tc_counter << std::endl;
-    std::cout << "F Prev TC: " << +frnt_prev_tc_counter << std::endl;
-    std::cout << "L Prev TC: " << +left_prev_tc_counter << std::endl;
-    std::cout << "R Prev TC: " << +rght_prev_tc_counter << std::endl;
-    std::cout << "Calc Check: " << +calculated_checksum << std::endl;
-    std::cout << "ITC: " << +r_stat_itc_info << std::endl;
-    std::cout << "sgu: " << +r_stat_sgu_fail << std::endl;
-    std::cout << "hw: " << +r_stat_hw_fail << std::endl;
-    std::cout << "hori mis: " << +r_stat_horizontal_misalignment << std::endl;
-    std::cout << "dis: " << +r_stat_distortion_blindness << std::endl;
-    std::cout << "abs: " << +r_stat_absorption_blindness << std::endl;
-    std::cout << "MC: " << +r_stat_mc << std::endl;
-    std::cout << "F Prev MC: " << +frnt_prev_mc << std::endl;
-    std::cout << "L Prev MC: " << +left_prev_mc << std::endl;
-    std::cout << "R Prev MC: " << +rght_prev_mc << std::endl;
-    std::cout << "CRC: " << +r_stat_crc << std::endl;
-    std::cout << "Calc CRC: " << +calculated_crc << std::endl;*/
 
     uint8_t tc_check = 0;
     uint8_t mc_check = 0;
@@ -148,17 +123,19 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
         if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
               radar_mess_ender_cosist_bit) ||
             radar_tc_counter != tc_check || calculated_checksum != 0 || r_stat_itc_info != 0 || r_stat_sgu_fail != 0 ||
-            r_stat_hw_fail != 0 || abs(r_stat_horizontal_misalignment) > 0.0152 || r_stat_absorption_blindness >= 0.1 ||
-            r_stat_distortion_blindness >= 0.1 || r_stat_mc != mc_check || r_stat_crc != calculated_crc) {
+            r_stat_hw_fail != 0 || abs(r_stat_horizontal_misalignment) >= MISALIGNMENT_LIMIT ||
+            r_stat_absorption_blindness >= BLINDNESS_LIMIT || r_stat_distortion_blindness >= BLINDNESS_LIMIT ||
+            r_stat_mc != mc_check || r_stat_crc != calculated_crc) {
           srv_ch2.request.front_radar = false;  // set to invalid
           std::cout << "Invalid Ch2" << std::endl;
 
         } else if ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
                     radar_mess_ender_cosist_bit) &&
                    radar_tc_counter == tc_check && calculated_checksum == 0 && r_stat_itc_info == 0 &&
-                   r_stat_sgu_fail == 0 && r_stat_hw_fail == 0 && abs(r_stat_horizontal_misalignment) < 0.0152 &&
-                   r_stat_absorption_blindness < 0.1 && r_stat_distortion_blindness < 0.1 && r_stat_mc == mc_check &&
-                   r_stat_crc == calculated_crc) {
+                   r_stat_sgu_fail == 0 && r_stat_hw_fail == 0 &&
+                   abs(r_stat_horizontal_misalignment) < MISALIGNMENT_LIMIT &&
+                   r_stat_absorption_blindness < BLINDNESS_LIMIT && r_stat_distortion_blindness < BLINDNESS_LIMIT &&
+                   r_stat_mc == mc_check && r_stat_crc == calculated_crc) {
           srv_ch2.request.front_radar = true;  // set to valid
           std::cout << "Valid Ch2" << std::endl;
         }
@@ -186,17 +163,18 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
             if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
                   radar_mess_ender_cosist_bit) ||
                 radar_tc_counter != tc_check || calculated_checksum != 0 || r_stat_itc_info != 0 ||
-                r_stat_sgu_fail != 0 || r_stat_hw_fail || abs(r_stat_horizontal_misalignment) > 0.0152 ||
-                r_stat_absorption_blindness >= 0.1 || r_stat_distortion_blindness >= 0.1 || r_stat_mc != mc_check ||
-                r_stat_crc != calculated_crc) {
+                r_stat_sgu_fail != 0 || r_stat_hw_fail || abs(r_stat_horizontal_misalignment) >= MISALIGNMENT_LIMIT ||
+                r_stat_absorption_blindness >= BLINDNESS_LIMIT || r_stat_distortion_blindness >= BLINDNESS_LIMIT ||
+                r_stat_mc != mc_check || r_stat_crc != calculated_crc) {
               srv_ch3.request.left_corner_radar = false;  // set to invalid
               std::cout << "Invalid Ch3 Left" << std::endl;
 
             } else if ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
                         radar_mess_ender_cosist_bit) &&
                        radar_tc_counter == tc_check && calculated_checksum == 0 && r_stat_itc_info == 0 &&
-                       !r_stat_sgu_fail && !r_stat_hw_fail && abs(r_stat_horizontal_misalignment) < 0.0152 &&
-                       r_stat_absorption_blindness < 0.1 && r_stat_distortion_blindness < 0.1 &&
+                       !r_stat_sgu_fail && !r_stat_hw_fail &&
+                       abs(r_stat_horizontal_misalignment) < MISALIGNMENT_LIMIT &&
+                       r_stat_absorption_blindness < BLINDNESS_LIMIT && r_stat_distortion_blindness < BLINDNESS_LIMIT &&
                        r_stat_mc == mc_check && r_stat_crc == calculated_crc) {
               srv_ch3.request.left_corner_radar = true;  // set to valid
               std::cout << "Valid Ch3 Left" << std::endl;
@@ -223,16 +201,18 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
             if (!(radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
                   radar_mess_ender_cosist_bit) ||
                 radar_tc_counter != tc_check || calculated_checksum != 0 || r_stat_itc_info != 0 || r_stat_sgu_fail ||
-                r_stat_hw_fail || abs(r_stat_horizontal_misalignment) > 0.0152 || r_stat_absorption_blindness >= 0.1 ||
-                r_stat_distortion_blindness >= 0.1 || r_stat_mc != mc_check || r_stat_crc != calculated_crc) {
+                r_stat_hw_fail || abs(r_stat_horizontal_misalignment) >= MISALIGNMENT_LIMIT ||
+                r_stat_absorption_blindness >= BLINDNESS_LIMIT || r_stat_distortion_blindness >= BLINDNESS_LIMIT ||
+                r_stat_mc != mc_check || r_stat_crc != calculated_crc) {
               srv_ch3.request.right_corner_radar = false;  // set to invalid
               std::cout << "Invalid Ch3 Right" << std::endl;
 
             } else if ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
                         radar_mess_ender_cosist_bit) &&
                        radar_tc_counter == tc_check && calculated_checksum == 0 && r_stat_itc_info == 0 &&
-                       !r_stat_sgu_fail && !r_stat_hw_fail && abs(r_stat_horizontal_misalignment) < 0.0152 &&
-                       r_stat_absorption_blindness < 0.1 && r_stat_distortion_blindness < 0.1 &&
+                       !r_stat_sgu_fail && !r_stat_hw_fail &&
+                       abs(r_stat_horizontal_misalignment) < MISALIGNMENT_LIMIT &&
+                       r_stat_absorption_blindness < BLINDNESS_LIMIT && r_stat_distortion_blindness < BLINDNESS_LIMIT &&
                        r_stat_mc == mc_check && r_stat_crc == calculated_crc) {
               srv_ch3.request.right_corner_radar = true;  // set to valid
               std::cout << "Valid Ch3 Right" << std::endl;

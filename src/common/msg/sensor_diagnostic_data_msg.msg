@@ -20,9 +20,9 @@ uint8 r_stat_mc
 uint8 r_stat_crc
 
 
-uint8 headway_valid
-uint8 maintenance
-uint8 failsafe
+bool headway_valid
+bool maintenance
+bool failsafe
 
 uint8 quality
 
