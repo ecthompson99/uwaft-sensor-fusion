@@ -20,6 +20,7 @@
 #define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
 #define DX_TOL 5
 #define DY_TOL 1.5
+#define VX_TOL 3
 #define DX_RANGE 100
 #define DY_RANGE 10
 #define POTENTIAL_THRESHOLD 5
@@ -55,9 +56,7 @@ class DataAssociation {
 
                 std::vector<ObjectState> potential_objs;
 
-                bool objects_match(ObjectState obj, double sensor_dx, double sensor_dy);
-
-		bool radar_match(ObjectState obj, double sensor_dx, double sensor_dy);
+		bool objects_match(ObjectState, double, double, double);
 
 		unsigned long long next_id;
 

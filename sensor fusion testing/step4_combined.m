@@ -5,9 +5,9 @@ load('~/kaiROS/sensor fusion testing/mobileye.mat')
 load('~/kaiROS/sensor fusion testing/radar.mat')
 
 rosinit
-me_pub = rospublisher('/mobileye_from_matlab','sensor_fusion_testing/mobileye_object_data_from_matlab');
+me_pub = rospublisher('/MOBILEYE_TOPIC','common/mobileye_object_data');
 me_msg = rosmessage(me_pub);
-radar_pub = rospublisher('/radar_from_matlab','sensor_fusion_testing/radar_object_data_from_matlab');
+radar_pub = rospublisher('/RADAR_TOPIC','common/radar_object_data');
 radar_msg = rosmessage(radar_pub);
 
 radar_index = 49;

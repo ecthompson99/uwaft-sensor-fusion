@@ -3,6 +3,7 @@
 #include <ctime>
 
 double global_clk = 0;
+bool clk_initialized = false;
 
 DataAssociation::DataAssociation(ros::NodeHandle* in_node_handle) : node_handle(in_node_handle) {
   client = node_handle->serviceClient<sensor_fusion::env_state_srv>("env_service_topic");
@@ -42,27 +43,19 @@ void DataAssociation::delete_potential_objects() {
 }
 
 
-bool DataAssociation::objects_match(ObjectState obj, double sensor_dx, double sensor_dy) {
-    if (abs(sensor_dx - obj.dx) < DX_TOL && abs(sensor_dy - obj.dy) < DY_TOL) {
-        printf("Object matched with dx of %f and dy of %f\n", sensor_dx - obj.dx, sensor_dy - obj.dy);
+bool DataAssociation::objects_match(ObjectState obj, double sensor_dx, double sensor_dy, double sensor_vx) {
+    if (abs(sensor_dx - obj.dx) < DX_TOL && abs(sensor_dy - obj.dy) < DY_TOL && abs(obj.vx - sensor_vx) < VX_TOL) {
+        printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n", sensor_dx - obj.dx, sensor_dy - obj.dy, obj.vx);
         return 1;
     }
     return 0;
 }
-
-bool DataAssociation::radar_match(ObjectState obj, double sensor_dx, double sensor_dy) {
-    if (abs(sensor_dx - obj.dx) < 5 && abs(sensor_dy - obj.dy) < DY_TOL) {
-        printf("Object matched with dx of %f and dy of %f\n", sensor_dx - obj.dx, sensor_dy - obj.dy);
-        return 1;
-    }
-    return 0;
-}
-
 
 void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_data& recvd_data) {
     if (recvd_data.RadarDx < 1 || recvd_data.RadarDx > DX_RANGE || recvd_data.RadarDy < -DY_RANGE || recvd_data.RadarDy > DY_RANGE)
         return;
-    double adjusted_dy = recvd_data.RadarDy - 1;
+    // double adjusted_dy = recvd_data.RadarDy - 1;
+    double adjusted_dy = recvd_data.RadarDy;
     global_clk = recvd_data.RadarTimestamp;
 
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
@@ -79,7 +72,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
         } 
 
         for (auto obj : stateVector) {
-            if (radar_match(obj, recvd_data.RadarDx, adjusted_dy)) {
+            if (objects_match(obj, recvd_data.RadarDx, adjusted_dy, recvd_data.RadarVx)) {
                 printf("%lu matched, sending now\n", obj.id);
                 common::associated_radar_msg matched;
                 matched.obj = recvd_data;
@@ -96,7 +89,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 
    // CHECK TEMP TRACKS
     for (auto obj_iterator = potential_objs.begin(); obj_iterator != potential_objs.end(); obj_iterator++) {
-      if (radar_match(*obj_iterator, recvd_data.RadarDx, adjusted_dy)) {
+      if (objects_match(*obj_iterator, recvd_data.RadarDx, adjusted_dy, recvd_data.RadarVx)) {
         obj_iterator->dx = recvd_data.RadarDx;
         obj_iterator->dy = adjusted_dy;
         obj_iterator->count++;
@@ -121,9 +114,10 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 }
 
 void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_data& recvd_data) {
-    if (recvd_data.MeDx > DX_RANGE || recvd_data.MeDy < -DY_RANGE || recvd_data.MeDy > DY_RANGE)
+    if (recvd_data.MeDx < 1 || recvd_data.MeDx > DX_RANGE || recvd_data.MeDy < -DY_RANGE || recvd_data.MeDy > DY_RANGE)
         return;
-    double adjusted_dy = recvd_data.MeDy - 2;
+    // double adjusted_dy = recvd_data.MeDy - 2;
+    double adjusted_dy = recvd_data.MeDy;
     global_clk = recvd_data.MeTimestamp;
 
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
@@ -141,7 +135,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
 
         // if the object we received is already in the envState, send it to kf
         for (auto obj : envState) {
-            if (objects_match(obj, recvd_data.MeDx, adjusted_dy)) {
+            if (objects_match(obj, recvd_data.MeDx, adjusted_dy, recvd_data.MeVx)) {
                 common::associated_me_msg matched;
                 matched.obj = recvd_data;
                 matched.obj.MeDy = adjusted_dy;
@@ -158,7 +152,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
     // now check if it matches any of the potential objects
 
     for (auto obj_iterator = potential_objs.begin(); obj_iterator != potential_objs.end(); obj_iterator++) {
-      if (objects_match(*obj_iterator, recvd_data.MeDx, adjusted_dy)) {
+      if (objects_match(*obj_iterator, recvd_data.MeDx, adjusted_dy, recvd_data.MeVx)) {
         obj_iterator->dx = recvd_data.MeDx;
         obj_iterator->dy = adjusted_dy;
         obj_iterator->count++;

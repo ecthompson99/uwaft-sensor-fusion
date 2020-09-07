@@ -20,7 +20,18 @@ def determine_lane(dy):
 
 class KF(KalmanFilter):
     def __init__(self, initial_measurement):
-        '''initial_measurement is just z'''
+        '''
+        initial_measurement is just z
+
+        Nomenclature:
+        x is the estimated state vector, ie in the state space
+        F is the transition matrix, ie the prediction function
+        P is the state covariance matrix, ie the accumulated covariance values for all state variables
+        z is the measurement vector, ie in the measurement space
+        R is the measurement covariance matrix, ie the covariance values of every measurement variable
+        Q is the process noise matrix, ie it encodes the uncertainty regarding to F by adding itself to P when computing the prior
+        H is the "conversion matrix", ie it linearly maps the state space to the measurement space
+        '''
         super(KF, self).__init__(4, 4)
         self.x[0], self.x[1] = initial_measurement[0], initial_measurement[1]
         self.F = np.identity(4)
@@ -53,11 +64,14 @@ class KF_Node(object):
                 hashed.H = np.array([[1,0,0,0],
                                      [0,1,0,0],
                                      [0,0,1,0]], dtype='float')
-                hashed.R = np.identity(3) * 2**2
+                
+                # change me for the mobileye covariance!!!
+                hashed.R = np.identity(3) * .5**2
                 hashed.dt = obj.obj.MeTimestamp - hashed.last_me_timestamp
                 hashed.last_me_timestamp = obj.obj.MeTimestamp
                 hashed.F[0][2] = hashed.F[1][3] = hashed.dt
-                self.Q = Q_discrete_white_noise(2, hashed.dt, .5**2, block_size=2)
+                # change me for process noise (3rd argument)!!!
+                hashed.Q = Q_discrete_white_noise(2, hashed.dt, 1.5**2, block_size=2)
 
                 hashed.predict()
                 hashed.update(measurement)
@@ -115,11 +129,14 @@ class KF_Node(object):
                 # hashed.R = np.array([[1**2,0],
                 #                      [0,1**2]])
                 hashed.R = np.identity(4)
+
+                # change me for radar covariance!!!
                 np.fill_diagonal(hashed.R, [1**2 for i in range(4)])
                 hashed.dt = obj.obj.RadarTimestamp - hashed.last_radar_timestamp
                 hashed.last_radar_timestamp = obj.obj.RadarTimestamp
                 hashed.F[0][2] = hashed.F[1][3] = hashed.dt
-                hashed.Q = Q_discrete_white_noise(2, hashed.dt, .5**2, block_size=2)
+                # change me for process noise (3rd argument)!!!
+                hashed.Q = Q_discrete_white_noise(2, hashed.dt, 1.5**2, block_size=2)
 
                 hashed.predict()
                 hashed.update(measurement)
