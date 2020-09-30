@@ -20,9 +20,9 @@ int main(int argc, char **argv){
       msg.radar_mess_aconsist_bit = 1;
       msg.radar_mess_bconsist_bit = 1;
 
-      msg.radar_packet_checksum = 1;
+      msg.radar_mess_ender_cosist_bit = 1;
       msg.radar_tc_counter = tc_counter;
-      msg.calculated_checksum = 0;  // Invalid if not 0
+      msg.radar_packet_checksum = 0;  // Invalid if not 0
 
       msg.r_stat_itc_info = 0;                 // Invalid if != 0
       msg.r_stat_sgu_fail = 0;                 // Invalid if = 1
