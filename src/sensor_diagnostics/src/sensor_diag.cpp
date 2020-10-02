@@ -114,6 +114,8 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
     uint8_t channel_number = data_msg.channel_number;
     uint8_t radar_number = data_msg.radar_number;
 
+    uint8_t radar_tc_counter = data_msg.radar_tc_counter;
+    uint8_t r_stat_mc = data_msg.r_stat_mc;
 
     uint8_t tc_check = 0;
     uint8_t mc_check = 0;
@@ -207,7 +209,7 @@ void SensorDiagnostics::sub_CAN_data_callback(const common::sensor_diagnostic_da
       case 4:  // Mobileye
         srv_ch4.request.mobileye = validate_mobileye(data_msg); 
 
-        if(srv_ch4.request_mobileye){
+        if(srv_ch4.request.mobileye){
         std::cout << "Valid Ch4" << std::endl;
         }
         else{

@@ -32,7 +32,8 @@ class SensorDiagnostics {
         ros::Subscriber sub_CAN_flag;
 
         void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& diag_data_msg);
-
+        bool validate_radar(const common::sensor_diagnostic_data_msg& diag_data_msg,uint8_t tc_check, uint8_t mc_check);
+        bool validate_mobileye(const common::sensor_diagnostic_data_msg& diag_data_msg);
 };
 
 
