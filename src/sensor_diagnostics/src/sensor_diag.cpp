@@ -79,7 +79,7 @@ bool SensorDiagnostics::validate_radar(const common::sensor_diagnostic_data_msg&
   uint8_t r_stat_mc = data_msg.r_stat_mc;
   uint8_t r_stat_crc = data_msg.r_stat_crc;
 
-  uint8_t calculated_checksum = data_msg.radar_calculated_checksum;  // Calculated in CAN RX
+  uint8_t calculated_checksum = data_msg.radar_packet_checksum;  // Calculated in CAN RX
   uint8_t calculated_crc =
       crc8bit_calculation(r_stat_itc_info, r_stat_hw_fail, r_stat_sgu_fail, r_stat_horizontal_misalignment,
                           r_stat_absorption_blindness, r_stat_absorption_blindness, r_stat_itc_info);
