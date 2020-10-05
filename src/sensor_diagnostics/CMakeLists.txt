@@ -1,15 +1,27 @@
-cmake_minimum_required(VERSION 3.0.2)
-project(common)
+cmake_minimum_required(VERSION 2.8.3)
+project(sensor_diagnostics)
+
+## Verbosity level
+# ROSCONSOLE_SEVERITY_DEBUG
+# ROSCONSOLE_SEVERITY_INFO
+# ROSCONSOLE_SEVERITY_WARN
+# ROSCONSOLE_SEVERITY_ERROR
+# ROSCONSOLE_SEVERITY_FATAL
+# ROSCONSOLE_SEVERITY_NONE
+SET(SENSOR_DIAGNOSTIC_VERBOSITY ROSCONSOLE_SEVERITY_DEBUG)
+# SET(<SENSOR DIAG TEST VERBOSITY> ROSCONSOLE_SEVERITY_WARN)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  roscpp
   std_msgs
   message_generation
+  common
 )
 
 ## System dependencies are found with CMake's conventions
@@ -46,34 +58,19 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  can_comms_data_msg.msg
-  drive_ctrl_input_msg.msg
-  filtered_object_msg.msg
-  mobileye_object_data.msg
-  object_deletion_msg.msg
-  radar_object_data.msg
-  raw_sensor_object_data_msg.msg
-  raw_lane_data.msg
-  sudo_driver_input_msg.msg
-  target_output_msg.msg
-  tracked_output_msg.msg
-  associated_me_msg.msg
-  associated_radar_msg.msg
-  acc_output_msg.msg
-  aeb_output_msg.msg
-  lcc_output_msg.msg
-  sensor_diagnostic_data_msg.msg
-)
+# add_message_files(
+#   FILES
+#   sensor_diagnostic_flag_msg.msg #publish to this topic
+#   sensor_diagnostic_data_msg.msg #subscribe to this topic
+# )
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  sensor_diagnostic_flag_CH2.srv
-  sensor_diagnostic_flag_CH3.srv
-  sensor_diagnostic_flag_CH4.srv
-)
+# add_service_files(
+#   FILES
+#   sensor_diagnostic_flag_CH2
+#   sensor_diagnostic_flag_CH3
+#   sensor_diagnostic_flag_CH4
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -83,10 +80,11 @@ add_service_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  std_msgs  # Or other packages containing msgs
-)
+ generate_messages(
+   DEPENDENCIES
+   std_msgs  # Or other packages containing msgs
+   common
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -118,8 +116,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  # INCLUDE_DIRS include
-  CATKIN_DEPENDS std_msgs message_runtime
+  INCLUDE_DIRS include
+#  LIBRARIES sensor_diagnostic_check
+  CATKIN_DEPENDS roscpp message_runtime std_msgs
+#  DEPENDS system_lib
 )
 
 ###########
@@ -130,12 +130,12 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
-  SYSTEM ${catkin_INCLUDE_DIRS}
+    SYSTEM ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/common.cpp
+#   src/${PROJECT_NAME}/sensor_diagnostic_check.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -146,7 +146,12 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/common_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/sensor_diagnostic_check_node.cpp)
+
+add_executable(sensor_diagnostic src/sensor_diag.cpp)
+add_executable(mock_can_rx src/mock_can_rx.cpp)
+add_executable(mock_master src/mock_master.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -158,14 +163,25 @@ include_directories(
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+add_dependencies(sensor_diagnostic ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+add_dependencies(mock_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+add_dependencies(mock_master ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
 
-#add_executable(initialize_msg src/initialize_msg.cpp)
-#add_dependencies(initialize_msg ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-#target_link_libraries(initialize_msg ${catkin_LIBRARIES})
+target_link_libraries(sensor_diagnostic ${catkin_LIBRARIES})
+target_link_libraries(mock_can_rx ${catkin_LIBRARIES})
+target_link_libraries(mock_master ${catkin_LIBRARIES})
+
+
+target_compile_definitions(
+    sensor_diagnostic
+    PUBLIC
+    ROSCONSOLE_MIN_SEVERITY=${SENSOR_DIAGNOSTIC_VERBOSITY}
+)
 
 #############
 ## Install ##
@@ -176,23 +192,16 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# catkin_install_python(PROGRAMS
+# install(PROGRAMS
 #   scripts/my_python_script
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
-## Mark executables for installation
-## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-# install(TARGETS ${PROJECT_NAME}_node
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
-
-## Mark libraries for installation
-## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
-# install(TARGETS ${PROJECT_NAME}
+## Mark executables and/or libraries for installation
+# install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
 ## Mark cpp header files for installation
@@ -214,10 +223,26 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_common.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+# if (CATKIN_ENABLE_TESTING)
+#     ## Add gtest based cpp test target and link libraries
+#     catkin_add_gtest(
+#         ${PROJECT_NAME}-test
+#         test/<test file>.cpp
+#         src/<file you are writing tests for.cpp
+#     )
+#     if(TARGET ${PROJECT_NAME}-test)
+#         target_link_libraries(
+#             ${PROJECT_NAME}-test
+#             ${catkin_LIBRARIES}
+#         )
+#     endif()
+#     add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#     target_compile_definitions(
+#         ${PROJECT_NAME}-test
+#         PUBLIC
+#         ROSCONSOLE_MIN_SEVERITY=${<SENSOR DIAG TEST VERBOSITY>}
+#     )
+# endif(CATKIN_ENABLE_TESTING)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
