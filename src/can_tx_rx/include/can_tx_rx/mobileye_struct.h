@@ -73,8 +73,7 @@ class Mobileye_RX{
         } mobileye_obj;
 
         uint8_t get_nums(mobileye_object mobileye_obj);
-        //ros::Subscriber mock_sub_test;
-        //void sub_callback(const common::mobileye_object_data& output_obj);
+
         double signal_in_range(double val, bool cond);
 
         ext_log_data_obstacle_data_a_t frame_a_unpacked; 

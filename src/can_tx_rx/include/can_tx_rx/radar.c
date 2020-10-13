@@ -139,14 +139,14 @@ int radar_radar_diag_response_pack(
 
     memset(&dst_p[0], 0, 8);
 
-    dst_p[0] |= pack_right_shift_u64(src_p->r1_diag_response, 56u, 0xffu);
-    dst_p[1] |= pack_right_shift_u64(src_p->r1_diag_response, 48u, 0xffu);
-    dst_p[2] |= pack_right_shift_u64(src_p->r1_diag_response, 40u, 0xffu);
-    dst_p[3] |= pack_right_shift_u64(src_p->r1_diag_response, 32u, 0xffu);
-    dst_p[4] |= pack_right_shift_u64(src_p->r1_diag_response, 24u, 0xffu);
-    dst_p[5] |= pack_right_shift_u64(src_p->r1_diag_response, 16u, 0xffu);
-    dst_p[6] |= pack_right_shift_u64(src_p->r1_diag_response, 8u, 0xffu);
-    dst_p[7] |= pack_left_shift_u64(src_p->r1_diag_response, 0u, 0xffu);
+    dst_p[0] |= pack_right_shift_u64(src_p->r_diag_response, 56u, 0xffu);
+    dst_p[1] |= pack_right_shift_u64(src_p->r_diag_response, 48u, 0xffu);
+    dst_p[2] |= pack_right_shift_u64(src_p->r_diag_response, 40u, 0xffu);
+    dst_p[3] |= pack_right_shift_u64(src_p->r_diag_response, 32u, 0xffu);
+    dst_p[4] |= pack_right_shift_u64(src_p->r_diag_response, 24u, 0xffu);
+    dst_p[5] |= pack_right_shift_u64(src_p->r_diag_response, 16u, 0xffu);
+    dst_p[6] |= pack_right_shift_u64(src_p->r_diag_response, 8u, 0xffu);
+    dst_p[7] |= pack_left_shift_u64(src_p->r_diag_response, 0u, 0xffu);
 
     return (8);
 }
@@ -162,29 +162,29 @@ int radar_radar_diag_response_unpack(
 
     memset(dst_p, 0, sizeof(*dst_p));
 
-    dst_p->r1_diag_response |= unpack_left_shift_u64(src_p[0], 56u, 0xffu);
-    dst_p->r1_diag_response |= unpack_left_shift_u64(src_p[1], 48u, 0xffu);
-    dst_p->r1_diag_response |= unpack_left_shift_u64(src_p[2], 40u, 0xffu);
-    dst_p->r1_diag_response |= unpack_left_shift_u64(src_p[3], 32u, 0xffu);
-    dst_p->r1_diag_response |= unpack_left_shift_u64(src_p[4], 24u, 0xffu);
-    dst_p->r1_diag_response |= unpack_left_shift_u64(src_p[5], 16u, 0xffu);
-    dst_p->r1_diag_response |= unpack_left_shift_u64(src_p[6], 8u, 0xffu);
-    dst_p->r1_diag_response |= unpack_right_shift_u64(src_p[7], 0u, 0xffu);
+    dst_p->r_diag_response |= unpack_left_shift_u64(src_p[0], 56u, 0xffu);
+    dst_p->r_diag_response |= unpack_left_shift_u64(src_p[1], 48u, 0xffu);
+    dst_p->r_diag_response |= unpack_left_shift_u64(src_p[2], 40u, 0xffu);
+    dst_p->r_diag_response |= unpack_left_shift_u64(src_p[3], 32u, 0xffu);
+    dst_p->r_diag_response |= unpack_left_shift_u64(src_p[4], 24u, 0xffu);
+    dst_p->r_diag_response |= unpack_left_shift_u64(src_p[5], 16u, 0xffu);
+    dst_p->r_diag_response |= unpack_left_shift_u64(src_p[6], 8u, 0xffu);
+    dst_p->r_diag_response |= unpack_right_shift_u64(src_p[7], 0u, 0xffu);
 
     return (0);
 }
 
-uint64_t radar_radar_diag_response_r1_diag_response_encode(double value)
+uint64_t radar_radar_diag_response_r_diag_response_encode(double value)
 {
     return (uint64_t)(value);
 }
 
-double radar_radar_diag_response_r1_diag_response_decode(uint64_t value)
+double radar_radar_diag_response_r_diag_response_decode(uint64_t value)
 {
     return ((double)value);
 }
 
-bool radar_radar_diag_response_r1_diag_response_is_in_range(uint64_t value)
+bool radar_radar_diag_response_r_diag_response_is_in_range(uint64_t value)
 {
     (void)value;
 
@@ -202,14 +202,14 @@ int radar_radar_diag_request_pack(
 
     memset(&dst_p[0], 0, 8);
 
-    dst_p[0] |= pack_right_shift_u64(src_p->r1_diag_request, 56u, 0xffu);
-    dst_p[1] |= pack_right_shift_u64(src_p->r1_diag_request, 48u, 0xffu);
-    dst_p[2] |= pack_right_shift_u64(src_p->r1_diag_request, 40u, 0xffu);
-    dst_p[3] |= pack_right_shift_u64(src_p->r1_diag_request, 32u, 0xffu);
-    dst_p[4] |= pack_right_shift_u64(src_p->r1_diag_request, 24u, 0xffu);
-    dst_p[5] |= pack_right_shift_u64(src_p->r1_diag_request, 16u, 0xffu);
-    dst_p[6] |= pack_right_shift_u64(src_p->r1_diag_request, 8u, 0xffu);
-    dst_p[7] |= pack_left_shift_u64(src_p->r1_diag_request, 0u, 0xffu);
+    dst_p[0] |= pack_right_shift_u64(src_p->r_diag_request, 56u, 0xffu);
+    dst_p[1] |= pack_right_shift_u64(src_p->r_diag_request, 48u, 0xffu);
+    dst_p[2] |= pack_right_shift_u64(src_p->r_diag_request, 40u, 0xffu);
+    dst_p[3] |= pack_right_shift_u64(src_p->r_diag_request, 32u, 0xffu);
+    dst_p[4] |= pack_right_shift_u64(src_p->r_diag_request, 24u, 0xffu);
+    dst_p[5] |= pack_right_shift_u64(src_p->r_diag_request, 16u, 0xffu);
+    dst_p[6] |= pack_right_shift_u64(src_p->r_diag_request, 8u, 0xffu);
+    dst_p[7] |= pack_left_shift_u64(src_p->r_diag_request, 0u, 0xffu);
 
     return (8);
 }
@@ -225,38 +225,38 @@ int radar_radar_diag_request_unpack(
 
     memset(dst_p, 0, sizeof(*dst_p));
 
-    dst_p->r1_diag_request |= unpack_left_shift_u64(src_p[0], 56u, 0xffu);
-    dst_p->r1_diag_request |= unpack_left_shift_u64(src_p[1], 48u, 0xffu);
-    dst_p->r1_diag_request |= unpack_left_shift_u64(src_p[2], 40u, 0xffu);
-    dst_p->r1_diag_request |= unpack_left_shift_u64(src_p[3], 32u, 0xffu);
-    dst_p->r1_diag_request |= unpack_left_shift_u64(src_p[4], 24u, 0xffu);
-    dst_p->r1_diag_request |= unpack_left_shift_u64(src_p[5], 16u, 0xffu);
-    dst_p->r1_diag_request |= unpack_left_shift_u64(src_p[6], 8u, 0xffu);
-    dst_p->r1_diag_request |= unpack_right_shift_u64(src_p[7], 0u, 0xffu);
+    dst_p->r_diag_request |= unpack_left_shift_u64(src_p[0], 56u, 0xffu);
+    dst_p->r_diag_request |= unpack_left_shift_u64(src_p[1], 48u, 0xffu);
+    dst_p->r_diag_request |= unpack_left_shift_u64(src_p[2], 40u, 0xffu);
+    dst_p->r_diag_request |= unpack_left_shift_u64(src_p[3], 32u, 0xffu);
+    dst_p->r_diag_request |= unpack_left_shift_u64(src_p[4], 24u, 0xffu);
+    dst_p->r_diag_request |= unpack_left_shift_u64(src_p[5], 16u, 0xffu);
+    dst_p->r_diag_request |= unpack_left_shift_u64(src_p[6], 8u, 0xffu);
+    dst_p->r_diag_request |= unpack_right_shift_u64(src_p[7], 0u, 0xffu);
 
     return (0);
 }
 
-uint64_t radar_radar_diag_request_r1_diag_request_encode(double value)
+uint64_t radar_radar_diag_request_r_diag_request_encode(double value)
 {
     return (uint64_t)(value);
 }
 
-double radar_radar_diag_request_r1_diag_request_decode(uint64_t value)
+double radar_radar_diag_request_r_diag_request_decode(uint64_t value)
 {
     return ((double)value);
 }
 
-bool radar_radar_diag_request_r1_diag_request_is_in_range(uint64_t value)
+bool radar_radar_diag_request_r_diag_request_is_in_range(uint64_t value)
 {
     (void)value;
 
     return (true);
 }
 
-int radar_radar1_a_pack(
+int radar_radar_a_pack(
     uint8_t *dst_p,
-    const struct radar_radar1_a_t *src_p,
+    const struct radar_radar_a_t *src_p,
     size_t size)
 {
     if (size < 8u) {
@@ -265,27 +265,27 @@ int radar_radar1_a_pack(
 
     memset(&dst_p[0], 0, 8);
 
-    dst_p[0] |= pack_right_shift_u16(src_p->radar1_dx, 4u, 0xffu);
-    dst_p[1] |= pack_left_shift_u16(src_p->radar1_dx, 4u, 0xf0u);
-    dst_p[1] |= pack_right_shift_u16(src_p->radar1_vx, 8u, 0x0fu);
-    dst_p[2] |= pack_left_shift_u16(src_p->radar1_vx, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->radar1_dy, 3u, 0xffu);
-    dst_p[4] |= pack_left_shift_u16(src_p->radar1_dy, 5u, 0xe0u);
-    dst_p[4] |= pack_left_shift_u8(src_p->radar1_w_exist, 0u, 0x1fu);
-    dst_p[5] |= pack_right_shift_u16(src_p->radar1_ax, 2u, 0xffu);
-    dst_p[6] |= pack_left_shift_u16(src_p->radar1_ax, 6u, 0xc0u);
-    dst_p[6] |= pack_left_shift_u8(src_p->radar1_w_obstacle, 1u, 0x3eu);
-    dst_p[6] |= pack_left_shift_u8(src_p->radar1_flag_valid, 0u, 0x01u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar1_w_non_obstacle, 3u, 0xf8u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar1_flag_meas, 2u, 0x04u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar1_flag_hist, 1u, 0x02u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar1_mess_aconsist_bit, 0u, 0x01u);
+    dst_p[0] |= pack_right_shift_u16(src_p->radar_dx, 4u, 0xffu);
+    dst_p[1] |= pack_left_shift_u16(src_p->radar_dx, 4u, 0xf0u);
+    dst_p[1] |= pack_right_shift_u16(src_p->radar_vx, 8u, 0x0fu);
+    dst_p[2] |= pack_left_shift_u16(src_p->radar_vx, 0u, 0xffu);
+    dst_p[3] |= pack_right_shift_u16(src_p->radar_dy, 3u, 0xffu);
+    dst_p[4] |= pack_left_shift_u16(src_p->radar_dy, 5u, 0xe0u);
+    dst_p[4] |= pack_left_shift_u8(src_p->radar_w_exist, 0u, 0x1fu);
+    dst_p[5] |= pack_right_shift_u16(src_p->radar_ax, 2u, 0xffu);
+    dst_p[6] |= pack_left_shift_u16(src_p->radar_ax, 6u, 0xc0u);
+    dst_p[6] |= pack_left_shift_u8(src_p->radar_w_obstacle, 1u, 0x3eu);
+    dst_p[6] |= pack_left_shift_u8(src_p->radar_flag_valid, 0u, 0x01u);
+    dst_p[7] |= pack_left_shift_u8(src_p->radar_w_non_obstacle, 3u, 0xf8u);
+    dst_p[7] |= pack_left_shift_u8(src_p->radar_flag_meas, 2u, 0x04u);
+    dst_p[7] |= pack_left_shift_u8(src_p->radar_flag_hist, 1u, 0x02u);
+    dst_p[7] |= pack_left_shift_u8(src_p->radar_mess_aconsist_bit, 0u, 0x01u);
 
     return (8);
 }
 
-int radar_radar1_a_unpack(
-    struct radar_radar1_a_t *dst_p,
+int radar_radar_a_unpack(
+    struct radar_radar_a_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
@@ -295,193 +295,193 @@ int radar_radar1_a_unpack(
 
     memset(dst_p, 0, sizeof(*dst_p));
 
-    dst_p->radar1_dx |= unpack_left_shift_u16(src_p[0], 4u, 0xffu);
-    dst_p->radar1_dx |= unpack_right_shift_u16(src_p[1], 4u, 0xf0u);
-    dst_p->radar1_vx |= unpack_left_shift_u16(src_p[1], 8u, 0x0fu);
-    dst_p->radar1_vx |= unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->radar1_dy |= unpack_left_shift_u16(src_p[3], 3u, 0xffu);
-    dst_p->radar1_dy |= unpack_right_shift_u16(src_p[4], 5u, 0xe0u);
-    dst_p->radar1_w_exist |= unpack_right_shift_u8(src_p[4], 0u, 0x1fu);
-    dst_p->radar1_ax |= unpack_left_shift_u16(src_p[5], 2u, 0xffu);
-    dst_p->radar1_ax |= unpack_right_shift_u16(src_p[6], 6u, 0xc0u);
-    dst_p->radar1_w_obstacle |= unpack_right_shift_u8(src_p[6], 1u, 0x3eu);
-    dst_p->radar1_flag_valid |= unpack_right_shift_u8(src_p[6], 0u, 0x01u);
-    dst_p->radar1_w_non_obstacle |= unpack_right_shift_u8(src_p[7], 3u, 0xf8u);
-    dst_p->radar1_flag_meas |= unpack_right_shift_u8(src_p[7], 2u, 0x04u);
-    dst_p->radar1_flag_hist |= unpack_right_shift_u8(src_p[7], 1u, 0x02u);
-    dst_p->radar1_mess_aconsist_bit |= unpack_right_shift_u8(src_p[7], 0u, 0x01u);
+    dst_p->radar_dx |= unpack_left_shift_u16(src_p[0], 4u, 0xffu);
+    dst_p->radar_dx |= unpack_right_shift_u16(src_p[1], 4u, 0xf0u);
+    dst_p->radar_vx |= unpack_left_shift_u16(src_p[1], 8u, 0x0fu);
+    dst_p->radar_vx |= unpack_right_shift_u16(src_p[2], 0u, 0xffu);
+    dst_p->radar_dy |= unpack_left_shift_u16(src_p[3], 3u, 0xffu);
+    dst_p->radar_dy |= unpack_right_shift_u16(src_p[4], 5u, 0xe0u);
+    dst_p->radar_w_exist |= unpack_right_shift_u8(src_p[4], 0u, 0x1fu);
+    dst_p->radar_ax |= unpack_left_shift_u16(src_p[5], 2u, 0xffu);
+    dst_p->radar_ax |= unpack_right_shift_u16(src_p[6], 6u, 0xc0u);
+    dst_p->radar_w_obstacle |= unpack_right_shift_u8(src_p[6], 1u, 0x3eu);
+    dst_p->radar_flag_valid |= unpack_right_shift_u8(src_p[6], 0u, 0x01u);
+    dst_p->radar_w_non_obstacle |= unpack_right_shift_u8(src_p[7], 3u, 0xf8u);
+    dst_p->radar_flag_meas |= unpack_right_shift_u8(src_p[7], 2u, 0x04u);
+    dst_p->radar_flag_hist |= unpack_right_shift_u8(src_p[7], 1u, 0x02u);
+    dst_p->radar_mess_aconsist_bit |= unpack_right_shift_u8(src_p[7], 0u, 0x01u);
 
     return (0);
 }
 
-uint16_t radar_radar1_a_radar1_dx_encode(double value)
+uint16_t radar_radar_a_radar_dx_encode(double value)
 {
     return (uint16_t)(value / 0.0625);
 }
 
-double radar_radar1_a_radar1_dx_decode(uint16_t value)
+double radar_radar_a_radar_dx_decode(uint16_t value)
 {
     return ((double)value * 0.0625);
 }
 
-bool radar_radar1_a_radar1_dx_is_in_range(uint16_t value)
+bool radar_radar_a_radar_dx_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }
 
-uint16_t radar_radar1_a_radar1_vx_encode(double value)
+uint16_t radar_radar_a_radar_vx_encode(double value)
 {
     return (uint16_t)((value - -128.0) / 0.0625);
 }
 
-double radar_radar1_a_radar1_vx_decode(uint16_t value)
+double radar_radar_a_radar_vx_decode(uint16_t value)
 {
     return (((double)value * 0.0625) + -128.0);
 }
 
-bool radar_radar1_a_radar1_vx_is_in_range(uint16_t value)
+bool radar_radar_a_radar_vx_is_in_range(uint16_t value)
 {
     return (value <= 4095u);
 }
 
-uint16_t radar_radar1_a_radar1_dy_encode(double value)
+uint16_t radar_radar_a_radar_dy_encode(double value)
 {
     return (uint16_t)((value - -128.0) / 0.125);
 }
 
-double radar_radar1_a_radar1_dy_decode(uint16_t value)
+double radar_radar_a_radar_dy_decode(uint16_t value)
 {
     return (((double)value * 0.125) + -128.0);
 }
 
-bool radar_radar1_a_radar1_dy_is_in_range(uint16_t value)
+bool radar_radar_a_radar_dy_is_in_range(uint16_t value)
 {
     return (value <= 2047u);
 }
 
-uint8_t radar_radar1_a_radar1_w_exist_encode(double value)
+uint8_t radar_radar_a_radar_w_exist_encode(double value)
 {
     return (uint8_t)(value / 0.03125);
 }
 
-double radar_radar1_a_radar1_w_exist_decode(uint8_t value)
+double radar_radar_a_radar_w_exist_decode(uint8_t value)
 {
     return ((double)value * 0.03125);
 }
 
-bool radar_radar1_a_radar1_w_exist_is_in_range(uint8_t value)
+bool radar_radar_a_radar_w_exist_is_in_range(uint8_t value)
 {
     return (value <= 31u);
 }
 
-uint16_t radar_radar1_a_radar1_ax_encode(double value)
+uint16_t radar_radar_a_radar_ax_encode(double value)
 {
     return (uint16_t)((value - -16.0) / 0.03125);
 }
 
-double radar_radar1_a_radar1_ax_decode(uint16_t value)
+double radar_radar_a_radar_ax_decode(uint16_t value)
 {
     return (((double)value * 0.03125) + -16.0);
 }
 
-bool radar_radar1_a_radar1_ax_is_in_range(uint16_t value)
+bool radar_radar_a_radar_ax_is_in_range(uint16_t value)
 {
     return (value <= 1023u);
 }
 
-uint8_t radar_radar1_a_radar1_w_obstacle_encode(double value)
+uint8_t radar_radar_a_radar_w_obstacle_encode(double value)
 {
     return (uint8_t)(value / 0.03125);
 }
 
-double radar_radar1_a_radar1_w_obstacle_decode(uint8_t value)
+double radar_radar_a_radar_w_obstacle_decode(uint8_t value)
 {
     return ((double)value * 0.03125);
 }
 
-bool radar_radar1_a_radar1_w_obstacle_is_in_range(uint8_t value)
+bool radar_radar_a_radar_w_obstacle_is_in_range(uint8_t value)
 {
     return (value <= 31u);
 }
 
-uint8_t radar_radar1_a_radar1_flag_valid_encode(double value)
+uint8_t radar_radar_a_radar_flag_valid_encode(double value)
 {
     return (uint8_t)(value);
 }
 
-double radar_radar1_a_radar1_flag_valid_decode(uint8_t value)
+double radar_radar_a_radar_flag_valid_decode(uint8_t value)
 {
     return ((double)value);
 }
 
-bool radar_radar1_a_radar1_flag_valid_is_in_range(uint8_t value)
+bool radar_radar_a_radar_flag_valid_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-uint8_t radar_radar1_a_radar1_w_non_obstacle_encode(double value)
+uint8_t radar_radar_a_radar_w_non_obstacle_encode(double value)
 {
     return (uint8_t)(value / 0.03125);
 }
 
-double radar_radar1_a_radar1_w_non_obstacle_decode(uint8_t value)
+double radar_radar_a_radar_w_non_obstacle_decode(uint8_t value)
 {
     return ((double)value * 0.03125);
 }
 
-bool radar_radar1_a_radar1_w_non_obstacle_is_in_range(uint8_t value)
+bool radar_radar_a_radar_w_non_obstacle_is_in_range(uint8_t value)
 {
     return (value <= 31u);
 }
 
-uint8_t radar_radar1_a_radar1_flag_meas_encode(double value)
+uint8_t radar_radar_a_radar_flag_meas_encode(double value)
 {
     return (uint8_t)(value);
 }
 
-double radar_radar1_a_radar1_flag_meas_decode(uint8_t value)
+double radar_radar_a_radar_flag_meas_decode(uint8_t value)
 {
     return ((double)value);
 }
 
-bool radar_radar1_a_radar1_flag_meas_is_in_range(uint8_t value)
+bool radar_radar_a_radar_flag_meas_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-uint8_t radar_radar1_a_radar1_flag_hist_encode(double value)
+uint8_t radar_radar_a_radar_flag_hist_encode(double value)
 {
     return (uint8_t)(value);
 }
 
-double radar_radar1_a_radar1_flag_hist_decode(uint8_t value)
+double radar_radar_a_radar_flag_hist_decode(uint8_t value)
 {
     return ((double)value);
 }
 
-bool radar_radar1_a_radar1_flag_hist_is_in_range(uint8_t value)
+bool radar_radar_a_radar_flag_hist_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-uint8_t radar_radar1_a_radar1_mess_aconsist_bit_encode(double value)
+uint8_t radar_radar_a_radar_mess_aconsist_bit_encode(double value)
 {
     return (uint8_t)(value);
 }
 
-double radar_radar1_a_radar1_mess_aconsist_bit_decode(uint8_t value)
+double radar_radar_a_radar_mess_aconsist_bit_decode(uint8_t value)
 {
     return ((double)value);
 }
 
-bool radar_radar1_a_radar1_mess_aconsist_bit_is_in_range(uint8_t value)
+bool radar_radar_a_radar_mess_aconsist_bit_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
 
-int radar_radar1_b_pack(
+int radar_radar_b_pack(
     uint8_t *dst_p,
-    const struct radar_radar1_b_t *src_p,
+    const struct radar_radar_b_t *src_p,
     size_t size)
 {
     if (size < 8u) {
@@ -490,27 +490,27 @@ int radar_radar1_b_pack(
 
     memset(&dst_p[0], 0, 8);
 
-    dst_p[0] |= pack_right_shift_u16(src_p->radar1_vy, 2u, 0xffu);
-    dst_p[1] |= pack_left_shift_u16(src_p->radar1_vy, 6u, 0xc0u);
-    dst_p[1] |= pack_left_shift_u8(src_p->radar1_d_length, 0u, 0x3fu);
-    dst_p[2] |= pack_left_shift_u8(src_p->radar1_dz, 2u, 0xfcu);
-    dst_p[2] |= pack_left_shift_u8(src_p->radar1_moving_state, 0u, 0x03u);
-    dst_p[3] |= pack_left_shift_u8(src_p->radar1_dx_sigma, 2u, 0xfcu);
-    dst_p[3] |= pack_right_shift_u8(src_p->radar1_vx_sigma, 4u, 0x03u);
-    dst_p[4] |= pack_left_shift_u8(src_p->radar1_vx_sigma, 4u, 0xf0u);
-    dst_p[4] |= pack_right_shift_u8(src_p->radar1_ax_sigma, 2u, 0x0fu);
-    dst_p[5] |= pack_left_shift_u8(src_p->radar1_ax_sigma, 6u, 0xc0u);
-    dst_p[5] |= pack_left_shift_u8(src_p->radar1_dy_sigma, 0u, 0x3fu);
-    dst_p[6] |= pack_left_shift_u8(src_p->radar1_w_class, 3u, 0xf8u);
-    dst_p[6] |= pack_left_shift_u8(src_p->radar1_class, 0u, 0x07u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar1_dx_rear_end_loss, 2u, 0xfcu);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar1_mess_bconsist_bit, 0u, 0x01u);
+    dst_p[0] |= pack_right_shift_u16(src_p->radar_vy, 2u, 0xffu);
+    dst_p[1] |= pack_left_shift_u16(src_p->radar_vy, 6u, 0xc0u);
+    dst_p[1] |= pack_left_shift_u8(src_p->radar_d_length, 0u, 0x3fu);
+    dst_p[2] |= pack_left_shift_u8(src_p->radar_dz, 2u, 0xfcu);
+    dst_p[2] |= pack_left_shift_u8(src_p->radar_moving_state, 0u, 0x03u);
+    dst_p[3] |= pack_left_shift_u8(src_p->radar_dx_sigma, 2u, 0xfcu);
+    dst_p[3] |= pack_right_shift_u8(src_p->radar_vx_sigma, 4u, 0x03u);
+    dst_p[4] |= pack_left_shift_u8(src_p->radar_vx_sigma, 4u, 0xf0u);
+    dst_p[4] |= pack_right_shift_u8(src_p->radar_ax_sigma, 2u, 0x0fu);
+    dst_p[5] |= pack_left_shift_u8(src_p->radar_ax_sigma, 6u, 0xc0u);
+    dst_p[5] |= pack_left_shift_u8(src_p->radar_dy_sigma, 0u, 0x3fu);
+    dst_p[6] |= pack_left_shift_u8(src_p->radar_w_class, 3u, 0xf8u);
+    dst_p[6] |= pack_left_shift_u8(src_p->radar_class, 0u, 0x07u);
+    dst_p[7] |= pack_left_shift_u8(src_p->radar_dx_rear_end_loss, 2u, 0xfcu);
+    dst_p[7] |= pack_left_shift_u8(src_p->radar_mess_bconsist_bit, 0u, 0x01u);
 
     return (8);
 }
 
-int radar_radar1_b_unpack(
-    struct radar_radar1_b_t *dst_p,
+int radar_radar_b_unpack(
+    struct radar_radar_b_t *dst_p,
     const uint8_t *src_p,
     size_t size)
 {
@@ -520,201 +520,201 @@ int radar_radar1_b_unpack(
 
     memset(dst_p, 0, sizeof(*dst_p));
 
-    dst_p->radar1_vy |= unpack_left_shift_u16(src_p[0], 2u, 0xffu);
-    dst_p->radar1_vy |= unpack_right_shift_u16(src_p[1], 6u, 0xc0u);
-    dst_p->radar1_d_length |= unpack_right_shift_u8(src_p[1], 0u, 0x3fu);
-    dst_p->radar1_dz |= unpack_right_shift_u8(src_p[2], 2u, 0xfcu);
-    dst_p->radar1_moving_state |= unpack_right_shift_u8(src_p[2], 0u, 0x03u);
-    dst_p->radar1_dx_sigma |= unpack_right_shift_u8(src_p[3], 2u, 0xfcu);
-    dst_p->radar1_vx_sigma |= unpack_left_shift_u8(src_p[3], 4u, 0x03u);
-    dst_p->radar1_vx_sigma |= unpack_right_shift_u8(src_p[4], 4u, 0xf0u);
-    dst_p->radar1_ax_sigma |= unpack_left_shift_u8(src_p[4], 2u, 0x0fu);
-    dst_p->radar1_ax_sigma |= unpack_right_shift_u8(src_p[5], 6u, 0xc0u);
-    dst_p->radar1_dy_sigma |= unpack_right_shift_u8(src_p[5], 0u, 0x3fu);
-    dst_p->radar1_w_class |= unpack_right_shift_u8(src_p[6], 3u, 0xf8u);
-    dst_p->radar1_class |= unpack_right_shift_u8(src_p[6], 0u, 0x07u);
-    dst_p->radar1_dx_rear_end_loss |= unpack_right_shift_u8(src_p[7], 2u, 0xfcu);
-    dst_p->radar1_mess_bconsist_bit |= unpack_right_shift_u8(src_p[7], 0u, 0x01u);
+    dst_p->radar_vy |= unpack_left_shift_u16(src_p[0], 2u, 0xffu);
+    dst_p->radar_vy |= unpack_right_shift_u16(src_p[1], 6u, 0xc0u);
+    dst_p->radar_d_length |= unpack_right_shift_u8(src_p[1], 0u, 0x3fu);
+    dst_p->radar_dz |= unpack_right_shift_u8(src_p[2], 2u, 0xfcu);
+    dst_p->radar_moving_state |= unpack_right_shift_u8(src_p[2], 0u, 0x03u);
+    dst_p->radar_dx_sigma |= unpack_right_shift_u8(src_p[3], 2u, 0xfcu);
+    dst_p->radar_vx_sigma |= unpack_left_shift_u8(src_p[3], 4u, 0x03u);
+    dst_p->radar_vx_sigma |= unpack_right_shift_u8(src_p[4], 4u, 0xf0u);
+    dst_p->radar_ax_sigma |= unpack_left_shift_u8(src_p[4], 2u, 0x0fu);
+    dst_p->radar_ax_sigma |= unpack_right_shift_u8(src_p[5], 6u, 0xc0u);
+    dst_p->radar_dy_sigma |= unpack_right_shift_u8(src_p[5], 0u, 0x3fu);
+    dst_p->radar_w_class |= unpack_right_shift_u8(src_p[6], 3u, 0xf8u);
+    dst_p->radar_class |= unpack_right_shift_u8(src_p[6], 0u, 0x07u);
+    dst_p->radar_dx_rear_end_loss |= unpack_right_shift_u8(src_p[7], 2u, 0xfcu);
+    dst_p->radar_mess_bconsist_bit |= unpack_right_shift_u8(src_p[7], 0u, 0x01u);
 
     return (0);
 }
 
-uint16_t radar_radar1_b_radar1_vy_encode(double value)
+uint16_t radar_radar_b_radar_vy_encode(double value)
 {
     return (uint16_t)((value - -64.0) / 0.125);
 }
 
-double radar_radar1_b_radar1_vy_decode(uint16_t value)
+double radar_radar_b_radar_vy_decode(uint16_t value)
 {
     return (((double)value * 0.125) + -64.0);
 }
 
-bool radar_radar1_b_radar1_vy_is_in_range(uint16_t value)
+bool radar_radar_b_radar_vy_is_in_range(uint16_t value)
 {
     return (value <= 1023u);
 }
 
-uint8_t radar_radar1_b_radar1_d_length_encode(double value)
+uint8_t radar_radar_b_radar_d_length_encode(double value)
 {
     return (uint8_t)(value / 0.125);
 }
 
-double radar_radar1_b_radar1_d_length_decode(uint8_t value)
+double radar_radar_b_radar_d_length_decode(uint8_t value)
 {
     return ((double)value * 0.125);
 }
 
-bool radar_radar1_b_radar1_d_length_is_in_range(uint8_t value)
+bool radar_radar_b_radar_d_length_is_in_range(uint8_t value)
 {
     return (value <= 63u);
 }
 
-uint8_t radar_radar1_b_radar1_dz_encode(double value)
+uint8_t radar_radar_b_radar_dz_encode(double value)
 {
     return (uint8_t)((value - -5.0) / 0.25);
 }
 
-double radar_radar1_b_radar1_dz_decode(uint8_t value)
+double radar_radar_b_radar_dz_decode(uint8_t value)
 {
     return (((double)value * 0.25) + -5.0);
 }
 
-bool radar_radar1_b_radar1_dz_is_in_range(uint8_t value)
+bool radar_radar_b_radar_dz_is_in_range(uint8_t value)
 {
     return (value <= 63u);
 }
 
-uint8_t radar_radar1_b_radar1_moving_state_encode(double value)
+uint8_t radar_radar_b_radar_moving_state_encode(double value)
 {
     return (uint8_t)(value);
 }
 
-double radar_radar1_b_radar1_moving_state_decode(uint8_t value)
+double radar_radar_b_radar_moving_state_decode(uint8_t value)
 {
     return ((double)value);
 }
 
-bool radar_radar1_b_radar1_moving_state_is_in_range(uint8_t value)
+bool radar_radar_b_radar_moving_state_is_in_range(uint8_t value)
 {
     return (value <= 3u);
 }
 
-uint8_t radar_radar1_b_radar1_dx_sigma_encode(double value)
+uint8_t radar_radar_b_radar_dx_sigma_encode(double value)
 {
     return (uint8_t)(value / 0.0625);
 }
 
-double radar_radar1_b_radar1_dx_sigma_decode(uint8_t value)
+double radar_radar_b_radar_dx_sigma_decode(uint8_t value)
 {
     return ((double)value * 0.0625);
 }
 
-bool radar_radar1_b_radar1_dx_sigma_is_in_range(uint8_t value)
+bool radar_radar_b_radar_dx_sigma_is_in_range(uint8_t value)
 {
     return (value <= 63u);
 }
 
-uint8_t radar_radar1_b_radar1_vx_sigma_encode(double value)
+uint8_t radar_radar_b_radar_vx_sigma_encode(double value)
 {
     return (uint8_t)(value / 0.0625);
 }
 
-double radar_radar1_b_radar1_vx_sigma_decode(uint8_t value)
+double radar_radar_b_radar_vx_sigma_decode(uint8_t value)
 {
     return ((double)value * 0.0625);
 }
 
-bool radar_radar1_b_radar1_vx_sigma_is_in_range(uint8_t value)
+bool radar_radar_b_radar_vx_sigma_is_in_range(uint8_t value)
 {
     return (value <= 63u);
 }
 
-uint8_t radar_radar1_b_radar1_ax_sigma_encode(double value)
+uint8_t radar_radar_b_radar_ax_sigma_encode(double value)
 {
     return (uint8_t)(value / 0.0625);
 }
 
-double radar_radar1_b_radar1_ax_sigma_decode(uint8_t value)
+double radar_radar_b_radar_ax_sigma_decode(uint8_t value)
 {
     return ((double)value * 0.0625);
 }
 
-bool radar_radar1_b_radar1_ax_sigma_is_in_range(uint8_t value)
+bool radar_radar_b_radar_ax_sigma_is_in_range(uint8_t value)
 {
     return (value <= 63u);
 }
 
-uint8_t radar_radar1_b_radar1_dy_sigma_encode(double value)
+uint8_t radar_radar_b_radar_dy_sigma_encode(double value)
 {
     return (uint8_t)(value / 0.0625);
 }
 
-double radar_radar1_b_radar1_dy_sigma_decode(uint8_t value)
+double radar_radar_b_radar_dy_sigma_decode(uint8_t value)
 {
     return ((double)value * 0.0625);
 }
 
-bool radar_radar1_b_radar1_dy_sigma_is_in_range(uint8_t value)
+bool radar_radar_b_radar_dy_sigma_is_in_range(uint8_t value)
 {
     return (value <= 63u);
 }
 
-uint8_t radar_radar1_b_radar1_w_class_encode(double value)
+uint8_t radar_radar_b_radar_w_class_encode(double value)
 {
     return (uint8_t)(value / 0.03125);
 }
 
-double radar_radar1_b_radar1_w_class_decode(uint8_t value)
+double radar_radar_b_radar_w_class_decode(uint8_t value)
 {
     return ((double)value * 0.03125);
 }
 
-bool radar_radar1_b_radar1_w_class_is_in_range(uint8_t value)
+bool radar_radar_b_radar_w_class_is_in_range(uint8_t value)
 {
     return (value <= 31u);
 }
 
-uint8_t radar_radar1_b_radar1_class_encode(double value)
+uint8_t radar_radar_b_radar_class_encode(double value)
 {
     return (uint8_t)(value);
 }
 
-double radar_radar1_b_radar1_class_decode(uint8_t value)
+double radar_radar_b_radar_class_decode(uint8_t value)
 {
     return ((double)value);
 }
 
-bool radar_radar1_b_radar1_class_is_in_range(uint8_t value)
+bool radar_radar_b_radar_class_is_in_range(uint8_t value)
 {
     return (value <= 7u);
 }
 
-uint8_t radar_radar1_b_radar1_dx_rear_end_loss_encode(double value)
+uint8_t radar_radar_b_radar_dx_rear_end_loss_encode(double value)
 {
     return (uint8_t)(value / 0.125);
 }
 
-double radar_radar1_b_radar1_dx_rear_end_loss_decode(uint8_t value)
+double radar_radar_b_radar_dx_rear_end_loss_decode(uint8_t value)
 {
     return ((double)value * 0.125);
 }
 
-bool radar_radar1_b_radar1_dx_rear_end_loss_is_in_range(uint8_t value)
+bool radar_radar_b_radar_dx_rear_end_loss_is_in_range(uint8_t value)
 {
     return (value <= 63u);
 }
 
-uint8_t radar_radar1_b_radar1_mess_bconsist_bit_encode(double value)
+uint8_t radar_radar_b_radar_mess_bconsist_bit_encode(double value)
 {
     return (uint8_t)(value);
 }
 
-double radar_radar1_b_radar1_mess_bconsist_bit_decode(uint8_t value)
+double radar_radar_b_radar_mess_bconsist_bit_decode(uint8_t value)
 {
     return ((double)value);
 }
 
-bool radar_radar1_b_radar1_mess_bconsist_bit_is_in_range(uint8_t value)
+bool radar_radar_b_radar_mess_bconsist_bit_is_in_range(uint8_t value)
 {
     return (value <= 1u);
 }
@@ -1124,469 +1124,4 @@ bool radar_radar_status_r_stat_crc_is_in_range(uint8_t value)
     (void)value;
 
     return (true);
-}
-
-int radar_radar2_a_pack(
-    uint8_t *dst_p,
-    const struct radar_radar2_a_t *src_p,
-    size_t size)
-{
-    if (size < 8u) {
-        return (-EINVAL);
-    }
-
-    memset(&dst_p[0], 0, 8);
-
-    dst_p[0] |= pack_right_shift_u16(src_p->radar2_dx, 4u, 0xffu);
-    dst_p[1] |= pack_left_shift_u16(src_p->radar2_dx, 4u, 0xf0u);
-    dst_p[1] |= pack_right_shift_u16(src_p->radar2_vx, 8u, 0x0fu);
-    dst_p[2] |= pack_left_shift_u16(src_p->radar2_vx, 0u, 0xffu);
-    dst_p[3] |= pack_right_shift_u16(src_p->radar2_dy, 3u, 0xffu);
-    dst_p[4] |= pack_left_shift_u16(src_p->radar2_dy, 5u, 0xe0u);
-    dst_p[4] |= pack_left_shift_u8(src_p->radar2_w_exist, 0u, 0x1fu);
-    dst_p[5] |= pack_right_shift_u16(src_p->radar2_ax, 2u, 0xffu);
-    dst_p[6] |= pack_left_shift_u16(src_p->radar2_ax, 6u, 0xc0u);
-    dst_p[6] |= pack_left_shift_u8(src_p->radar2_w_obstacle, 1u, 0x3eu);
-    dst_p[6] |= pack_left_shift_u8(src_p->radar2_flag_valid, 0u, 0x01u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar2_w_non_obstacle, 3u, 0xf8u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar2_flag_meas, 2u, 0x04u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar2_flag_hist, 1u, 0x02u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar2_mess_aconsist_bit, 0u, 0x01u);
-
-    return (8);
-}
-
-int radar_radar2_a_unpack(
-    struct radar_radar2_a_t *dst_p,
-    const uint8_t *src_p,
-    size_t size)
-{
-    if (size < 8u) {
-        return (-EINVAL);
-    }
-
-    memset(dst_p, 0, sizeof(*dst_p));
-
-    dst_p->radar2_dx |= unpack_left_shift_u16(src_p[0], 4u, 0xffu);
-    dst_p->radar2_dx |= unpack_right_shift_u16(src_p[1], 4u, 0xf0u);
-    dst_p->radar2_vx |= unpack_left_shift_u16(src_p[1], 8u, 0x0fu);
-    dst_p->radar2_vx |= unpack_right_shift_u16(src_p[2], 0u, 0xffu);
-    dst_p->radar2_dy |= unpack_left_shift_u16(src_p[3], 3u, 0xffu);
-    dst_p->radar2_dy |= unpack_right_shift_u16(src_p[4], 5u, 0xe0u);
-    dst_p->radar2_w_exist |= unpack_right_shift_u8(src_p[4], 0u, 0x1fu);
-    dst_p->radar2_ax |= unpack_left_shift_u16(src_p[5], 2u, 0xffu);
-    dst_p->radar2_ax |= unpack_right_shift_u16(src_p[6], 6u, 0xc0u);
-    dst_p->radar2_w_obstacle |= unpack_right_shift_u8(src_p[6], 1u, 0x3eu);
-    dst_p->radar2_flag_valid |= unpack_right_shift_u8(src_p[6], 0u, 0x01u);
-    dst_p->radar2_w_non_obstacle |= unpack_right_shift_u8(src_p[7], 3u, 0xf8u);
-    dst_p->radar2_flag_meas |= unpack_right_shift_u8(src_p[7], 2u, 0x04u);
-    dst_p->radar2_flag_hist |= unpack_right_shift_u8(src_p[7], 1u, 0x02u);
-    dst_p->radar2_mess_aconsist_bit |= unpack_right_shift_u8(src_p[7], 0u, 0x01u);
-
-    return (0);
-}
-
-uint16_t radar_radar2_a_radar2_dx_encode(double value)
-{
-    return (uint16_t)(value / 0.0625);
-}
-
-double radar_radar2_a_radar2_dx_decode(uint16_t value)
-{
-    return ((double)value * 0.0625);
-}
-
-bool radar_radar2_a_radar2_dx_is_in_range(uint16_t value)
-{
-    return (value <= 4095u);
-}
-
-uint16_t radar_radar2_a_radar2_vx_encode(double value)
-{
-    return (uint16_t)((value - -128.0) / 0.0625);
-}
-
-double radar_radar2_a_radar2_vx_decode(uint16_t value)
-{
-    return (((double)value * 0.0625) + -128.0);
-}
-
-bool radar_radar2_a_radar2_vx_is_in_range(uint16_t value)
-{
-    return (value <= 4095u);
-}
-
-uint16_t radar_radar2_a_radar2_dy_encode(double value)
-{
-    return (uint16_t)((value - -128.0) / 0.125);
-}
-
-double radar_radar2_a_radar2_dy_decode(uint16_t value)
-{
-    return (((double)value * 0.125) + -128.0);
-}
-
-bool radar_radar2_a_radar2_dy_is_in_range(uint16_t value)
-{
-    return (value <= 2047u);
-}
-
-uint8_t radar_radar2_a_radar2_w_exist_encode(double value)
-{
-    return (uint8_t)(value / 0.03125);
-}
-
-double radar_radar2_a_radar2_w_exist_decode(uint8_t value)
-{
-    return ((double)value * 0.03125);
-}
-
-bool radar_radar2_a_radar2_w_exist_is_in_range(uint8_t value)
-{
-    return (value <= 31u);
-}
-
-uint16_t radar_radar2_a_radar2_ax_encode(double value)
-{
-    return (uint16_t)((value - -16.0) / 0.03125);
-}
-
-double radar_radar2_a_radar2_ax_decode(uint16_t value)
-{
-    return (((double)value * 0.03125) + -16.0);
-}
-
-bool radar_radar2_a_radar2_ax_is_in_range(uint16_t value)
-{
-    return (value <= 1023u);
-}
-
-uint8_t radar_radar2_a_radar2_w_obstacle_encode(double value)
-{
-    return (uint8_t)(value / 0.03125);
-}
-
-double radar_radar2_a_radar2_w_obstacle_decode(uint8_t value)
-{
-    return ((double)value * 0.03125);
-}
-
-bool radar_radar2_a_radar2_w_obstacle_is_in_range(uint8_t value)
-{
-    return (value <= 31u);
-}
-
-uint8_t radar_radar2_a_radar2_flag_valid_encode(double value)
-{
-    return (uint8_t)(value);
-}
-
-double radar_radar2_a_radar2_flag_valid_decode(uint8_t value)
-{
-    return ((double)value);
-}
-
-bool radar_radar2_a_radar2_flag_valid_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-uint8_t radar_radar2_a_radar2_w_non_obstacle_encode(double value)
-{
-    return (uint8_t)(value / 0.03125);
-}
-
-double radar_radar2_a_radar2_w_non_obstacle_decode(uint8_t value)
-{
-    return ((double)value * 0.03125);
-}
-
-bool radar_radar2_a_radar2_w_non_obstacle_is_in_range(uint8_t value)
-{
-    return (value <= 31u);
-}
-
-uint8_t radar_radar2_a_radar2_flag_meas_encode(double value)
-{
-    return (uint8_t)(value);
-}
-
-double radar_radar2_a_radar2_flag_meas_decode(uint8_t value)
-{
-    return ((double)value);
-}
-
-bool radar_radar2_a_radar2_flag_meas_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-uint8_t radar_radar2_a_radar2_flag_hist_encode(double value)
-{
-    return (uint8_t)(value);
-}
-
-double radar_radar2_a_radar2_flag_hist_decode(uint8_t value)
-{
-    return ((double)value);
-}
-
-bool radar_radar2_a_radar2_flag_hist_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-uint8_t radar_radar2_a_radar2_mess_aconsist_bit_encode(double value)
-{
-    return (uint8_t)(value);
-}
-
-double radar_radar2_a_radar2_mess_aconsist_bit_decode(uint8_t value)
-{
-    return ((double)value);
-}
-
-bool radar_radar2_a_radar2_mess_aconsist_bit_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
-}
-
-int radar_radar2_b_pack(
-    uint8_t *dst_p,
-    const struct radar_radar2_b_t *src_p,
-    size_t size)
-{
-    if (size < 8u) {
-        return (-EINVAL);
-    }
-
-    memset(&dst_p[0], 0, 8);
-
-    dst_p[0] |= pack_right_shift_u16(src_p->radar2_vy, 2u, 0xffu);
-    dst_p[1] |= pack_left_shift_u16(src_p->radar2_vy, 6u, 0xc0u);
-    dst_p[1] |= pack_left_shift_u8(src_p->radar2_d_length, 0u, 0x3fu);
-    dst_p[2] |= pack_left_shift_u8(src_p->radar2_dz, 2u, 0xfcu);
-    dst_p[2] |= pack_left_shift_u8(src_p->radar2_moving_state, 0u, 0x03u);
-    dst_p[3] |= pack_left_shift_u8(src_p->radar2_dx_sigma, 2u, 0xfcu);
-    dst_p[3] |= pack_right_shift_u8(src_p->radar2_vx_sigma, 4u, 0x03u);
-    dst_p[4] |= pack_left_shift_u8(src_p->radar2_vx_sigma, 4u, 0xf0u);
-    dst_p[4] |= pack_right_shift_u8(src_p->radar2_ax_sigma, 2u, 0x0fu);
-    dst_p[5] |= pack_left_shift_u8(src_p->radar2_ax_sigma, 6u, 0xc0u);
-    dst_p[5] |= pack_left_shift_u8(src_p->radar2_dy_sigma, 0u, 0x3fu);
-    dst_p[6] |= pack_left_shift_u8(src_p->radar2_w_class, 3u, 0xf8u);
-    dst_p[6] |= pack_left_shift_u8(src_p->radar2_class, 0u, 0x07u);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar2_dx_rear_end_loss, 2u, 0xfcu);
-    dst_p[7] |= pack_left_shift_u8(src_p->radar2_mess_bconsist_bit, 0u, 0x01u);
-
-    return (8);
-}
-
-int radar_radar2_b_unpack(
-    struct radar_radar2_b_t *dst_p,
-    const uint8_t *src_p,
-    size_t size)
-{
-    if (size < 8u) {
-        return (-EINVAL);
-    }
-
-    memset(dst_p, 0, sizeof(*dst_p));
-
-    dst_p->radar2_vy |= unpack_left_shift_u16(src_p[0], 2u, 0xffu);
-    dst_p->radar2_vy |= unpack_right_shift_u16(src_p[1], 6u, 0xc0u);
-    dst_p->radar2_d_length |= unpack_right_shift_u8(src_p[1], 0u, 0x3fu);
-    dst_p->radar2_dz |= unpack_right_shift_u8(src_p[2], 2u, 0xfcu);
-    dst_p->radar2_moving_state |= unpack_right_shift_u8(src_p[2], 0u, 0x03u);
-    dst_p->radar2_dx_sigma |= unpack_right_shift_u8(src_p[3], 2u, 0xfcu);
-    dst_p->radar2_vx_sigma |= unpack_left_shift_u8(src_p[3], 4u, 0x03u);
-    dst_p->radar2_vx_sigma |= unpack_right_shift_u8(src_p[4], 4u, 0xf0u);
-    dst_p->radar2_ax_sigma |= unpack_left_shift_u8(src_p[4], 2u, 0x0fu);
-    dst_p->radar2_ax_sigma |= unpack_right_shift_u8(src_p[5], 6u, 0xc0u);
-    dst_p->radar2_dy_sigma |= unpack_right_shift_u8(src_p[5], 0u, 0x3fu);
-    dst_p->radar2_w_class |= unpack_right_shift_u8(src_p[6], 3u, 0xf8u);
-    dst_p->radar2_class |= unpack_right_shift_u8(src_p[6], 0u, 0x07u);
-    dst_p->radar2_dx_rear_end_loss |= unpack_right_shift_u8(src_p[7], 2u, 0xfcu);
-    dst_p->radar2_mess_bconsist_bit |= unpack_right_shift_u8(src_p[7], 0u, 0x01u);
-
-    return (0);
-}
-
-uint16_t radar_radar2_b_radar2_vy_encode(double value)
-{
-    return (uint16_t)((value - -64.0) / 0.125);
-}
-
-double radar_radar2_b_radar2_vy_decode(uint16_t value)
-{
-    return (((double)value * 0.125) + -64.0);
-}
-
-bool radar_radar2_b_radar2_vy_is_in_range(uint16_t value)
-{
-    return (value <= 1023u);
-}
-
-uint8_t radar_radar2_b_radar2_d_length_encode(double value)
-{
-    return (uint8_t)(value / 0.125);
-}
-
-double radar_radar2_b_radar2_d_length_decode(uint8_t value)
-{
-    return ((double)value * 0.125);
-}
-
-bool radar_radar2_b_radar2_d_length_is_in_range(uint8_t value)
-{
-    return (value <= 63u);
-}
-
-uint8_t radar_radar2_b_radar2_dz_encode(double value)
-{
-    return (uint8_t)((value - -5.0) / 0.25);
-}
-
-double radar_radar2_b_radar2_dz_decode(uint8_t value)
-{
-    return (((double)value * 0.25) + -5.0);
-}
-
-bool radar_radar2_b_radar2_dz_is_in_range(uint8_t value)
-{
-    return (value <= 63u);
-}
-
-uint8_t radar_radar2_b_radar2_moving_state_encode(double value)
-{
-    return (uint8_t)(value);
-}
-
-double radar_radar2_b_radar2_moving_state_decode(uint8_t value)
-{
-    return ((double)value);
-}
-
-bool radar_radar2_b_radar2_moving_state_is_in_range(uint8_t value)
-{
-    return (value <= 3u);
-}
-
-uint8_t radar_radar2_b_radar2_dx_sigma_encode(double value)
-{
-    return (uint8_t)(value / 0.0625);
-}
-
-double radar_radar2_b_radar2_dx_sigma_decode(uint8_t value)
-{
-    return ((double)value * 0.0625);
-}
-
-bool radar_radar2_b_radar2_dx_sigma_is_in_range(uint8_t value)
-{
-    return (value <= 63u);
-}
-
-uint8_t radar_radar2_b_radar2_vx_sigma_encode(double value)
-{
-    return (uint8_t)(value / 0.0625);
-}
-
-double radar_radar2_b_radar2_vx_sigma_decode(uint8_t value)
-{
-    return ((double)value * 0.0625);
-}
-
-bool radar_radar2_b_radar2_vx_sigma_is_in_range(uint8_t value)
-{
-    return (value <= 63u);
-}
-
-uint8_t radar_radar2_b_radar2_ax_sigma_encode(double value)
-{
-    return (uint8_t)(value / 0.0625);
-}
-
-double radar_radar2_b_radar2_ax_sigma_decode(uint8_t value)
-{
-    return ((double)value * 0.0625);
-}
-
-bool radar_radar2_b_radar2_ax_sigma_is_in_range(uint8_t value)
-{
-    return (value <= 63u);
-}
-
-uint8_t radar_radar2_b_radar2_dy_sigma_encode(double value)
-{
-    return (uint8_t)(value / 0.0625);
-}
-
-double radar_radar2_b_radar2_dy_sigma_decode(uint8_t value)
-{
-    return ((double)value * 0.0625);
-}
-
-bool radar_radar2_b_radar2_dy_sigma_is_in_range(uint8_t value)
-{
-    return (value <= 63u);
-}
-
-uint8_t radar_radar2_b_radar2_w_class_encode(double value)
-{
-    return (uint8_t)(value / 0.03125);
-}
-
-double radar_radar2_b_radar2_w_class_decode(uint8_t value)
-{
-    return ((double)value * 0.03125);
-}
-
-bool radar_radar2_b_radar2_w_class_is_in_range(uint8_t value)
-{
-    return (value <= 31u);
-}
-
-uint8_t radar_radar2_b_radar2_class_encode(double value)
-{
-    return (uint8_t)(value);
-}
-
-double radar_radar2_b_radar2_class_decode(uint8_t value)
-{
-    return ((double)value);
-}
-
-bool radar_radar2_b_radar2_class_is_in_range(uint8_t value)
-{
-    return (value <= 7u);
-}
-
-uint8_t radar_radar2_b_radar2_dx_rear_end_loss_encode(double value)
-{
-    return (uint8_t)(value / 0.125);
-}
-
-double radar_radar2_b_radar2_dx_rear_end_loss_decode(uint8_t value)
-{
-    return ((double)value * 0.125);
-}
-
-bool radar_radar2_b_radar2_dx_rear_end_loss_is_in_range(uint8_t value)
-{
-    return (value <= 63u);
-}
-
-uint8_t radar_radar2_b_radar2_mess_bconsist_bit_encode(double value)
-{
-    return (uint8_t)(value);
-}
-
-double radar_radar2_b_radar2_mess_bconsist_bit_decode(uint8_t value)
-{
-    return ((double)value);
-}
-
-bool radar_radar2_b_radar2_mess_bconsist_bit_is_in_range(uint8_t value)
-{
-    return (value <= 1u);
 }

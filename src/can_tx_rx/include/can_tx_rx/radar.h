@@ -135,7 +135,7 @@ struct radar_radar_diag_response_t {
      * Scale: 1
      * Offset: 0
      */
-    uint64_t r1_diag_response;
+    uint64_t r_diag_response;
 };
 
 /**
@@ -149,182 +149,182 @@ struct radar_radar_diag_request_t {
      * Scale: 1
      * Offset: 0
      */
-    uint64_t r1_diag_request;
+    uint64_t r_diag_request;
 };
 
 /**
- * Signals in message Radar1_A.
+ * Signals in message Radar_A.
  *
  * All signal values are as on the CAN bus.
  */
-struct radar_radar1_a_t {
+struct radar_radar_a_t {
     /**
      * Range: 0..4095 (0..255.9375 m)
      * Scale: 0.0625
      * Offset: 0
      */
-    uint16_t radar1_dx;
+    uint16_t radar_dx;
 
     /**
      * Range: 0..4095 (-128..127.9375 m/s)
      * Scale: 0.0625
      * Offset: -128
      */
-    uint16_t radar1_vx;
+    uint16_t radar_vx;
 
     /**
      * Range: 0..2047 (-128..127.875 m)
      * Scale: 0.125
      * Offset: -128
      */
-    uint16_t radar1_dy;
+    uint16_t radar_dy;
 
     /**
      * Range: 0..31 (0..0.96875 -)
      * Scale: 0.03125
      * Offset: 0
      */
-    uint8_t radar1_w_exist;
+    uint8_t radar_w_exist;
 
     /**
      * Range: 0..1023 (-16..15.96875 m/s2)
      * Scale: 0.03125
      * Offset: -16
      */
-    uint16_t radar1_ax;
+    uint16_t radar_ax;
 
     /**
      * Range: 0..31 (0..0.96875 -)
      * Scale: 0.03125
      * Offset: 0
      */
-    uint8_t radar1_w_obstacle;
+    uint8_t radar_w_obstacle;
 
     /**
      * Range: 0..1 (0..1 -)
      * Scale: 1
      * Offset: 0
      */
-    uint8_t radar1_flag_valid;
+    uint8_t radar_flag_valid;
 
     /**
      * Range: 0..31 (0..0.96875 -)
      * Scale: 0.03125
      * Offset: 0
      */
-    uint8_t radar1_w_non_obstacle;
+    uint8_t radar_w_non_obstacle;
 
     /**
      * Range: 0..1 (0..1 -)
      * Scale: 1
      * Offset: 0
      */
-    uint8_t radar1_flag_meas;
+    uint8_t radar_flag_meas;
 
     /**
      * Range: 0..1 (0..1 -)
      * Scale: 1
      * Offset: 0
      */
-    uint8_t radar1_flag_hist;
+    uint8_t radar_flag_hist;
 
     /**
      * Range: 0..1 (0..1 -)
      * Scale: 1
      * Offset: 0
      */
-    uint8_t radar1_mess_aconsist_bit;
+    uint8_t radar_mess_aconsist_bit;
 };
 
 /**
- * Signals in message Radar1_B.
+ * Signals in message radar_B.
  *
  * All signal values are as on the CAN bus.
  */
-struct radar_radar1_b_t {
+struct radar_radar_b_t {
     /**
      * Range: 0..1023 (-64..63.875 m/s)
      * Scale: 0.125
      * Offset: -64
      */
-    uint16_t radar1_vy;
+    uint16_t radar_vy;
 
     /**
      * Range: 0..63 (0..7.875 m)
      * Scale: 0.125
      * Offset: 0
      */
-    uint8_t radar1_d_length;
+    uint8_t radar_d_length;
 
     /**
      * Range: 0..63 (-5..10.75 m)
      * Scale: 0.25
      * Offset: -5
      */
-    uint8_t radar1_dz;
+    uint8_t radar_dz;
 
     /**
      * Range: 0..3 (0..3 -)
      * Scale: 1
      * Offset: 0
      */
-    uint8_t radar1_moving_state;
+    uint8_t radar_moving_state;
 
     /**
      * Range: 0..63 (0..3.9375 m)
      * Scale: 0.0625
      * Offset: 0
      */
-    uint8_t radar1_dx_sigma;
+    uint8_t radar_dx_sigma;
 
     /**
      * Range: 0..63 (0..3.9375 m/s)
      * Scale: 0.0625
      * Offset: 0
      */
-    uint8_t radar1_vx_sigma;
+    uint8_t radar_vx_sigma;
 
     /**
      * Range: 0..63 (0..3.9375 m/s2)
      * Scale: 0.0625
      * Offset: 0
      */
-    uint8_t radar1_ax_sigma;
+    uint8_t radar_ax_sigma;
 
     /**
      * Range: 0..63 (0..3.9375 m)
      * Scale: 0.0625
      * Offset: 0
      */
-    uint8_t radar1_dy_sigma;
+    uint8_t radar_dy_sigma;
 
     /**
      * Range: 0..31 (0..0.96875 -)
      * Scale: 0.03125
      * Offset: 0
      */
-    uint8_t radar1_w_class;
+    uint8_t radar_w_class;
 
     /**
      * Range: 0..7 (0..7 -)
      * Scale: 1
      * Offset: 0
      */
-    uint8_t radar1_class;
+    uint8_t radar_class;
 
     /**
      * Range: 0..63 (0..7.875 m)
      * Scale: 0.125
      * Offset: 0
      */
-    uint8_t radar1_dx_rear_end_loss;
+    uint8_t radar_dx_rear_end_loss;
 
     /**
      * Range: 0..1 (0..1 -)
      * Scale: 1
      * Offset: 0
      */
-    uint8_t radar1_mess_bconsist_bit;
+    uint8_t radar_mess_bconsist_bit;
 };
 
 /**
@@ -413,7 +413,7 @@ struct radar_radar_object_starter_t {
  */
 struct radar_radar_status_t {
     /**
-     * Radar1 ITC of the lowest active fault
+     * Radar ITC of the lowest active fault
      *
      * Range: 0..65535 (0..65535 -)
      * Scale: 1
@@ -422,7 +422,7 @@ struct radar_radar_status_t {
     uint16_t r_stat_itc_info;
 
     /**
-     * Radar1 System Fault indicator
+     * Radar System Fault indicator
      *
      * Range: 0..1 (0..1 -)
      * Scale: 1
@@ -431,7 +431,7 @@ struct radar_radar_status_t {
     uint8_t r_stat_sgu_fail;
 
     /**
-     * Radar1 Hardware Failure indicator
+     * Radar Hardware Failure indicator
      *
      * Range: 0..1 (0..1 -)
      * Scale: 1
@@ -440,7 +440,7 @@ struct radar_radar_status_t {
     uint8_t r_stat_hw_fail;
 
     /**
-     * Radar1 Horizontal Misalignment
+     * Radar Horizontal Misalignment
      *
      * Range: 0..4095 (-0.2048..0.2047 rad)
      * Scale: 0.0001
@@ -449,7 +449,7 @@ struct radar_radar_status_t {
     uint16_t r_stat_horizontal_misalignment;
 
     /**
-     * Radar1 Absorption Blindness status indicator
+     * Radar Absorption Blindness status indicator
      *
      * Range: 0..255 (0..0.99609375 -)
      * Scale: 0.00390625
@@ -458,7 +458,7 @@ struct radar_radar_status_t {
     uint8_t r_stat_absorption_blindness;
 
     /**
-     * Radar1 Distortion Blindness status indicator
+     * Radar Distortion Blindness status indicator
      *
      * Range: 0..255 (0..0.99609375 -)
      * Scale: 0.00390625
@@ -467,7 +467,7 @@ struct radar_radar_status_t {
     uint8_t r_stat_distortion_blindness;
 
     /**
-     * Radar1 Status Message Counter
+     * Radar Status Message Counter
      *
      * Range: 0..15 (0..15 -)
      * Scale: 1
@@ -476,188 +476,13 @@ struct radar_radar_status_t {
     uint8_t r_stat_mc;
 
     /**
-     * Radar1 Status CRC
+     * Radar Status CRC
      *
      * Range: 0..255 (0..255 -)
      * Scale: 1
      * Offset: 0
      */
     uint8_t r_stat_crc;
-};
-
-/**
- * Signals in message Radar2_A.
- *
- * All signal values are as on the CAN bus.
- */
-struct radar_radar2_a_t {
-    /**
-     * Range: 0..4095 (0..255.9375 m)
-     * Scale: 0.0625
-     * Offset: 0
-     */
-    uint16_t radar2_dx;
-
-    /**
-     * Range: 0..4095 (-128..127.9375 m/s)
-     * Scale: 0.0625
-     * Offset: -128
-     */
-    uint16_t radar2_vx;
-
-    /**
-     * Range: 0..2047 (-128..127.875 m)
-     * Scale: 0.125
-     * Offset: -128
-     */
-    uint16_t radar2_dy;
-
-    /**
-     * Range: 0..31 (0..0.96875 -)
-     * Scale: 0.03125
-     * Offset: 0
-     */
-    uint8_t radar2_w_exist;
-
-    /**
-     * Range: 0..1023 (-16..15.96875 m/s2)
-     * Scale: 0.03125
-     * Offset: -16
-     */
-    uint16_t radar2_ax;
-
-    /**
-     * Range: 0..31 (0..0.96875 -)
-     * Scale: 0.03125
-     * Offset: 0
-     */
-    uint8_t radar2_w_obstacle;
-
-    /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t radar2_flag_valid;
-
-    /**
-     * Range: 0..31 (0..0.96875 -)
-     * Scale: 0.03125
-     * Offset: 0
-     */
-    uint8_t radar2_w_non_obstacle;
-
-    /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t radar2_flag_meas;
-
-    /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t radar2_flag_hist;
-
-    /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t radar2_mess_aconsist_bit;
-};
-
-/**
- * Signals in message Radar2_B.
- *
- * All signal values are as on the CAN bus.
- */
-struct radar_radar2_b_t {
-    /**
-     * Range: 0..1023 (-64..63.875 m/s)
-     * Scale: 0.125
-     * Offset: -64
-     */
-    uint16_t radar2_vy;
-
-    /**
-     * Range: 0..63 (0..7.875 m)
-     * Scale: 0.125
-     * Offset: 0
-     */
-    uint8_t radar2_d_length;
-
-    /**
-     * Range: 0..63 (-5..10.75 m)
-     * Scale: 0.25
-     * Offset: -5
-     */
-    uint8_t radar2_dz;
-
-    /**
-     * Range: 0..3 (0..3 -)
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t radar2_moving_state;
-
-    /**
-     * Range: 0..63 (0..3.9375 m)
-     * Scale: 0.0625
-     * Offset: 0
-     */
-    uint8_t radar2_dx_sigma;
-
-    /**
-     * Range: 0..63 (0..3.9375 m/s)
-     * Scale: 0.0625
-     * Offset: 0
-     */
-    uint8_t radar2_vx_sigma;
-
-    /**
-     * Range: 0..63 (0..3.9375 m/s2)
-     * Scale: 0.0625
-     * Offset: 0
-     */
-    uint8_t radar2_ax_sigma;
-
-    /**
-     * Range: 0..63 (0..3.9375 m)
-     * Scale: 0.0625
-     * Offset: 0
-     */
-    uint8_t radar2_dy_sigma;
-
-    /**
-     * Range: 0..31 (0..0.96875 -)
-     * Scale: 0.03125
-     * Offset: 0
-     */
-    uint8_t radar2_w_class;
-
-    /**
-     * Range: 0..7 (0..7 -)
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t radar2_class;
-
-    /**
-     * Range: 0..63 (0..7.875 m)
-     * Scale: 0.125
-     * Offset: 0
-     */
-    uint8_t radar2_dx_rear_end_loss;
-
-    /**
-     * Range: 0..1 (0..1 -)
-     * Scale: 1
-     * Offset: 0
-     */
-    uint8_t radar2_mess_bconsist_bit;
 };
 
 /**
@@ -695,7 +520,7 @@ int radar_radar_diag_response_unpack(
  *
  * @return Encoded signal.
  */
-uint64_t radar_radar_diag_response_r1_diag_response_encode(double value);
+uint64_t radar_radar_diag_response_r_diag_response_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -704,7 +529,7 @@ uint64_t radar_radar_diag_response_r1_diag_response_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar_diag_response_r1_diag_response_decode(uint64_t value);
+double radar_radar_diag_response_r_diag_response_decode(uint64_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -713,7 +538,7 @@ double radar_radar_diag_response_r1_diag_response_decode(uint64_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar_diag_response_r1_diag_response_is_in_range(uint64_t value);
+bool radar_radar_diag_response_r_diag_response_is_in_range(uint64_t value);
 
 /**
  * Pack message Radar_Diag_Request.
@@ -750,7 +575,7 @@ int radar_radar_diag_request_unpack(
  *
  * @return Encoded signal.
  */
-uint64_t radar_radar_diag_request_r1_diag_request_encode(double value);
+uint64_t radar_radar_diag_request_r_diag_request_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -759,7 +584,7 @@ uint64_t radar_radar_diag_request_r1_diag_request_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar_diag_request_r1_diag_request_decode(uint64_t value);
+double radar_radar_diag_request_r_diag_request_decode(uint64_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -768,10 +593,10 @@ double radar_radar_diag_request_r1_diag_request_decode(uint64_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar_diag_request_r1_diag_request_is_in_range(uint64_t value);
+bool radar_radar_diag_request_r_diag_request_is_in_range(uint64_t value);
 
 /**
- * Pack message Radar1_A.
+ * Pack message Radar_A.
  *
  * @param[out] dst_p Buffer to pack the message into.
  * @param[in] src_p Data to pack.
@@ -779,13 +604,13 @@ bool radar_radar_diag_request_r1_diag_request_is_in_range(uint64_t value);
  *
  * @return Size of packed data, or negative error code.
  */
-int radar_radar1_a_pack(
+int radar_radar_a_pack(
     uint8_t *dst_p,
-    const struct radar_radar1_a_t *src_p,
+    const struct radar_radar_a_t *src_p,
     size_t size);
 
 /**
- * Unpack message Radar1_A.
+ * Unpack message Radar_A.
  *
  * @param[out] dst_p Object to unpack the message into.
  * @param[in] src_p Message to unpack.
@@ -793,8 +618,8 @@ int radar_radar1_a_pack(
  *
  * @return zero(0) or negative error code.
  */
-int radar_radar1_a_unpack(
-    struct radar_radar1_a_t *dst_p,
+int radar_radar_a_unpack(
+    struct radar_radar_a_t *dst_p,
     const uint8_t *src_p,
     size_t size);
 
@@ -805,7 +630,7 @@ int radar_radar1_a_unpack(
  *
  * @return Encoded signal.
  */
-uint16_t radar_radar1_a_radar1_dx_encode(double value);
+uint16_t radar_radar_a_radar_dx_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -814,7 +639,7 @@ uint16_t radar_radar1_a_radar1_dx_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_dx_decode(uint16_t value);
+double radar_radar_a_radar_dx_decode(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -823,7 +648,7 @@ double radar_radar1_a_radar1_dx_decode(uint16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_dx_is_in_range(uint16_t value);
+bool radar_radar_a_radar_dx_is_in_range(uint16_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -832,7 +657,7 @@ bool radar_radar1_a_radar1_dx_is_in_range(uint16_t value);
  *
  * @return Encoded signal.
  */
-uint16_t radar_radar1_a_radar1_vx_encode(double value);
+uint16_t radar_radar_a_radar_vx_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -841,7 +666,7 @@ uint16_t radar_radar1_a_radar1_vx_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_vx_decode(uint16_t value);
+double radar_radar_a_radar_vx_decode(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -850,7 +675,7 @@ double radar_radar1_a_radar1_vx_decode(uint16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_vx_is_in_range(uint16_t value);
+bool radar_radar_a_radar_vx_is_in_range(uint16_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -859,7 +684,7 @@ bool radar_radar1_a_radar1_vx_is_in_range(uint16_t value);
  *
  * @return Encoded signal.
  */
-uint16_t radar_radar1_a_radar1_dy_encode(double value);
+uint16_t radar_radar_a_radar_dy_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -868,7 +693,7 @@ uint16_t radar_radar1_a_radar1_dy_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_dy_decode(uint16_t value);
+double radar_radar_a_radar_dy_decode(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -877,7 +702,7 @@ double radar_radar1_a_radar1_dy_decode(uint16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_dy_is_in_range(uint16_t value);
+bool radar_radar_a_radar_dy_is_in_range(uint16_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -886,7 +711,7 @@ bool radar_radar1_a_radar1_dy_is_in_range(uint16_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_a_radar1_w_exist_encode(double value);
+uint8_t radar_radar_a_radar_w_exist_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -895,7 +720,7 @@ uint8_t radar_radar1_a_radar1_w_exist_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_w_exist_decode(uint8_t value);
+double radar_radar_a_radar_w_exist_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -904,7 +729,7 @@ double radar_radar1_a_radar1_w_exist_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_w_exist_is_in_range(uint8_t value);
+bool radar_radar_a_radar_w_exist_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -913,7 +738,7 @@ bool radar_radar1_a_radar1_w_exist_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint16_t radar_radar1_a_radar1_ax_encode(double value);
+uint16_t radar_radar_a_radar_ax_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -922,7 +747,7 @@ uint16_t radar_radar1_a_radar1_ax_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_ax_decode(uint16_t value);
+double radar_radar_a_radar_ax_decode(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -931,7 +756,7 @@ double radar_radar1_a_radar1_ax_decode(uint16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_ax_is_in_range(uint16_t value);
+bool radar_radar_a_radar_ax_is_in_range(uint16_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -940,7 +765,7 @@ bool radar_radar1_a_radar1_ax_is_in_range(uint16_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_a_radar1_w_obstacle_encode(double value);
+uint8_t radar_radar_a_radar_w_obstacle_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -949,7 +774,7 @@ uint8_t radar_radar1_a_radar1_w_obstacle_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_w_obstacle_decode(uint8_t value);
+double radar_radar_a_radar_w_obstacle_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -958,7 +783,7 @@ double radar_radar1_a_radar1_w_obstacle_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_w_obstacle_is_in_range(uint8_t value);
+bool radar_radar_a_radar_w_obstacle_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -967,7 +792,7 @@ bool radar_radar1_a_radar1_w_obstacle_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_a_radar1_flag_valid_encode(double value);
+uint8_t radar_radar_a_radar_flag_valid_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -976,7 +801,7 @@ uint8_t radar_radar1_a_radar1_flag_valid_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_flag_valid_decode(uint8_t value);
+double radar_radar_a_radar_flag_valid_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -985,7 +810,7 @@ double radar_radar1_a_radar1_flag_valid_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_flag_valid_is_in_range(uint8_t value);
+bool radar_radar_a_radar_flag_valid_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -994,7 +819,7 @@ bool radar_radar1_a_radar1_flag_valid_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_a_radar1_w_non_obstacle_encode(double value);
+uint8_t radar_radar_a_radar_w_non_obstacle_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1003,7 +828,7 @@ uint8_t radar_radar1_a_radar1_w_non_obstacle_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_w_non_obstacle_decode(uint8_t value);
+double radar_radar_a_radar_w_non_obstacle_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1012,7 +837,7 @@ double radar_radar1_a_radar1_w_non_obstacle_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_w_non_obstacle_is_in_range(uint8_t value);
+bool radar_radar_a_radar_w_non_obstacle_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1021,7 +846,7 @@ bool radar_radar1_a_radar1_w_non_obstacle_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_a_radar1_flag_meas_encode(double value);
+uint8_t radar_radar_a_radar_flag_meas_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1030,7 +855,7 @@ uint8_t radar_radar1_a_radar1_flag_meas_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_flag_meas_decode(uint8_t value);
+double radar_radar_a_radar_flag_meas_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1039,7 +864,7 @@ double radar_radar1_a_radar1_flag_meas_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_flag_meas_is_in_range(uint8_t value);
+bool radar_radar_a_radar_flag_meas_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1048,7 +873,7 @@ bool radar_radar1_a_radar1_flag_meas_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_a_radar1_flag_hist_encode(double value);
+uint8_t radar_radar_a_radar_flag_hist_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1057,7 +882,7 @@ uint8_t radar_radar1_a_radar1_flag_hist_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_flag_hist_decode(uint8_t value);
+double radar_radar_a_radar_flag_hist_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1066,7 +891,7 @@ double radar_radar1_a_radar1_flag_hist_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_flag_hist_is_in_range(uint8_t value);
+bool radar_radar_a_radar_flag_hist_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1075,7 +900,7 @@ bool radar_radar1_a_radar1_flag_hist_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_a_radar1_mess_aconsist_bit_encode(double value);
+uint8_t radar_radar_a_radar_mess_aconsist_bit_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1084,7 +909,7 @@ uint8_t radar_radar1_a_radar1_mess_aconsist_bit_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_a_radar1_mess_aconsist_bit_decode(uint8_t value);
+double radar_radar_a_radar_mess_aconsist_bit_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1093,10 +918,10 @@ double radar_radar1_a_radar1_mess_aconsist_bit_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_a_radar1_mess_aconsist_bit_is_in_range(uint8_t value);
+bool radar_radar_a_radar_mess_aconsist_bit_is_in_range(uint8_t value);
 
 /**
- * Pack message Radar1_B.
+ * Pack message Radar_B.
  *
  * @param[out] dst_p Buffer to pack the message into.
  * @param[in] src_p Data to pack.
@@ -1104,13 +929,13 @@ bool radar_radar1_a_radar1_mess_aconsist_bit_is_in_range(uint8_t value);
  *
  * @return Size of packed data, or negative error code.
  */
-int radar_radar1_b_pack(
+int radar_radar_b_pack(
     uint8_t *dst_p,
-    const struct radar_radar1_b_t *src_p,
+    const struct radar_radar_b_t *src_p,
     size_t size);
 
 /**
- * Unpack message Radar1_B.
+ * Unpack message radar_B.
  *
  * @param[out] dst_p Object to unpack the message into.
  * @param[in] src_p Message to unpack.
@@ -1118,8 +943,8 @@ int radar_radar1_b_pack(
  *
  * @return zero(0) or negative error code.
  */
-int radar_radar1_b_unpack(
-    struct radar_radar1_b_t *dst_p,
+int radar_radar_b_unpack(
+    struct radar_radar_b_t *dst_p,
     const uint8_t *src_p,
     size_t size);
 
@@ -1130,7 +955,7 @@ int radar_radar1_b_unpack(
  *
  * @return Encoded signal.
  */
-uint16_t radar_radar1_b_radar1_vy_encode(double value);
+uint16_t radar_radar_b_radar_vy_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1139,7 +964,7 @@ uint16_t radar_radar1_b_radar1_vy_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_vy_decode(uint16_t value);
+double radar_radar_b_radar_vy_decode(uint16_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1148,7 +973,7 @@ double radar_radar1_b_radar1_vy_decode(uint16_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_vy_is_in_range(uint16_t value);
+bool radar_radar_b_radar_vy_is_in_range(uint16_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1157,7 +982,7 @@ bool radar_radar1_b_radar1_vy_is_in_range(uint16_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_d_length_encode(double value);
+uint8_t radar_radar_b_radar_d_length_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1166,7 +991,7 @@ uint8_t radar_radar1_b_radar1_d_length_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_d_length_decode(uint8_t value);
+double radar_radar_b_radar_d_length_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1175,7 +1000,7 @@ double radar_radar1_b_radar1_d_length_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_d_length_is_in_range(uint8_t value);
+bool radar_radar_b_radar_d_length_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1184,7 +1009,7 @@ bool radar_radar1_b_radar1_d_length_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_dz_encode(double value);
+uint8_t radar_radar_b_radar_dz_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1193,7 +1018,7 @@ uint8_t radar_radar1_b_radar1_dz_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_dz_decode(uint8_t value);
+double radar_radar_b_radar_dz_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1202,7 +1027,7 @@ double radar_radar1_b_radar1_dz_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_dz_is_in_range(uint8_t value);
+bool radar_radar_b_radar_dz_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1211,7 +1036,7 @@ bool radar_radar1_b_radar1_dz_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_moving_state_encode(double value);
+uint8_t radar_radar_b_radar_moving_state_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1220,7 +1045,7 @@ uint8_t radar_radar1_b_radar1_moving_state_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_moving_state_decode(uint8_t value);
+double radar_radar_b_radar_moving_state_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1229,7 +1054,7 @@ double radar_radar1_b_radar1_moving_state_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_moving_state_is_in_range(uint8_t value);
+bool radar_radar_b_radar_moving_state_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1238,7 +1063,7 @@ bool radar_radar1_b_radar1_moving_state_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_dx_sigma_encode(double value);
+uint8_t radar_radar_b_radar_dx_sigma_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1247,7 +1072,7 @@ uint8_t radar_radar1_b_radar1_dx_sigma_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_dx_sigma_decode(uint8_t value);
+double radar_radar_b_radar_dx_sigma_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1256,7 +1081,7 @@ double radar_radar1_b_radar1_dx_sigma_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_dx_sigma_is_in_range(uint8_t value);
+bool radar_radar_b_radar_dx_sigma_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1265,7 +1090,7 @@ bool radar_radar1_b_radar1_dx_sigma_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_vx_sigma_encode(double value);
+uint8_t radar_radar_b_radar_vx_sigma_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1274,7 +1099,7 @@ uint8_t radar_radar1_b_radar1_vx_sigma_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_vx_sigma_decode(uint8_t value);
+double radar_radar_b_radar_vx_sigma_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1283,7 +1108,7 @@ double radar_radar1_b_radar1_vx_sigma_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_vx_sigma_is_in_range(uint8_t value);
+bool radar_radar_b_radar_vx_sigma_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1292,7 +1117,7 @@ bool radar_radar1_b_radar1_vx_sigma_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_ax_sigma_encode(double value);
+uint8_t radar_radar_b_radar_ax_sigma_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1301,7 +1126,7 @@ uint8_t radar_radar1_b_radar1_ax_sigma_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_ax_sigma_decode(uint8_t value);
+double radar_radar_b_radar_ax_sigma_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1310,7 +1135,7 @@ double radar_radar1_b_radar1_ax_sigma_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_ax_sigma_is_in_range(uint8_t value);
+bool radar_radar_b_radar_ax_sigma_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1319,7 +1144,7 @@ bool radar_radar1_b_radar1_ax_sigma_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_dy_sigma_encode(double value);
+uint8_t radar_radar_b_radar_dy_sigma_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1328,7 +1153,7 @@ uint8_t radar_radar1_b_radar1_dy_sigma_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_dy_sigma_decode(uint8_t value);
+double radar_radar_b_radar_dy_sigma_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1337,7 +1162,7 @@ double radar_radar1_b_radar1_dy_sigma_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_dy_sigma_is_in_range(uint8_t value);
+bool radar_radar_b_radar_dy_sigma_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1346,7 +1171,7 @@ bool radar_radar1_b_radar1_dy_sigma_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_w_class_encode(double value);
+uint8_t radar_radar_b_radar_w_class_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1355,7 +1180,7 @@ uint8_t radar_radar1_b_radar1_w_class_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_w_class_decode(uint8_t value);
+double radar_radar_b_radar_w_class_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1364,7 +1189,7 @@ double radar_radar1_b_radar1_w_class_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_w_class_is_in_range(uint8_t value);
+bool radar_radar_b_radar_w_class_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1373,7 +1198,7 @@ bool radar_radar1_b_radar1_w_class_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_class_encode(double value);
+uint8_t radar_radar_b_radar_class_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1382,7 +1207,7 @@ uint8_t radar_radar1_b_radar1_class_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_class_decode(uint8_t value);
+double radar_radar_b_radar_class_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1391,7 +1216,7 @@ double radar_radar1_b_radar1_class_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_class_is_in_range(uint8_t value);
+bool radar_radar_b_radar_class_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1400,7 +1225,7 @@ bool radar_radar1_b_radar1_class_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_dx_rear_end_loss_encode(double value);
+uint8_t radar_radar_b_radar_dx_rear_end_loss_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1409,7 +1234,7 @@ uint8_t radar_radar1_b_radar1_dx_rear_end_loss_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_dx_rear_end_loss_decode(uint8_t value);
+double radar_radar_b_radar_dx_rear_end_loss_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1418,7 +1243,7 @@ double radar_radar1_b_radar1_dx_rear_end_loss_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_dx_rear_end_loss_is_in_range(uint8_t value);
+bool radar_radar_b_radar_dx_rear_end_loss_is_in_range(uint8_t value);
 
 /**
  * Encode given signal by applying scaling and offset.
@@ -1427,7 +1252,7 @@ bool radar_radar1_b_radar1_dx_rear_end_loss_is_in_range(uint8_t value);
  *
  * @return Encoded signal.
  */
-uint8_t radar_radar1_b_radar1_mess_bconsist_bit_encode(double value);
+uint8_t radar_radar_b_radar_mess_bconsist_bit_encode(double value);
 
 /**
  * Decode given signal by applying scaling and offset.
@@ -1436,7 +1261,7 @@ uint8_t radar_radar1_b_radar1_mess_bconsist_bit_encode(double value);
  *
  * @return Decoded signal.
  */
-double radar_radar1_b_radar1_mess_bconsist_bit_decode(uint8_t value);
+double radar_radar_b_radar_mess_bconsist_bit_decode(uint8_t value);
 
 /**
  * Check that given signal is in allowed range.
@@ -1445,7 +1270,7 @@ double radar_radar1_b_radar1_mess_bconsist_bit_decode(uint8_t value);
  *
  * @return true if in range, false otherwise.
  */
-bool radar_radar1_b_radar1_mess_bconsist_bit_is_in_range(uint8_t value);
+bool radar_radar_b_radar_mess_bconsist_bit_is_in_range(uint8_t value);
 
 /**
  * Pack message Radar_Object_Ender.
@@ -1989,682 +1814,5 @@ double radar_radar_status_r_stat_crc_decode(uint8_t value);
  * @return true if in range, false otherwise.
  */
 bool radar_radar_status_r_stat_crc_is_in_range(uint8_t value);
-
-/**
- * Pack message Radar2_A.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int radar_radar2_a_pack(
-    uint8_t *dst_p,
-    const struct radar_radar2_a_t *src_p,
-    size_t size);
-
-/**
- * Unpack message Radar2_A.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int radar_radar2_a_unpack(
-    struct radar_radar2_a_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t radar_radar2_a_radar2_dx_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_dx_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_dx_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t radar_radar2_a_radar2_vx_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_vx_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_vx_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t radar_radar2_a_radar2_dy_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_dy_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_dy_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_a_radar2_w_exist_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_w_exist_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_w_exist_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t radar_radar2_a_radar2_ax_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_ax_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_ax_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_a_radar2_w_obstacle_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_w_obstacle_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_w_obstacle_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_a_radar2_flag_valid_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_flag_valid_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_flag_valid_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_a_radar2_w_non_obstacle_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_w_non_obstacle_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_w_non_obstacle_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_a_radar2_flag_meas_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_flag_meas_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_flag_meas_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_a_radar2_flag_hist_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_flag_hist_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_flag_hist_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_a_radar2_mess_aconsist_bit_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_a_radar2_mess_aconsist_bit_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_a_radar2_mess_aconsist_bit_is_in_range(uint8_t value);
-
-/**
- * Pack message Radar2_B.
- *
- * @param[out] dst_p Buffer to pack the message into.
- * @param[in] src_p Data to pack.
- * @param[in] size Size of dst_p.
- *
- * @return Size of packed data, or negative error code.
- */
-int radar_radar2_b_pack(
-    uint8_t *dst_p,
-    const struct radar_radar2_b_t *src_p,
-    size_t size);
-
-/**
- * Unpack message Radar2_B.
- *
- * @param[out] dst_p Object to unpack the message into.
- * @param[in] src_p Message to unpack.
- * @param[in] size Size of src_p.
- *
- * @return zero(0) or negative error code.
- */
-int radar_radar2_b_unpack(
-    struct radar_radar2_b_t *dst_p,
-    const uint8_t *src_p,
-    size_t size);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint16_t radar_radar2_b_radar2_vy_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_vy_decode(uint16_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_vy_is_in_range(uint16_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_d_length_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_d_length_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_d_length_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_dz_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_dz_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_dz_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_moving_state_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_moving_state_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_moving_state_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_dx_sigma_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_dx_sigma_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_dx_sigma_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_vx_sigma_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_vx_sigma_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_vx_sigma_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_ax_sigma_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_ax_sigma_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_ax_sigma_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_dy_sigma_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_dy_sigma_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_dy_sigma_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_w_class_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_w_class_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_w_class_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_class_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_class_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_class_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_dx_rear_end_loss_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_dx_rear_end_loss_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_dx_rear_end_loss_is_in_range(uint8_t value);
-
-/**
- * Encode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to encode.
- *
- * @return Encoded signal.
- */
-uint8_t radar_radar2_b_radar2_mess_bconsist_bit_encode(double value);
-
-/**
- * Decode given signal by applying scaling and offset.
- *
- * @param[in] value Signal to decode.
- *
- * @return Decoded signal.
- */
-double radar_radar2_b_radar2_mess_bconsist_bit_decode(uint8_t value);
-
-/**
- * Check that given signal is in allowed range.
- *
- * @param[in] value Signal to check.
- *
- * @return true if in range, false otherwise.
- */
-bool radar_radar2_b_radar2_mess_bconsist_bit_is_in_range(uint8_t value);
 
 #endif

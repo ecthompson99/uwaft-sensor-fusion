@@ -6,7 +6,7 @@
 
 Mobileye_RX::Mobileye_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
   //sub = node_handle->subscribe(UNIT_TEST_SUBSCRIBER,TX_RX_MESSAGE_BUFFER_SIZE, &Mobileye_RX::sub_callback, this);
-  mob_pub = node_handle->advertise<common::mobileye_object_data>("Topic",TX_RX_MESSAGE_BUFFER_SIZE);
+  mob_pub = node_handle->advertise<common::mobileye_object_data>(TOPIC_AD,TX_RX_MESSAGE_BUFFER_SIZE);
 }
 
 uint8_t Mobileye_RX::get_nums(mobileye_object mobileye_obj) {

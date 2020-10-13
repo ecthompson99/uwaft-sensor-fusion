@@ -17,7 +17,7 @@ uint8_t left_prev_mc = 0;
 uint8_t rght_prev_tc_counter = 0; // Right Radar counter trackers
 uint8_t rght_prev_mc = 0;
 
-uint8_t crc8bit_calculation(uint16_t itc, uint8_t hw, uint8_t sgu, uint16_t hor_misalignment, uint8_t absorption,
+uint8_t crc8bit_calculation(uint8_t itc, uint8_t hw, uint8_t sgu, uint8_t hor_misalignment, uint8_t absorption,
                             uint8_t distortion, uint8_t mc) {
   uint8_t crc = 0xFF;
 
