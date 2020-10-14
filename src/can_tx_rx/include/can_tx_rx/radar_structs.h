@@ -7,8 +7,13 @@
 
 #include "can_tx_rx/radar.c"
 #include "can_tx_rx/radar.h"
+#include "can_tx_rx/sensor_diag.h"
 
 #include "common/radar_object_data.h"
+
+#define TX_RX_MESSAGE_BUFFER_SIZE 1000
+#define TOPIC_AD "Mobileye_CAN_Rx"
+#define SIZE_OF_MSG 8 
 
 class Radar_RX{
   public:
@@ -175,9 +180,75 @@ class Radar_RX{
       uint8_t object_number;
     } object_info;
 
-    uint8_t get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n);
+    void Radar_RX::get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n) {
+      if (id == 1985 || id == 1958 || id == 1879 || id == 1957) {
+        case_n = 1; //diag responses and requests
+      } else if (id > 1604 && id < 1659) {
+        case_n = 2; //target A and B frames (?) the IDs are incorrectly calculated from the dbc 
+      } else if (id == 1665 || id == 1667 || id == 1280 || id == 1282 || id == 1670 || id == 1672) {
+        case_n = 3; //ender, starter, and statuses messages
+      } else if (id > 1284 && id < 1599) {
+        case_n = 4; //radar A and B object frames 
+      } else {
+        case_n = 0; //faulted 
+      }
 
-    double signal_in_range(double val, bool cond);
+      switch (case_n) {
+        case 1: //diag responses and requests
+          if (id == 1985 || id == 1879) {
+            radar_n = 1;//radar 1 in dbc  
+          } else {
+            radar_n = 2;//radar 2 in dbc 
+          }
+          break;
+
+        case 2: //target A and B frames 
+          if (id % 10 == 5 || id % 10 == 6) {
+            radar_n = 1;//radar 1 in dbc (all ids for targets end with a 5 or a 6)
+          } else {
+            radar_n = 2;//radar 2 in dbc 
+          }
+
+          if (id % 10 == 5 || id % 10 == 7) {
+            frame_n = 1; //a frame in dbc (all ids for targets end with a 5 if they are radar 1, or 7 if they are  radar 2)
+          } else {
+            frame_n = 2; //b frame in dbc
+          }
+
+          target_obj_n = (id - 1600 - (id % 10)) / 10; //takes the target object number based on the defined id 
+
+          break;
+
+        case 3: //ender, starter, and statuses messages
+          if (id == 1665 || id == 1280 || id == 1670) {
+            radar_n = 1; //radar 1 in dbc 
+          } else {
+            radar_n = 2; //radar 2 in dbc 
+          }
+          break;
+
+        case 4://radar A and B object frames 
+          if (id % 10 == 5 || id % 10 == 6) {
+            radar_n = 1; //radar 1 in dbc (all ids follow the same convention as target messages)
+          } else {
+            radar_n = 2; //radar 2 in dbc 
+          }
+
+          if (id % 10 == 5 || id % 10 == 7) {
+            frame_n = 1; //a frame in dbc (all ids follow the same convention as target messages)
+          } else {
+            frame_n = 2; //b frame in dbc 
+          }
+
+          obj_n = (id - 1280 - (id % 10)) / 10; //takes the tracked object number based on the defined id 
+
+          break;
+      }
+    };
+
+    double Radar_RX::signal_in_range(double val, bool cond){
+        return (cond) ? (val) : 0; 
+    };
 
     radar_radar_diag_response_t diag_response_unpacked; 
     radar_radar_diag_request_t diag_request_unpacked;

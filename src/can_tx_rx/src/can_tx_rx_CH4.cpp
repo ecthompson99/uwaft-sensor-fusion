@@ -1,45 +1,16 @@
 #include "can_tx_rx/mobileye_struct.h"
-#define TX_RX_MESSAGE_BUFFER_SIZE 1000
 #define canDRIVER_NORMAL 4
 #define TOPIC_AD "Mobileye_CAN_Rx"
 #define SIZE_OF_MSG 8 
 
-Mobileye_RX::Mobileye_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
-  //sub = node_handle->subscribe(UNIT_TEST_SUBSCRIBER,TX_RX_MESSAGE_BUFFER_SIZE, &Mobileye_RX::sub_callback, this);
-  mob_pub = node_handle->advertise<common::mobileye_object_data>(TOPIC_AD,TX_RX_MESSAGE_BUFFER_SIZE);
-}
-
-uint8_t Mobileye_RX::get_nums(mobileye_object mobileye_obj) {
-  if(mobileye_obj.id >=1824 && mobileye_obj.id <=1830){
-    return 1; //Traffic Sensor 
-  } else if(mobileye_obj.id >= 1849 && mobileye_obj.id <= 1876 && mobileye_obj.id % 3 == 1){
-    return 2; //Obstacle A Frame
-  } else if(mobileye_obj.id >= 1850 && mobileye_obj.id <= 1877 && mobileye_obj.id % 3 == 2){
-    return 3; //Obstacle B Frame
-  } else if(mobileye_obj.id >= 1851 && mobileye_obj.id <= 1878 && mobileye_obj.id % 3 == 0){
-    return 4; //Obstacle C Frame
-  } else if(mobileye_obj.id == 1894){
-    return 5; //LKA Left Lane Frame A 
-  } else if(mobileye_obj.id == 1895){
-    return 6; //LKA Left Lane Frame B 
-  } else if(mobileye_obj.id == 1896){
-    return 7; //LKA Right Lane Frame A 
-  } else if(mobileye_obj.id == 1897){
-    return 8; //LKA Right Lane Frame B 
-  } else{
-    return 0; 
-  }
-}
-
-double Mobileye_RX::signal_in_range(double val, bool cond){
-    return (cond) ? (val) : 0; 
-}
-
 int main(int argc, char **argv) {
   ros::init(argc, argv, "can_tx_rx_CH4");
   ros::NodeHandle can_tx_rx_CH4_handle;
+  ros::NodeHandle diag_handle; 
 
   Mobileye_RX mobeye_rx = Mobileye_RX(&can_tx_rx_CH4_handle); 
+  SensorDiagnostics sens_diag = SensorDiagnostics(&diag_handle);
+
   common::mobileye_object_data obj_data; //Processed values for object detection
   common::raw_lane_data raw_lane; 
   Mobileye_RX::mobileye_object mobileye_obj;

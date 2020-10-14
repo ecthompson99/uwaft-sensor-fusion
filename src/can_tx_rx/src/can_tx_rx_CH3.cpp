@@ -1,104 +1,23 @@
-#include "can_tx_rx/output_structs.h"
-#define TX_RX_MESSAGE_BUFFER_SIZE 1000
+#include "can_tx_rx/radar_structs.h"
 #define canDRIVER_NORMAL 4
 #define TOPIC_AD "Radar_CAN_Rx"
 #define SIZE_OF_MSG 8 
 
-static const uint16_t TX_RX_MESSAGE_BUFFER_SIZE = 1000;
-
-Radar_RX::Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
-  rad_pub = node_handle->advertise<common::radar_object_data_msg>(TOPIC_AD,TX_RX_MESSAGE_BUFFER_SIZE);
-}
-
-void Radar_RX::get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n) {
-  if (id == 1985 || id == 1958 || id == 1879 || id == 1957) {
-    case_n = 1; //diag responses and requests
-  } else if (id > 1604 && id < 1659) {
-    case_n = 2; //target A and B frames (?) the IDs are incorrectly calculated from the dbc 
-  } else if (id == 1665 || id == 1667 || id == 1280 || id == 1282 || id == 1670 || id == 1672) {
-    case_n = 3; //ender, starter, and statuses messages
-  } else if (id > 1284 && id < 1599) {
-    case_n = 4; //radar A and B object frames 
-  } else {
-    case_n = 0; //faulted 
-  }
-
-  switch (case_n) {
-    case 1: //diag responses and requests
-      if (id == 1985 || id == 1879) {
-        radar_n = 1;//radar 1 in dbc  
-      } else {
-        radar_n = 2;//radar 2 in dbc 
-      }
-      break;
-
-    case 2: //target A and B frames 
-      if (id % 10 == 5 || id % 10 == 6) {
-        radar_n = 1;//radar 1 in dbc (all ids for targets end with a 5 or a 6)
-      } else {
-        radar_n = 2;//radar 2 in dbc 
-      }
-
-      if (id % 10 == 5 || id % 10 == 7) {
-        frame_n = 1; //a frame in dbc (all ids for targets end with a 5 if they are radar 1, or 7 if they are  radar 2)
-      } else {
-        frame_n = 2; //b frame in dbc
-      }
-
-      target_obj_n = (id - 1600 - (id % 10)) / 10; //takes the target object number based on the defined id 
-
-      break;
-
-    case 3: //ender, starter, and statuses messages
-      if (id == 1665 || id == 1280 || id == 1670) {
-        radar_n = 1; //radar 1 in dbc 
-      } else {
-        radar_n = 2; //radar 2 in dbc 
-      }
-      break;
-
-    case 4://radar A and B object frames 
-      if (id % 10 == 5 || id % 10 == 6) {
-        radar_n = 1; //radar 1 in dbc (all ids follow the same convention as target messages)
-      } else {
-        radar_n = 2; //radar 2 in dbc 
-      }
-
-      if (id % 10 == 5 || id % 10 == 7) {
-        frame_n = 1; //a frame in dbc (all ids follow the same convention as target messages)
-      } else {
-        frame_n = 2; //b frame in dbc 
-      }
-
-      obj_n = (id - 1280 - (id % 10)) / 10; //takes the tracked object number based on the defined id 
-
-      break;
-  }
-}
-
-double Radar_RX::signal_in_range(double val, bool cond){
-    return (cond) ? (val) : 0; 
-}
-
 int main(int argc, char **argv) {
     ros::init(argc, argv, "can_tx_rx_CH3");
     ros::NodeHandle can_tx_rx_CH3_handle;
+    ros::NodeHandle diag_handle; 
 
     Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH3_handle);
+    SensorDiagnostics sens_diag = SensorDiagnostics(&diag_handle);
 
     common::radar_object_data_msg radar_obj; 
     common::sensor_diagnostic_data_msg diag_data;
-    //common::raw_sensor_object_data_msg raw_obj_data;
+
     Radar_RX::diag_response diag_response;
     Radar_RX::radar_info radar_info;
     Radar_RX::target_info target_info;
     Radar_RX::object_info object_info; 
-
-    /*ros::Publisher diag_data_pub = can_tx_rx_CH3_handle.advertise<can_tx_rx::sensor_diagnostic_data_msg>(
-      "sensor_diagnostic_data", TX_RX_MESSAGE_BUFFER_SIZE);
-
-    ros::Publisher raw_obj_data_pub = can_tx_rx_CH3_handle.advertise<can_tx_rx::raw_sensor_object_data_msg>(
-      "raw_sensor_object_data", TX_RX_MESSAGE_BUFFER_SIZE);*/
 
     canHandle hnd;
 
@@ -298,10 +217,6 @@ int main(int argc, char **argv) {
                         radar_info.packet_checksum_encoded = radar_radar_object_ender_radar_packet_checksum_decode(r_ender.radar_packet_checksum);
                         radar_info.packet_checksum_is_in_range = radar_radar_object_ender_radar_packet_checksum_is_in_range(r_ender.radar_packet_checksum);
                         diag_data.radar_packet_checksum = rad_rx.signals_in_range(radar_info.packet_checksum_encoded, radar_info.packet_checksum_is_in_range);
-
-                        radar_info.packet_checksum_encoded = radar_radar_object_ender_radar_packet_checksum_decode(r_ender.radar_packet_checksum);
-                        radar_info.packet_checksum_is_in_range = radar_radar_object_ender_radar_packet_checksum_is_in_range(r_ender.radar_packet_checksum);
-                        diag_data.radar_packet_checksum = rad_rx.signals_in_range(radar_info.packet_checksum_encoded, radar_info.packet_checksum_is_in_range);
                     }
                     else if(id==1280||id==1282){//starters 
                         radar_radar_object_starter_t r_starter; 
@@ -492,7 +407,7 @@ int main(int argc, char **argv) {
     }
     canBusOff(hnd);
     canClose(hnd);
-
+    
     ros::spinOnce();
   }
   return 0;
