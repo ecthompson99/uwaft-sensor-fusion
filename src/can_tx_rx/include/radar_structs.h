@@ -255,20 +255,8 @@ class Radar_RX{
     static double signals_in_range(double val, bool cond){
         return (cond) ? (val) : 0; 
     };
-
-    radar_radar_diag_response_t diag_response_unpacked; 
-    radar_radar_diag_request_t diag_request_unpacked;
-    
-    radar_radar_a_t radar_a_unpacked; 
-    radar_radar_b_t radar_b_unpacked;
-
-    radar_radar_object_ender_t radar_object_ender_unpacked;
-    radar_radar_object_starter_t radar_object_starter_unpacked;
-    radar_radar_status_t radar_status_unpacked;
   
   private:
-    int unpack_return = -1; // 0 is successful, negative error code
-
     ros::Time start = ros::Time::now(); 
 };
 

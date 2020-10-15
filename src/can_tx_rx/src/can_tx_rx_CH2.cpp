@@ -1,11 +1,10 @@
 #include "radar_structs.h"
 #include "radar.h"
 #define canDRIVER_NORMAL 4
-#define TOPIC_AD "Radar_CAN_Rx"
 #define SIZE_OF_MSG 8 
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "can_tx_rx_CH3");
+    ros::init(argc, argv, "can_tx_rx_CH2");
     ros::NodeHandle can_tx_rx_CH3_handle;
     ros::NodeHandle diag_handle; 
 
@@ -50,11 +49,6 @@ int main(int argc, char **argv) {
 
     int unpack_return = -1;  // 0 is successful, negative error code
 
-    uint8_t serialized_radar_diag_response[sizeof(diag_response)];
-    uint8_t serialized_radar_info[sizeof(radar_info)];
-    uint8_t serialized_target_info[sizeof(target_info)];
-    uint8_t serialized_object_info[sizeof(object_info)];
-
     diag_response.channel_number = 2;
     radar_info.channel_number = 2;
     target_info.channel_number = 2;
@@ -62,9 +56,6 @@ int main(int argc, char **argv) {
 
     while (ros::ok()) {
         canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
-
-        uint8_t left_radar_calculated_checksum;
-        uint8_t right_radar_calculated_checksum;
 
         if (canOK == stat) {
             // Left corner radar = radar_1 and right corner radar = radar_2
@@ -79,11 +70,6 @@ int main(int argc, char **argv) {
                     diag_response.diagnostic_is_in_range =
                         radar_radar_diag_response_r_diag_response_is_in_range(
                         r_diag_response_obj.r_diag_response);
-                    /*memcpy(serialized_radar_diag_response, &diag_response, sizeof(diag_response));
-                    (diag_data.radar_diag_input)
-                        .insert((diag_data.radar_diag_input).begin(), std::begin(serialized_radar_diag_response),
-                                std::end(serialized_radar_diag_response));
-                    diag_data_pub.publish(diag_data);*/
                     break;
                     diag_response.timestamp = time;
                     diag_response.radar_number = radar_num;
@@ -195,11 +181,7 @@ int main(int argc, char **argv) {
                     target_info.timestamp = time;
                     target_info.radar_number = radar_num;
                     target_info.target_object_number = target_object_num;
-                    /*memcpy(serialized_target_info, &diag_response, sizeof(target_info));
-                    (raw_obj_data.target_info)
-                        .insert((raw_obj_data.target_info).begin(), std::begin(serialized_target_info),
-                                std::end(serialized_target_info));
-                    raw_obj_data_pub.publish(raw_obj_data);*/
+                    
                     break;
                 case 3://enders, starters, or statuses
                     if(id==1665||id==1667){//enders
@@ -284,13 +266,8 @@ int main(int argc, char **argv) {
                     }
                     radar_info.timestamp = time;
                     radar_info.radar_number = radar_num;
+
                     break;
-                    
-                    /*memcpy(serialized_radar_info, &radar_info, sizeof(radar_info));
-                    (diag_data.radar_info)
-                        .insert((diag_data.radar_info).begin(), std::begin(serialized_radar_info),
-                                std::end(serialized_radar_info));
-                    diag_data_pub.publish(diag_data);*/
                 case 4://object tracking 
                     switch(frame_num){
                         case 1://a frame
@@ -397,13 +374,12 @@ int main(int argc, char **argv) {
                     object_info.timestamp = time;
                     object_info.radar_number = radar_num;
                     object_info.object_number = obj_num;
+
+
                     break;
-                    /*memcpy(serialized_object_info, &radar_info, sizeof(object_info));
-                    (raw_obj_data.obj_info)
-                        .insert((raw_obj_data.obj_info).begin(), std::begin(serialized_object_info),
-                                std::end(serialized_object_info));
-                    raw_obj_data_pub.publish(raw_obj_data);*/
                 break;
+                rad_rx.rad_pub.publish(radar_obj);
+                rad_rx.diag_pub.publish(diag_data);
       }
     }
     canBusOff(hnd);

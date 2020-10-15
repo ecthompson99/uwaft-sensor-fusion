@@ -140,23 +140,23 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/can_tx_rx_node.cpp)
 
-add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp src/radar.c)
-add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp src/radar.cpp)
+#add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES} canlib)
 
-#add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp src/radar.c)
+add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp src/radar.cpp)
 #add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
-#target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES} canlib)
+target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES} canlib)
 
-add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp src/ext_log_data.c)
-add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp src/ext_log_data.cpp)
+#add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH4 ${catkin_LIBRARIES} canlib)
 
-add_executable(virtual_can_tx src/virtual_can_tx.cpp src/ext_log_data.c src/radar.c)
+add_executable(virtual_can_tx src/virtual_can_tx.cpp src/ext_log_data.cpp src/radar.cpp)
 #add_dependencies(virtual_can_tx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(virtual_can_tx ${catkin_LIBRARIES} canlib)
 
-add_executable(virtual_can_rx src/virtual_can_rx.cpp src/ext_log_data.c src/radar.c)
+add_executable(virtual_can_rx src/virtual_can_rx.cpp src/ext_log_data.cpp src/radar.cpp)
 #add_dependencies(virtual_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(virtual_can_rx ${catkin_LIBRARIES} canlib)
 

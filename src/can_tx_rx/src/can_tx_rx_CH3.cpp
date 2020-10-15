@@ -1,6 +1,6 @@
 #include "radar_structs.h"
+#include "radar.h"
 #define canDRIVER_NORMAL 4
-#define TOPIC_AD "Radar_CAN_Rx"
 #define SIZE_OF_MSG 8 
 
 int main(int argc, char **argv) {
@@ -11,13 +11,13 @@ int main(int argc, char **argv) {
     Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH3_handle);
     SensorDiagnostics sens_diag = SensorDiagnostics(&diag_handle);
 
-    common::radar_object_data_msg radar_obj; 
+    common::radar_object_data radar_obj; 
     common::sensor_diagnostic_data_msg diag_data;
 
-    Radar_RX::diag_response diag_response;
-    Radar_RX::radar_info radar_info;
-    Radar_RX::target_info target_info;
-    Radar_RX::object_info object_info; 
+    Radar_RX::radar_diagnostic_response diag_response;
+    Radar_RX::radar_information radar_info;
+    Radar_RX::target_tracking_info target_info;
+    Radar_RX::object_tracking_info object_info; 
 
     canHandle hnd;
 
@@ -49,11 +49,6 @@ int main(int argc, char **argv) {
 
     int unpack_return = -1;  // 0 is successful, negative error code
 
-    uint8_t serialized_radar_diag_response[sizeof(diag_response)];
-    uint8_t serialized_radar_info[sizeof(radar_info)];
-    uint8_t serialized_target_info[sizeof(target_info)];
-    uint8_t serialized_object_info[sizeof(object_info)];
-
     diag_response.channel_number = 3;
     radar_info.channel_number = 3;
     target_info.channel_number = 3;
@@ -62,12 +57,9 @@ int main(int argc, char **argv) {
     while (ros::ok()) {
         canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
 
-        uint8_t left_radar_calculated_checksum;
-        uint8_t right_radar_calculated_checksum;
-
         if (canOK == stat) {
             // Left corner radar = radar_1 and right corner radar = radar_2
-            get_nums(id, &case_num, &radar_num, &frame_num, &obj_num, &target_object_num);
+            Radar_RX::get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num);
             switch (case_num) {
                 case 1://diag responses
                     radar_radar_diag_response_t r_diag_response_obj;
@@ -78,11 +70,6 @@ int main(int argc, char **argv) {
                     diag_response.diagnostic_is_in_range =
                         radar_radar_diag_response_r_diag_response_is_in_range(
                         r_diag_response_obj.r_diag_response);
-                    /*memcpy(serialized_radar_diag_response, &diag_response, sizeof(diag_response));
-                    (diag_data.radar_diag_input)
-                        .insert((diag_data.radar_diag_input).begin(), std::begin(serialized_radar_diag_response),
-                                std::end(serialized_radar_diag_response));
-                    diag_data_pub.publish(diag_data);*/
                     break;
                     diag_response.timestamp = time;
                     diag_response.radar_number = radar_num;
@@ -194,11 +181,7 @@ int main(int argc, char **argv) {
                     target_info.timestamp = time;
                     target_info.radar_number = radar_num;
                     target_info.target_object_number = target_object_num;
-                    /*memcpy(serialized_target_info, &diag_response, sizeof(target_info));
-                    (raw_obj_data.target_info)
-                        .insert((raw_obj_data.target_info).begin(), std::begin(serialized_target_info),
-                                std::end(serialized_target_info));
-                    raw_obj_data_pub.publish(raw_obj_data);*/
+                    
                     break;
                 case 3://enders, starters, or statuses
                     if(id==1665||id==1667){//enders
@@ -223,8 +206,8 @@ int main(int argc, char **argv) {
                         unpack_return = 
                             radar_radar_object_starter_unpack(&r_starter, can_data, SIZE_OF_MSG);
                         
-                        radar_info.veh_psi_dt_decode = radar_radar_object_starter_radar_tc_counter_decode(r_starter.radar_veh_psi_dt);
-                        radar_info.veh_psi_dt_is_in_range = radar_radar_object_starter_radar_tc_counter_is_in_range(r_starter.radar_veh_psi_dt);
+                        radar_info.veh_psi_dt_decode = radar_radar_object_starter_radar_veh_psi_dt_decode(r_starter.radar_veh_psi_dt);
+                        radar_info.veh_psi_dt_is_in_range = radar_radar_object_starter_radar_veh_psi_dt_is_in_range(r_starter.radar_veh_psi_dt);
                         //diag_data.radar_tc_counter = rad_rx.signals_in_range(radar_info.tc_counter_decode, radar_info.tc_counter_is_in_range);
 
                         radar_info.veh_v_ego_decode = radar_radar_object_starter_radar_veh_v_ego_decode(r_starter.radar_veh_v_ego);
@@ -245,7 +228,7 @@ int main(int argc, char **argv) {
                     }
                     else if(id==1670||id==1672){//statuses
 
-                        radar_radar_status_t r_status
+                        radar_radar_status_t r_status;
                         unpack_return = 
                             radar_radar_status_unpack(&r_status, can_data, SIZE_OF_MSG);
                         
@@ -283,126 +266,120 @@ int main(int argc, char **argv) {
                     }
                     radar_info.timestamp = time;
                     radar_info.radar_number = radar_num;
+
                     break;
-                    
-                    /*memcpy(serialized_radar_info, &radar_info, sizeof(radar_info));
-                    (diag_data.radar_info)
-                        .insert((diag_data.radar_info).begin(), std::begin(serialized_radar_info),
-                                std::end(serialized_radar_info));
-                    diag_data_pub.publish(diag_data);*/
                 case 4://object tracking 
                     switch(frame_num){
                         case 1://a frame
                             radar_radar_a_t r_target_a_obj; 
                             unpack_return = 
                                 radar_radar_a_unpack(&r_target_a_obj, can_data, SIZE_OF_MSG);
-                            object_info.target_dx_decode = radar_radar_a_radar_dx_decode(r_target_a_obj.radar_dx);
-                            object_info.target_dx_is_in_range = radar_radar_a_radar_dx_is_in_range(r_target_a_obj.radar_dx);
-                            radar_obj.RadarDx = rad_rx.signals_in_range(object_info.target_dx_decode, object_info.target_dx_is_in_range);
+                            object_info.dx_decode = radar_radar_a_radar_dx_decode(r_target_a_obj.radar_dx);
+                            object_info.dx_is_in_range = radar_radar_a_radar_dx_is_in_range(r_target_a_obj.radar_dx);
+                            radar_obj.RadarDx = rad_rx.signals_in_range(object_info.dx_decode, object_info.dx_is_in_range);
 
-                            object_info.target_vx_decode = radar_radar_a_radar_vx_decode(r_target_a_obj.radar_vx);
-                            object_info.target_vx_is_in_range = radar_radar_a_radar_vx_is_in_range(r_target_a_obj.radar_vx);
-                            radar_obj.RadarVx = rad_rx.signals_in_range(object_info.target_vx_decode, object_info.target_vx_is_in_range);
+                            object_info.vx_decode = radar_radar_a_radar_vx_decode(r_target_a_obj.radar_vx);
+                            object_info.vx_is_in_range = radar_radar_a_radar_vx_is_in_range(r_target_a_obj.radar_vx);
+                            radar_obj.RadarVx = rad_rx.signals_in_range(object_info.vx_decode, object_info.vx_is_in_range);
 
-                            object_info.target_dy_decode = radar_radar_a_radar_dy_decode(r_target_a_obj.radar_dy);
-                            object_info.target_dy_is_in_range = radar_radar_a_radar_dy_is_in_range(r_target_a_obj.radar_dy);
-                            radar_obj.RadarDy = rad_rx.signals_in_range(object_info.target_dy_decode, object_info.target_dy_is_in_range);
+                            object_info.dy_decode = radar_radar_a_radar_dy_decode(r_target_a_obj.radar_dy);
+                            object_info.dy_is_in_range = radar_radar_a_radar_dy_is_in_range(r_target_a_obj.radar_dy);
+                            radar_obj.RadarDy = rad_rx.signals_in_range(object_info.dy_decode, object_info.dy_is_in_range);
 
-                            object_info.target_w_exist_decode = radar_radar_a_radar_w_exist_decode(r_target_a_obj.radar_w_exist);
-                            object_info.target_w_exist_is_in_range = radar_radar_a_radar_w_exist_is_in_range(r_target_a_obj.radar_w_exist);
-                            //radar_obj.w_exist = rad_rx.signals_in_range(object_info.target_w_exist_decode, object_info.target_w_exist_is_in_range);
+                            object_info.w_exist_decode = radar_radar_a_radar_w_exist_decode(r_target_a_obj.radar_w_exist);
+                            object_info.w_exist_is_in_range = radar_radar_a_radar_w_exist_is_in_range(r_target_a_obj.radar_w_exist);
+                            //radar_obj.w_exist = rad_rx.signals_in_range(object_info.w_exist_decode, object_info.w_exist_is_in_range);
 
-                            object_info.target_ax_decode = radar_radar_a_radar_ax_decode(r_target_a_obj.radar_ax);
-                            object_info.target_ax_is_in_range = radar_radar_a_radar_ax_is_in_range(r_target_a_obj.radar_ax);
-                            radar_obj.RadarAx = rad_rx.signals_in_range(object_info.target_ax_decode, object_info.target_ax_is_in_range);
+                            object_info.ax_decode = radar_radar_a_radar_ax_decode(r_target_a_obj.radar_ax);
+                            object_info.ax_is_in_range = radar_radar_a_radar_ax_is_in_range(r_target_a_obj.radar_ax);
+                            radar_obj.RadarAx = rad_rx.signals_in_range(object_info.ax_decode, object_info.ax_is_in_range);
 
-                            object_info.target_w_obstacle_decode = radar_radar_a_radar_w_obstacle_decode(r_target_a_obj.radar_w_obstacle);
-                            object_info.target_w_obstacle_is_in_range = radar_radar_a_radar_w_obstacle_is_in_range(r_target_a_obj.radar_w_obstacle);
-                            //radar_obj.w_obstacle = rad_rx.signals_in_range(object_info.target_dy_decode, object_info.target_dy_is_in_range);
+                            object_info.w_obstacle_decode = radar_radar_a_radar_w_obstacle_decode(r_target_a_obj.radar_w_obstacle);
+                            object_info.w_obstacle_is_in_range = radar_radar_a_radar_w_obstacle_is_in_range(r_target_a_obj.radar_w_obstacle);
+                            //radar_obj.w_obstacle = rad_rx.signals_in_range(object_info.dy_decode, object_info.dy_is_in_range);
 
-                            object_info.target_flag_valid_decode = radar_radar_a_radar_flag_valid_decode(r_target_a_obj.radar_flag_valid);
-                            object_info.target_flag_valid_is_in_range = radar_radar_a_radar_flag_valid_is_in_range(r_target_a_obj.radar_flag_valid);
-                            //radar_obj.flag_valid = rad_rx.signals_in_range(object_info.target_flag_valid_decode , object_info.target_flag_valid_is_in_range);
+                            object_info.flag_valid_decode = radar_radar_a_radar_flag_valid_decode(r_target_a_obj.radar_flag_valid);
+                            object_info.flag_valid_is_in_range = radar_radar_a_radar_flag_valid_is_in_range(r_target_a_obj.radar_flag_valid);
+                            //radar_obj.flag_valid = rad_rx.signals_in_range(object_info.flag_valid_decode , object_info.flag_valid_is_in_range);
 
-                            object_info.target_w_non_obstacle_decode = radar_radar_a_radar_w_non_obstacle_decode(r_target_a_obj.radar_w_non_obstacle);
-                            object_info.target_w_non_obstacle_is_in_range = radar_radar_a_radar_w_non_obstacle_is_in_range(r_target_a_obj.radar_w_non_obstacle);
-                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(object_info.target_dy_decode, object_info.target_dy_is_in_range);
+                            object_info.w_non_obstacle_decode = radar_radar_a_radar_w_non_obstacle_decode(r_target_a_obj.radar_w_non_obstacle);
+                            object_info.w_non_obstacle_is_in_range = radar_radar_a_radar_w_non_obstacle_is_in_range(r_target_a_obj.radar_w_non_obstacle);
+                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(object_info.dy_decode, object_info.dy_is_in_range);
                             
-                            object_info.target_flag_meas_decode = radar_radar_a_radar_flag_meas_decode(r_target_a_obj.radar_flag_meas);
-                            object_info.target_flag_meas_is_in_range = radar_radar_a_radar_flag_meas_is_in_range(r_target_a_obj.radar_flag_meas);
-                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(object_info.target_dy_decode, object_info.target_dy_is_in_range);
+                            object_info.flag_meas_decode = radar_radar_a_radar_flag_meas_decode(r_target_a_obj.radar_flag_meas);
+                            object_info.flag_meas_is_in_range = radar_radar_a_radar_flag_meas_is_in_range(r_target_a_obj.radar_flag_meas);
+                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(object_info.dy_decode, object_info.dy_is_in_range);
 
-                            object_info.target_flag_hist_decode = radar_radar_a_radar_flag_hist_decode(r_target_a_obj.radar_flag_hist);
-                            object_info.target_flag_hist_is_in_range = radar_radar_a_radar_flag_hist_is_in_range(r_target_a_obj.radar_flag_hist);
-                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(object_info.target_dy_decode, object_info.target_dy_is_in_range);
+                            object_info.flag_hist_decode = radar_radar_a_radar_flag_hist_decode(r_target_a_obj.radar_flag_hist);
+                            object_info.flag_hist_is_in_range = radar_radar_a_radar_flag_hist_is_in_range(r_target_a_obj.radar_flag_hist);
+                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(object_info.dy_decode, object_info.dy_is_in_range);
 
-                            object_info.target_mess_aconsist_bit_decode = radar_radar_a_radar_mess_aconsist_bit_decode(r_target_a_obj.radar_mess_aconsist_bit);
-                            object_info.target_mess_aconsist_bit_is_in_range = radar_radar_a_radar_mess_aconsist_bit_is_in_range(r_target_a_obj.radar_mess_aconsist_bit);
-                            diag_data.radar_mess_aconsist_bit = rad_rx.signals_in_range(object_info.target_mess_aconsist_bit_decode,object_info.target_mess_aconsist_bit_is_in_range);
+                            object_info.mess_aconsist_bit_decode = radar_radar_a_radar_mess_aconsist_bit_decode(r_target_a_obj.radar_mess_aconsist_bit);
+                            object_info.mess_aconsist_bit_is_in_range = radar_radar_a_radar_mess_aconsist_bit_is_in_range(r_target_a_obj.radar_mess_aconsist_bit);
+                            diag_data.radar_mess_aconsist_bit = rad_rx.signals_in_range(object_info.mess_aconsist_bit_decode,object_info.mess_aconsist_bit_is_in_range);
                             break;
                         case 2:
                             radar_radar_b_t r_target_b_obj;
                             unpack_return = 
                                 radar_radar_b_unpack(&r_target_b_obj, can_data, SIZE_OF_MSG);
-                            object_info.target_vy_decode = radar_radar_b_radar_vy_decode(r_target_b_obj.radar_vy);
-                            object_info.target_vy_is_in_range = radar_radar_b_radar_vy_is_in_range(r_target_b_obj.radar_vy);
-                            radar_obj.RadarVy = rad_rx.signals_in_range(object_info.target_vy_decode, object_info.target_vy_is_in_range);
+                            object_info.vy_decode = radar_radar_b_radar_vy_decode(r_target_b_obj.radar_vy);
+                            object_info.vy_is_in_range = radar_radar_b_radar_vy_is_in_range(r_target_b_obj.radar_vy);
+                            radar_obj.RadarVy = rad_rx.signals_in_range(object_info.vy_decode, object_info.vy_is_in_range);
 
-                            object_info.target_d_length_decode = radar_radar_b_radar_d_length_decode(r_target_b_obj.radar_d_length);
-                            object_info.target_d_length_is_in_range = radar_radar_b_radar_d_length_is_in_range(r_target_b_obj.radar_d_length);
-                            //radar_obj. = rad_rx.signals_in_range(object_info.target_d_length_decode, object_info.target_d_length_is_in_range);
+                            object_info.d_length_decode = radar_radar_b_radar_d_length_decode(r_target_b_obj.radar_d_length);
+                            object_info.d_length_is_in_range = radar_radar_b_radar_d_length_is_in_range(r_target_b_obj.radar_d_length);
+                            //radar_obj. = rad_rx.signals_in_range(object_info.d_length_decode, object_info.d_length_is_in_range);
 
-                            object_info.target_dz_decode = radar_radar_b_radar_dz_decode(r_target_b_obj.radar_dz);
-                            object_info.target_dz_is_in_range = radar_radar_b_radar_dz_is_in_range(r_target_b_obj.radar_dz);
-                            //radar_obj.RadarVy = rad_rx.signals_in_range(object_info.target_vy_decode, object_info.target_vy_is_in_range);
+                            object_info.dz_decode = radar_radar_b_radar_dz_decode(r_target_b_obj.radar_dz);
+                            object_info.dz_is_in_range = radar_radar_b_radar_dz_is_in_range(r_target_b_obj.radar_dz);
+                            //radar_obj.RadarVy = rad_rx.signals_in_range(object_info.vy_decode, object_info.vy_is_in_range);
 
-                            object_info.target_moving_state_decode = radar_radar_b_radar_moving_state_decode(r_target_b_obj.radar_moving_state);
-                            object_info.target_moving_state_is_in_range = radar_radar_b_radar_moving_state_is_in_range(r_target_b_obj.radar_moving_state);
-                            //radar_obj. = rad_rx.signals_in_range(object_info.target_d_length_decode, object_info.target_d_length_is_in_range);
+                            object_info.moving_state_decode = radar_radar_b_radar_moving_state_decode(r_target_b_obj.radar_moving_state);
+                            object_info.moving_state_is_in_range = radar_radar_b_radar_moving_state_is_in_range(r_target_b_obj.radar_moving_state);
+                            //radar_obj. = rad_rx.signals_in_range(object_info.d_length_decode, object_info.d_length_is_in_range);
 
-                            object_info.target_dx_sigma_decode = radar_radar_b_radar_dx_sigma_decode(r_target_b_obj.radar_dx_sigma);
-                            object_info.target_dx_sigma_is_in_range = radar_radar_b_radar_dx_sigma_is_in_range(r_target_b_obj.radar_dx_sigma);
-                            radar_obj.RadarDxSigma = rad_rx.signals_in_range(object_info.target_dx_sigma_decode, object_info.target_dx_sigma_is_in_range);
+                            object_info.dx_sigma_decode = radar_radar_b_radar_dx_sigma_decode(r_target_b_obj.radar_dx_sigma);
+                            object_info.dx_sigma_is_in_range = radar_radar_b_radar_dx_sigma_is_in_range(r_target_b_obj.radar_dx_sigma);
+                            radar_obj.RadarDxSigma = rad_rx.signals_in_range(object_info.dx_sigma_decode, object_info.dx_sigma_is_in_range);
 
-                            object_info.target_vx_sigma_decode = radar_radar_b_radar_vx_sigma_decode(r_target_b_obj.radar_vx_sigma);
-                            object_info.target_vx_sigma_is_in_range = radar_radar_b_radar_vx_sigma_is_in_range(r_target_b_obj.radar_vx_sigma);
-                            radar_obj.RadarVxSigma = rad_rx.signals_in_range(object_info.target_vx_sigma_decode, object_info.target_vx_sigma_is_in_range);
+                            object_info.vx_sigma_decode = radar_radar_b_radar_vx_sigma_decode(r_target_b_obj.radar_vx_sigma);
+                            object_info.vx_sigma_is_in_range = radar_radar_b_radar_vx_sigma_is_in_range(r_target_b_obj.radar_vx_sigma);
+                            radar_obj.RadarVxSigma = rad_rx.signals_in_range(object_info.vx_sigma_decode, object_info.vx_sigma_is_in_range);
 
-                            object_info.target_ax_sigma_decode = radar_radar_b_radar_ax_sigma_decode(r_target_b_obj.radar_ax_sigma);
-                            object_info.target_ax_sigma_is_in_range = radar_radar_b_radar_ax_sigma_is_in_range(r_target_b_obj.radar_ax_sigma);
-                            radar_obj.RadarAxSigma = rad_rx.signals_in_range(object_info.target_ax_sigma_decode, object_info.target_ax_sigma_is_in_range);
+                            object_info.ax_sigma_decode = radar_radar_b_radar_ax_sigma_decode(r_target_b_obj.radar_ax_sigma);
+                            object_info.ax_sigma_is_in_range = radar_radar_b_radar_ax_sigma_is_in_range(r_target_b_obj.radar_ax_sigma);
+                            radar_obj.RadarAxSigma = rad_rx.signals_in_range(object_info.ax_sigma_decode, object_info.ax_sigma_is_in_range);
 
-                            object_info.target_dy_sigma_decode = radar_radar_b_radar_dy_sigma_decode(r_target_b_obj.radar_dy_sigma);
-                            object_info.target_dy_sigma_is_in_range = radar_radar_b_radar_dy_sigma_is_in_range(r_target_b_obj.radar_dy_sigma);
-                            radar_obj.RadarDySigma = rad_rx.signals_in_range(object_info.target_dy_sigma_decode, object_info.target_dy_sigma_is_in_range);
+                            object_info.dy_sigma_decode = radar_radar_b_radar_dy_sigma_decode(r_target_b_obj.radar_dy_sigma);
+                            object_info.dy_sigma_is_in_range = radar_radar_b_radar_dy_sigma_is_in_range(r_target_b_obj.radar_dy_sigma);
+                            radar_obj.RadarDySigma = rad_rx.signals_in_range(object_info.dy_sigma_decode, object_info.dy_sigma_is_in_range);
 
-                            object_info.target_w_class_decode = radar_radar_b_radar_w_class_decode(r_target_b_obj.radar_w_class);
-                            object_info.target_w_class_is_in_range = radar_radar_b_radar_w_class_is_in_range(r_target_b_obj.radar_w_class);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(object_info.target_dy_sigma_decode, object_info.target_dy_sigma_is_in_range);
+                            object_info.w_class_decode = radar_radar_b_radar_w_class_decode(r_target_b_obj.radar_w_class);
+                            object_info.w_class_is_in_range = radar_radar_b_radar_w_class_is_in_range(r_target_b_obj.radar_w_class);
+                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(object_info.dy_sigma_decode, object_info.dy_sigma_is_in_range);
 
-                            object_info.target_class_decode = radar_radar_b_radar_class_decode(r_target_b_obj.radar_class);
-                            object_info.target_class_is_in_range = radar_radar_b_radar_class_is_in_range(r_target_b_obj.radar_class);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(object_info.target_dy_sigma_decode, object_info.target_dy_sigma_is_in_range);
+                            object_info.class_decode = radar_radar_b_radar_class_decode(r_target_b_obj.radar_class);
+                            object_info.class_is_in_range = radar_radar_b_radar_class_is_in_range(r_target_b_obj.radar_class);
+                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(object_info.dy_sigma_decode, object_info.dy_sigma_is_in_range);
 
-                            object_info.target_dx_rear_end_loss_decode = radar_radar_b_radar_dx_rear_end_loss_decode(r_target_b_obj.radar_dx_rear_end_loss);
-                            object_info.target_dx_rear_end_loss_is_in_range = radar_radar_b_radar_dx_rear_end_loss_is_in_range(r_target_b_obj.radar_dx_rear_end_loss);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(object_info.target_dy_sigma_decode, object_info.target_dy_sigma_is_in_range);
+                            object_info.dx_rear_end_loss_decode = radar_radar_b_radar_dx_rear_end_loss_decode(r_target_b_obj.radar_dx_rear_end_loss);
+                            object_info.dx_rear_end_loss_is_in_range = radar_radar_b_radar_dx_rear_end_loss_is_in_range(r_target_b_obj.radar_dx_rear_end_loss);
+                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(object_info.dy_sigma_decode, object_info.dy_sigma_is_in_range);
 
-                            object_info.target_mess_bconsist_bit_decode = radar_radar_b_radar_mess_bconsist_bit_decode(r_target_b_obj.radar_mess_bconsist_bit);
-                            object_info.target_mess_bconsist_bit_is_in_range = radar_radar_b_radar_mess_bconsist_bit_is_in_range(r_target_b_obj.radar_mess_bconsist_bit);
-                            diag_data.radar_mess_bconsist_bit = rad_rx.signals_in_range(object_info.target_mess_bconsist_bit_decode,object_info.target_mess_bconsist_bit_is_in_range);
+                            object_info.mess_bconsist_bit_decode = radar_radar_b_radar_mess_bconsist_bit_decode(r_target_b_obj.radar_mess_bconsist_bit);
+                            object_info.mess_bconsist_bit_is_in_range = radar_radar_b_radar_mess_bconsist_bit_is_in_range(r_target_b_obj.radar_mess_bconsist_bit);
+                            diag_data.radar_mess_bconsist_bit = rad_rx.signals_in_range(object_info.mess_bconsist_bit_decode,object_info.mess_bconsist_bit_is_in_range);
                             break;
                     }
                     object_info.timestamp = time;
                     object_info.radar_number = radar_num;
                     object_info.object_number = obj_num;
+
+
                     break;
-                    /*memcpy(serialized_object_info, &radar_info, sizeof(object_info));
-                    (raw_obj_data.obj_info)
-                        .insert((raw_obj_data.obj_info).begin(), std::begin(serialized_object_info),
-                                std::end(serialized_object_info));
-                    raw_obj_data_pub.publish(raw_obj_data);*/
                 break;
+                rad_rx.rad_pub.publish(radar_obj);
+                rad_rx.diag_pub.publish(diag_data);
       }
     }
     canBusOff(hnd);
