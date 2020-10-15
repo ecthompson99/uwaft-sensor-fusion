@@ -1,7 +1,6 @@
 #include "ros/ros.h"
 #include <canlib.h>
-#include "can_tx_rx/ext_log_data.c"
-#include "can_tx_rx/ext_log_data.h"
+#include "ext_log_data.h"
 
 static const int sub_buffer_size = 100;
 

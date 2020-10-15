@@ -1,4 +1,4 @@
-#include "can_tx_rx/radar_structs.h"
+#include "radar_structs.h"
 #define canDRIVER_NORMAL 4
 #define TOPIC_AD "Radar_CAN_Rx"
 #define SIZE_OF_MSG 8 

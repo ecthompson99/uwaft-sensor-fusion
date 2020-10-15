@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <iomanip>
-#include "can_tx_rx/ext_log_data.c"
-#include "can_tx_rx/ext_log_data.h"
+#include "ext_log_data.h"
 
 using namespace std;
 

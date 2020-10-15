@@ -1,4 +1,4 @@
-#include "can_tx_rx/mobileye_struct.h"
+#include "mobileye_struct.h"
 #define canDRIVER_NORMAL 4
 #define TOPIC_AD "Mobileye_CAN_Rx"
 #define SIZE_OF_MSG 8 

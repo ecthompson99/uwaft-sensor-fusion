@@ -5,9 +5,8 @@
 
 #include "ros/ros.h"
 
-#include "can_tx_rx/radar.c"
-#include "can_tx_rx/radar.h"
-#include "can_tx_rx/sensor_diag.h"
+#include "radar.h"
+#include "sensor_diag.h"
 
 #include "common/radar_object_data.h"
 
@@ -17,7 +16,14 @@
 
 class Radar_RX{
   public:
-    Radar_RX(ros::NodeHandle* node_handle);
+    ros::NodeHandle* node_handle;
+    ros::Publisher rad_pub;
+    ros::Publisher diag_pub; 
+
+    Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
+      rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_AD,TX_RX_MESSAGE_BUFFER_SIZE);
+      diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_AD, TX_RX_MESSAGE_BUFFER_SIZE);
+    };
     struct radar_diagnostic_response {
       double diagnostic_decode;
       bool diagnostic_is_in_range;
@@ -25,7 +31,7 @@ class Radar_RX{
       uint8_t channel_number;
       unsigned long timestamp;
       uint8_t radar_number;
-    } diag_response;
+    };
 
     struct radar_information {
       double radar_timestamp_decode;
@@ -69,7 +75,7 @@ class Radar_RX{
       unsigned long timestamp;
       uint8_t radar_number;
       uint8_t calculated_checksum;
-    } radar_info;
+    };
 
     struct target_tracking_info {
       double target_dx_decode;
@@ -123,7 +129,7 @@ class Radar_RX{
       unsigned long timestamp;
       uint8_t radar_number;
       uint8_t target_object_number;
-    } target_info;
+    };
 
     struct object_tracking_info {
       double dx_decode;
@@ -178,9 +184,9 @@ class Radar_RX{
       unsigned long timestamp;
       uint8_t radar_number;
       uint8_t object_number;
-    } object_info;
+    };
 
-    void Radar_RX::get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n) {
+    static void get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n) {
       if (id == 1985 || id == 1958 || id == 1879 || id == 1957) {
         case_n = 1; //diag responses and requests
       } else if (id > 1604 && id < 1659) {
@@ -246,7 +252,7 @@ class Radar_RX{
       }
     };
 
-    double Radar_RX::signal_in_range(double val, bool cond){
+    static double signals_in_range(double val, bool cond){
         return (cond) ? (val) : 0; 
     };
 
@@ -259,9 +265,6 @@ class Radar_RX{
     radar_radar_object_ender_t radar_object_ender_unpacked;
     radar_radar_object_starter_t radar_object_starter_unpacked;
     radar_radar_status_t radar_status_unpacked;
-
-    ros::NodeHandle* node_handle;
-    ros::Publisher rad_pub;
   
   private:
     int unpack_return = -1; // 0 is successful, negative error code

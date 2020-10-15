@@ -5,9 +5,8 @@
 
 #include "ros/ros.h"
 
-#include "can_tx_rx/ext_log_data.c"
-#include "can_tx_rx/ext_log_data.h"
-#include "can_tx_rx/sensor_diag.h"
+#include "ext_log_data.h"
+#include "sensor_diag.h"
 
 #include "common/mobileye_object_data.h"
 #include "common/raw_lane_data.h"
@@ -17,7 +16,9 @@
 #define SIZE_OF_MSG 8 
 
 class Mobileye_RX{
-    public: 
+    public:
+        ros::NodeHandle* node_handle;
+        ros::Publisher mob_pub;
         Mobileye_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
             mob_pub = node_handle->advertise<common::mobileye_object_data>(TOPIC_AD,TX_RX_MESSAGE_BUFFER_SIZE);
         };
@@ -79,7 +80,7 @@ class Mobileye_RX{
             uint8_t object_number; 
         } mobileye_obj;
 
-        uint8_t get_nums(mobileye_object mobileye_obj) {
+        static uint8_t get_nums(mobileye_object mobileye_obj) {
             if(mobileye_obj.id >=1824 && mobileye_obj.id <=1830){
                 return 1; //Traffic Sensor 
             } else if(mobileye_obj.id >= 1849 && mobileye_obj.id <= 1876 && mobileye_obj.id % 3 == 1){
@@ -101,7 +102,7 @@ class Mobileye_RX{
             }
         };
 
-        double signal_in_range(double val, bool cond){
+        static double signal_in_range(double val, bool cond){
             return (cond) ? (val) : 0; 
         };
 
@@ -113,9 +114,6 @@ class Mobileye_RX{
         ext_log_data_lka_right_lane_a_t right_a_unpacked;
         ext_log_data_lka_left_lane_b_t left_b_unpacked; 
         ext_log_data_lka_right_lane_b_t right_b_unpacked;  
-
-        ros::NodeHandle* node_handle;
-        ros::Publisher mob_pub;
 
     private:
         int unpack_return = -1;  // 0 is successful, negative error code
