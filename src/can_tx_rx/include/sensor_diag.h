@@ -174,7 +174,7 @@ class SensorDiagnostics {
             uint8_t radar_mess_starter_consist_bit = data_msg.radar_mess_starter_consist_bit;  // CAN ID 1280 & 1282
             uint8_t radar_mess_aconsist_bit = data_msg.radar_mess_aconsist_bit;  // CAN ID 1285 -> 1598 (depending on radar and object)
             uint8_t radar_mess_bconsist_bit = data_msg.radar_mess_bconsist_bit;
-            uint8_t radar_mess_ender_cosist_bit = data_msg.radar_mess_ender_cosist_bit;  // CAN ID 1665 & 1667
+            uint8_t radar_mess_ender_consist_bit = data_msg.radar_mess_ender_consist_bit;  // CAN ID 1665 & 1667
             uint8_t radar_tc_counter = data_msg.radar_tc_counter;
             uint16_t r_stat_itc_info = data_msg.r_stat_itc_info; // CAN ID 1670 & 1672
             uint8_t r_stat_hw_fail = data_msg.r_stat_hw_fail;
@@ -191,7 +191,7 @@ class SensorDiagnostics {
                                     r_stat_absorption_blindness, r_stat_absorption_blindness, r_stat_itc_info);
 
             return ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
-                                radar_mess_ender_cosist_bit) &&
+                                radar_mess_ender_consist_bit) &&
                             radar_tc_counter == tc_check && calculated_checksum == 0 && r_stat_itc_info == 0 &&
                             r_stat_sgu_fail == 0 && r_stat_hw_fail == 0 &&
                             abs(r_stat_horizontal_misalignment) < MISALIGNMENT_LIMIT &&

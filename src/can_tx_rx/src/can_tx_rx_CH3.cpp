@@ -195,7 +195,7 @@ int main(int argc, char **argv) {
 
                         radar_info.obj_ender_consist_bit_decode = radar_radar_object_ender_radar_mess_ender_consist_bit_decode(r_ender.radar_mess_ender_consist_bit);
                         radar_info.obj_ender_consist_bit_is_in_range = radar_radar_object_ender_radar_mess_ender_consist_bit_is_in_range(r_ender.radar_mess_ender_consist_bit);
-                        diag_data.radar_mess_ender_cosist_bit = rad_rx.signals_in_range(radar_info.obj_ender_consist_bit_decode, radar_info.obj_ender_consist_bit_is_in_range);
+                        diag_data.radar_mess_ender_consist_bit = rad_rx.signals_in_range(radar_info.obj_ender_consist_bit_decode, radar_info.obj_ender_consist_bit_is_in_range);
 
                         radar_info.packet_checksum_encoded = radar_radar_object_ender_radar_packet_checksum_decode(r_ender.radar_packet_checksum);
                         radar_info.packet_checksum_is_in_range = radar_radar_object_ender_radar_packet_checksum_is_in_range(r_ender.radar_packet_checksum);
