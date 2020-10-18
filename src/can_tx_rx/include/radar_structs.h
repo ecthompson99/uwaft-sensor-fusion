@@ -11,7 +11,8 @@
 #include "common/radar_object_data.h"
 
 #define TX_RX_MESSAGE_BUFFER_SIZE 1000
-#define TOPIC_AD "Mobileye_CAN_Rx"
+#define TOPIC_RX "Radar_CAN_RX"
+#define TOPIC_DIAG "Radar_CAN_Diagnostics"
 #define SIZE_OF_MSG 8 
 
 class Radar_RX{
@@ -21,8 +22,8 @@ class Radar_RX{
     ros::Publisher diag_pub; 
 
     Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
-      rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_AD,TX_RX_MESSAGE_BUFFER_SIZE);
-      diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_AD, TX_RX_MESSAGE_BUFFER_SIZE);
+      rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_RX,TX_RX_MESSAGE_BUFFER_SIZE);
+      diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG, TX_RX_MESSAGE_BUFFER_SIZE);
     };
     struct radar_diagnostic_response {
       double diagnostic_decode;
@@ -186,7 +187,7 @@ class Radar_RX{
       uint8_t object_number;
     };
 
-    static void get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n) {
+    static void get_nums(int id, int &case_n, int &radar_n, int &frame_n, int &obj_n, int &target_obj_n) {
       if (id == 1985 || id == 1958 || id == 1879 || id == 1957) {
         case_n = 1; //diag responses and requests
       } else if (id > 1604 && id < 1659) {
@@ -198,12 +199,18 @@ class Radar_RX{
       } else {
         case_n = 0; //faulted 
       }
+      
+      //default these values should be set to -1 (0 is used)
+      obj_n = -1;
+      target_obj_n = -1; 
+      radar_n = -1;
+      frame_n = -1; 
 
       switch (case_n) {
         case 1: //diag responses and requests
           if (id == 1985 || id == 1879) {
             radar_n = 1;//radar 1 in dbc  
-          } else {
+          } else if (id == 1958 || id == 1957){
             radar_n = 2;//radar 2 in dbc 
           }
           break;
@@ -211,14 +218,14 @@ class Radar_RX{
         case 2: //target A and B frames 
           if (id % 10 == 5 || id % 10 == 6) {
             radar_n = 1;//radar 1 in dbc (all ids for targets end with a 5 or a 6)
-          } else {
-            radar_n = 2;//radar 2 in dbc 
+          } else if (id %10 == 7 || id % 10 == 8){
+            radar_n = 2; //radar 2 in dbc 
           }
 
           if (id % 10 == 5 || id % 10 == 7) {
             frame_n = 1; //a frame in dbc (all ids for targets end with a 5 if they are radar 1, or 7 if they are  radar 2)
-          } else {
-            frame_n = 2; //b frame in dbc
+          } else if (id %10 == 6 || id % 10 == 8){
+            frame_n = 2; //frame b in dbc 
           }
 
           target_obj_n = (id - 1600 - (id % 10)) / 10; //takes the target object number based on the defined id 
@@ -228,7 +235,7 @@ class Radar_RX{
         case 3: //ender, starter, and statuses messages
           if (id == 1665 || id == 1280 || id == 1670) {
             radar_n = 1; //radar 1 in dbc 
-          } else {
+          } else if (id == 1667 || id == 1282 || id == 1672){
             radar_n = 2; //radar 2 in dbc 
           }
           break;
@@ -236,13 +243,13 @@ class Radar_RX{
         case 4://radar A and B object frames 
           if (id % 10 == 5 || id % 10 == 6) {
             radar_n = 1; //radar 1 in dbc (all ids follow the same convention as target messages)
-          } else {
+          } else if (id %10 == 7 || id % 10 == 8){
             radar_n = 2; //radar 2 in dbc 
           }
 
           if (id % 10 == 5 || id % 10 == 7) {
             frame_n = 1; //a frame in dbc (all ids follow the same convention as target messages)
-          } else {
+          } else  if(id % 10 == 6 || id % 10 == 8){
             frame_n = 2; //b frame in dbc 
           }
 

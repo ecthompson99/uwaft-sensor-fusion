@@ -27,7 +27,6 @@ int main(int argc, char **argv) {
     fprintf(stderr, "canOpenChannel failed (%s)\n", msg);
     exit(1);
   }
-
   canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
   canSetBusOutputControl(hnd, canDRIVER_NORMAL);
   canBusOn(hnd);
@@ -37,6 +36,7 @@ int main(int argc, char **argv) {
   while (ros::ok()) {
     canStatus stat; 
     stat = canRead(hnd, &mobileye_obj.id, &mobileye_obj.can_data, &mobileye_obj.dlc, &mobileye_obj.flag, &mobileye_obj.time_stamp);
+    std::cout << "Stat: " << stat << std::endl;   
     if(canOK==stat){
       frame_num = mobeye_rx.get_nums(mobileye_obj); //1 = TRS 2 = Frame A, 3 = Frame B, 4 = Frame C, others = error 
     }
@@ -45,6 +45,10 @@ int main(int argc, char **argv) {
           {
             ext_log_data_obstacle_data_a_t frame_a_unpacked;
             unpack_return = ext_log_data_obstacle_data_a_unpack(&frame_a_unpacked,mobileye_obj.can_data,SIZE_OF_MSG); 
+
+            mobileye_obj.obstacle_id_decode = ext_log_data_obstacle_data_a_obstacle_id_decode(frame_a_unpacked.obstacle_id);
+            mobileye_obj.obstacle_id_is_in_range = ext_log_data_obstacle_data_a_obstacle_id_is_in_range(frame_a_unpacked.obstacle_id);
+            obj_data.ObjNum = mobeye_rx.signal_in_range(mobileye_obj.obstacle_id_decode, mobileye_obj.obstacle_id_is_in_range);
 
             mobileye_obj.obstacle_vel_x_decode = ext_log_data_obstacle_data_a_obstacle_vel_x_decode(frame_a_unpacked.obstacle_vel_x);
             mobileye_obj.obstacle_vel_x_is_in_range = ext_log_data_obstacle_data_a_obstacle_vel_x_is_in_range(frame_a_unpacked.obstacle_vel_x);
@@ -174,6 +178,7 @@ int main(int argc, char **argv) {
         }
       }
       ros::spinOnce();
+      ros::Duration(0.5).sleep();
     }
   canBusOff(hnd);
   canClose(hnd);

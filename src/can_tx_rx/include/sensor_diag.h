@@ -23,7 +23,7 @@ const double MISALIGNMENT_LIMIT = 0.0152;
 class SensorDiagnostics {
     public: 
         SensorDiagnostics(ros::NodeHandle* diag_nodehandle) : diag_nodehandle(diag_nodehandle) {
-            sub_CAN_data = diag_nodehandle->subscribe("sensor_diag_data", TX_RX_MESSAGE_BUFFER_SIZE, &SensorDiagnostics::sub_CAN_data_callback, this);
+            sub_CAN_data = diag_nodehandle->subscribe("SENSOR_DIAGNOSTICS_DATA", TX_RX_MESSAGE_BUFFER_SIZE, &SensorDiagnostics::sub_CAN_data_callback, this);
 
             client_ch2 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH2>("sensor_diagnostic_CH2"); //locate srv file and specify topic
             client_ch3 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH3>("sensor_diagnostic_CH3"); //locate srv file and specify topic

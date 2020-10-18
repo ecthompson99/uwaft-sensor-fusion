@@ -5,11 +5,11 @@
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "can_tx_rx_CH2");
-    ros::NodeHandle can_tx_rx_CH3_handle;
-    ros::NodeHandle diag_handle; 
+    ros::NodeHandle can_tx_rx_CH2_handle;
+    //ros::NodeHandle diag_handle; 
 
-    Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH3_handle);
-    SensorDiagnostics sens_diag = SensorDiagnostics(&diag_handle);
+    Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH2_handle);
+    SensorDiagnostics sens_diag = SensorDiagnostics(&can_tx_rx_CH2_handle);
 
     common::radar_object_data radar_obj; 
     common::sensor_diagnostic_data_msg diag_data;
@@ -19,47 +19,53 @@ int main(int argc, char **argv) {
     Radar_RX::target_tracking_info target_info;
     Radar_RX::object_tracking_info object_info; 
 
-    canHandle hnd;
+    diag_response.channel_number = 1;
+    radar_info.channel_number = 1;
+    target_info.channel_number = 1;
+    object_info.channel_number = 1;
+
+    long int id;
+    unsigned int dlc;
+    unsigned int flag;
+    unsigned long time;
+    int case_num = 0;
+    int radar_num = 0;           // 1 or 2 = valid
+    int frame_num = 0;           // 1 = Frame_A, 2 = Frame_B, 3 = general, other = error
+    int obj_num = -1;            // 0 to 31 = valid
+    int target_object_num = -1;  // 0 to 5 = valid
+    uint8_t can_data[8] = {0};
+
+    int unpack_return = -1;  // 0 is successful, negative error code
 
     canInitializeLibrary();
-
-    hnd = canOpenChannel(1, canOPEN_EXCLUSIVE);
-
+    canHandle hnd;
+    canStatus stat;
+    
+    hnd = canOpenChannel(radar_info.channel_number, canOPEN_ACCEPT_VIRTUAL);
     if (hnd < 0) {
         char msg[64];
         canGetErrorText((canStatus)hnd, msg, sizeof(msg));
         fprintf(stderr, "canOpenChannel failed (%s)\n", msg);
         exit(1);
     }
-
     canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
     canSetBusOutputControl(hnd, canDRIVER_NORMAL);
     canBusOn(hnd);
 
-    long int id;
-    unsigned int dlc;
-    unsigned int flag;
-    unsigned long time;
-    uint8_t case_num = 0;
-    uint8_t radar_num = 0;           // 1 or 2 = valid
-    uint8_t frame_num = 0;           // 1 = Frame_A, 2 = Frame_B, 3 = general, other = error
-    uint8_t obj_num = -1;            // 0 to 31 = valid
-    uint8_t target_object_num = -1;  // 0 to 5 = valid
-    uint8_t can_data[8] = {0};
-
-    int unpack_return = -1;  // 0 is successful, negative error code
-
-    diag_response.channel_number = 2;
-    radar_info.channel_number = 2;
-    target_info.channel_number = 2;
-    object_info.channel_number = 2;
-
     while (ros::ok()) {
-        canStatus stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
-
+        
+        stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
         if (canOK == stat) {
             // Left corner radar = radar_1 and right corner radar = radar_2
             Radar_RX::get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num);
+            std::cout << "ID, Case, Radar, Frame, Obj, Target_Obj" << std::endl;
+            std::cout << +id << std::endl;
+            std::cout << +case_num << std::endl;
+            std::cout << +radar_num << std::endl;
+            std::cout << +frame_num << std::endl;
+            std::cout << +obj_num << std::endl;
+            std::cout << +target_object_num << std::endl;
+
             switch (case_num) {
                 case 1://diag responses
                     radar_radar_diag_response_t r_diag_response_obj;
@@ -75,6 +81,8 @@ int main(int argc, char **argv) {
                     diag_response.radar_number = radar_num;
 
                 case 2: //target tracking
+                    std::cout << "Frame Num: " << +frame_num << std::endl;
+                    std::cout << "Radar Num: " << +radar_num << std::endl; 
                     switch(frame_num){
                         case 1://a frame
                             radar_radar_a_t r_target_a_obj; 
@@ -123,6 +131,9 @@ int main(int argc, char **argv) {
                             target_info.target_mess_aconsist_bit_decode = radar_radar_a_radar_mess_aconsist_bit_decode(r_target_a_obj.radar_mess_aconsist_bit);
                             target_info.target_mess_aconsist_bit_is_in_range = radar_radar_a_radar_mess_aconsist_bit_is_in_range(r_target_a_obj.radar_mess_aconsist_bit);
                             diag_data.radar_mess_aconsist_bit = rad_rx.signals_in_range(target_info.target_mess_aconsist_bit_decode,target_info.target_mess_aconsist_bit_is_in_range);
+
+                            std::cout << "Radar Distance: " << radar_obj.RadarDx << std::endl;
+                            std::cout << "Radar Velocity: " << radar_obj.RadarVx << std::endl; 
                             break;
                         case 2:
                             radar_radar_b_t r_target_b_obj;
@@ -175,12 +186,26 @@ int main(int argc, char **argv) {
                             target_info.target_mess_bconsist_bit_decode = radar_radar_b_radar_mess_bconsist_bit_decode(r_target_b_obj.radar_mess_bconsist_bit);
                             target_info.target_mess_bconsist_bit_is_in_range = radar_radar_b_radar_mess_bconsist_bit_is_in_range(r_target_b_obj.radar_mess_bconsist_bit);
                             diag_data.radar_mess_bconsist_bit = rad_rx.signals_in_range(target_info.target_mess_bconsist_bit_decode,target_info.target_mess_bconsist_bit_is_in_range);
+
+                            std::cout << "Radar Dy: " << radar_obj.RadarDy << std::endl;
+                            std::cout << "Radar Velocity Sigma: " << radar_obj.RadarVxSigma << std::endl;
                             break;
                     }
           
                     target_info.timestamp = time;
                     target_info.radar_number = radar_num;
                     target_info.target_object_number = target_object_num;
+                    
+                    radar_obj.RadarTimestamp = time;
+                    radar_obj.RadarNum = radar_num;
+                    radar_obj.ObjNum = target_object_num;
+
+                    std::cout << "Radar Time: " << +radar_obj.RadarTimestamp << std::endl;
+                    std::cout << "Radar Number: " << +radar_obj.RadarNum << std::endl; 
+                    std::cout << "Radar Target Obj Number: " << +radar_obj.ObjNum << std::endl;
+
+                    diag_data.timestamp = time;
+                    diag_data.radar_number = radar_num;
                     
                     break;
                 case 3://enders, starters, or statuses
@@ -267,6 +292,8 @@ int main(int argc, char **argv) {
                     radar_info.timestamp = time;
                     radar_info.radar_number = radar_num;
 
+                    diag_data.timestamp = time;
+                    diag_data.radar_number = radar_num;
                     break;
                 case 4://object tracking 
                     switch(frame_num){
@@ -375,15 +402,24 @@ int main(int argc, char **argv) {
                     object_info.radar_number = radar_num;
                     object_info.object_number = obj_num;
 
+                    radar_obj.RadarTimestamp = time;
+                    radar_obj.RadarNum = radar_num;
+                    radar_obj.ObjNum = obj_num;
 
+                    diag_data.timestamp = time;
+                    diag_data.radar_number = radar_num;
+
+                    std::cout << "Radar Time: " << +radar_obj.RadarTimestamp << std::endl;
+                    std::cout << "Radar Number: " << +radar_obj.RadarNum << std::endl; 
+                    std::cout << "Radar Obj Number: " << +radar_obj.ObjNum << std::endl;
                     break;
                 break;
                 rad_rx.rad_pub.publish(radar_obj);
                 rad_rx.diag_pub.publish(diag_data);
       }
     }
-    canBusOff(hnd);
-    canClose(hnd);
+    //canBusOff(hnd);
+    //canClose(hnd);
     
     ros::spinOnce();
   }

@@ -8,3 +8,5 @@ float64 RadarDxSigma
 float64 RadarDySigma
 float64 RadarVxSigma
 float64 RadarAxSigma
+uint8 RadarNum
+uint8 ObjNum

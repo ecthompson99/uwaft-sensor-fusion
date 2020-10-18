@@ -93,12 +93,8 @@ int main(int argc, char **argv)
     canInitializeLibrary();
     
     canStatus stat; 
-    int chanCount = 0;
-    stat = canGetNumberOfChannels(&chanCount);
-    std::cout << "Channels available: " << chanCount << std::endl;
     
     hnd = canOpenChannel(1, canOPEN_ACCEPT_VIRTUAL);
-    std::cout <<"Error code: "<< hnd << std::endl;
     if (hnd < 0) {
         char msg[64];
         canGetErrorText((canStatus)hnd, msg, sizeof(msg));
@@ -129,9 +125,10 @@ int main(int argc, char **argv)
     // starts at lower id messages above 1849, then goes back to sending appropriate messages
     while (ros::ok()) 
     {
-         
-         if(id > 1986){
-             id = 1280;
+        //radars are hard to test with specific ID's, using this to lock from a specific message
+        int idtest = 1388;  
+        if(id != idtest){
+            id = idtest; 
         }
         
         canStatus stat; 
@@ -152,6 +149,7 @@ int main(int argc, char **argv)
         }
         else{ //incorrect frame 
             stat = canWrite(hnd, id, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
+            std::cout << "Empty message sent" << std::endl; 
         }
         if (stat < 0)
         {

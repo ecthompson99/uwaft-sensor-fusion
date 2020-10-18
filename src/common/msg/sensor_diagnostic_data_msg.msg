@@ -26,5 +26,4 @@ bool failsafe
 
 uint8 quality
 
-
-
+float64 timestamp

@@ -12,7 +12,8 @@
 #include "common/raw_lane_data.h"
 
 #define TX_RX_MESSAGE_BUFFER_SIZE 1000
-#define TOPIC_AD "Mobileye_CAN_Rx"
+#define TOPIC_RX "Mobileye_CAN_Rx"
+#define TOPIC_DIAG "Mobileye_CAN_Diagnostics"
 #define SIZE_OF_MSG 8 
 
 class Mobileye_RX{
@@ -21,8 +22,8 @@ class Mobileye_RX{
         ros::Publisher mob_pub;
         ros::Publisher diag_pub;
         Mobileye_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
-            mob_pub = node_handle->advertise<common::mobileye_object_data>(TOPIC_AD,TX_RX_MESSAGE_BUFFER_SIZE);
-            diag_pub = node_handle ->advertise<common::sensor_diagnostic_data_msg>(TOPIC_AD,TX_RX_MESSAGE_BUFFER_SIZE);
+            mob_pub = node_handle->advertise<common::mobileye_object_data>(TOPIC_RX,TX_RX_MESSAGE_BUFFER_SIZE);
+            diag_pub = node_handle ->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG,TX_RX_MESSAGE_BUFFER_SIZE);
         };
         struct mobileye_object{
             //objection detection
@@ -64,13 +65,8 @@ class Mobileye_RX{
             double obstacle_lane_decode;
             bool obstacle_lane_decode_is_in_range;
 
-            //double object_accel_x_decode; 
-            //bool obstacle_accel_x_is_in_range; 
-
-            //double obstacle_id_decode;
-            //bool obstacle_id_is_in_range; 
-            //double obstacle_lane_decode; 
-            //bool obstacle_lane_is_in_range; 
+            double obstacle_id_decode;
+            bool obstacle_id_is_in_range; 
 
             long id; 
             uint8_t can_data[8]; 
