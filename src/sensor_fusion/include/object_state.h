@@ -1,7 +1,7 @@
 #ifndef __OJBECT_STATE_H__
 #define __OBJECT_STATE_H__
 #include "ros/ros.h"
-#include "sensor_fusion/filtered_object_msg.h"
+#include "common/filtered_object_msg.h"
 
 class ObjectState {
  public:
@@ -20,7 +20,7 @@ class ObjectState {
   double get_obj_timestamp() const;
 //	uint8_t get_obj_count() const;
 
-  void copy_info(const sensor_fusion::filtered_object_msg& filtered_msg);
+  void copy_info(const common::filtered_object_msg& filtered_msg);
   
  private:
   uint64_t obj_id; // object ID

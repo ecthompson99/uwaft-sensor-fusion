@@ -30,7 +30,7 @@ double ObjectState::get_obj_vy() const {return obj_vy;}
 double ObjectState::get_obj_timestamp() const { return obj_timestamp; }
 //uint8_t ObjectState::get_obj_count() const { return obj_count; }
 
-void ObjectState::copy_info(const sensor_fusion::filtered_object_msg& filtered_msg) {
+void ObjectState::copy_info(const common::filtered_object_msg& filtered_msg) {
     
     obj_id = filtered_msg.obj_id;
     obj_dx = filtered_msg.obj_dx;

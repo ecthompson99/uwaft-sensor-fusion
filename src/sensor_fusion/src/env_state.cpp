@@ -16,7 +16,7 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
 
 	tracked_obj_pub = env_state_node_handle->advertise<common::tracked_output_msg>("tracked_obj", MESSAGE_BUFFER_SIZE);
 
-	binary_class_pub = env_state_node_handle->advertise<sensor_fusion::binary_class_msg>("binary_class", MESSAGE_BUFFER_SIZE);
+	binary_class_pub = env_state_node_handle->advertise<common::binary_class_msg>("binary_class", MESSAGE_BUFFER_SIZE);
 	global_clk = 0;
 
 	trackedObjects.reserve(NUM_OBJECTS); 	// reserve memory for vector (NUM_OBJECTS)
@@ -104,7 +104,7 @@ void EnvironmentState::publish_tracked_obj() {
 
 }
 
-void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg) {
+void EnvironmentState::filtered_object_callback(const common::filtered_object_msg& filtered_msg) {
     // TESTING-------------------------------------------------------
     // printf("Filtered Message:\n");
     // printf("%d, %f, %d, %f, %f, %f, %d, %f, %f \n",
@@ -142,7 +142,7 @@ void EnvironmentState::filtered_object_callback(const sensor_fusion::filtered_ob
 }
 
 void EnvironmentState::publish_binary_class(double t) {
-	sensor_fusion::binary_class_msg out;
+	common::binary_class_msg out;
 	for (auto i : trackedObjects) {
 		out.dx.push_back(i.get_obj_dx());
 		out.dy.push_back(i.get_obj_dy());
