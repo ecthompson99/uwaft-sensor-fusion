@@ -78,9 +78,7 @@ int main(int argc, char **argv) {
                     diag_response.timestamp = time;
                     diag_response.radar_number = radar_num;
 
-                case 2: //target tracking
-                    std::cout << "Frame Num: " << +frame_num << std::endl;
-                    std::cout << "Radar Num: " << +radar_num << std::endl; 
+                case 2: //target tracking (not in use currently)
                     switch(frame_num){
                         case 1://a frame
                             radar_target_a_t r_target_a; 
@@ -88,49 +86,36 @@ int main(int argc, char **argv) {
                                 radar_target_a_unpack(&r_target_a, can_data, SIZE_OF_MSG);
                             target_info.target_dx_decode = radar_target_a_radar_target_dx_decode(r_target_a.radar_target_dx);
                             target_info.target_dx_is_in_range = radar_target_a_radar_target_dx_is_in_range(r_target_a.radar_target_dx);
-                            //radar_obj.RadarDx = rad_rx.signals_in_range(target_info.target_dx_decode, target_info.target_dx_is_in_range);
 
                             target_info.target_vx_decode = radar_target_a_radar_target_vx_decode(r_target_a.radar_target_vx);
                             target_info.target_vx_is_in_range = radar_target_a_radar_target_vx_is_in_range(r_target_a.radar_target_vx);
-                            //radar_obj.RadarVx = rad_rx.signals_in_range(target_info.target_vx_decode, target_info.target_vx_is_in_range);
 
                             target_info.target_dy_decode = radar_target_a_radar_target_dy_decode(r_target_a.radar_target_dy);
                             target_info.target_dy_is_in_range = radar_target_a_radar_target_dy_is_in_range(r_target_a.radar_target_dy);
-                            //radar_obj.RadarDy = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
 
                             target_info.target_w_exist_decode = radar_target_a_radar_target_w_exist_decode(r_target_a.radar_target_w_exist);
                             target_info.target_w_exist_is_in_range = radar_target_a_radar_target_w_exist_is_in_range(r_target_a.radar_target_w_exist);
-                            //radar_obj.w_exist = rad_rx.signals_in_range(target_info.target_w_exist_decode, target_info.target_w_exist_is_in_range);
 
                             target_info.target_ax_decode = radar_target_a_radar_target_ax_decode(r_target_a.radar_target_ax);
                             target_info.target_ax_is_in_range = radar_target_a_radar_target_ax_is_in_range(r_target_a.radar_target_ax);
-                            //radar_obj.RadarAx = rad_rx.signals_in_range(target_info.target_ax_decode, target_info.target_ax_is_in_range);
 
                             target_info.target_w_obstacle_decode = radar_target_a_radar_target_w_obstacle_decode(r_target_a.radar_target_w_obstacle);
                             target_info.target_w_obstacle_is_in_range = radar_target_a_radar_target_w_obstacle_is_in_range(r_target_a.radar_target_w_obstacle);
-                            //radar_obj.w_obstacle = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
 
                             target_info.target_flag_valid_decode = radar_target_a_radar_target_flag_valid_decode(r_target_a.radar_target_flag_valid);
                             target_info.target_flag_valid_is_in_range = radar_target_a_radar_target_flag_valid_is_in_range(r_target_a.radar_target_flag_valid);
-                            //radar_obj.flag_valid = rad_rx.signals_in_range(target_info.target_flag_valid_decode , target_info.target_flag_valid_is_in_range);
 
                             target_info.target_w_non_obstacle_decode = radar_target_a_radar_target_w_non_obstacle_decode(r_target_a.radar_target_w_non_obstacle);
                             target_info.target_w_non_obstacle_is_in_range = radar_target_a_radar_target_w_non_obstacle_is_in_range(r_target_a.radar_target_w_non_obstacle);
-                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
                             
                             target_info.target_flag_meas_decode = radar_target_a_radar_target_flag_meas_decode(r_target_a.radar_target_flag_meas);
                             target_info.target_flag_meas_is_in_range = radar_target_a_radar_target_flag_meas_is_in_range(r_target_a.radar_target_flag_meas);
-                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
 
                             target_info.target_flag_hist_decode = radar_target_a_radar_target_flag_hist_decode(r_target_a.radar_target_flag_hist);
                             target_info.target_flag_hist_is_in_range = radar_target_a_radar_target_flag_hist_is_in_range(r_target_a.radar_target_flag_hist);
-                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
 
                             target_info.target_mess_aconsist_bit_decode = radar_target_a_radar_target_mess_aconsist_bit_decode(r_target_a.radar_target_mess_aconsist_bit);
-                            target_info.target_mess_aconsist_bit_is_in_range = radar_target_a_radar_target_mess_aconsist_bit_is_in_range(r_target_a.radar_target_mess_aconsist_bit);
-                            
-                            //std::cout << "Radar Distance: " << //radar_obj.RadarDx << std::endl;
-                            //std::cout << "Radar Velocity: " << //radar_obj.RadarVx << std::endl; 
+                            target_info.target_mess_aconsist_bit_is_in_range = radar_target_a_radar_target_mess_aconsist_bit_is_in_range(r_target_a.radar_target_mess_aconsist_bit); 
                             break;
                         case 2:
                             radar_target_b_t r_target_b;
@@ -138,72 +123,41 @@ int main(int argc, char **argv) {
                                 radar_target_b_unpack(&r_target_b, can_data, SIZE_OF_MSG);
                             target_info.target_vy_decode = radar_target_b_radar_target_vy_decode(r_target_b.radar_target_vy);
                             target_info.target_vy_is_in_range = radar_target_b_radar_target_vy_is_in_range(r_target_b.radar_target_vy);
-                            //radar_obj.RadarVy = rad_rx.signals_in_range(target_info.target_vy_decode, target_info.target_vy_is_in_range);
 
                             target_info.target_d_length_decode = radar_target_b_radar_target_d_length_decode(r_target_b.radar_target_d_length);
                             target_info.target_d_length_is_in_range = radar_target_b_radar_target_d_length_is_in_range(r_target_b.radar_target_d_length);
-                            //radar_obj. = rad_rx.signals_in_range(target_info.target_d_length_decode, target_info.target_d_length_is_in_range);
 
                             target_info.target_dz_decode = radar_target_b_radar_target_dz_decode(r_target_b.radar_target_dz);
                             target_info.target_dz_is_in_range = radar_target_b_radar_target_dz_is_in_range(r_target_b.radar_target_dz);
-                            //radar_obj.RadarVy = rad_rx.signals_in_range(target_info.target_vy_decode, target_info.target_vy_is_in_range);
 
                             target_info.target_moving_state_decode = radar_target_b_radar_target_moving_state_decode(r_target_b.radar_target_moving_state);
                             target_info.target_moving_state_is_in_range = radar_target_b_radar_target_moving_state_is_in_range(r_target_b.radar_target_moving_state);
-                            //radar_obj. = rad_rx.signals_in_range(target_info.target_d_length_decode, target_info.target_d_length_is_in_range);
 
                             target_info.target_dx_sigma_decode = radar_target_b_radar_target_dx_sigma_decode(r_target_b.radar_target_dx_sigma);
                             target_info.target_dx_sigma_is_in_range = radar_target_b_radar_target_dx_sigma_decode(r_target_b.radar_target_dx_sigma);
-                            //radar_obj.RadarDxSigma = rad_rx.signals_in_range(target_info.target_dx_sigma_decode, target_info.target_dx_sigma_is_in_range);
 
                             target_info.target_vx_sigma_decode = radar_target_b_radar_target_vx_sigma_decode(r_target_b.radar_target_vx_sigma);
                             target_info.target_vx_sigma_is_in_range = radar_target_b_radar_target_vx_sigma_is_in_range(r_target_b.radar_target_vx_sigma);
-                            //radar_obj.RadarVxSigma = rad_rx.signals_in_range(target_info.target_vx_sigma_decode, target_info.target_vx_sigma_is_in_range);
 
                             target_info.target_ax_sigma_decode = radar_target_b_radar_target_ax_sigma_decode(r_target_b.radar_target_ax_sigma);
                             target_info.target_ax_sigma_is_in_range = radar_target_b_radar_target_ax_sigma_is_in_range(r_target_b.radar_target_ax_sigma);
-                            //radar_obj.RadarAxSigma = rad_rx.signals_in_range(target_info.target_ax_sigma_decode, target_info.target_ax_sigma_is_in_range);
 
                             target_info.target_dy_sigma_decode = radar_target_b_radar_target_dy_sigma_decode(r_target_b.radar_target_dy_sigma);
                             target_info.target_dy_sigma_is_in_range = radar_target_b_radar_target_dy_sigma_is_in_range(r_target_b.radar_target_dy_sigma);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(target_info.target_dy_sigma_decode, target_info.target_dy_sigma_is_in_range);
 
                             target_info.target_w_class_decode = radar_target_b_radar_target_w_class_decode(r_target_b.radar_target_w_class);
                             target_info.target_w_class_is_in_range = radar_target_b_radar_target_class_is_in_range(r_target_b.radar_target_w_class);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(target_info.target_dy_sigma_decode, target_info.target_dy_sigma_is_in_range);
 
                             target_info.target_class_decode = radar_target_b_radar_target_class_decode(r_target_b.radar_target_class);
                             target_info.target_class_is_in_range = radar_target_b_radar_target_class_is_in_range(r_target_b.radar_target_class);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(target_info.target_dy_sigma_decode, target_info.target_dy_sigma_is_in_range);
 
                             target_info.target_dx_rear_end_loss_decode = radar_target_b_radar_target_dx_rear_end_loss_decode(r_target_b.radar_target_dx_rear_end_loss);
                             target_info.target_dx_rear_end_loss_is_in_range = radar_target_b_radar_target_dx_rear_end_loss_is_in_range(r_target_b.radar_target_dx_rear_end_loss);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(target_info.target_dy_sigma_decode, target_info.target_dy_sigma_is_in_range);
 
                             target_info.target_mess_bconsist_bit_decode = radar_target_b_radar_target_mess_bconsist_bit_decode(r_target_b.radar_target_mess_bconsist_bit);
                             target_info.target_mess_bconsist_bit_is_in_range = radar_target_b_radar_target_mess_bconsist_bit_is_in_range(r_target_b.radar_target_mess_bconsist_bit);
-                            //diag_data.radar_mess_bconsist_bit = rad_rx.signals_in_range(target_info.target_mess_bconsist_bit_decode,target_info.target_mess_bconsist_bit_is_in_range);
-
-                            //std::cout << "Radar Dy: " << //radar_obj.RadarDy << std::endl;
-                            //std::cout << "Radar Velocity Sigma: " << //radar_obj.RadarVxSigma << std::endl;
                             break;
-                    }
-          
-                    target_info.timestamp = time;
-                    target_info.radar_number = radar_num;
-                    target_info.target_object_number = target_object_num;
-                    
-                    //radar_obj.RadarTimestamp = time;
-                    //radar_obj.RadarNum = radar_num;
-                    //radar_obj.ObjNum = target_object_num;
-
-                    //std::cout << "Radar Time: " << +radar_obj.RadarTimestamp << std::endl;
-                    //std::cout << "Radar Number: " << +radar_obj.RadarNum << std::endl; 
-                    //std::cout << "Radar Target Obj Number: " << +radar_obj.ObjNum << std::endl;
-
-                    //diag_data.timestamp = time;
-                    //diag_data.radar_number = radar_num;
-                    
+                    }                  
                     break;
                 case 3://enders, starters, or statuses
                     if(id==1665||id==1667){//enders

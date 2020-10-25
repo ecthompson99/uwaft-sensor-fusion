@@ -29,7 +29,6 @@ class Radar_RX{
       double diagnostic_decode;
       bool diagnostic_is_in_range;
 
-      uint8_t channel_number;
       unsigned long timestamp;
       uint8_t radar_number;
     };
@@ -41,7 +40,7 @@ class Radar_RX{
       bool tc_counter_is_in_range;
       double obj_ender_consist_bit_decode;
       bool obj_ender_consist_bit_is_in_range;
-      double packet_checksum_encoded;
+      double packet_checksum_decode;
       bool packet_checksum_is_in_range;
 
       double veh_psi_dt_decode;
@@ -73,9 +72,6 @@ class Radar_RX{
       bool crc_is_in_range;
 
       uint8_t channel_number;
-      unsigned long timestamp;
-      uint8_t radar_number;
-      uint8_t calculated_checksum;
     };
 
     struct target_tracking_info {
@@ -187,7 +183,7 @@ class Radar_RX{
       uint8_t object_number;
     };
 
-    static void get_nums(int id, int &case_n, int &radar_n, int &frame_n, int &obj_n, int &target_obj_n) {
+    static void get_nums(int id, int &case_n, int &radar_n, int &frame_n, int &obj_n, int &target_obj_n, int channel_number) {
       if (id == 1985 || id == 1958 || id == 1879 || id == 1957) {
         case_n = 1; //diag responses and requests
       } else if (id > 1604 && id < 1659) {
@@ -208,15 +204,21 @@ class Radar_RX{
 
       switch (case_n) {
         case 1: //diag responses and requests
-          if (id == 1985 || id == 1879) {
-            radar_n = 1;//radar 1 in dbc  
+          if(channel_number == 2){
+            radar_n = 3; //front radar
+          }
+          else if (id == 1985 || id == 1879) {
+            radar_n = 1;//left corner radar  
           } else if (id == 1958 || id == 1957){
-            radar_n = 2;//radar 2 in dbc 
+            radar_n = 2;//right corner radar
           }
           break;
 
         case 2: //target A and B frames 
-          if (id % 10 == 5 || id % 10 == 6) {
+          if(channel_number == 2){
+            radar_n = 3; //front radar
+          }
+          else if (id % 10 == 5 || id % 10 == 6) {
             radar_n = 1;//radar 1 in dbc (all ids for targets end with a 5 or a 6)
           } else if (id %10 == 7 || id % 10 == 8){
             radar_n = 2; //radar 2 in dbc 
@@ -233,7 +235,10 @@ class Radar_RX{
           break;
 
         case 3: //ender, starter, and statuses messages
-          if (id == 1665 || id == 1280 || id == 1670) {
+          if(channel_number == 2){
+            radar_n = 3; //front radar
+          }
+          else if (id == 1665 || id == 1280 || id == 1670) {
             radar_n = 1; //radar 1 in dbc 
           } else if (id == 1667 || id == 1282 || id == 1672){
             radar_n = 2; //radar 2 in dbc 
@@ -241,6 +246,9 @@ class Radar_RX{
           break;
 
         case 4://radar A and B object frames 
+          if(channel_number == 2){
+            radar_n = 3; //front radar
+          }
           if (id % 10 == 5 || id % 10 == 6) {
             radar_n = 1; //radar 1 in dbc (all ids follow the same convention as target messages)
           } else if (id %10 == 7 || id % 10 == 8){
