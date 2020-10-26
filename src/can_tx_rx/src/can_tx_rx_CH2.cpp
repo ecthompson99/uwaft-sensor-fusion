@@ -30,17 +30,24 @@ int main(int argc, char **argv) {
     Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH2_handle);
     SensorDiagnostics sens_diag = SensorDiagnostics(&can_tx_rx_CH2_handle);
 
+    rad_rx.veh_sub.subscribe("Drive_Ctrl_Input", 1000, get_static_veh_info);
+    
     common::radar_object_data radar_obj; 
     common::sensor_diagnostic_data_msg diag_data;
+    common::drive_ctrl_input_msg drive_ctrl; 
 
     Radar_RX::radar_diagnostic_response diag_response;
     Radar_RX::radar_information radar_info;
     Radar_RX::target_tracking_info target_info;
     Radar_RX::object_tracking_info object_info; 
 
+    radar_input_veh_dyn_data_t in_veh_dyn; 
+    radar_input_veh_dim_t in_veh_dim; 
+    radar_input_wheel_info_t in_wheel_info; 
+    radar_input_mount_info_t in_mount_info; 
+    uint8_t counter = 0; 
+
     radar_info.channel_number = 1;
-    target_info.channel_number = 1;
-    object_info.channel_number = 1;
 
     long int id;
     unsigned int dlc;
@@ -83,7 +90,7 @@ int main(int argc, char **argv) {
         if (canOK == stat) {
             // Left corner radar = radar_1 and right corner radar = radar_2
             //front radar = 3 
-            Radar_RX::get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num,radar_info.channel_number-1);
+            Radar_RX::get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num,radar_info.channel_number+1);
             std::cout << "ID, Case, Radar, Frame, Obj, Target_Obj" << std::endl;
             std::cout << +id << std::endl;
             std::cout << +case_num << std::endl;
@@ -442,6 +449,28 @@ int main(int argc, char **argv) {
                 }
       }
         //Tx node 
+        uint8_t radar_veh_dyn[8] =  {0};
+        uint8_t radar_veh_dim[8] = {0};
+        uint8_t radar_wheel_info[8] = {0};
+        size_t size = 8u; 
+
+        rad_rx.get_static_veh_info(in_veh_dyn, in_veh_dim, in_wheel_info, radar_info.radar_num);
+        in_veh_dyn.ri_veh_steer_angle = radar_input_veh_dyn_data_ri_veh_steer_angle_encode(drive_ctrl.str_ang);
+        in_veh_dyn.ri_veh_velocity = radar_input_veh_dyn_data_ri_veh_velocity_encode(drive_ctrl.veh_spd);
+        in_veh_dyn.ri_veh_use_steer_angle = radar_input_veh_dyn_data_ri_veh_use_steer_angle_encode()
+        in_veh_dyn.ri_veh_standstill = radar_input_veh_dyn_data_ri_veh_standstill_encode();
+        in_veh_dyn.ri_veh_yaw_rate = radar_input_veh_dyn_data_ri_veh_yaw_rate_encode();
+        in_veh_dyn.ri_veh_mc = radar_input_veh_dyn_data_ri_veh_mc_encode();
+
+        //crc calculations 
+        in_veh_dyn.ri_veh_crc = radar_input_veh_dyn_data_ri_veh_crc_encode(); 
+        
+        if(counter>15){
+            counter = 0;
+        }
+        else{
+            counter++;
+        }
     }
     canBusOff(hnd);
     canClose(hnd);

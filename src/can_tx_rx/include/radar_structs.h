@@ -10,8 +10,9 @@
 
 #include "common/radar_object_data.h"
 
-#define TX_RX_MESSAGE_BUFFER_SIZE 1000
+#define MESSAGE_BUFFER_SIZE 1000
 #define TOPIC_RX "Radar_CAN_RX"
+#define DRIVE_CTRL "Drive_ctrl"
 #define TOPIC_DIAG "Radar_CAN_Diagnostics"
 #define SIZE_OF_MSG 8 
 
@@ -20,10 +21,12 @@ class Radar_RX{
     ros::NodeHandle* node_handle;
     ros::Publisher rad_pub;
     ros::Publisher diag_pub; 
+    ros::Subscriber veh_sub; 
 
     Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
-      rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_RX,TX_RX_MESSAGE_BUFFER_SIZE);
-      diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG, TX_RX_MESSAGE_BUFFER_SIZE);
+      rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_RX,MESSAGE_BUFFER_SIZE);
+      diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG, MESSAGE_BUFFER_SIZE);
+      //veh_sub = node_handle->subscribe<common::drive_ctrl_input_msg, MESSAGE_BUFFER_SIZE);
     };
     struct radar_diagnostic_response {
       double diagnostic_decode;
@@ -208,9 +211,9 @@ class Radar_RX{
             radar_n = 3; //front radar
           }
           else if (id == 1985 || id == 1879) {
-            radar_n = 1;//left corner radar  
+            radar_n = 1;//right corner radar  
           } else if (id == 1958 || id == 1957){
-            radar_n = 2;//right corner radar
+            radar_n = 2;//left corner radar
           }
           break;
 
@@ -270,6 +273,57 @@ class Radar_RX{
     static double signals_in_range(double val, bool cond){
         return (cond) ? (val) : 0; 
     };
+
+    static void get_static_veh_info(radar_input_veh_dyn_data_t &in_veh_dyn, radar_input_veh_dim_t &in_veh_dim, radar_input_wheel_info_t &in_wheel_info, int radar_num){
+        float latsensor_tocenter; 
+        float longsensor_torear; 
+        float sensor_height; 
+        bool sensor_orient; 
+        float sensor_angle; 
+
+        float prnd = 3; //default enumeration, drive
+        bool wheelslip = 0; //default don't send information 
+
+        
+        in_veh_dyn.ri_veh_any_wheel_slip_event = radar_input_veh_dyn_data_ri_veh_any_wheel_slip_event_encode(prnd);
+        in_veh_dyn.ri_veh_prndstat = radar_input_veh_dyn_data_ri_veh_prndstat_encode(wheelslip);
+
+        float wheelbase = 2.863; //distance from front to rear axles [m]
+        float trackwidth = 1.681; //distance from right and left wheel [m]
+        float strwhlang_ratio = 15.1; //ratio of steering wheel to wheels turning
+
+        //vehicle dimensions
+        float veh_maxwidth = 2.158; //max width of the vehicle [m]
+        float veh_minwidth = 1.948; //min width of the vehicle [m]
+        float frontbump_pos = 3.881; //longitudinal position of front bumper wrt sensor [m]
+        float rearbump_pos = 0.964; //longitudinal position of rear bumper wrt sensor [m]   
+
+        switch(radar_num){
+          case 1: //right corner radar
+            latsensor_tocenter = 0.885; 
+            longsensor_torear = 3.35; 
+            sensor_height = 0.673;
+            sensor_orient = 0; 
+            sensor_angle = -0.785398;
+            break;
+          case 2: //left corner radar
+            latsensor_tocenter = 0.885; 
+            longsensor_torear = 3.37; 
+            sensor_height = 0.681;
+            sensor_orient = 1; 
+            sensor_angle = 0.785398;
+            break;
+          case 3: //front radar
+            
+            //mounting information 
+            latsensor_tocenter = 0;
+            longsensor_torear = 3.784; 
+            sensor_height = 0.558;
+            sensor_orient = 0;
+            sensor_angle = 0;
+            break;
+        }
+    }
   
   private:
     ros::Time start = ros::Time::now(); 
