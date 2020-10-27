@@ -60,7 +60,6 @@ int main(int argc, char **argv) {
             case 1:
                 // traffic rejection status
 
-
             case 2: // Obstacle Frame A
                 ext_log_data_obstacle_data_a_t frame_a_unpacked;
                 unpack_return = ext_log_data_obstacle_data_a_unpack(&frame_a_unpacked,can_data,SIZE_OF_MSG); 
@@ -118,6 +117,7 @@ int main(int argc, char **argv) {
                 me_obj.me_lane[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_lane_decode, mobileye_obj.obstacle_lane_is_in_range);
                 me_obj.me_cipv_flag[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_cipv_flag_decode, mobileye_obj.obstacle_cipv_flag_is_in_range);
                 me_obj.me_age[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_age_decode, mobileye_obj.obstacle_age_is_in_range);
+                me_raw_lane.me_lane[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_lane_decode, mobileye_obj.obstacle_lane_is_in_range);
 
                 break;
             case 4: // Obstacle frame C
@@ -154,8 +154,9 @@ int main(int argc, char **argv) {
                 me_raw_lane.me_lane_quality_L[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.left_quality_decode, mobileye_lane.left_quality_is_in_range);
                 me_raw_lane.me_lane_curvature_L[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.left_curvature_decode, mobileye_lane.left_curvature_is_in_range);
                 me_raw_lane.me_lane_curvature_derivative_L[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.left_curvature_derivative_decode, mobileye_lane.left_curvature_derivative_is_in_range);
+                
+                diag_data.me_quality_L[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.left_quality_decode, mobileye_lane.left_quality_is_in_range);
 
-               
                 break; 
             case 6: // Left Lane Frame B
                 ext_log_data_lka_left_lane_b_t left_b_unpacked; 
@@ -193,7 +194,8 @@ int main(int argc, char **argv) {
                 me_raw_lane.me_lane_curvature_R[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.right_curvature_decode, mobileye_lane.right_curvature_is_in_range);
                 me_raw_lane.me_lane_curvature_derivative_R[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.right_curvature_derivative_decode, mobileye_lane.right_curvature_derivative_is_in_range);
 
-        
+                diag_data.me_quality_R[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.right_quality_decode, mobileye_lane.right_quality_is_in_range);
+
                 break; 
             case 8: // Right Lane Frame B
                 ext_log_data_lka_right_lane_b_t right_b_unpacked;  
@@ -203,9 +205,35 @@ int main(int argc, char **argv) {
                 mobileye_lane.right_heading_angle_is_in_range =  ext_log_data_lka_right_lane_b_heading_angle_is_in_range(right_b_unpacked.heading_angle); 
                 
                 me_raw_lane.me_lane_heading_angle_R[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.right_heading_angle_decode, mobileye_lane.right_heading_angle_is_in_range);
-
                 break;
-                    
+            
+            case 9: // mobileye diagnostics 1792    
+                ext_log_data_lka_right_lane_b_t right_b_unpacked;  
+                unpack_return = ext_log_data_lka_right_lane_b_unpack(&right_b_unpacked, can_data,SIZE_OF_MSG);
+
+                mobileye_lane.right_heading_angle_decode =  ext_log_data_lka_right_lane_b_heading_angle_decode(right_b_unpacked.heading_angle); 
+                mobileye_lane.right_heading_angle_is_in_range =  ext_log_data_lka_right_lane_b_heading_angle_is_in_range(right_b_unpacked.heading_angle); 
+                
+                me_raw_lane.me_lane_heading_angle_R[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.right_heading_angle_decode, mobileye_lane.right_heading_angle_is_in_range);
+                break;
+
+
+            // validate Mobileye
+            ros::ServiceClient client_ch4;
+            common::sensor_diagnostic_flag_CH4 srv_ch4;
+
+            srv_ch4.request.mobileye = sens_diag.validate_mobileye(diag_data);
+            if (srv_ch4.request.mobileye){
+                std::cout << "Valid Ch4 service call" << std::endl;
+            }
+            else{
+                std::cout << "Invalid Ch4 service call" << std::endl;
+            }
+
+            mobeye_rx.mob_pub_obj.publish(me_obj);
+            mobeye_rx.mob_pub_lane.publish(me_raw_lane);
+            mobeye_rx.diag_pub.publish(diag_data);
+                                
         }
 
         ros::spinOnce();

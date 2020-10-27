@@ -13,3 +13,4 @@ float64[9] me_lane_curvature_derivative_R
 float64[9] me_lane_heading_angle_R
 
 float64 me_timestamp
+uint8[10] me_lane
