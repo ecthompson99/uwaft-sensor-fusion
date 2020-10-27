@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
     SensorDiagnostics sens_diag = SensorDiagnostics(&can_tx_rx_CH3_handle);
 
     common::radar_object_data radar_obj; 
-//    common::sensor_diagnostic_data_msg diag_data; // removed for srv call
+    common::sensor_diagnostic_data_msg diag_data; 
 
     Radar_RX::radar_diagnostic_response diag_response; // decoding
     Radar_RX::radar_information radar_info; // decoding
@@ -221,15 +221,15 @@ int main(int argc, char **argv) {
                         radar_info.obj_ender_consist_bit_decode = radar_radar_object_ender_radar_mess_ender_consist_bit_decode(r_ender.radar_mess_ender_consist_bit);
                         radar_info.obj_ender_consist_bit_is_in_range = radar_radar_object_ender_radar_mess_ender_consist_bit_is_in_range(r_ender.radar_mess_ender_consist_bit);
 
-                        radar_info.packet_checksum_decoded = radar_radar_object_ender_radar_packet_checksum_decode(r_ender.radar_packet_checksum);
+                        radar_info.packet_checksum_decode = radar_radar_object_ender_radar_packet_checksum_decode(r_ender.radar_packet_checksum);
                         radar_info.packet_checksum_is_in_range = radar_radar_object_ender_radar_packet_checksum_is_in_range(r_ender.radar_packet_checksum);
                     
                         radar_obj.radar_timestamp = rad_rx.signals_in_range(radar_info.radar_timestamp_decode, radar_info.radar_timestamp_is_in_range);
 
-                        diag_data.timestamp = rad_dx.signals_in_range(radar_info.radar_timestamp_decode, radar_timestamp_is_in_range);
+                        diag_data.timestamp = rad_rx.signals_in_range(radar_info.radar_timestamp_decode, radar_info.radar_timestamp_is_in_range);
                         diag_data.radar_tc_counter = rad_rx.signals_in_range(radar_info.tc_counter_decode, radar_info.tc_counter_is_in_range);
                         diag_data.radar_mess_ender_consist_bit = rad_rx.signals_in_range(radar_info.obj_ender_consist_bit_decode, radar_info.obj_ender_consist_bit_is_in_range);
-                        diag_data.radar_packet_checksum = rad_rx.signals_in_range(radar_info.packet_checksum_encoded, radar_info.packet_checksum_is_in_range);
+                        diag_data.radar_packet_checksum = rad_rx.signals_in_range(radar_info.packet_checksum_decode, radar_info.packet_checksum_is_in_range);
 
                     }
                     else if(id==1280||id==1282){//starters 
@@ -420,16 +420,16 @@ int main(int argc, char **argv) {
                             radar_obj.radar_ax_sigma[obj_num] = rad_rx.signals_in_range (object_info.ax_sigma_decode,object_info.ax_sigma_is_in_range);                           
                             radar_obj.radar_dy_sigma[obj_num] = rad_rx.signals_in_range (object_info.dy_sigma_decode,object_info.dy_sigma_is_in_range);                           
                             radar_obj.radar_w_class[obj_num] = rad_rx.signals_in_range (object_info.w_class_decode,object_info.w_class_is_in_range);                           
-                            radar_obj.radar_class[obj_num] = rad_rx.signals_in_range (object_info.class_decode,object_info.class_is_in_range);                           
-                            radar_obj.radar_dx_rear_end_loss[obj_num] = rad_rx.signals_in_range (object_info.dx_rear_end_loss_decode,object_info.dx_rear_end_loss_is_in_range);                           
+                            radar_obj.radar_obj_class[obj_num] = rad_rx.signals_in_range (object_info.class_decode,object_info.class_is_in_range);                           
+                            radar_obj.radar_dx_rear_loss[obj_num] = rad_rx.signals_in_range (object_info.dx_rear_end_loss_decode,object_info.dx_rear_end_loss_is_in_range);                           
 
                             diag_data.radar_mess_bconsist_bit = rad_rx.signals_in_range(object_info.mess_bconsist_bit_decode,object_info.mess_bconsist_bit_is_in_range);
 
                             break;
                     }
 
-                    radar_obj.timestamp = time;
-                    radar_obj.radar_number = radar_num;
+                    radar_obj.radar_timestamp = time;
+                    radar_obj.radar_num = radar_num;
 
                     object_info.timestamp = time;
                     object_info.radar_number = radar_num;
