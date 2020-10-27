@@ -52,11 +52,11 @@ bool DataAssociation::objects_match(ObjectState obj, double sensor_dx, double se
 }
 
 void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_data& recvd_data) {
-    if (recvd_data.radar_dx < 1 || recvd_data.radar_dx > DX_RANGE || recvd_data.radar_dy < -DY_RANGE || recvd_data.radar_dy > DY_RANGE)
+    if (recvd_data.RadarDx < 1 || recvd_data.RadarDx > DX_RANGE || recvd_data.RadarDy < -DY_RANGE || recvd_data.RadarDy > DY_RANGE)
         return;
-    // double adjusted_dy = recvd_data.radar_dy - 1;
-    double adjusted_dy = recvd_data.radar_dy;
-    global_clk = recvd_data.radar_timestamp;
+    // double adjusted_dy = recvd_data.RadarDy - 1;
+    double adjusted_dy = recvd_data.RadarDy;
+    global_clk = recvd_data.RadarTimestamp;
 
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
@@ -72,11 +72,11 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
         } 
 
         for (auto obj : stateVector) {
-            if (objects_match(obj, recvd_data.radar_dx, adjusted_dy, recvd_data.radar_vx)) {
+            if (objects_match(obj, recvd_data.RadarDx, adjusted_dy, recvd_data.RadarVx)) {
                 printf("%lu matched, sending now\n", obj.id);
                 common::associated_radar_msg matched;
                 matched.obj = recvd_data;
-                matched.obj.radar_dy = adjusted_dy;
+                matched.obj.RadarDy = adjusted_dy;
                 matched.obj_id = obj.id;
                 radar_to_kf_pub.publish(matched);
                 return;
@@ -89,8 +89,8 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 
    // CHECK TEMP TRACKS
     for (auto obj_iterator = potential_objs.begin(); obj_iterator != potential_objs.end(); obj_iterator++) {
-      if (objects_match(*obj_iterator, recvd_data.radar_dx, adjusted_dy, recvd_data.radar_vx)) {
-        obj_iterator->dx = recvd_data.radar_dx;
+      if (objects_match(*obj_iterator, recvd_data.RadarDx, adjusted_dy, recvd_data.RadarVx)) {
+        obj_iterator->dx = recvd_data.RadarDx;
         obj_iterator->dy = adjusted_dy;
         obj_iterator->count++;
 
@@ -110,7 +110,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
     // ONLY OCCURS IF NOT IN CONFIRMED TRACKS OR TEMP TRACKS
 
     std::cout << "added obj to potentials" << std::endl;
-    potential_objs.emplace_back(ObjectState(recvd_data.radar_dx, adjusted_dy));
+    potential_objs.emplace_back(ObjectState(recvd_data.RadarDx, adjusted_dy));
 }
 
 void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_data& recvd_data) {

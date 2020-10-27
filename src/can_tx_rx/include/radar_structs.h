@@ -74,7 +74,6 @@ class Radar_RX{
       uint8_t channel_number;
       unsigned long timestamp;
       uint8_t radar_number;
-      uint8_t calculated_checksum;
     };
 
     struct target_tracking_info {

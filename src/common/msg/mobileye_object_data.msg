@@ -2,19 +2,13 @@ uint8[10] me_id
 float64[10] me_dx
 float64[10] me_dy
 float64[10] me_vx
+float64[10] me_ax
 uint8[10] me_type
 uint8[10] me_status
-bool[10] me_brake_lights
 uint8[10] me_valid
-uint8[10] me_blinker_info
 uint8[10] me_cut_in_cut_out
-float64[10] me_length
-float64[10] me_width
 float64[10] me_age 
 uint8[10] me_lane
-bool[10] me_cipvflag
-float64[10] me_angle_rate
-float64[10] me_scale_change
-bool[10] me_replaced
-float64[10] me_angle
-float64[10] me_ax
+bool[10] me_cipv_flag
+
+float64 me_timestamp

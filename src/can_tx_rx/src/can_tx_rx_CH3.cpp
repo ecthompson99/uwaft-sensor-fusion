@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
     Radar_RX::object_tracking_info object_info;  // decoding
 
     radar_info.channel_number = 2;
-   
+    object_info.channel_number = 2;
 
     long int id;
     unsigned int dlc;
@@ -78,25 +78,20 @@ int main(int argc, char **argv) {
             switch (case_num) {
                 case 1://diag responses
                     radar_radar_diag_response_t r_diag_response_obj;
-                    unpack_return =
-                        radar_radar_diag_response_unpack(&r_diag_response_obj, can_data, SIZE_OF_MSG);
-                    diag_response.diagnostic_decode = radar_radar_diag_response_r_diag_response_decode(
-                        r_diag_response_obj.r_diag_response);
-                    diag_response.diagnostic_is_in_range =
-                        radar_radar_diag_response_r_diag_response_is_in_range(
-                        r_diag_response_obj.r_diag_response);
+                    unpack_return = radar_radar_diag_response_unpack(&r_diag_response_obj, can_data, SIZE_OF_MSG);
+                    diag_response.diagnostic_decode = radar_radar_diag_response_r_diag_response_decode(r_diag_response_obj.r_diag_response);
+                    diag_response.diagnostic_is_in_range = radar_radar_diag_response_r_diag_response_is_in_range(r_diag_response_obj.r_diag_response);
 
                     diag_response.timestamp = time;
                     diag_response.radar_number = radar_num; // front, left, right
 
                     break;
 
-                case 2: //target tracking (not in use)
+                case 2: //target tracking (NOT CURRENTLY IN USE)
                     switch(frame_num){
-                        case 1://a frame
+                        case 1:// Target A frame
                             radar_radar_a_t r_target_a_obj; 
-                            unpack_return = 
-                                radar_radar_a_unpack(&r_target_a_obj, can_data, SIZE_OF_MSG);
+                            unpack_return = radar_radar_a_unpack(&r_target_a_obj, can_data, SIZE_OF_MSG);
                             target_info.target_dx_decode = radar_radar_a_radar_dx_decode(r_target_a_obj.radar_dx);
                             target_info.target_dx_is_in_range = radar_radar_a_radar_dx_is_in_range(r_target_a_obj.radar_dx);
 
@@ -143,10 +138,9 @@ int main(int argc, char **argv) {
 
                             // diag_data.radar_mess_aconsist_bit = rad_rx.signals_in_range(target_info.target_mess_aconsist_bit_decode,target_info.target_mess_aconsist_bit_is_in_range);
                             break;
-                        case 2: // b frame
+                        case 2: // Target B frame
                             radar_radar_b_t r_target_b_obj;
-                            unpack_return = 
-                                radar_radar_b_unpack(&r_target_b_obj, can_data, SIZE_OF_MSG);
+                            unpack_return = radar_radar_b_unpack(&r_target_b_obj, can_data, SIZE_OF_MSG);
                             target_info.target_vy_decode = radar_radar_b_radar_vy_decode(r_target_b_obj.radar_vy);
                             target_info.target_vy_is_in_range = radar_radar_b_radar_vy_is_in_range(r_target_b_obj.radar_vy);
 
@@ -204,8 +198,7 @@ int main(int argc, char **argv) {
                 case 3://enders, starters, or statuses
                     if(id==1665||id==1667){//enders
                         radar_radar_object_ender_t r_ender; 
-                        unpack_return = 
-                            radar_radar_object_ender_unpack(&r_ender, can_data, SIZE_OF_MSG);
+                        unpack_return = radar_radar_object_ender_unpack(&r_ender, can_data, SIZE_OF_MSG);
 
                         radar_info.radar_timestamp_decode = radar_radar_object_ender_radar_timestamp_decode(r_ender.radar_timestamp);
                         radar_info.radar_timestamp_is_in_range = radar_radar_object_ender_radar_timestamp_is_in_range(r_ender.radar_timestamp);
@@ -229,8 +222,7 @@ int main(int argc, char **argv) {
                     }
                     else if(id==1280||id==1282){//starters 
                         radar_radar_object_starter_t r_starter; 
-                        unpack_return = 
-                            radar_radar_object_starter_unpack(&r_starter, can_data, SIZE_OF_MSG);
+                        unpack_return = radar_radar_object_starter_unpack(&r_starter, can_data, SIZE_OF_MSG);
                         
                         radar_info.veh_psi_dt_decode = radar_radar_object_starter_radar_veh_psi_dt_decode(r_starter.radar_veh_psi_dt);
                         radar_info.veh_psi_dt_is_in_range = radar_radar_object_starter_radar_veh_psi_dt_is_in_range(r_starter.radar_veh_psi_dt);
@@ -258,8 +250,7 @@ int main(int argc, char **argv) {
                     else if(id==1670||id==1672){//statuses
 
                         radar_radar_status_t r_status;
-                        unpack_return = 
-                            radar_radar_status_unpack(&r_status, can_data, SIZE_OF_MSG);
+                        unpack_return = radar_radar_status_unpack(&r_status, can_data, SIZE_OF_MSG);
                         
                         radar_info.itc_info_decode = radar_radar_status_r_stat_itc_info_decode(r_status.r_stat_itc_info);
                         radar_info.itc_info_is_in_range = radar_radar_status_r_stat_itc_info_is_in_range(r_status.r_stat_itc_info);
@@ -296,12 +287,12 @@ int main(int argc, char **argv) {
                         diag_data.r_stat_crc = rad_rx.signals_in_range(radar_info.crc_decode, radar_info.crc_is_in_range);                        
                         
                         // check radar number
-                        if (radar_num == 1){ // left
+                        if (radar_num == 1){ // left radar
                             diag_data.tc_check = tc_check_left;
                             diag_data.mc_check = mc_check_left;
                         }
 
-                        if (radar_num == 2){ // right
+                        if (radar_num == 2){ // right radar
                             diag_data.tc_check = tc_check_right;
                             diag_data.mc_check = mc_check_right;
                         }
@@ -325,10 +316,9 @@ int main(int argc, char **argv) {
                     break;
                 case 4://object tracking 
                     switch(frame_num){
-                        case 1://a frame
+                        case 1://Tracking A frame
                             radar_radar_a_t r_target_a_obj; 
-                            unpack_return = 
-                                radar_radar_a_unpack(&r_target_a_obj, can_data, SIZE_OF_MSG);
+                            unpack_return = radar_radar_a_unpack(&r_target_a_obj, can_data, SIZE_OF_MSG);
                             object_info.dx_decode = radar_radar_a_radar_dx_decode(r_target_a_obj.radar_dx);
                             object_info.dx_is_in_range = radar_radar_a_radar_dx_is_in_range(r_target_a_obj.radar_dx);
 
@@ -362,7 +352,6 @@ int main(int argc, char **argv) {
                             object_info.mess_aconsist_bit_decode = radar_radar_a_radar_mess_aconsist_bit_decode(r_target_a_obj.radar_mess_aconsist_bit);
                             object_info.mess_aconsist_bit_is_in_range = radar_radar_a_radar_mess_aconsist_bit_is_in_range(r_target_a_obj.radar_mess_aconsist_bit);
                             
-                            // signals in A packets
                             radar_obj.radar_dx[obj_num] = rad_rx.signals_in_range(object_info.dx_decode, object_info.dx_is_in_range);
                             radar_obj.radar_vx[obj_num] = rad_rx.signals_in_range(object_info.vx_decode, object_info.vx_is_in_range);
                             radar_obj.radar_dy[obj_num] = rad_rx.signals_in_range(object_info.dy_decode, object_info.dy_is_in_range);
@@ -380,8 +369,7 @@ int main(int argc, char **argv) {
                             break;
                         case 2: // Packet B
                             radar_radar_b_t r_target_b_obj;
-                            unpack_return = 
-                                radar_radar_b_unpack(&r_target_b_obj, can_data, SIZE_OF_MSG);
+                            unpack_return = radar_radar_b_unpack(&r_target_b_obj, can_data, SIZE_OF_MSG);
                             object_info.vy_decode = radar_radar_b_radar_vy_decode(r_target_b_obj.radar_vy);
                             object_info.vy_is_in_range = radar_radar_b_radar_vy_is_in_range(r_target_b_obj.radar_vy);
 
@@ -443,32 +431,38 @@ int main(int argc, char **argv) {
                     object_info.radar_number = radar_num;
                     object_info.object_number = obj_num;
 
-                    // diag_data.timestamp = time;
-                    // diag_data.radar_number = radar_num;
+                    diag_data.radar_number = radar_num;
 
                     break;
 
-                    // check ender
-                    if (cycle_check && (id == 1667 || id == 1665)){
+                    // check ender message
+                    if (cycle_check && (id == 1667 || id == 1665)){ // starter bit condition passed
 
                         // service call to validate radars
                         ros::ServiceClient client_ch3;
                         common::sensor_diagnostic_flag_CH3 srv_ch3_left;
                         common::sensor_diagnostic_flag_CH3 srv_ch3_right;
 
-                        srv_ch3_left.request.left_corner_radar = sens_diag.validate_radar(diag_data);
-                        srv_ch3_left.request.right_corner_radar = sens_diag.validate_radar(diag_data);
-
-                        if (srv_ch3_left.request.left_corner_radar){
-                            std::cout << "Valid Ch3 left corner" << std::endl;
+                        if (radar_num == 1) // left radar
+                        {
+                            srv_ch3_left.request.left_corner_radar = sens_diag.validate_radar(diag_data);
+                            if (srv_ch3_left.request.left_corner_radar){
+                                std::cout << "Valid Ch3 left corner" << std::endl;
+                            }
+                            else{
+                                std::cout << "Invalid Ch3 service call for left radar" << std::endl;
+                            }
                         }
-
-                        if (srv_ch3_right.request.right_corner_radar){
-                            std::cout << "Valid Ch3 right corner" << std::endl;
-                        }
-
-                        if (!client_ch3.call(srv_ch3_left) || !client_ch3.call(srv_ch3_right)){
-                            std::cout << "Invalid Ch3 service call" << std::endl;
+                        
+                        else if (radar_num == 2) // right radar
+                        {
+                            srv_ch3_left.request.right_corner_radar = sens_diag.validate_radar(diag_data);
+                            if (srv_ch3_right.request.right_corner_radar){
+                                std::cout << "Valid Ch3 right corner" << std::endl;
+                            }
+                            else{
+                                std::cout << "Invalid Ch3 service call for right radar" << std::endl;
+                            }
                         }
 
                         // publish here
