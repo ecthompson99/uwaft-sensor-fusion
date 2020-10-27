@@ -34,6 +34,13 @@ int main(int argc, char **argv) {
 
     int unpack_return = -1;  // 0 is successful, negative error code
 
+    uint8_t tc_check_left = 0;
+    uint8_t tc_check_right  = 0;
+    uint8_t mc_check_left = 0;
+    uint8_t mc_check_right = 0;
+
+    bool cycle_check = false; // false if not receive starting bit
+
     canInitializeLibrary();
     canHandle hnd;
     canStatus stat;
@@ -62,6 +69,11 @@ int main(int argc, char **argv) {
             std::cout << +frame_num << std::endl;
             std::cout << +obj_num << std::endl;
             std::cout << +target_object_num << std::endl;
+
+            // check for starter msg
+            if (id == 1280 || id ==1282){
+                cycle_check = true;
+            }
 
             switch (case_num) {
                 case 1://diag responses
@@ -252,7 +264,7 @@ int main(int argc, char **argv) {
                         radar_info.mess_starter_consist_bit_decode = radar_radar_object_starter_radar_mess_starter_consist_bit_decode(r_starter.radar_mess_starter_consist_bit);
                         radar_info.mess_starter_consist_bit_is_in_range = radar_radar_object_starter_radar_mess_starter_consist_bit_is_in_range(r_starter.radar_mess_starter_consist_bit);
                     
-                        radar_obj.radar_veh_psi_dt = rad_rx.signals_in_range(radar_info.veh_psi_dt_decode, radar_info.veh_psi_dt_decode);
+                        radar_obj.radar_veh_psi_dot = rad_rx.signals_in_range(radar_info.veh_psi_dt_decode, radar_info.veh_psi_dt_decode);
                         radar_obj.radar_veh_v_ego = rad_rx.signals_in_range(radar_info.veh_v_ego_decode, radar_info.veh_v_ego_is_in_range);
                         radar_obj.radar_veh_a_ego = rad_rx.signals_in_range(radar_info.veh_a_ego_decode, radar_info.veh_a_ego_is_in_range);
                         radar_obj.radar_veh_slip_angle = rad_rx.signals_in_range(radar_info.veh_slip_angle_decode, radar_info.veh_slip_angle_is_in_range);
@@ -299,18 +311,31 @@ int main(int argc, char **argv) {
                         diag_data.r_stat_distortion_blindness = rad_rx.signals_in_range(radar_info.distortion_blindness_decode, radar_info.distortion_blindness_is_in_range);
                         diag_data.r_stat_mc = rad_rx.signals_in_range(radar_info.mc_decode, radar_info.mc_is_in_range);
                         diag_data.r_stat_crc = rad_rx.signals_in_range(radar_info.crc_decode, radar_info.crc_is_in_range);                        
-                        diag_data.tc_check = tc_check;
-                        diag_data.mc_check = mc_check;
+                        
+                        // check radar number
+                        if (diag_response.radar_number == 1){
+                            diag_data.tc_check = tc_check_left;
+                            diag_data.mc_check = mc_check_left;
+                        }
+
+                        if (diag_response.radar_number == 2){
+                            diag_data.tc_check = tc_check_right;
+                            diag_data.mc_check = mc_check_right;
+                        }
 
                         // account for reset
-                        if (!(tc_check + 0x1 == 256)){
-                            tc_check = tc_check + 0x1;
+                        if (!(tc_check_left + 0x1 == 256)){
+                            tc_check_left = tc_check_left + 0x1;
                         }
-
-                        if (!(mc_check + 0x1 == 16)){
-                            mc_check = mc_check + 0x1;
+                        if (!(tc_check_right + 0x1 == 256)){
+                            tc_check_right = tc_check_right + 0x1;
                         }
-                   
+                        if (!(mc_check_left + 0x1 == 16)){
+                            mc_check_left = mc_check_left + 0x1;
+                        }
+                        if (!(mc_check_right + 0x1 == 16)){
+                            mc_check_right = mc_check_right + 0x1;
+                        }
                    
                     }
 
@@ -355,16 +380,16 @@ int main(int argc, char **argv) {
                             object_info.mess_aconsist_bit_is_in_range = radar_radar_a_radar_mess_aconsist_bit_is_in_range(r_target_a_obj.radar_mess_aconsist_bit);
                             
                             // signals in A packets
-                            radar_obj.radar_dx = rad_rx.signals_in_range(object_info.dx_decode, object_info.dx_is_in_range);
-                            radar_obj.radar_vx = rad_rx.signals_in_range(object_info.vx_decode, object_info.vx_is_in_range);
-                            radar_obj.radar_dy = rad_rx.signals_in_range(object_info.dy_decode, object_info.dy_is_in_range);
-                            radar_obj.radar_w_exist = rad_rx.signals_in_range(object_info.w_exist_decode, object_info.w_exist_is_in_range);
-                            radar_obj.radar_ax = rad_rx.signals_in_range(object_info.ax_decode, object_info.ax_is_in_range);
-                            radar_obj.radar_w_obstacle = rad_rx.signals_in_range(object_info.w_obstacle_decode, object_info.w_obstacle_is_in_range);
-                            radar_obj.radar_flag_valid = rad_rx.signals_in_range(object_info.flag_valid_decode , object_info.flag_valid_is_in_range);
-                            radar_obj.radar_w_non_obstacle = rad_rx.signals_in_range(object_info.w_non_obstacle_decode, object_info.w_non_obstacle_is_in_range);
-                            radar_obj.radar_flag_meas = rad_rx.signals_in_range(object_info.flag_meas_decode, object_info.flag_meas_is_in_range);
-                            radar_obj.radar_flag_hist = rad_rx.signals_in_range(object_info.flag_hist_decode, object_info.flag_hist_is_in_range);
+                            radar_obj.radar_dx[obj_num] = rad_rx.signals_in_range(object_info.dx_decode, object_info.dx_is_in_range);
+                            radar_obj.radar_vx[obj_num] = rad_rx.signals_in_range(object_info.vx_decode, object_info.vx_is_in_range);
+                            radar_obj.radar_dy[obj_num] = rad_rx.signals_in_range(object_info.dy_decode, object_info.dy_is_in_range);
+                            radar_obj.radar_w_exist[obj_num] = rad_rx.signals_in_range(object_info.w_exist_decode, object_info.w_exist_is_in_range);
+                            radar_obj.radar_ax[obj_num] = rad_rx.signals_in_range(object_info.ax_decode, object_info.ax_is_in_range);
+                            radar_obj.radar_w_obstacle[obj_num] = rad_rx.signals_in_range(object_info.w_obstacle_decode, object_info.w_obstacle_is_in_range);
+                            radar_obj.radar_flag_valid[obj_num] = rad_rx.signals_in_range(object_info.flag_valid_decode , object_info.flag_valid_is_in_range);
+                            radar_obj.radar_w_non_obstacle[obj_num] = rad_rx.signals_in_range(object_info.w_non_obstacle_decode, object_info.w_non_obstacle_is_in_range);
+                            radar_obj.radar_flag_meas[obj_num] = rad_rx.signals_in_range(object_info.flag_meas_decode, object_info.flag_meas_is_in_range);
+                            radar_obj.radar_flag_hist[obj_num] = rad_rx.signals_in_range(object_info.flag_hist_decode, object_info.flag_hist_is_in_range);
 
                             diag_data.radar_mess_aconsist_bit = rad_rx.signals_in_range(object_info.mess_aconsist_bit_decode,object_info.mess_aconsist_bit_is_in_range);
 
@@ -435,13 +460,43 @@ int main(int argc, char **argv) {
                     object_info.radar_number = radar_num;
                     object_info.object_number = obj_num;
 
-                    diag_data.timestamp = time;
-                    diag_data.radar_number = radar_num;
+                    // diag_data.timestamp = time;
+                    // diag_data.radar_number = radar_num;
 
                     break;
+
+                    // check ender
+                    if (cycle_check && (id == 1667 || id == 1665)){
+
+                        // service call to validate radars
+                        ros::ServiceClient client_ch3;
+                        common::sensor_diagnostic_flag_CH3 srv_ch3_left;
+                        common::sensor_diagnostic_flag_CH3 srv_ch3_right;
+
+                        srv_ch3_left.request.left_corner_radar = sens_diag.validate_radar(diag_data);
+                        srv_ch3_left.request.right_corner_radar = sens_diag.validate_radar(diag_data);
+
+                        if (srv_ch3_left.request.left_corner_radar){
+                            std::cout << "Valid Ch3 left corner" << std::endl;
+                        }
+
+                        if (srv_ch3_right.request.right_corner_radar){
+                            std::cout << "Valid Ch3 right corner" << std::endl;
+                        }
+
+                        if (!client_ch3.call(srv_ch3_left) || !client_ch3.call(srv_ch3_right)){
+                            std::cout << "Invalid Ch3 service call" << std::endl;
+                        }
+
+                        // publish here
+                        rad_rx.rad_pub.publish(radar_obj);
+                        rad_rx.diag_pub.publish(diag_data);
+                        cycle_check = false;
+                    }
+
+
                 break;
-                rad_rx.rad_pub.publish(radar_obj);
-                rad_rx.diag_pub.publish(diag_data);
+
       }
     }
     canBusOff(hnd);

@@ -33,6 +33,50 @@ class SensorDiagnostics {
         ros::ServiceClient client_ch2;
         ros::ServiceClient client_ch3;
         ros::ServiceClient client_ch4;
+
+        bool validate_radar(const common::sensor_diagnostic_data_msg& data_msg){
+        //-- Radar Signals --//
+            // timestamp for R or M not included since global ROS clock will be used
+        uint8_t radar_mess_starter_consist_bit = data_msg.radar_mess_starter_consist_bit;  // CAN ID 1280 & 1282
+        uint8_t radar_mess_aconsist_bit = data_msg.radar_mess_aconsist_bit;  // CAN ID 1285 -> 1598 (depending on radar and object)
+        uint8_t radar_mess_bconsist_bit = data_msg.radar_mess_bconsist_bit;
+        uint8_t radar_mess_ender_consist_bit = data_msg.radar_mess_ender_consist_bit;  // CAN ID 1665 & 1667
+        uint8_t radar_tc_counter = data_msg.radar_tc_counter;
+        uint16_t r_stat_itc_info = data_msg.r_stat_itc_info; // CAN ID 1670 & 1672
+        uint8_t r_stat_hw_fail = data_msg.r_stat_hw_fail;
+        uint8_t r_stat_sgu_fail = data_msg.r_stat_sgu_fail;
+        double r_stat_horizontal_misalignment = data_msg.r_stat_horizontal_misalignment;  // uint16_t
+        double r_stat_absorption_blindness = data_msg.r_stat_absorption_blindness;        // uint8_t
+        double r_stat_distortion_blindness = data_msg.r_stat_distortion_blindness;
+        uint8_t r_stat_mc = data_msg.r_stat_mc;
+        uint8_t r_stat_crc = data_msg.r_stat_crc;
+        uint8_t tc_check = data_msg.tc_check;
+        uint8_t mc_check = data_msg.mc_check;
+
+        uint8_t calculated_checksum = data_msg.radar_packet_checksum;  // Calculated in CAN RX
+        uint8_t calculated_crc =
+            crc8bit_calculation(r_stat_itc_info, r_stat_hw_fail, r_stat_sgu_fail, r_stat_horizontal_misalignment,
+                                r_stat_absorption_blindness, r_stat_absorption_blindness, r_stat_itc_info);
+
+        return ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
+                            radar_mess_ender_consist_bit) &&
+                        radar_tc_counter == tc_check && calculated_checksum == 0 && r_stat_itc_info == 0 &&
+                        r_stat_sgu_fail == 0 && r_stat_hw_fail == 0 &&
+                        abs(r_stat_horizontal_misalignment) < MISALIGNMENT_LIMIT &&
+                        r_stat_absorption_blindness < BLINDNESS_LIMIT && r_stat_distortion_blindness < BLINDNESS_LIMIT &&
+                        r_stat_mc == mc_check && r_stat_crc == calculated_crc);
+    };
+    bool validate_mobileye(const common::sensor_diagnostic_data_msg& data_msg){
+        //-- Mobileye Signals --//
+        bool headway_valid = data_msg.headway_valid;  // CAN ID 1792
+        bool maintenance = data_msg.maintenance;
+        bool failsafe = data_msg.failsafe;
+
+        uint8_t quality = data_msg.quality; // CAN ID 1894, 1896, 1900 -> 1916
+        
+        return (headway_valid && !maintenance && !failsafe && quality > 1); 
+    };
+
     private: 
         ros::NodeHandle* diag_nodehandle;
         ros::Subscriber sub_CAN_data;
@@ -74,7 +118,7 @@ class SensorDiagnostics {
                 mc_check = frnt_prev_mc + 0x1;
                 }
                 
-                srv_ch2.request.front_radar = validate_radar(data_msg, tc_check, mc_check); 
+                srv_ch2.request.front_radar = validate_radar(data_msg); 
 
                 if(srv_ch2.request.front_radar){
                 std::cout << "Valid Ch2" << std::endl;
@@ -103,7 +147,7 @@ class SensorDiagnostics {
                     mc_check = left_prev_mc + 0x1;
                     }
 
-                    srv_ch3.request.left_corner_radar = validate_radar(data_msg, tc_check, mc_check); 
+                    srv_ch3.request.left_corner_radar = validate_radar(data_msg); 
 
                     if(srv_ch3.request.left_corner_radar){
                     std::cout << "Valid Ch3 Left" << std::endl;
@@ -130,7 +174,7 @@ class SensorDiagnostics {
                     mc_check = rght_prev_mc + 0x1;
                     }
 
-                    srv_ch3.request.right_corner_radar = validate_radar(data_msg, tc_check, mc_check); 
+                    srv_ch3.request.right_corner_radar = validate_radar(data_msg); 
 
                     if(srv_ch3.request.right_corner_radar){
                     std::cout << "Valid Ch3 Right" << std::endl;
@@ -168,46 +212,7 @@ class SensorDiagnostics {
             std::cout << "AFTER switch cases" << std::endl;
             return;
         };
-        bool validate_radar(const common::sensor_diagnostic_data_msg& data_msg,uint8_t tc_check, uint8_t mc_check){
-            //-- Radar Signals --//
-                // timestamp for R or M not included since global ROS clock will be used
-            uint8_t radar_mess_starter_consist_bit = data_msg.radar_mess_starter_consist_bit;  // CAN ID 1280 & 1282
-            uint8_t radar_mess_aconsist_bit = data_msg.radar_mess_aconsist_bit;  // CAN ID 1285 -> 1598 (depending on radar and object)
-            uint8_t radar_mess_bconsist_bit = data_msg.radar_mess_bconsist_bit;
-            uint8_t radar_mess_ender_consist_bit = data_msg.radar_mess_ender_consist_bit;  // CAN ID 1665 & 1667
-            uint8_t radar_tc_counter = data_msg.radar_tc_counter;
-            uint16_t r_stat_itc_info = data_msg.r_stat_itc_info; // CAN ID 1670 & 1672
-            uint8_t r_stat_hw_fail = data_msg.r_stat_hw_fail;
-            uint8_t r_stat_sgu_fail = data_msg.r_stat_sgu_fail;
-            double r_stat_horizontal_misalignment = data_msg.r_stat_horizontal_misalignment;  // uint16_t
-            double r_stat_absorption_blindness = data_msg.r_stat_absorption_blindness;        // uint8_t
-            double r_stat_distortion_blindness = data_msg.r_stat_distortion_blindness;
-            uint8_t r_stat_mc = data_msg.r_stat_mc;
-            uint8_t r_stat_crc = data_msg.r_stat_crc;
-
-            uint8_t calculated_checksum = data_msg.radar_packet_checksum;  // Calculated in CAN RX
-            uint8_t calculated_crc =
-                crc8bit_calculation(r_stat_itc_info, r_stat_hw_fail, r_stat_sgu_fail, r_stat_horizontal_misalignment,
-                                    r_stat_absorption_blindness, r_stat_absorption_blindness, r_stat_itc_info);
-
-            return ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
-                                radar_mess_ender_consist_bit) &&
-                            radar_tc_counter == tc_check && calculated_checksum == 0 && r_stat_itc_info == 0 &&
-                            r_stat_sgu_fail == 0 && r_stat_hw_fail == 0 &&
-                            abs(r_stat_horizontal_misalignment) < MISALIGNMENT_LIMIT &&
-                            r_stat_absorption_blindness < BLINDNESS_LIMIT && r_stat_distortion_blindness < BLINDNESS_LIMIT &&
-                            r_stat_mc == mc_check && r_stat_crc == calculated_crc);
-        };
-        bool validate_mobileye(const common::sensor_diagnostic_data_msg& data_msg){
-            //-- Mobileye Signals --//
-            bool headway_valid = data_msg.headway_valid;  // CAN ID 1792
-            bool maintenance = data_msg.maintenance;
-            bool failsafe = data_msg.failsafe;
-
-            uint8_t quality = data_msg.quality; // CAN ID 1894, 1896, 1900 -> 1916
-            
-            return (headway_valid && !maintenance && !failsafe && quality > 1); 
-        };
+      
         uint8_t crc8bit_calculation(uint8_t itc, uint8_t hw, uint8_t sgu, uint8_t hor_misalignment, uint8_t absorption,
                             uint8_t distortion, uint8_t mc) {
             uint8_t crc = 0xFF;

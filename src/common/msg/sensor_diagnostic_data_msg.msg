@@ -18,6 +18,8 @@ float64 r_stat_absorption_blindness
 float64 r_stat_distortion_blindness
 uint8 r_stat_mc
 uint8 r_stat_crc
+uint8 tc_check
+uint8 mc_check
 
 
 bool headway_valid
