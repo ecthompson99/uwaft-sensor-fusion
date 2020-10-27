@@ -142,8 +142,6 @@ int main(int argc, char **argv) {
                             //radar_obj.w_non_obstacle = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
 
                             // diag_data.radar_mess_aconsist_bit = rad_rx.signals_in_range(target_info.target_mess_aconsist_bit_decode,target_info.target_mess_aconsist_bit_is_in_range);
-
-
                             break;
                         case 2: // b frame
                             radar_radar_b_t r_target_b_obj;
@@ -201,7 +199,6 @@ int main(int argc, char **argv) {
 
                             break;
                     }
-          
                     
                     break;
                 case 3://enders, starters, or statuses

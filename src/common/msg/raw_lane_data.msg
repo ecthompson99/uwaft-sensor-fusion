@@ -1,13 +1,13 @@
-float64 Curv_L
-float64 Curv_Deriv_L
-float64 Head_Ang_L
-float64 LatPos_L 
-float64 Qual_L
-float64 Lane_Type_L
+uint8[10] me_lane_type_L
+uint8[10] me_lane_quality_L
+float64[10] me_lane_position_L
+float64[10] me_lane_curvature_L
+float64[10] me_lane_curvature_derivative_L
+float64[10] me_lane_heading_angle_L
 
-float64 Curv_R
-float64 Curv_Deriv_R
-float64 Head_Ang_R
-float64 LatPos_R 
-float64 Qual_R
-float64 Lane_Type_R
+uint8[10] me_lane_type_R
+uint8[10] me_lane_quality_R
+float64[10] me_lane_position_R
+float64[10] me_lane_curvature_R
+float64[10] me_lane_curvature_derivative_R
+float64[10] me_lane_heading_angle_R
