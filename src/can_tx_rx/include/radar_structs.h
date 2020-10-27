@@ -29,7 +29,6 @@ class Radar_RX{
       double diagnostic_decode;
       bool diagnostic_is_in_range;
 
-      uint8_t channel_number;
       unsigned long timestamp;
       uint8_t radar_number;
     };
@@ -41,7 +40,7 @@ class Radar_RX{
       bool tc_counter_is_in_range;
       double obj_ender_consist_bit_decode;
       bool obj_ender_consist_bit_is_in_range;
-      double packet_checksum_encoded;
+      double packet_checksum_decode;
       bool packet_checksum_is_in_range;
 
       double veh_psi_dt_decode;
