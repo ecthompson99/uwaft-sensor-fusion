@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
         stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
         if (canOK == stat) {
             // Left corner radar = radar_1 and right corner radar = radar_2
-            Radar_RX::get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num);
+            Radar_RX::get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num, radar_info.channel_number+1);
             std::cout << "ID, Case, Radar, Frame, Obj, Target_Obj" << std::endl;
             std::cout << +id << std::endl;
             std::cout << +case_num << std::endl;
@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
                         r_diag_response_obj.r_diag_response);
 
                     diag_response.timestamp = time;
-                    diag_response.radar_number = radar_num;
+                    diag_response.radar_number = radar_num; // front, left, right
 
                     break;
 
@@ -202,20 +202,6 @@ int main(int argc, char **argv) {
                             break;
                     }
           
-                    // target_info.timestamp = time;
-                    // target_info.radar_number = radar_num;
-                    // target_info.target_object_number = target_object_num;
-                    
-                    // radar_obj.RadarTimestamp = time;
-                    // radar_obj.RadarNum = radar_num;
-                    // radar_obj.ObjNum = target_object_num;
-
-                    // std::cout << "Radar Time: " << +radar_obj.RadarTimestamp << std::endl;
-                    // std::cout << "Radar Number: " << +radar_obj.RadarNum << std::endl; 
-                    // std::cout << "Radar Target Obj Number: " << +radar_obj.ObjNum << std::endl;
-
-                    // diag_data.timestamp = time;
-                    // diag_data.radar_number = radar_num;
                     
                     break;
                 case 3://enders, starters, or statuses
@@ -313,17 +299,17 @@ int main(int argc, char **argv) {
                         diag_data.r_stat_crc = rad_rx.signals_in_range(radar_info.crc_decode, radar_info.crc_is_in_range);                        
                         
                         // check radar number
-                        if (diag_response.radar_number == 1){
+                        if (radar_num == 1){ // left
                             diag_data.tc_check = tc_check_left;
                             diag_data.mc_check = mc_check_left;
                         }
 
-                        if (diag_response.radar_number == 2){
+                        if (radar_num == 2){ // right
                             diag_data.tc_check = tc_check_right;
                             diag_data.mc_check = mc_check_right;
                         }
 
-                        // account for reset
+                        // reset counters
                         if (!(tc_check_left + 0x1 == 256)){
                             tc_check_left = tc_check_left + 0x1;
                         }

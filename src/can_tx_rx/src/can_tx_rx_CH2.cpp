@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
         stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
         if (canOK == stat) {
             // Left corner radar = radar_1 and right corner radar = radar_2
-            Radar_RX::get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num);
+            Radar_RX::get_nums(id, case_num, radar_num, frame_num, obj_num, target_object_num, radar_info.channel_number+1);
             std::cout << "ID, Case, Radar, Frame, Obj, Target_Obj" << std::endl;
             std::cout << +id << std::endl;
             std::cout << +case_num << std::endl;
