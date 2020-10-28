@@ -110,26 +110,30 @@ class Mobileye_RX{
                 case_num = 1; //Traffic Sensor 
             } else if(id >= 1849 && id <= 1876 && id % 3 == 1){
                 case_num = 2; //Obstacle A Frame
-               
-                obj_num = (id - 1849 - (id %10)) / 10; // takes obj number based on object id
-                lk_num = (id - 1849 - (id %10)) / 9; // takes lane keep number based on object id
-            
             } else if(id >= 1850 && id <= 1877 && id % 3 == 2){
                 case_num = 3; //Obstacle B Frame
             } else if(id >= 1851 && id <= 1878 && id % 3 == 0){
                 case_num = 4; //Obstacle C Frame
             } else if(id == 1894){
-                case_num = 5; //LKA Left Lane Frame A 
+                case_num = 5; //LKA Left Lane Frame A
             } else if(id == 1895){
                 case_num = 6; //LKA Left Lane Frame B 
             } else if(id == 1896){
                 case_num = 7; //LKA Right Lane Frame A 
             } else if(id == 1897){
                 case_num = 8; //LKA Right Lane Frame B 
-            } else if(id == 1792){ // mobileye diagnostics
+            } else if(id == 1792){ // Diagnostics
                 case_num == 9;
             }else{
                 case_num = 0; // faulted 
+            }
+            
+            if (case_num == 2 || case_num == 3 || case_num == 4){
+                obj_num = (id - (1849 + case_num - 2)) / 3; // takes obj number based on object id (start from obj 0)
+            }
+
+            if (case_num == 5 || case_num == 6 || case_num == 7 || case_num == 8){
+                lk_num = (id - (1894 + case_num - 5)); // Need to confirm this
             }
 
         }; 
