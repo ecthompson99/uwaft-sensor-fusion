@@ -150,8 +150,8 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/sensor_diagnostic_check_node.cpp)
 
 add_executable(sensor_diagnostic src/sensor_diag.cpp)
-add_executable(mock_can_rx src/mock_can_rx.cpp)
-add_executable(mock_master src/mock_master.cpp)
+#add_executable(mock_can_rx src/mock_can_rx.cpp)
+#add_executable(mock_master src/mock_master.cpp)
 
 
 ## Rename C++ executable without prefix
@@ -165,8 +165,8 @@ add_executable(mock_master src/mock_master.cpp)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_dependencies(sensor_diagnostic ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(mock_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(mock_master ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(mock_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(mock_master ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
@@ -174,8 +174,8 @@ add_dependencies(mock_master ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORT
 # )
 
 target_link_libraries(sensor_diagnostic ${catkin_LIBRARIES})
-target_link_libraries(mock_can_rx ${catkin_LIBRARIES})
-target_link_libraries(mock_master ${catkin_LIBRARIES})
+#target_link_libraries(mock_can_rx ${catkin_LIBRARIES})
+#target_link_libraries(mock_master ${catkin_LIBRARIES})
 
 
 target_compile_definitions(
