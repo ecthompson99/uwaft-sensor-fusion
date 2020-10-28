@@ -68,13 +68,13 @@ find_package(
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-   associated_radar_msg.msg
-   associated_me_msg.msg
-   filtered_object_msg.msg
-   binary_class_msg.msg
-)
+# add_message_files(
+#   FILES
+#   associated_radar_msg.msg
+#   associated_me_msg.msg
+#   filtered_object_msg.msg
+#   binary_class_msg.msg
+#)
 
 ## Generate services in the 'srv' folder
  add_service_files(

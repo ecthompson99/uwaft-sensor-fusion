@@ -3,10 +3,10 @@
 
 #include "ros/ros.h"
 #include "object_state.h"
-#include "sensor_fusion/filtered_object_msg.h" // sub
+#include "common/filtered_object_msg.h" // sub
 #include "common/target_output_msg.h"  // pub
 #include "common/tracked_output_msg.h"  // pub
-#include "sensor_fusion/binary_class_msg.h"
+#include "common/binary_class_msg.h"
 #include <vector>
 #include "sensor_fusion/env_state_srv.h"  //service
 
@@ -24,7 +24,7 @@ class EnvironmentState {
   void publish_target_obj();
   void publish_tracked_obj();
   void publish_binary_class(double);
-  void filtered_object_callback(const sensor_fusion::filtered_object_msg& filtered_msg);
+  void filtered_object_callback(const common::filtered_object_msg& filtered_msg);
   common::target_output_msg get_target_output_msg();
   common::tracked_output_msg get_tracked_output_msg();
 

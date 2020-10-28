@@ -49,6 +49,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   can_comms_data_msg.msg
+  binary_class_msg.msg
   drive_ctrl_input_msg.msg
   filtered_object_msg.msg
   mobileye_object_data.msg
