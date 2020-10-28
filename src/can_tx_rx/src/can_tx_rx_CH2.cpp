@@ -29,12 +29,9 @@ int main(int argc, char **argv) {
 
     Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH2_handle);
     SensorDiagnostics sens_diag = SensorDiagnostics(&can_tx_rx_CH2_handle);
-
-    rad_rx.veh_sub.subscribe("Drive_Ctrl_Input", 1000, get_static_veh_info);
     
     common::radar_object_data radar_obj; 
     common::sensor_diagnostic_data_msg diag_data;
-    common::drive_ctrl_input_msg drive_ctrl; 
 
     Radar_RX::radar_diagnostic_response diag_response;
     Radar_RX::radar_information radar_info;
@@ -103,7 +100,6 @@ int main(int argc, char **argv) {
                 pub_data = true; 
                 clear_classes(radar_obj, diag_data,diag_response,radar_info,target_info, object_info, tc_check, mc_check);
             }
-
             switch (case_num) {
                 case 1://diag responses
                     radar_diag_response_t r_diag_response_obj;
@@ -224,7 +220,7 @@ int main(int argc, char **argv) {
                         diag_data.radar_tc_counter = rad_rx.signals_in_range(radar_info.tc_counter_decode, radar_info.tc_counter_is_in_range);
                         diag_data.radar_mess_ender_consist_bit = rad_rx.signals_in_range(radar_info.obj_ender_consist_bit_decode, radar_info.obj_ender_consist_bit_is_in_range); 
                         diag_data.radar_packet_checksum = rad_rx.signals_in_range(radar_info.packet_checksum_decode, radar_info.packet_checksum_is_in_range);
-                        }
+                    }
                     else if(id==1280||id==1282){//starters 
                         radar_object_starter_t r_starter; 
                         unpack_return = 
@@ -251,7 +247,7 @@ int main(int argc, char **argv) {
                         radar_obj.veh_slip_angle = rad_rx.signals_in_range(radar_info.veh_slip_angle_decode, radar_info.veh_slip_angle_is_in_range);
 
                         diag_data.radar_mess_starter_consist_bit = rad_rx.signals_in_range(radar_info.mess_starter_consist_bit_decode, radar_info.mess_starter_consist_bit_is_in_range);
-                        }
+                    }
                     else if(id==1670||id==1672){//statuses
 
                         radar_status_t r_status;
@@ -295,12 +291,12 @@ int main(int argc, char **argv) {
 
                         if (!(tc_check + 0x1 == 256)) {
                             tc_check = tc_check + 0x1;
-                            }
+                        }
 
                         if (!(mc_check + 0x1 == 16)) {
                             mc_check = mc_check + 0x1;
-                            }
                         }
+                    }
                         
                     break;
                 case 4://object tracking 
@@ -420,7 +416,8 @@ int main(int argc, char **argv) {
                     radar_obj.radar_num = radar_num;
                     break;
                 break;
-                if(pub_data && (id == 1667 || id== 1665)){//message must end with the ender bit and have started with an end bit
+            }
+            if(pub_data && (id == 1667 || id== 1665)){//message must end with the ender bit and have started with an end bit
                     
                     //validate radar, using service calls for specific channels
                     ros::ServiceClient client_ch2;
@@ -445,37 +442,106 @@ int main(int argc, char **argv) {
                     clear_classes(radar_obj, diag_data,diag_response,radar_info,target_info, object_info, tc_check, mc_check);
 
                     //resetting for next data cluster
-                    pub_data = false; 
-                }
-      }
-        //Tx node 
-        uint8_t radar_veh_dyn[8] =  {0};
-        uint8_t radar_veh_dim[8] = {0};
-        uint8_t radar_wheel_info[8] = {0};
-        size_t size = 8u; 
+                    pub_data = false;
+            } 
+            //Tx node 
+            uint8_t radar_veh_dyn[8] =  {0};
+            uint8_t radar_veh_dim[8] = {0};
+            uint8_t radar_wheel_info[8] = {0};
+            size_t size = 8u; 
 
-        rad_rx.get_static_veh_info(in_veh_dyn, in_veh_dim, in_wheel_info, radar_info.radar_num);
-        in_veh_dyn.ri_veh_steer_angle = radar_input_veh_dyn_data_ri_veh_steer_angle_encode(drive_ctrl.str_ang);
-        in_veh_dyn.ri_veh_velocity = radar_input_veh_dyn_data_ri_veh_velocity_encode(drive_ctrl.veh_spd);
-        in_veh_dyn.ri_veh_use_steer_angle = radar_input_veh_dyn_data_ri_veh_use_steer_angle_encode()
-        in_veh_dyn.ri_veh_standstill = radar_input_veh_dyn_data_ri_veh_standstill_encode();
-        in_veh_dyn.ri_veh_yaw_rate = radar_input_veh_dyn_data_ri_veh_yaw_rate_encode();
-        in_veh_dyn.ri_veh_mc = radar_input_veh_dyn_data_ri_veh_mc_encode();
+            rad_rx.get_static_veh_info(in_mount_info, in_veh_dyn, in_wheel_info, in_veh_dim, radar_num);
+            
+            //rolling counter additions
+            in_mount_info.ri_mi_mc  = radar_input_mount_info_ri_mi_mc_encode(counter);
+            in_veh_dyn.ri_veh_mc = radar_input_veh_dyn_data_ri_veh_mc_encode(counter);
+            in_veh_dim.ri_vd_mc = radar_input_veh_dim_ri_vd_mc_encode(counter);
+            in_wheel_info.ri_wi_mc = radar_input_wheel_info_ri_wi_mc_encode(counter);
 
-        //crc calculations 
-        in_veh_dyn.ri_veh_crc = radar_input_veh_dyn_data_ri_veh_crc_encode(); 
-        
-        if(counter>15){
-            counter = 0;
+            //goal: ensure that there are 7 entries in the unsigned 8 bit integer, grouping smaller 1-4 bits signals or breaking up 16 bit signals as necessary
+            //to do: research if crc requires bits to be properly ordered as shown in dbc and if there is an easier way to do so
+            uint16_t int16_2bit;
+            
+            uint8_t in_mount_signals[7];
+
+            int16_2bit = ((uint16_t)in_mount_info.ri_mi_lat_sensor_mount_to_center << 8) | in_mount_info.ri_mi_long_sensor_mount_to_rear_axle;
+            in_mount_signals[0] = static_cast<uint8_t>((int16_2bit & 0xFF00) >> 8);
+            in_mount_signals[1] = static_cast<uint8_t>(int16_2bit & 0x00FF);
+            in_mount_signals[2] = in_mount_info.ri_mi_sensor_height;
+            in_mount_signals[3] = in_mount_info.ri_mi_sensor_orientation;
+            int16_2bit = ((uint16_t)in_mount_info.ri_mi_sensor_mount_angle << 8) | in_mount_info.ri_mi_sensor_mount_angle;
+            in_mount_signals[4] = static_cast<uint8_t>((int16_2bit & 0xFF00) >> 8);
+            in_mount_signals[5] = static_cast<uint8_t>(int16_2bit & 0x00FF);
+            in_mount_signals[6] = in_mount_info.ri_mi_mc;
+
+            uint8_t in_veh_dyn_signals[7];
+            in_veh_dyn_signals[0] = in_veh_dyn.ri_veh_steer_angle;
+            in_veh_dyn_signals[1] = in_veh_dyn.ri_veh_velocity;
+            in_veh_dyn_signals[2] = in_veh_dyn.ri_veh_standstill;
+            in_veh_dyn_signals[3] = in_veh_dyn.ri_veh_use_steer_angle;
+            in_veh_dyn_signals[4] = in_veh_dyn.ri_veh_yaw_rate;
+            in_veh_dyn_signals[5] = in_veh_dyn.ri_veh_prndstat+in_veh_dyn.ri_veh_any_wheel_slip_event;
+            in_veh_dyn_signals[6] = in_veh_dyn.ri_veh_mc;
+
+            uint8_t in_wheel_signals[7];
+            in_wheel_signals[0] = in_wheel_info.ri_wi_wheel_base;
+            in_wheel_signals[1] = in_wheel_info.ri_wi_track_width;
+            in_wheel_signals[2] = in_wheel_info.ri_wi_steering_angle_ratio;
+            in_wheel_signals[3] = in_wheel_info.ri_wi_mc;
+
+            uint8_t in_veh_dim_signals[7];
+            in_veh_dim_signals[0] = in_veh_dim.ri_vd_max_width;
+            in_veh_dim_signals[1] = in_veh_dim.ri_vd_min_width;
+            in_veh_dim_signals[2] = in_veh_dim.ri_vd_long_front_bumper_pos;
+            in_veh_dim_signals[3] = in_veh_dim.ri_vd_long_rear_bumper_pos;
+            in_veh_dim_signals[4] = in_veh_dim.ri_vd_mc;
+
+            in_mount_info.ri_mi_crc = rad_rx.crc8bit_calculation(in_mount_signals);
+            in_veh_dyn.ri_veh_crc = rad_rx.crc8bit_calculation(in_veh_dyn_signals);
+            in_wheel_info.ri_wi_crc = rad_rx.crc8bit_calculation(in_wheel_signals);
+            in_veh_dim.ri_vd_crc = rad_rx.crc8bit_calculation(in_veh_dim_signals);
+
+            uint8_t radar_can_msg_mount[8] = {0};
+            uint8_t radar_can_msg_veh_dyn[8] = {0};
+            uint8_t radar_can_msg_wheel[8] = {0};
+            uint8_t radar_can_msg_veh_dim[8] = {0};
+
+            struct radar_input_veh_dyn_data_t *veh_dyn = &in_veh_dyn; 
+            struct radar_input_veh_dim_t *veh_dim = &in_veh_dim; 
+            struct radar_input_wheel_info_t *wheel_info = &in_wheel_info; 
+            struct radar_input_mount_info_t *mount_info = &in_mount_info; 
+
+            //radar_input_mount_info_pack(radar_can_msg_mount, in_mount_info, size);
+            radar_input_veh_dyn_data_pack(radar_can_msg_veh_dyn, veh_dyn, size);
+            //radar_input_wheel_info_pack(radar_can_msg_wheel, in_wheel_info, size);
+            //radar_input_veh_dim_pack(radar_can_msg_veh_dim, in_veh_dim, size);
+
+            
+            canWrite(hnd, 200, radar_can_msg_veh_dyn, SIZE_OF_MSG, canOPEN_ACCEPT_VIRTUAL);
+            canWrite(hnd, 201, radar_can_msg_veh_dim, SIZE_OF_MSG, canOPEN_ACCEPT_VIRTUAL);
+            canWrite(hnd, 202, radar_can_msg_wheel, SIZE_OF_MSG, canOPEN_ACCEPT_VIRTUAL);
+
+            switch(radar_num){
+                case 1:
+                    canWrite(hnd, 490, radar_can_msg_mount, SIZE_OF_MSG, canOPEN_ACCEPT_VIRTUAL);
+                    break;
+                case 2:
+                    canWrite(hnd, 492, radar_can_msg_mount, SIZE_OF_MSG, canOPEN_ACCEPT_VIRTUAL);
+                    break;
+                case 3:
+                    canWrite(hnd, 490, radar_can_msg_mount, SIZE_OF_MSG, canOPEN_ACCEPT_VIRTUAL);
+                    break;
+            }
+            if(counter>15){
+                counter = 0;
+            }
+            else{
+                counter++;
+            }
         }
-        else{
-            counter++;
-        }
+        ros::spinOnce();
     }
     canBusOff(hnd);
     canClose(hnd);
-    
-    ros::spinOnce();
-  }
   return 0;
 }
