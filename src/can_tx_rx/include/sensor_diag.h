@@ -67,13 +67,19 @@ class SensorDiagnostics {
         };
         bool validate_mobileye(const common::sensor_diagnostic_data_msg& data_msg){
             //-- Mobileye Signals --//
-            bool headway_valid = data_msg.headway_valid;  // CAN ID 1792
-            bool maintenance = data_msg.maintenance;
-            bool failsafe = data_msg.failsafe;
+            bool headway_valid = data_msg.me_headway_valid;  // CAN ID 1792
+            bool maintenance = data_msg.me_maintenance;
+            bool failsafe = data_msg.me_failsafe;
+            bool flag = false;
 
-            uint8_t quality = data_msg.quality; // CAN ID 1894, 1896, 1900 -> 1916
-            
-            return (headway_valid && !maintenance && !failsafe && quality > 1); 
+            // Quality CAN ID 1894, 1896, 1900 -> 1916
+
+            for (int i = 0; i < 9; i++){
+                if (headway_valid && !maintenance && !failsafe && data_msg.me_quality_L[i] > 1 && data_msg.me_quality_R[i] > 1){
+                    flag == true;
+                }
+            }
+            return flag; 
         };
 
     private: 

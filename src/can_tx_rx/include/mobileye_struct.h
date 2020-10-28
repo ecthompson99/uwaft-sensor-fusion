@@ -92,6 +92,15 @@ class Mobileye_RX{
             unsigned long time_stamp; 
         };
 
+        struct mobileye_diagnostics{
+            double headway_valid_decode; 
+            bool headway_valid_is_in_range; 
+            double failsafe_decode; 
+            bool failsafe_is_in_range; 
+            double maintenance_decode; 
+            bool maintenance_is_in_range; 
+        };
+
         static void get_nums(int id, int &case_num, int &obj_num, int &lk_num){ 
             
             // deafault values set to -1

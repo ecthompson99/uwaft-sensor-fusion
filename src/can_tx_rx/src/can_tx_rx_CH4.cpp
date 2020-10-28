@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
 
     Mobileye_RX::mobileye_object mobileye_obj;
     Mobileye_RX::mobileye_lane mobileye_lane;
+    Mobileye_RX::mobileye_diagnostics mobileye_diag;
 
     mobileye_obj.channel_number = 3; 
 
@@ -98,6 +99,7 @@ int main(int argc, char **argv) {
                 me_obj.me_dy[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_pos_x_decode, mobileye_obj.obstacle_pos_x_is_in_range);
                 
                 me_obj.me_timestamp = mobileye_obj.time_stamp;
+                diag_data.timestamp = mobileye_obj.time_stamp;
                 
                 break;    
 
@@ -208,13 +210,22 @@ int main(int argc, char **argv) {
                 break;
             
             case 9: // mobileye diagnostics 1792    
-                ext_log_data_lka_right_lane_b_t right_b_unpacked;  
-                unpack_return = ext_log_data_lka_right_lane_b_unpack(&right_b_unpacked, can_data,SIZE_OF_MSG);
+                ext_log_data_aws_display_t aws_display_unpacked;  
+                unpack_return = ext_log_data_aws_display_unpack(&aws_display_unpacked, can_data,SIZE_OF_MSG);
 
-                mobileye_lane.right_heading_angle_decode =  ext_log_data_lka_right_lane_b_heading_angle_decode(right_b_unpacked.heading_angle); 
-                mobileye_lane.right_heading_angle_is_in_range =  ext_log_data_lka_right_lane_b_heading_angle_is_in_range(right_b_unpacked.heading_angle); 
+                mobileye_diag.headway_valid_decode =  ext_log_data_aws_display_headway_valid_decode(aws_display_unpacked.headway_valid); 
+                mobileye_diag.headway_valid_is_in_range =  ext_log_data_aws_display_headway_valid_is_in_range(aws_display_unpacked.headway_valid); 
                 
-                me_raw_lane.me_lane_heading_angle_R[lk_num] = mobeye_rx.signal_in_range(mobileye_lane.right_heading_angle_decode, mobileye_lane.right_heading_angle_is_in_range);
+                mobileye_diag.failsafe_decode =  ext_log_data_aws_display_failsafe_decode(aws_display_unpacked.failsafe); 
+                mobileye_diag.failsafe_is_in_range =  ext_log_data_aws_display_failsafe_is_in_range(aws_display_unpacked.failsafe); 
+                
+                mobileye_diag.maintenance_decode =  ext_log_data_aws_display_maintenance_decode(aws_display_unpacked.maintenance); 
+                mobileye_diag.maintenance_is_in_range =  ext_log_data_aws_display_maintenance_is_in_range(aws_display_unpacked.maintenance); 
+                               
+                diag_data.me_headway_valid = mobeye_rx.signal_in_range(mobileye_diag.headway_valid_decode, mobileye_diag.headway_valid_is_in_range);
+                diag_data.me_maintenance = mobeye_rx.signal_in_range(mobileye_diag.maintenance_decode, mobileye_diag.maintenance_is_in_range);
+                diag_data.me_failsafe = mobeye_rx.signal_in_range(mobileye_diag.failsafe_decode, mobileye_diag.failsafe_is_in_range);
+               
                 break;
 
 
