@@ -140,6 +140,10 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/can_tx_rx_node.cpp)
 
+add_executable(can_tx_rx_CH1 src/can_tx_rx_CH1.cpp src/cav_pcm_csw.cpp)
+add_dependencies(can_tx_rx_CH1 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+target_link_libraries(can_tx_rx_CH1 ${catkin_LIBRARIES} canlib)
+
 add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp src/radar.cpp)
 #add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES} canlib)

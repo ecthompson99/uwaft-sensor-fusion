@@ -612,32 +612,31 @@ int main(int argc, char **argv) {
             }
             if(pub_data && (id == 1667 || id== 1665)){//message must end with the ender bit and have started with an end bit
                     
-                    //validate radar, using service calls for specific channels
-                    ros::ServiceClient client_ch2;
-                    common::sensor_diagnostic_flag_CH2 srv_ch2; 
+                //validate radar, using service calls for specific channels
+                ros::ServiceClient client_ch2;
+                common::sensor_diagnostic_flag_CH2 srv_ch2; 
 
-                    srv_ch2.request.front_radar = sens_diag.validate_radar(diag_data); 
-                    if(srv_ch2.request.front_radar){
-                        std::cout << "Valid Ch2" << std::endl;
-                    }
-                    else{
-                        std::cout << "Invalid Ch2" << std::endl;
-                    }
+                srv_ch2.request.front_radar = sens_diag.validate_radar(diag_data); 
+                if(srv_ch2.request.front_radar){
+                    std::cout << "Valid Ch2" << std::endl;
+                }
+                else{
+                    std::cout << "Invalid Ch2" << std::endl;
+                }
 
-                    if (!client_ch2.call(srv_ch2)) {  // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
-                        std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
-                    }
+                if (!client_ch2.call(srv_ch2)) {  // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
+                    std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
+                }
 
-                    //publish here
-                    rad_rx.rad_pub.publish(radar_obj);
-                    rad_rx.diag_pub.publish(diag_data);
-                    
-                    rad_rx.clear_classes(radar_obj, diag_data,diag_response,radar_info,target_info, object_info, tc_check, mc_check);
+                //publish here
+                rad_rx.rad_pub.publish(radar_obj);
+                rad_rx.diag_pub.publish(diag_data);
+                
+                rad_rx.clear_classes(radar_obj, diag_data,diag_response,radar_info,target_info, object_info, tc_check, mc_check);
 
-                    //resetting for next data cluster
-                    pub_data = false;
+                //resetting for next data cluster
+                pub_data = false;
             } 
-            //ros::Timer timerWriteRadarInfo = can_tx_rx_CH2_handle.createTimer(ros::Duration(20.0/1000.0), &Radar_RX::readRadarInputs, rad_rx);
             //Tx node 
             rad_rx.get_static_veh_info(in_mount_info, in_veh_dyn, in_wheel_info, in_veh_dim, radar_num);
             uint16_t int16_2bit;
@@ -739,7 +738,7 @@ int main(int argc, char **argv) {
                 }
             }                     
         }
-        ros::spin();
+        ros::spinOnce();
     }
     canBusOff(hnd);
     canClose(hnd);
