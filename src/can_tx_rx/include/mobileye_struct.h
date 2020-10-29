@@ -101,7 +101,7 @@ class Mobileye_RX{
             bool maintenance_is_in_range; 
         };
 
-        static void get_nums(int id, int &case_num, int &obj_num, int &lk_num){ 
+        static void get_nums(int id, int &case_num, int &obj_num){ 
             
             // deafault values set to -1
             obj_num = -1;
@@ -128,12 +128,14 @@ class Mobileye_RX{
                 case_num = 0; // faulted 
             }
             
-            if (case_num == 2 || case_num == 3 || case_num == 4){
-                obj_num = (id - (1849 + case_num - 2)) / 3; // takes obj number based on object id (start from obj 0)
-            }
-
-            if (case_num == 5 || case_num == 6 || case_num == 7 || case_num == 8){
-                lk_num = (id - (1894 + case_num - 5)); // Need to confirm this
+            if (case_num >=2 && case_num <= 4){
+                /* Obs A frame: 1876, 1873, 1870, 1867, 1864, 1861, 1858, 1855, 1852, 1849	
+                Obs B frame: 1877, 1874, 1871, 1868, 1865, 1862, 1859, 1856, 1853, 1850
+                Obs C frame: 1878, 1875, 1872, 1869, 1866, 1863,1860, 1857, 1854, 1851	
+                Lowest ID is 1849, increments by 3. Formula allows for calculating object ID from 0-9 given the case where the IDs are A,B, or C frame
+                eg. if the id is 1867, (1867 - (1849 + 2-2))/3 = object #6
+                */
+                obj_num = (id - (1849 + case_num - 2)) / 3; 
             }
 
         }; 

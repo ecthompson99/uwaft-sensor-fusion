@@ -272,6 +272,35 @@ class Radar_RX{
     static double signals_in_range(double val, bool cond){
         return (cond) ? (val) : 0; 
     };
+
+    static void check_tc_mc(int radar_num, common::sensor_diagnostic_data_msg &diag_data, uint8_t &tc_check_left,
+                    uint8_t &tc_check_right, uint8_t &mc_check_left, uint8_t &mc_check_right){
+
+        // check radar number
+        if (radar_num == 1){ // left radar
+            diag_data.tc_check = tc_check_left;
+            diag_data.mc_check = mc_check_left;
+        }
+
+        if (radar_num == 2){ // right radar
+            diag_data.tc_check = tc_check_right;
+            diag_data.mc_check = mc_check_right;
+        }
+
+        // reset counters
+        if (!(tc_check_left + 0x1 == 256)){
+            tc_check_left = tc_check_left + 0x1;
+        }
+        if (!(tc_check_right + 0x1 == 256)){
+            tc_check_right = tc_check_right + 0x1;
+        }
+        if (!(mc_check_left + 0x1 == 16)){
+            mc_check_left = mc_check_left + 0x1;
+        }
+        if (!(mc_check_right + 0x1 == 16)){
+            mc_check_right = mc_check_right + 0x1;
+        }
+    }
   
   private:
     ros::Time start = ros::Time::now(); 

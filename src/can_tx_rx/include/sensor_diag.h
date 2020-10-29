@@ -70,16 +70,11 @@ class SensorDiagnostics {
             bool headway_valid = data_msg.me_headway_valid;  // CAN ID 1792
             bool maintenance = data_msg.me_maintenance;
             bool failsafe = data_msg.me_failsafe;
-            bool flag = false;
+            uint8_t quality_L = data_msg.me_quality_L;
+            uint8_t quality_R = data_msg.me_quality_R;
 
-            // Quality CAN ID 1894, 1896, 1900 -> 1916
+            return (headway_valid && !maintenance && !failsafe && quality_L > 1 && quality_R > 1); 
 
-            for (int i = 0; i < 9; i++){
-                if (headway_valid && !maintenance && !failsafe && data_msg.me_quality_L[i] > 1 && data_msg.me_quality_R[i] > 1){
-                    flag == true;
-                }
-            }
-            return flag; 
         };
 
     private: 
@@ -110,141 +105,5 @@ class SensorDiagnostics {
           };
         };
 
-        // void sub_CAN_data_callback(const common::sensor_diagnostic_data_msg& data_msg){
-        //     // temporary workaround for int and bool as the values in them do not get properly printed using ROS_INFO_STREAM
-
-        //     common::sensor_diagnostic_flag_CH2 srv_ch2; // service objects
-        //     common::sensor_diagnostic_flag_CH3 srv_ch3; // service objects
-        //     common::sensor_diagnostic_flag_CH4 srv_ch4; // service objects
-
-        //     uint8_t frnt_prev_tc_counter = 0; // Front Radar counter trackers
-        //     uint8_t frnt_prev_mc = 0;
-
-        //     uint8_t left_prev_tc_counter = 0; // Left Radar counter trackers
-        //     uint8_t left_prev_mc = 0;
-
-        //     uint8_t rght_prev_tc_counter = 0; // Right Radar counter trackers
-        //     uint8_t rght_prev_mc = 0;
-
-        //     uint8_t channel_number = data_msg.channel_number;
-        //     uint8_t radar_number = data_msg.radar_number;
-
-        //     uint8_t radar_tc_counter = data_msg.radar_tc_counter;
-        //     uint8_t r_stat_mc = data_msg.r_stat_mc;
-
-        //     uint8_t tc_check = 0;
-        //     uint8_t mc_check = 0;
-
-        //     switch (channel_number){
-        //     case 2:  // Front Radar
-        //         // Account for Radar Counter Reset
-        //         if (!(frnt_prev_tc_counter + 0x1 == 256)) {
-        //         tc_check = frnt_prev_tc_counter + 0x1;
-        //         }
-
-        //         if (!(frnt_prev_mc + 0x1 == 16)) {
-        //         mc_check = frnt_prev_mc + 0x1;
-        //         }
-                
-        //         srv_ch2.request.front_radar = validate_radar(data_msg); 
-
-        //         if(srv_ch2.request.front_radar){
-        //         std::cout << "Valid Ch2" << std::endl;
-        //         }
-        //         else{
-        //         std::cout << "Invalid Ch2" << std::endl;
-        //         }
-
-        //         if (!client_ch2.call(srv_ch2)) {  // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
-        //         std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
-        //         }
-
-        //         frnt_prev_tc_counter = radar_tc_counter;
-        //         frnt_prev_mc = r_stat_mc;
-
-        //         break;
-        //     case 3:  // Corner Radars
-        //         switch (radar_number) {
-        //         case 1:  // Left Radar
-        //             // Account for Radar counter reset
-        //             if (!(left_prev_tc_counter + 0x1 == 256)) {
-        //             tc_check = left_prev_tc_counter + 0x1;
-        //             }
-
-        //             if (!(left_prev_mc + 0x1 == 16)) {
-        //             mc_check = left_prev_mc + 0x1;
-        //             }
-
-        //             srv_ch3.request.left_corner_radar = validate_radar(data_msg); 
-
-        //             if(srv_ch3.request.left_corner_radar){
-        //             std::cout << "Valid Ch3 Left" << std::endl;
-        //             }
-        //             else{
-        //             std::cout << "Invalid Ch3 Left" << std::endl;
-        //             }
-
-        //             if (!client_ch3.call(srv_ch3)) {  // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
-        //             std::cout << "SERVICE REQUEST CHANNEL 3 SIDE RADARS FAILED" << std::endl;
-        //             }
-
-        //             left_prev_tc_counter = radar_tc_counter;
-        //             left_prev_mc = r_stat_mc;
-
-        //             break;
-        //         case 2:  // Right Radar
-        //             // Account for Radar counter reset
-        //             if (!(rght_prev_tc_counter + 0x1 == 256)) {
-        //             tc_check = rght_prev_tc_counter + 0x1;
-        //             }
-
-        //             if (!(rght_prev_mc + 0x1 == 16)) {
-        //             mc_check = rght_prev_mc + 0x1;
-        //             }
-
-        //             srv_ch3.request.right_corner_radar = validate_radar(data_msg); 
-
-        //             if(srv_ch3.request.right_corner_radar){
-        //             std::cout << "Valid Ch3 Right" << std::endl;
-        //             }
-        //             else{
-        //             std::cout << "Invalid Ch3 Right" << std::endl;
-        //             }
-
-        //             if (!client_ch3.call(srv_ch3)) {  // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
-        //             std::cout << "SERVICE REQUEST CHANNEL 3 SIDE RADARS FAILED" << std::endl;
-        //             }
-
-        //             rght_prev_tc_counter = radar_tc_counter;
-        //             rght_prev_mc = r_stat_mc;
-
-        //             break;
-        //         }
-        //         break;
-        //     case 4:  // Mobileye
-        //         srv_ch4.request.mobileye = validate_mobileye(data_msg); 
-
-        //         if(srv_ch4.request.mobileye){
-        //         std::cout << "Valid Ch4" << std::endl;
-        //         }
-        //         else{
-        //         std::cout << "Invalid Ch4" << std::endl;
-        //         }
-
-        //         if (!client_ch4.call(srv_ch4)) {
-        //         std::cout << "SERVICE REQUEST CHANNEL 4 MOBILEYE FAILED" << std::endl;
-        //         }
-        //         break;
-        //     }
-
-        //     std::cout << "AFTER switch cases" << std::endl;
-        //     return;
-        // };
-      
-
-
-
-// sub to cantxrx dummy node (later a function)
-// srv request to mastertask when something is wrong - look in common for srv files
 
 #endif

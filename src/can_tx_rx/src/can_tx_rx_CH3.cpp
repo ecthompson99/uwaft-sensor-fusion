@@ -125,18 +125,6 @@ int main(int argc, char **argv) {
                             target_info.target_mess_aconsist_bit_decode = radar_radar_a_radar_mess_aconsist_bit_decode(r_target_a_obj.radar_mess_aconsist_bit);
                             target_info.target_mess_aconsist_bit_is_in_range = radar_radar_a_radar_mess_aconsist_bit_is_in_range(r_target_a_obj.radar_mess_aconsist_bit);
 
-                            // radar_obj.RadarDx = rad_rx.signals_in_range(target_info.target_dx_decode, target_info.target_dx_is_in_range);
-                            // radar_obj.RadarVx = rad_rx.signals_in_range(target_info.target_vx_decode, target_info.target_vx_is_in_range);
-                            // radar_obj.RadarDy = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
-                            //radar_obj.w_exist = rad_rx.signals_in_range(target_info.target_w_exist_decode, target_info.target_w_exist_is_in_range);
-                            // radar_obj.RadarAx = rad_rx.signals_in_range(target_info.target_ax_decode, target_info.target_ax_is_in_range);
-                            //radar_obj.w_obstacle = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
-                            //radar_obj.flag_valid = rad_rx.signals_in_range(target_info.target_flag_valid_decode , target_info.target_flag_valid_is_in_range);
-                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
-                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
-                            //radar_obj.w_non_obstacle = rad_rx.signals_in_range(target_info.target_dy_decode, target_info.target_dy_is_in_range);
-
-                            // diag_data.radar_mess_aconsist_bit = rad_rx.signals_in_range(target_info.target_mess_aconsist_bit_decode,target_info.target_mess_aconsist_bit_is_in_range);
                             break;
                         case 2: // Target B frame
                             radar_radar_b_t r_target_b_obj;
@@ -176,20 +164,6 @@ int main(int argc, char **argv) {
 
                             target_info.target_mess_bconsist_bit_decode = radar_radar_b_radar_mess_bconsist_bit_decode(r_target_b_obj.radar_mess_bconsist_bit);
                             target_info.target_mess_bconsist_bit_is_in_range = radar_radar_b_radar_mess_bconsist_bit_is_in_range(r_target_b_obj.radar_mess_bconsist_bit);
-
-                            // radar_obj.RadarVy = rad_rx.signals_in_range(target_info.target_vy_decode, target_info.target_vy_is_in_range);
-                            //radar_obj. = rad_rx.signals_in_range(target_info.target_d_length_decode, target_info.target_d_length_is_in_range);
-                            //radar_obj.RadarVy = rad_rx.signals_in_range(target_info.target_vy_decode, target_info.target_vy_is_in_range);
-                            //radar_obj. = rad_rx.signals_in_range(target_info.target_d_length_decode, target_info.target_d_length_is_in_range);
-                            // radar_obj.RadarDxSigma = rad_rx.signals_in_range(target_info.target_dx_sigma_decode, target_info.target_dx_sigma_is_in_range);
-                            // radar_obj.RadarVxSigma = rad_rx.signals_in_range(target_info.target_vx_sigma_decode, target_info.target_vx_sigma_is_in_range);
-                            // radar_obj.RadarAxSigma = rad_rx.signals_in_range(target_info.target_ax_sigma_decode, target_info.target_ax_sigma_is_in_range);
-                            // radar_obj.RadarDySigma = rad_rx.signals_in_range(target_info.target_dy_sigma_decode, target_info.target_dy_sigma_is_in_range);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(target_info.target_dy_sigma_decode, target_info.target_dy_sigma_is_in_range);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(target_info.target_dy_sigma_decode, target_info.target_dy_sigma_is_in_range);
-                            //radar_obj.RadarDySigma = rad_rx.signals_in_range(target_info.target_dy_sigma_decode, target_info.target_dy_sigma_is_in_range);
-
-                            // diag_data.radar_mess_bconsist_bit = rad_rx.signals_in_range(target_info.target_mess_bconsist_bit_decode,target_info.target_mess_bconsist_bit_is_in_range);
 
                             break;
                     }
@@ -286,30 +260,7 @@ int main(int argc, char **argv) {
                         diag_data.r_stat_mc = rad_rx.signals_in_range(radar_info.mc_decode, radar_info.mc_is_in_range);
                         diag_data.r_stat_crc = rad_rx.signals_in_range(radar_info.crc_decode, radar_info.crc_is_in_range);                        
                         
-                        // check radar number
-                        if (radar_num == 1){ // left radar
-                            diag_data.tc_check = tc_check_left;
-                            diag_data.mc_check = mc_check_left;
-                        }
-
-                        if (radar_num == 2){ // right radar
-                            diag_data.tc_check = tc_check_right;
-                            diag_data.mc_check = mc_check_right;
-                        }
-
-                        // reset counters
-                        if (!(tc_check_left + 0x1 == 256)){
-                            tc_check_left = tc_check_left + 0x1;
-                        }
-                        if (!(tc_check_right + 0x1 == 256)){
-                            tc_check_right = tc_check_right + 0x1;
-                        }
-                        if (!(mc_check_left + 0x1 == 16)){
-                            mc_check_left = mc_check_left + 0x1;
-                        }
-                        if (!(mc_check_right + 0x1 == 16)){
-                            mc_check_right = mc_check_right + 0x1;
-                        }
+                        Radar_RX::check_tc_mc(radar_num, diag_data, tc_check_left, tc_check_right, mc_check_left, mc_check_right);
                    
                     }
 
