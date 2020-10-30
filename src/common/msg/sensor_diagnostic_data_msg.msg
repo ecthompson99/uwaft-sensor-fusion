@@ -1,7 +1,6 @@
-uint8 channel_number
-uint8 radar_number
-
 uint8 radar_mess_starter_consist_bit
+
+uint8 radar_diag_response
 
 uint8 radar_mess_aconsist_bit
 uint8 radar_mess_bconsist_bit

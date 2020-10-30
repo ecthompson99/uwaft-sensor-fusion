@@ -11,19 +11,20 @@ float64[32] radar_w_exist
 float64[32] radar_w_obstacle
 bool[32] radar_flag_valid
 float64[32] radar_w_non_obstacle
-bool[32] radar_flag_meas
-bool[32] radar_flag_hist
-float64[32] radar_d_length
+bool[32] flag_meas
+bool[32] flag_hist
+float64[32] d_length
 float64[32] radar_dz
-float64[32] radar_moving_state
+float64[32] moving_state
 float64[32] radar_w_class
 float64[32] radar_obj_class
-float64[32] radar_dx_rear_loss
-
+float64[32] dx_rear_loss
+ 
 uint8 radar_num
 float64 radar_timestamp
 
-float64 radar_veh_psi_dot
-float64 radar_veh_v_ego
-float64 radar_veh_a_ego
-float64 radar_veh_slip_angle
+float64 veh_psi_dot
+float64 veh_v_ego
+float64 veh_a_ego
+float64 veh_slip_angle
+
