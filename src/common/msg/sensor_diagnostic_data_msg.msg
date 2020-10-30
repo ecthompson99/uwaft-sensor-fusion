@@ -20,12 +20,11 @@ uint8 r_stat_crc
 uint8 tc_check
 uint8 mc_check
 
+bool headway_valid
+bool maintenance
+bool failsafe
 
-bool me_headway_valid
-bool me_maintenance
-bool me_failsafe
-
-uint8 me_quality_L
-uint8 me_quality_R
+uint8 quality_L
+uint8 quality_R
 
 float64 timestamp

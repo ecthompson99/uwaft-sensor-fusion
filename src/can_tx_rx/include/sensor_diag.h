@@ -23,8 +23,6 @@ const double MISALIGNMENT_LIMIT = 0.0152;
 class SensorDiagnostics {
     public: 
         SensorDiagnostics(ros::NodeHandle* diag_nodehandle) : diag_nodehandle(diag_nodehandle) {
-        //    sub_CAN_data = diag_nodehandle->subscribe("SENSOR_DIAGNOSTICS_DATA", TX_RX_MESSAGE_BUFFER_SIZE, &SensorDiagnostics::sub_CAN_data_callback, this);
-
             client_ch2 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH2>("sensor_diagnostic_CH2"); //locate srv file and specify topic
             client_ch3 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH3>("sensor_diagnostic_CH3"); //locate srv file and specify topic
             client_ch4 = diag_nodehandle->serviceClient<common::sensor_diagnostic_flag_CH4>("sensor_diagnostic_CH4"); //locate srv file and specify topic
@@ -50,37 +48,35 @@ class SensorDiagnostics {
             double r_stat_distortion_blindness = data_msg.r_stat_distortion_blindness;
             uint8_t r_stat_mc = data_msg.r_stat_mc;
             uint8_t r_stat_crc = data_msg.r_stat_crc;
-            uint8_t tc_check = data_msg.tc_check;
+            uint8_t tc_check = data_msg.tc_check; 
             uint8_t mc_check = data_msg.mc_check;
 
             uint8_t calculated_checksum = data_msg.radar_packet_checksum;  // Calculated in CAN RX
-            uint8_t calculated_crc = crc8bit_calculation(r_stat_itc_info, r_stat_hw_fail, r_stat_sgu_fail, 
-                                                        r_stat_horizontal_misalignment,r_stat_absorption_blindness, 
-                                                        r_stat_absorption_blindness, r_stat_itc_info);
+            uint8_t calculated_crc =
+                crc8bit_calculation(r_stat_itc_info, r_stat_hw_fail, r_stat_sgu_fail, r_stat_horizontal_misalignment,
+                                    r_stat_absorption_blindness, r_stat_absorption_blindness, r_stat_itc_info);
 
-            return ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit == radar_mess_ender_consist_bit) && 
-                    radar_tc_counter == tc_check && calculated_checksum == 0 && r_stat_itc_info == 0 &&
-                    r_stat_sgu_fail == 0 && r_stat_hw_fail == 0 &&
-                    abs(r_stat_horizontal_misalignment) < MISALIGNMENT_LIMIT &&
-                    r_stat_absorption_blindness < BLINDNESS_LIMIT && r_stat_distortion_blindness < BLINDNESS_LIMIT &&
-                    r_stat_mc == mc_check && r_stat_crc == calculated_crc);
+            return ((radar_mess_starter_consist_bit == radar_mess_aconsist_bit == radar_mess_bconsist_bit ==
+                                radar_mess_ender_consist_bit) &&
+                            radar_tc_counter == tc_check && calculated_checksum == 0 && r_stat_itc_info == 0 &&
+                            r_stat_sgu_fail == 0 && r_stat_hw_fail == 0 &&
+                            abs(r_stat_horizontal_misalignment) < MISALIGNMENT_LIMIT &&
+                            r_stat_absorption_blindness < BLINDNESS_LIMIT && r_stat_distortion_blindness < BLINDNESS_LIMIT &&
+                            r_stat_mc == mc_check && r_stat_crc == calculated_crc);
         };
         bool validate_mobileye(const common::sensor_diagnostic_data_msg& data_msg){
             //-- Mobileye Signals --//
-            bool headway_valid = data_msg.me_headway_valid;  // CAN ID 1792
-            bool maintenance = data_msg.me_maintenance;
-            bool failsafe = data_msg.me_failsafe;
-            uint8_t quality_L = data_msg.me_quality_L;
-            uint8_t quality_R = data_msg.me_quality_R;
+            bool headway_valid = data_msg.headway_valid;  // CAN ID 1792
+            bool maintenance = data_msg.maintenance;
+            bool failsafe = data_msg.failsafe;
+
+            uint8_t quality_L = data_msg.quality_L; // CAN ID 1894, 1896, 1900 -> 1916
+            uint8_t quality_R = data_msg.quality_R; // CAN ID 1894, 1896, 1900 -> 1916
 
             return (headway_valid && !maintenance && !failsafe && quality_L > 1 && quality_R > 1); 
-
         };
-
     private: 
         ros::NodeHandle* diag_nodehandle;
-    //    ros::Subscriber sub_CAN_data;
-    //    ros::Subscriber sub_CAN_flag;
         
         uint8_t crc8bit_calculation(uint8_t itc, uint8_t hw, uint8_t sgu, uint8_t hor_misalignment, uint8_t absorption,
                             uint8_t distortion, uint8_t mc) {
@@ -104,6 +100,5 @@ class SensorDiagnostics {
             return crc;
           };
         };
-
 
 #endif

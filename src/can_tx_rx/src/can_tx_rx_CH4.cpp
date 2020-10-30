@@ -155,7 +155,7 @@ int main(int argc, char **argv) {
                 me_raw_lane.me_lane_curvature_L = mobeye_rx.signal_in_range(mobileye_lane.left_curvature_decode, mobileye_lane.left_curvature_is_in_range);
                 me_raw_lane.me_lane_curvature_derivative_L = mobeye_rx.signal_in_range(mobileye_lane.left_curvature_derivative_decode, mobileye_lane.left_curvature_derivative_is_in_range);
                 
-                diag_data.me_quality_L = mobeye_rx.signal_in_range(mobileye_lane.left_quality_decode, mobileye_lane.left_quality_is_in_range);
+                diag_data.quality_L = mobeye_rx.signal_in_range(mobileye_lane.left_quality_decode, mobileye_lane.left_quality_is_in_range);
 
                 break; 
             case 6: // Left Lane Frame B
@@ -194,7 +194,7 @@ int main(int argc, char **argv) {
                 me_raw_lane.me_lane_curvature_R = mobeye_rx.signal_in_range(mobileye_lane.right_curvature_decode, mobileye_lane.right_curvature_is_in_range);
                 me_raw_lane.me_lane_curvature_derivative_R = mobeye_rx.signal_in_range(mobileye_lane.right_curvature_derivative_decode, mobileye_lane.right_curvature_derivative_is_in_range);
 
-                diag_data.me_quality_R = mobeye_rx.signal_in_range(mobileye_lane.right_quality_decode, mobileye_lane.right_quality_is_in_range);
+                diag_data.quality_R = mobeye_rx.signal_in_range(mobileye_lane.right_quality_decode, mobileye_lane.right_quality_is_in_range);
 
                 break; 
             case 8: // Right Lane Frame B
@@ -220,9 +220,9 @@ int main(int argc, char **argv) {
                 mobileye_diag.maintenance_decode =  ext_log_data_aws_display_maintenance_decode(aws_display_unpacked.maintenance); 
                 mobileye_diag.maintenance_is_in_range =  ext_log_data_aws_display_maintenance_is_in_range(aws_display_unpacked.maintenance); 
                                
-                diag_data.me_headway_valid = mobeye_rx.signal_in_range(mobileye_diag.headway_valid_decode, mobileye_diag.headway_valid_is_in_range);
-                diag_data.me_maintenance = mobeye_rx.signal_in_range(mobileye_diag.maintenance_decode, mobileye_diag.maintenance_is_in_range);
-                diag_data.me_failsafe = mobeye_rx.signal_in_range(mobileye_diag.failsafe_decode, mobileye_diag.failsafe_is_in_range);
+                diag_data.headway_valid = mobeye_rx.signal_in_range(mobileye_diag.headway_valid_decode, mobileye_diag.headway_valid_is_in_range);
+                diag_data.maintenance = mobeye_rx.signal_in_range(mobileye_diag.maintenance_decode, mobileye_diag.maintenance_is_in_range);
+                diag_data.failsafe = mobeye_rx.signal_in_range(mobileye_diag.failsafe_decode, mobileye_diag.failsafe_is_in_range);
                
                 break;
 
