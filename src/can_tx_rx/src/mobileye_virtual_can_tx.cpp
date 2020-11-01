@@ -1,12 +1,5 @@
-#include "ros/ros.h"
-#include <canlib.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <iomanip>
+#include "mobileye_struct.h"
 #include "ext_log_data.h"
-
-using namespace std;
 
 static const uint32_t pub_buffer_size = 100;
 
@@ -39,8 +32,6 @@ int main(int argc, char **argv)
 
     struct ext_log_data_lka_right_lane_b_t right_b;
     right_b.heading_angle = 1;
-
-    std::cout << setiosflags(ios::fixed) << std::setprecision(7); 
 
     std::cout << "Original Mobileye data is: \n" << std::endl;
     
