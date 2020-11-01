@@ -12,30 +12,56 @@
 #include "common/raw_lane_data.h"
 
 #define TX_RX_MESSAGE_BUFFER_SIZE 1000
-#define TOPIC_RX "Mobileye_CAN_Rx"
+#define TOPIC_RX_OBJ "Mobileye_CAN_Rx_Object"
+#define TOPIC_RX_LANE "Mobileye_CAN_Rx_Lane"
 #define TOPIC_DIAG "Mobileye_CAN_Diagnostics"
 #define SIZE_OF_MSG 8 
 
 class Mobileye_RX{
     public:
         ros::NodeHandle* node_handle;
-        ros::Publisher mob_pub;
+        ros::Publisher mob_pub_obj;
+        ros::Publisher mob_pub_lane;
         ros::Publisher diag_pub;
         Mobileye_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
-            mob_pub = node_handle->advertise<common::mobileye_object_data>(TOPIC_RX,TX_RX_MESSAGE_BUFFER_SIZE);
+            mob_pub_obj = node_handle->advertise<common::mobileye_object_data>(TOPIC_RX_OBJ,TX_RX_MESSAGE_BUFFER_SIZE);
             diag_pub = node_handle ->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG,TX_RX_MESSAGE_BUFFER_SIZE);
+            mob_pub_lane = node_handle->advertise<common::raw_lane_data>(TOPIC_RX_LANE,TX_RX_MESSAGE_BUFFER_SIZE);
         };
         struct mobileye_object{
-            //objection detection
             double obstacle_pos_x_decode;
             bool obstacle_pos_x_is_in_range; 
             double obstacle_pos_y_decode; 
             bool obstacle_pos_y_is_in_range; 
-
             double obstacle_vel_x_decode;
             bool obstacle_vel_x_is_in_range; 
+            double obstacle_accel_x_decode;
+            bool obstacle_accel_x_is_in_range;
+          
+            double obstacle_age_decode;
+            bool  obstacle_age_is_in_range;
+            double obstacle_cut_in_cut_out_decode;
+            bool obstacle_cut_in_cut_out_is_in_range;
+            double obstacle_valid_decode;
+            bool obstacle_valid_is_in_range;
+            double obstacle_status_decode;
+            bool obstacle_status_is_in_range;
+            double obstacle_type_decode;
+            bool obstacle_type_is_in_range;
+            double obstacle_cipv_flag_decode;
+            bool obstacle_cipv_flag_is_in_range;
 
-            //lane detection
+            double obstacle_lane_decode; // this is put here for sensor fusion
+            bool obstacle_lane_is_in_range;
+            double obstacle_id_decode;
+            bool obstacle_id_is_in_range;
+
+            uint8_t channel_number; 
+            unsigned long time_stamp; 
+            
+        };
+
+        struct mobileye_lane{
             double left_curvature_decode; 
             bool left_curvature_is_in_range; 
             double left_curvature_derivative_decode;
@@ -61,44 +87,59 @@ class Mobileye_RX{
             bool right_lane_type_is_in_range; 
             double right_quality_decode; 
             bool right_quality_is_in_range; 
-            
-            double obstacle_lane_decode;
-            bool obstacle_lane_decode_is_in_range;
-
-            double obstacle_id_decode;
-            bool obstacle_id_is_in_range; 
-
-            long id; 
-            uint8_t can_data[8]; 
-            unsigned long time_stamp; 
-            unsigned int dlc; 
-            unsigned int flag; 
 
             uint8_t channel_number; 
-            uint8_t object_number; 
+            unsigned long time_stamp; 
         };
 
-        static uint8_t get_nums(mobileye_object mobileye_obj) {
-            if(mobileye_obj.id >=1824 && mobileye_obj.id <=1830){
-                return 1; //Traffic Sensor 
-            } else if(mobileye_obj.id >= 1849 && mobileye_obj.id <= 1876 && mobileye_obj.id % 3 == 1){
-                return 2; //Obstacle A Frame
-            } else if(mobileye_obj.id >= 1850 && mobileye_obj.id <= 1877 && mobileye_obj.id % 3 == 2){
-                return 3; //Obstacle B Frame
-            } else if(mobileye_obj.id >= 1851 && mobileye_obj.id <= 1878 && mobileye_obj.id % 3 == 0){
-                return 4; //Obstacle C Frame
-            } else if(mobileye_obj.id == 1894){
-                return 5; //LKA Left Lane Frame A 
-            } else if(mobileye_obj.id == 1895){
-                return 6; //LKA Left Lane Frame B 
-            } else if(mobileye_obj.id == 1896){
-                return 7; //LKA Right Lane Frame A 
-            } else if(mobileye_obj.id == 1897){
-                return 8; //LKA Right Lane Frame B 
-            } else{
-                return 0; 
-            }
+        struct mobileye_diagnostics{
+            double headway_valid_decode; 
+            bool headway_valid_is_in_range; 
+            double failsafe_decode; 
+            bool failsafe_is_in_range; 
+            double maintenance_decode; 
+            bool maintenance_is_in_range; 
         };
+
+        static void get_nums(int id, int &case_num, int &obj_num){ 
+            
+            // deafault values set to -1
+            obj_num = -1;
+
+            if(id >=1824 && id <=1830){
+                case_num = 1; //Traffic Sensor 
+            } else if(id >= 1849 && id <= 1876 && id % 3 == 1){
+                case_num = 2; //Obstacle A Frame
+            } else if(id >= 1850 && id <= 1877 && id % 3 == 2){
+                case_num = 3; //Obstacle B Frame
+            } else if(id >= 1851 && id <= 1878 && id % 3 == 0){
+                case_num = 4; //Obstacle C Frame
+            } else if(id == 1894){
+                case_num = 5; //LKA Left Lane Frame A
+            } else if(id == 1895){
+                case_num = 6; //LKA Left Lane Frame B 
+            } else if(id == 1896){
+                case_num = 7; //LKA Right Lane Frame A 
+            } else if(id == 1897){
+                case_num = 8; //LKA Right Lane Frame B 
+            } else if(id == 1792){ // Diagnostics
+                case_num == 9;
+            }else{
+                case_num = 0; // faulted 
+            }
+            
+            if (case_num >=2 && case_num <= 4){
+                /* Obs A frame: 1876, 1873, 1870, 1867, 1864, 1861, 1858, 1855, 1852, 1849	
+                Obs B frame: 1877, 1874, 1871, 1868, 1865, 1862, 1859, 1856, 1853, 1850
+                Obs C frame: 1878, 1875, 1872, 1869, 1866, 1863,1860, 1857, 1854, 1851	
+                Lowest ID is 1849, increments by 3. Formula allows for calculating object ID from 0-9 given the case where the IDs are A,B, or C frame
+                eg. if the id is 1867, (1867 - (1849 + 2-2))/3 = object #6
+                */
+                obj_num = (id - (1849 + case_num - 2)) / 3; 
+            }
+
+        }; 
+
 
         static double signal_in_range(double val, bool cond){
             return (cond) ? (val) : 0; 

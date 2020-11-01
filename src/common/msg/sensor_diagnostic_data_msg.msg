@@ -24,6 +24,7 @@ bool headway_valid
 bool maintenance
 bool failsafe
 
-uint8 quality
+uint8 quality_L
+uint8 quality_R
 
 float64 timestamp
