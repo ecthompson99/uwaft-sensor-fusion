@@ -272,7 +272,7 @@ int main(int argc, char **argv) {
     canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
     canSetBusOutputControl(hnd, canDRIVER_NORMAL);
     canBusOn(hnd);
-
+    std::cout << "Set up CAN Parameters, starting to read in loop" << std::endl;
     while (ros::ok()) {
         ros::Time now = ros::Time::now();
         //Rx node 
