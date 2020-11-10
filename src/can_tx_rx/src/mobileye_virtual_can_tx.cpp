@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <iomanip>
-#include "can_tx_rx/ext_log_data.c"
-#include "can_tx_rx/ext_log_data.h"
+#include "ext_log_data.h"
 
 using namespace std;
 
@@ -43,7 +42,7 @@ int main(int argc, char **argv)
 
     std::cout << setiosflags(ios::fixed) << std::setprecision(7); 
 
-    std::cout << "Original data is: \n" << std::endl;
+    std::cout << "Original Mobileye data is: \n" << std::endl;
     
     std::cout << "Longitudinal Position: " << a.obstacle_pos_x << std::endl;
     std::cout << "Lateral Position: " << a.obstacle_pos_y << std::endl;
@@ -129,19 +128,19 @@ int main(int argc, char **argv)
     canSetBusOutputControl(hnd, canDRIVER_NORMAL);
     canBusOn(hnd);
 
-    uint8_t can_msg_a[8] = {0};
-    uint8_t can_msg_left_a[8] = {0};
-    uint8_t can_msg_left_b[8] = {0};
-    uint8_t can_msg_right_a[8] = {0};
-    uint8_t can_msg_right_b[8] = {0};
+    uint8_t mobileye_can_msg_a[8] = {0};
+    uint8_t mobileye_can_msg_left_a[8] = {0};
+    uint8_t mobileye_can_msg_left_b[8] = {0};
+    uint8_t mobileye_can_msg_right_a[8] = {0};
+    uint8_t mobileye_can_msg_right_b[8] = {0};
 
     uint8_t blank_msg[8] = {0}; 
     size_t size = 8u;
-    /*int pack_return_a = */ ext_log_data_obstacle_data_a_pack(can_msg_a, frame_a, size);
-    /*int pack_return_left_a = */ ext_log_data_lka_left_lane_a_pack(can_msg_left_a, frame_left_a, size);
-    /*int pack_return_left_b = */ ext_log_data_lka_left_lane_b_pack(can_msg_left_b, frame_left_b, size);
-    /*int pack_return_right_a = */ ext_log_data_lka_right_lane_a_pack(can_msg_right_a, frame_right_a, size);
-    /*int pack_return_right_b = */ ext_log_data_lka_right_lane_b_pack(can_msg_right_b, frame_right_b, size);
+    /*int pack_return_a = */ ext_log_data_obstacle_data_a_pack(mobileye_can_msg_a, frame_a, size);
+    /*int pack_return_left_a = */ ext_log_data_lka_left_lane_a_pack(mobileye_can_msg_left_a, frame_left_a, size);
+    /*int pack_return_left_b = */ ext_log_data_lka_left_lane_b_pack(mobileye_can_msg_left_b, frame_left_b, size);
+    /*int pack_return_right_a = */ ext_log_data_lka_right_lane_a_pack(mobileye_can_msg_right_a, frame_right_a, size);
+    /*int pack_return_right_b = */ ext_log_data_lka_right_lane_b_pack(mobileye_can_msg_right_b, frame_right_b, size);
 
     int id = 1830;
     //goes through all valid id messages, sending the packed can message when appropriate  
@@ -155,19 +154,19 @@ int main(int argc, char **argv)
         
         canStatus stat; 
         if(id ==1894){ //LKA Left A 
-            stat = canWrite(hnd,id, can_msg_left_a, 8, canOPEN_ACCEPT_VIRTUAL);
+            stat = canWrite(hnd,id, mobileye_can_msg_left_a, 8, canOPEN_ACCEPT_VIRTUAL);
         }
         else if(id==1895){ //LKA Left B
-            stat = canWrite(hnd,id, can_msg_left_b, 8, canOPEN_ACCEPT_VIRTUAL);
+            stat = canWrite(hnd,id, mobileye_can_msg_left_b, 8, canOPEN_ACCEPT_VIRTUAL);
         }
         else if(id ==1896){ //LKA Right A 
-            stat = canWrite(hnd,id, can_msg_right_a, 8, canOPEN_ACCEPT_VIRTUAL);
+            stat = canWrite(hnd,id, mobileye_can_msg_right_a, 8, canOPEN_ACCEPT_VIRTUAL);
         }
         else if(id==1897){ //LKA Right B
-            stat = canWrite(hnd,id, can_msg_right_b, 8, canOPEN_ACCEPT_VIRTUAL);
+            stat = canWrite(hnd,id, mobileye_can_msg_right_b, 8, canOPEN_ACCEPT_VIRTUAL);
         }
         else if(id%3==1){ //A Frame
-            stat = canWrite(hnd, id, can_msg_a, 8, canOPEN_ACCEPT_VIRTUAL); 
+            stat = canWrite(hnd, id, mobileye_can_msg_a, 8, canOPEN_ACCEPT_VIRTUAL); 
         }
         else{ //B or C Frame
             stat = canWrite(hnd, id, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 

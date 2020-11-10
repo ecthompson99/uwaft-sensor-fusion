@@ -5,14 +5,25 @@
 
 #include "ros/ros.h"
 
-#include "can_tx_rx/radar.c"
-#include "can_tx_rx/radar.h"
+#include "radar.h"
+#include "sensor_diag.h"
 
 #include "common/radar_object_data.h"
 
+#define TX_RX_MESSAGE_BUFFER_SIZE 1000
+#define TOPIC_AD "Mobileye_CAN_Rx"
+#define SIZE_OF_MSG 8 
+
 class Radar_RX{
   public:
-    Radar_RX(ros::NodeHandle* node_handle);
+    ros::NodeHandle* node_handle;
+    ros::Publisher rad_pub;
+    ros::Publisher diag_pub; 
+
+    Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
+      rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_AD,TX_RX_MESSAGE_BUFFER_SIZE);
+      diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_AD, TX_RX_MESSAGE_BUFFER_SIZE);
+    };
     struct radar_diagnostic_response {
       double diagnostic_decode;
       bool diagnostic_is_in_range;
@@ -20,7 +31,7 @@ class Radar_RX{
       uint8_t channel_number;
       unsigned long timestamp;
       uint8_t radar_number;
-    } diag_response;
+    };
 
     struct radar_information {
       double radar_timestamp_decode;
@@ -64,7 +75,7 @@ class Radar_RX{
       unsigned long timestamp;
       uint8_t radar_number;
       uint8_t calculated_checksum;
-    } radar_info;
+    };
 
     struct target_tracking_info {
       double target_dx_decode;
@@ -118,7 +129,7 @@ class Radar_RX{
       unsigned long timestamp;
       uint8_t radar_number;
       uint8_t target_object_number;
-    } target_info;
+    };
 
     struct object_tracking_info {
       double dx_decode;
@@ -173,28 +184,79 @@ class Radar_RX{
       unsigned long timestamp;
       uint8_t radar_number;
       uint8_t object_number;
-    } object_info;
+    };
 
-    uint8_t get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n);
+    static void get_nums(int id, uint8_t &case_n, uint8_t &radar_n, uint8_t &frame_n, uint8_t &obj_n, uint8_t &target_obj_n) {
+      if (id == 1985 || id == 1958 || id == 1879 || id == 1957) {
+        case_n = 1; //diag responses and requests
+      } else if (id > 1604 && id < 1659) {
+        case_n = 2; //target A and B frames (?) the IDs are incorrectly calculated from the dbc 
+      } else if (id == 1665 || id == 1667 || id == 1280 || id == 1282 || id == 1670 || id == 1672) {
+        case_n = 3; //ender, starter, and statuses messages
+      } else if (id > 1284 && id < 1599) {
+        case_n = 4; //radar A and B object frames 
+      } else {
+        case_n = 0; //faulted 
+      }
 
-    double signal_in_range(double val, bool cond);
+      switch (case_n) {
+        case 1: //diag responses and requests
+          if (id == 1985 || id == 1879) {
+            radar_n = 1;//radar 1 in dbc  
+          } else {
+            radar_n = 2;//radar 2 in dbc 
+          }
+          break;
 
-    radar_radar_diag_response_t diag_response_unpacked; 
-    radar_radar_diag_request_t diag_request_unpacked;
-    
-    radar_radar_a_t radar_a_unpacked; 
-    radar_radar_b_t radar_b_unpacked;
+        case 2: //target A and B frames 
+          if (id % 10 == 5 || id % 10 == 6) {
+            radar_n = 1;//radar 1 in dbc (all ids for targets end with a 5 or a 6)
+          } else {
+            radar_n = 2;//radar 2 in dbc 
+          }
 
-    radar_radar_object_ender_t radar_object_ender_unpacked;
-    radar_radar_object_starter_t radar_object_starter_unpacked;
-    radar_radar_status_t radar_status_unpacked;
+          if (id % 10 == 5 || id % 10 == 7) {
+            frame_n = 1; //a frame in dbc (all ids for targets end with a 5 if they are radar 1, or 7 if they are  radar 2)
+          } else {
+            frame_n = 2; //b frame in dbc
+          }
 
-    ros::NodeHandle* node_handle;
-    ros::Publisher rad_pub;
+          target_obj_n = (id - 1600 - (id % 10)) / 10; //takes the target object number based on the defined id 
+
+          break;
+
+        case 3: //ender, starter, and statuses messages
+          if (id == 1665 || id == 1280 || id == 1670) {
+            radar_n = 1; //radar 1 in dbc 
+          } else {
+            radar_n = 2; //radar 2 in dbc 
+          }
+          break;
+
+        case 4://radar A and B object frames 
+          if (id % 10 == 5 || id % 10 == 6) {
+            radar_n = 1; //radar 1 in dbc (all ids follow the same convention as target messages)
+          } else {
+            radar_n = 2; //radar 2 in dbc 
+          }
+
+          if (id % 10 == 5 || id % 10 == 7) {
+            frame_n = 1; //a frame in dbc (all ids follow the same convention as target messages)
+          } else {
+            frame_n = 2; //b frame in dbc 
+          }
+
+          obj_n = (id - 1280 - (id % 10)) / 10; //takes the tracked object number based on the defined id 
+
+          break;
+      }
+    };
+
+    static double signals_in_range(double val, bool cond){
+        return (cond) ? (val) : 0; 
+    };
   
   private:
-    int unpack_return = -1; // 0 is successful, negative error code
-
     ros::Time start = ros::Time::now(); 
 };
 

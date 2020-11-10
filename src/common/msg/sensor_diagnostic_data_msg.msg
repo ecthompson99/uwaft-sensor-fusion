@@ -6,7 +6,7 @@ uint8 radar_mess_starter_consist_bit
 uint8 radar_mess_aconsist_bit
 uint8 radar_mess_bconsist_bit
 
-uint8 radar_mess_ender_cosist_bit
+uint8 radar_mess_ender_consist_bit
 uint8 radar_tc_counter
 uint8 radar_packet_checksum
 

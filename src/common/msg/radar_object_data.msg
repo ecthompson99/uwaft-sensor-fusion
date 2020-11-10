@@ -8,3 +8,11 @@ float64 RadarDxSigma
 float64 RadarDySigma
 float64 RadarVxSigma
 float64 RadarAxSigma
+bool flagValid
+float64 dz
+bool flagHist
+bool flagMeas
+float64 wExist
+float64 dLength
+uint8 obj_num
+uint8 radar_num
