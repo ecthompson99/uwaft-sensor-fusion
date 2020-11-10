@@ -210,65 +210,82 @@ void Radar_RX::clear_classes(common::radar_object_data &radar_obj, common::senso
 };
 
 int main(int argc, char **argv) {
+  // channel
+  int channel = 0;
+  // get command line arg for which channel is to be run
+  ros::V_string args_out;
+  ros::removeROSArgs(argc, argv, args_out);
+  if (args_out[1] == "2") {
+    channel = 2;
+  } else if (args_out[1] == "3") {
+    channel = 3;
+  } else {
+    std::cout << "Argument: " << args_out[1];
+    throw ros::Exception("Bad arg: can only pick 2 or 3 for their corresponding channels");
+  }
+
+  if (channel == 2)
     ros::init(argc, argv, "can_tx_rx_CH2");
-    ros::NodeHandle can_tx_rx_CH2_handle;
+  else
+    ros::init(argc, argv, "can_tx_rx_CH3");
+  ros::NodeHandle can_tx_rx_CH2_CH3_handle;
 
-    Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH2_handle);
-    SensorDiagnostics sens_diag = SensorDiagnostics(&can_tx_rx_CH2_handle);
-    
-    common::radar_object_data radar_obj; 
-    common::sensor_diagnostic_data_msg diag_data;
+  Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH2_CH3_handle);
+  SensorDiagnostics sens_diag = SensorDiagnostics(&can_tx_rx_CH2_CH3_handle);
 
-    Radar_RX::radar_diagnostic_response diag_response;
-    Radar_RX::radar_information radar_info;
-    Radar_RX::target_tracking_info target_info;
-    Radar_RX::object_tracking_info object_info; 
+  common::radar_object_data radar_obj;
+  common::sensor_diagnostic_data_msg diag_data;
 
-    radar_input_veh_dyn_data_t in_veh_dyn; 
-    radar_input_veh_dim_t in_veh_dim; 
-    radar_input_wheel_info_t in_wheel_info; 
-    radar_input_mount_info_t in_mount_info; 
+  Radar_RX::radar_diagnostic_response diag_response;
+  Radar_RX::radar_information radar_info;
+  Radar_RX::target_tracking_info target_info;
+  Radar_RX::object_tracking_info object_info;
 
-    in_mount_info.ri_mi_mc = 0;
-    in_veh_dyn.ri_veh_mc = 0;
-    in_veh_dim.ri_vd_mc = 0;
-    in_wheel_info.ri_wi_mc = 0;
- 
-    ros::Time mem1 = ros::Time::now(); 
-    ros::Time mem2 = ros::Time::now();
+  radar_input_veh_dyn_data_t in_veh_dyn;
+  radar_input_veh_dim_t in_veh_dim;
+  radar_input_wheel_info_t in_wheel_info;
+  radar_input_mount_info_t in_mount_info;
 
-    radar_info.channel_number = 1;
+  in_mount_info.ri_mi_mc = 0;
+  in_veh_dyn.ri_veh_mc = 0;
+  in_veh_dim.ri_vd_mc = 0;
+  in_wheel_info.ri_wi_mc = 0;
 
-    long int id;
-    unsigned int dlc;
-    unsigned int flag;
-    unsigned long time;
-    int case_num = 0;
-    int radar_num = 0;           // 1 or 2 = valid
-    int frame_num = 0;           // 1 = Frame_A, 2 = Frame_B, 3 = general, other = error
-    int obj_num = -1;            // 0 to 31 = valid
-    int target_object_num = -1;  // 0 to 5 = valid
-    uint8_t can_data[8] = {0};
+  ros::Time mem1 = ros::Time::now();
+  ros::Time mem2 = ros::Time::now();
 
-    int unpack_return = -1;  // 0 is successful, negative error code
-    
-    //radar counters, one for each radar
-    uint8_t tc_check = 0;
-    uint8_t mc_check = 0; 
+  radar_info.channel_number = channel - 1;  // no significance of subtracting 1, it is just 1 for ch2 and 2 for ch3
 
-    bool pub_data = false; //0 if the node has not receieved a starter bit, otherwise 1
-    
-    canInitializeLibrary();
-    canHandle hnd;
-    canStatus stat;
-    
-    hnd = canOpenChannel(radar_info.channel_number, canOPEN_ACCEPT_VIRTUAL);
-    if (hnd < 0) {
-        char msg[64];
-        canGetErrorText((canStatus)hnd, msg, sizeof(msg));
-        fprintf(stderr, "canOpenChannel failed (%s)\n", msg);
-        exit(1);
-    }
+  long int id;
+  unsigned int dlc;
+  unsigned int flag;
+  unsigned long time;
+  int case_num = 0;
+  int radar_num = 0;           // 1 or 2 = valid
+  int frame_num = 0;           // 1 = Frame_A, 2 = Frame_B, 3 = general, other = error
+  int obj_num = -1;            // 0 to 31 = valid
+  int target_object_num = -1;  // 0 to 5 = valid
+  uint8_t can_data[8] = {0};
+
+  int unpack_return = -1;  // 0 is successful, negative error code
+
+  // radar counters, one for each radar
+  uint8_t tc_check = 0;
+  uint8_t mc_check = 0;
+
+  bool pub_data = false;  // 0 if the node has not receieved a starter bit, otherwise 1
+
+  canInitializeLibrary();
+  canHandle hnd;
+  canStatus stat;
+
+  hnd = canOpenChannel(radar_info.channel_number, canOPEN_ACCEPT_VIRTUAL);
+  if (hnd < 0) {
+    char msg[64];
+    canGetErrorText((canStatus)hnd, msg, sizeof(msg));
+    fprintf(stderr, "canOpenChannel failed (%s)\n", msg);
+    exit(1);
+  }
     canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
     canSetBusOutputControl(hnd, canDRIVER_NORMAL);
     canBusOn(hnd);
@@ -611,22 +628,48 @@ int main(int argc, char **argv) {
                 break;
             }
             if(pub_data && (id == 1667 || id== 1665)){//message must end with the ender bit and have started with an end bit
-                    
-                //validate radar, using service calls for specific channels
-                ros::ServiceClient client_ch2;
-                common::sensor_diagnostic_flag_CH2 srv_ch2; 
 
-                srv_ch2.request.front_radar = sens_diag.validate_radar(diag_data); 
-                if(srv_ch2.request.front_radar){
-                    std::cout << "Valid Ch2" << std::endl;
-                }
-                else{
-                    std::cout << "Invalid Ch2" << std::endl;
+              if (channel == 2) {
+                // validate radar, using service calls for specific channels
+                ros::ServiceClient client_ch2;
+                common::sensor_diagnostic_flag_CH2 srv_ch2;
+
+                srv_ch2.request.front_radar = sens_diag.validate_radar(diag_data);
+                if (srv_ch2.request.front_radar) {
+                  std::cout << "Valid Ch2" << std::endl;
+                } else {
+                  std::cout << "Invalid Ch2" << std::endl;
                 }
 
                 if (!client_ch2.call(srv_ch2)) {  // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
-                    std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
+                  std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
                 }
+              } else {
+                // service call to validate radars
+                ros::ServiceClient client_ch3;
+                common::sensor_diagnostic_flag_CH3 srv_ch3_left;
+                common::sensor_diagnostic_flag_CH3 srv_ch3_right;
+
+                if (radar_num == 1)  // right corner radar
+                {
+                  srv_ch3_left.request.left_corner_radar = sens_diag.validate_radar(diag_data);
+                  if (srv_ch3_left.request.left_corner_radar) {
+                    std::cout << "Valid Ch3 left corner" << std::endl;
+                  } else {
+                    std::cout << "Invalid Ch3 service call for left radar" << std::endl;
+                  }
+                }
+
+                else if (radar_num == 2)  // left corner radar
+                {
+                  srv_ch3_left.request.right_corner_radar = sens_diag.validate_radar(diag_data);
+                  if (srv_ch3_right.request.right_corner_radar) {
+                    std::cout << "Valid Ch3 right corner" << std::endl;
+                  } else {
+                    std::cout << "Invalid Ch3 service call for right radar" << std::endl;
+                  }
+                }
+              }
 
                 //publish here
                 rad_rx.rad_pub.publish(radar_obj);
