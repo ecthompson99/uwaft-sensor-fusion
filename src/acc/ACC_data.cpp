@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.0
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Fri Aug 14 10:52:58 2020
+// C/C++ source code generated on : Thu Nov 12 19:11:42 2020
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -30,7 +30,7 @@ P_ACC_T ACC_P = {
   //  Referenced by: '<S41>/Out1'
 
   {
-    0U,                                // ObjId
+    0.0,                               // ObjId
     0.0,                               // ObjDx
     0U,                                // ObjLane
     0.0,                               // ObjVx
@@ -71,7 +71,7 @@ P_ACC_T ACC_P = {
   //  Referenced by: '<S5>/Constant'
 
   {
-    0U,                                // ObjId
+    0.0,                               // ObjId
     0.0,                               // ObjDx
     0U,                                // ObjLane
     0.0,                               // ObjVx
@@ -108,7 +108,7 @@ P_ACC_T ACC_P = {
     }                                  // Header
   },
 
-  // Computed Parameter: Out1_Y0_i
+  // Computed Parameter: Out1_Y0_a
   //  Referenced by: '<S40>/Out1'
 
   {
@@ -121,7 +121,7 @@ P_ACC_T ACC_P = {
     0.0,                               // AliveRollingCounterMABx
     0.0,                               // AliveRollingCounterJetson
     0.0,                               // AccSpeedSetPoint
-    0.0,                               // AccGapLevel
+    0U,                                // AccGapLevel
     0.0,                               // VehSpd
     0.0,                               // StrAng
 
@@ -151,7 +151,7 @@ P_ACC_T ACC_P = {
     }                                  // Header
   },
 
-  // Computed Parameter: Constant_Value_n
+  // Computed Parameter: Constant_Value_p
   //  Referenced by: '<S4>/Constant'
 
   {
@@ -164,7 +164,7 @@ P_ACC_T ACC_P = {
     0.0,                               // AliveRollingCounterMABx
     0.0,                               // AliveRollingCounterJetson
     0.0,                               // AccSpeedSetPoint
-    0.0,                               // AccGapLevel
+    0U,                                // AccGapLevel
     0.0,                               // VehSpd
     0.0,                               // StrAng
 
@@ -194,7 +194,7 @@ P_ACC_T ACC_P = {
     }                                  // Header
   },
 
-  // Computed Parameter: Constant_Value_i
+  // Computed Parameter: Constant_Value_e
   //  Referenced by: '<S2>/Constant'
 
   {

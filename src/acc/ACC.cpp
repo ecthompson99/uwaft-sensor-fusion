@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.0
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Fri Aug 14 10:52:58 2020
+// C/C++ source code generated on : Thu Nov 12 19:11:42 2020
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -20,10 +20,13 @@
 #include "ACC_private.h"
 
 // Named constants for Chart: '<S6>/ACC Diagnostics'
+#define ACC_IN_ACC                     ((uint8_T)1U)
 #define ACC_IN_ACC_Normal              ((uint8_T)1U)
-#define ACC_IN_ACC_Zeroed              ((uint8_T)2U)
+#define ACC_IN_ACC_OverSpd             ((uint8_T)2U)
+#define ACC_IN_ACC_Zeroed              ((uint8_T)3U)
 #define ACC_IN_FullBrakes              ((uint8_T)1U)
 #define ACC_IN_HalfBrakes              ((uint8_T)2U)
+#define ACC_IN_Init                    ((uint8_T)2U)
 #define ACC_IN_NO_ACTIVE_CHILD         ((uint8_T)0U)
 #define ACC_IN_RateLimited             ((uint8_T)2U)
 #define ACC_IN_Standard                ((uint8_T)3U)
@@ -50,7 +53,7 @@ static void ACC_Unconstrained(const real_T b_Hinv[9], const real_T f[3], real_T
   x[3], int16_T n);
 static real_T ACC_norm(const real_T x[3]);
 static void ACC_abs(const real_T x[3], real_T y[3]);
-static void ACC_abs_a(const real_T x[98], real_T y[98]);
+static void ACC_abs_h(const real_T x[98], real_T y[98]);
 static real_T ACC_xnrm2(int32_T n, const real_T x[9], int32_T ix0);
 static void ACC_xgemv(int32_T m, int32_T n, const real_T b_A[9], int32_T ia0,
                       const real_T x[9], int32_T ix0, real_T y[3]);
@@ -67,6 +70,8 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
   real_T f[3], const real_T b_Ac[294], const real_T b[98], int16_T iA[98],
   int16_T b_maxiter, real_T FeasTol, real_T x[3], real_T lambda[98], real_T
   *status);
+static void ACC_Standard(const real_T *set_velocity, const real_T *Merge1, const
+  real_T *safe_distance, real_T *umin_scale1, real_T *Switch1);
 static real_T ACC_mod(real_T x);
 static void matlabCodegenHandle_matlabCod_e(robotics_slros_internal_blo_e_T *obj);
 static void matlabCodegenHandle_matlabCodeg(robotics_slros_internal_block_T *obj);
@@ -133,7 +138,7 @@ static void ACC_abs(const real_T x[3], real_T y[3])
 }
 
 // Function for MATLAB Function: '<S20>/optimizer'
-static void ACC_abs_a(const real_T x[98], real_T y[98])
+static void ACC_abs_h(const real_T x[98], real_T y[98])
 {
   int32_T k;
   for (k = 0; k < 98; k++) {
@@ -578,12 +583,12 @@ static real_T ACC_KWIKfactor(const real_T b_Ac[294], const int16_T iC[98],
   int32_T exitg2;
   Status = 1.0;
   memset(&RLinv[0], 0, 9U * sizeof(real_T));
-  ACC_B.i_c = 1;
+  ACC_B.i_k = 1;
   do {
     exitg1 = 0;
     i = nA - 1;
-    if (ACC_B.i_c - 1 <= i) {
-      TL_tmp = (int16_T)ACC_B.i_c - 1;
+    if (ACC_B.i_k - 1 <= i) {
+      TL_tmp = (int16_T)ACC_B.i_k - 1;
       ACC_B.e_i = iC[TL_tmp];
       for (i = 0; i < 3; i++) {
         ACC_B.b_i = i + 3 * TL_tmp;
@@ -596,7 +601,7 @@ static real_T ACC_KWIKfactor(const real_T b_Ac[294], const int16_T iC[98],
           195];
       }
 
-      ACC_B.i_c++;
+      ACC_B.i_k++;
     } else {
       exitg1 = 1;
     }
@@ -620,15 +625,15 @@ static real_T ACC_KWIKfactor(const real_T b_Ac[294], const int16_T iC[98],
         exitg2 = 0;
         ACC_B.b_i = n - 1;
         if (ACC_B.c_i - 1 <= ACC_B.b_i) {
-          ACC_B.i_c = 1;
-          while (ACC_B.i_c - 1 <= ACC_B.b_i) {
+          ACC_B.i_k = 1;
+          while (ACC_B.i_k - 1 <= ACC_B.b_i) {
             TL_tmp = ((int16_T)ACC_B.c_i - 1) * 3;
-            ACC_B.e_i = ((int16_T)ACC_B.i_c - 1) * 3;
-            ACC_B.TL[((int16_T)ACC_B.c_i + 3 * ((int16_T)ACC_B.i_c - 1)) - 1] =
+            ACC_B.e_i = ((int16_T)ACC_B.i_k - 1) * 3;
+            ACC_B.TL[((int16_T)ACC_B.c_i + 3 * ((int16_T)ACC_B.i_k - 1)) - 1] =
               (b_Linv[TL_tmp + 1] * ACC_B.QQ[ACC_B.e_i + 1] + b_Linv[TL_tmp] *
                ACC_B.QQ[ACC_B.e_i]) + b_Linv[TL_tmp + 2] * ACC_B.QQ[ACC_B.e_i +
               2];
-            ACC_B.i_c++;
+            ACC_B.i_k++;
           }
 
           ACC_B.c_i++;
@@ -643,17 +648,17 @@ static real_T ACC_KWIKfactor(const real_T b_Ac[294], const int16_T iC[98],
         ACC_B.c_i = b_j - 1;
         RLinv[(b_j + 3 * ACC_B.c_i) - 1] = 1.0;
         for (c_k = b_j; c_k <= nA; c_k++) {
-          ACC_B.i_c = c_k - 1;
-          RLinv[(b_j + 3 * ACC_B.i_c) - 1] /= ACC_B.RR[((b_j - 1) * 3 + b_j) - 1];
+          ACC_B.i_k = c_k - 1;
+          RLinv[(b_j + 3 * ACC_B.i_k) - 1] /= ACC_B.RR[((b_j - 1) * 3 + b_j) - 1];
         }
 
         if (b_j > 1) {
           ACC_B.e_i = 1;
           while (ACC_B.e_i - 1 <= b_j - 2) {
             for (c_k = b_j; c_k <= nA; c_k++) {
-              ACC_B.i_c = c_k - 1;
-              TL_tmp = ACC_B.i_c * 3;
-              RLinv[((int16_T)ACC_B.e_i + 3 * ACC_B.i_c) - 1] = RLinv[(TL_tmp +
+              ACC_B.i_k = c_k - 1;
+              TL_tmp = ACC_B.i_k * 3;
+              RLinv[((int16_T)ACC_B.e_i + 3 * ACC_B.i_k) - 1] = RLinv[(TL_tmp +
                 (int16_T)ACC_B.e_i) - 1] - ACC_B.RR[(ACC_B.c_i * 3 + (int16_T)
                 ACC_B.e_i) - 1] * RLinv[(TL_tmp + b_j) - 1];
             }
@@ -669,8 +674,8 @@ static real_T ACC_KWIKfactor(const real_T b_Ac[294], const int16_T iC[98],
       while (ACC_B.e_i - 1 <= ACC_B.b_i) {
         for (b_j = (int16_T)ACC_B.e_i; b_j <= n; b_j++) {
           ACC_B.c_i = b_j - 1;
-          ACC_B.i_c = ((int16_T)ACC_B.e_i + 3 * ACC_B.c_i) - 1;
-          b_H[ACC_B.i_c] = 0.0;
+          ACC_B.i_k = ((int16_T)ACC_B.e_i + 3 * ACC_B.c_i) - 1;
+          b_H[ACC_B.i_k] = 0.0;
           TL_tmp = nA + 1;
           if (TL_tmp > 32767) {
             TL_tmp = 32767;
@@ -678,7 +683,7 @@ static real_T ACC_KWIKfactor(const real_T b_Ac[294], const int16_T iC[98],
 
           for (c_k = (int16_T)TL_tmp; c_k <= n; c_k++) {
             TL_tmp = (c_k - 1) * 3;
-            b_H[ACC_B.i_c] = b_H[((b_j - 1) * 3 + (int16_T)ACC_B.e_i) - 1] -
+            b_H[ACC_B.i_k] = b_H[((b_j - 1) * 3 + (int16_T)ACC_B.e_i) - 1] -
               ACC_B.TL[(TL_tmp + (int16_T)ACC_B.e_i) - 1] * ACC_B.TL[(TL_tmp +
               b_j) - 1];
           }
@@ -695,11 +700,11 @@ static real_T ACC_KWIKfactor(const real_T b_Ac[294], const int16_T iC[98],
         ACC_B.f_i = 1;
         while (ACC_B.f_i - 1 <= ACC_B.b_i) {
           ACC_B.c_i = (int16_T)ACC_B.e_i - 1;
-          ACC_B.i_c = ((int16_T)ACC_B.f_i + 3 * ACC_B.c_i) - 1;
-          D[ACC_B.i_c] = 0.0;
+          ACC_B.i_k = ((int16_T)ACC_B.f_i + 3 * ACC_B.c_i) - 1;
+          D[ACC_B.i_k] = 0.0;
           for (b_j = (int16_T)ACC_B.e_i; b_j <= nA; b_j++) {
             TL_tmp = (b_j - 1) * 3;
-            D[ACC_B.i_c] = ACC_B.TL[(TL_tmp + (int16_T)ACC_B.f_i) - 1] * RLinv
+            D[ACC_B.i_k] = ACC_B.TL[(TL_tmp + (int16_T)ACC_B.f_i) - 1] * RLinv
               [(TL_tmp + (int16_T)ACC_B.e_i) - 1] + D[(ACC_B.c_i * 3 + (int16_T)
               ACC_B.f_i) - 1];
           }
@@ -838,29 +843,29 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
   ACC_B.r[2] = 0.0;
   ACC_B.rMin = 0.0;
   cTolComputed = false;
-  for (ACC_B.i_k = 0; ACC_B.i_k < 98; ACC_B.i_k++) {
-    lambda[ACC_B.i_k] = 0.0;
-    ACC_B.cTol[ACC_B.i_k] = 1.0;
-    ACC_B.iC[ACC_B.i_k] = 0;
+  for (ACC_B.i_c = 0; ACC_B.i_c < 98; ACC_B.i_c++) {
+    lambda[ACC_B.i_c] = 0.0;
+    ACC_B.cTol[ACC_B.i_c] = 1.0;
+    ACC_B.iC[ACC_B.i_c] = 0;
   }
 
   nA = 0;
-  for (ACC_B.i_k = 0; ACC_B.i_k < 98; ACC_B.i_k++) {
-    if (iA[ACC_B.i_k] == 1) {
+  for (ACC_B.i_c = 0; ACC_B.i_c < 98; ACC_B.i_c++) {
+    if (iA[ACC_B.i_c] == 1) {
       ACC_B.idx = nA + 1;
       if (ACC_B.idx > 32767) {
         ACC_B.idx = 32767;
       }
 
       nA = (int16_T)ACC_B.idx;
-      ACC_B.iC[(int16_T)ACC_B.idx - 1] = (int16_T)(1 + ACC_B.i_k);
+      ACC_B.iC[(int16_T)ACC_B.idx - 1] = (int16_T)(1 + ACC_B.i_c);
     }
   }
 
   guard1 = false;
   if (nA > 0) {
-    for (ACC_B.i_k = 0; ACC_B.i_k < 6; ACC_B.i_k++) {
-      ACC_B.Opt[ACC_B.i_k] = 0.0;
+    for (ACC_B.i_c = 0; ACC_B.i_c < 6; ACC_B.i_c++) {
+      ACC_B.Opt[ACC_B.i_c] = 0.0;
     }
 
     ACC_B.Rhs[0] = f[0];
@@ -895,8 +900,8 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
           ACC_B.j = 1;
           do {
             exitg5 = 0;
-            ACC_B.i_k = nA - 1;
-            if (ACC_B.j - 1 <= ACC_B.i_k) {
+            ACC_B.i_c = nA - 1;
+            if (ACC_B.j - 1 <= ACC_B.i_c) {
               ACC_B.e_k = 3 + (int16_T)ACC_B.j;
               if (ACC_B.e_k > 32767) {
                 ACC_B.e_k = 32767;
@@ -908,7 +913,7 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
                 ACC_B.e_k = (kNext + 3 * ACC_B.b_k) - 1;
                 ACC_B.U[ACC_B.e_k] = 0.0;
                 ACC_B.Opt_tmp = 1;
-                while (ACC_B.Opt_tmp - 1 <= ACC_B.i_k) {
+                while (ACC_B.Opt_tmp - 1 <= ACC_B.i_c) {
                   ACC_B.U_tmp = ((int16_T)ACC_B.Opt_tmp - 1) * 3;
                   ACC_B.U[ACC_B.e_k] = ACC_B.RLinv[(ACC_B.U_tmp + kNext) - 1] *
                     ACC_B.RLinv[(ACC_B.U_tmp + (int16_T)ACC_B.j) - 1] + ACC_B.U
@@ -932,7 +937,7 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
                                   ACC_B.b_H[ACC_B.e_k + 2] * ACC_B.Rhs[1]) +
               ACC_B.b_H[ACC_B.e_k + 5] * ACC_B.Rhs[2];
             ACC_B.b_k = 1;
-            while (ACC_B.b_k - 1 <= ACC_B.i_k) {
+            while (ACC_B.b_k - 1 <= ACC_B.i_c) {
               ACC_B.e_k = 3 + (int16_T)ACC_B.b_k;
               if (ACC_B.e_k > 32767) {
                 ACC_B.e_k = 32767;
@@ -945,7 +950,7 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
           }
 
           ACC_B.b_k = 1;
-          while (ACC_B.b_k - 1 <= ACC_B.i_k) {
+          while (ACC_B.b_k - 1 <= ACC_B.i_c) {
             ACC_B.e_k = 3 + (int16_T)ACC_B.b_k;
             ACC_B.j = ACC_B.e_k;
             if (ACC_B.e_k > 32767) {
@@ -957,7 +962,7 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
               + ACC_B.D[ACC_B.Opt_tmp] * ACC_B.Rhs[0]) + ACC_B.D[ACC_B.Opt_tmp +
               2] * ACC_B.Rhs[2];
             ACC_B.Opt_tmp = 1;
-            while (ACC_B.Opt_tmp - 1 <= ACC_B.i_k) {
+            while (ACC_B.Opt_tmp - 1 <= ACC_B.i_c) {
               ACC_B.j = ACC_B.e_k;
               if (ACC_B.e_k > 32767) {
                 ACC_B.j = 32767;
@@ -985,7 +990,7 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
           ACC_B.Xnorm0 = -1.0E-12;
           kDrop = 0;
           ACC_B.b_k = 1;
-          while (ACC_B.b_k - 1 <= ACC_B.i_k) {
+          while (ACC_B.b_k - 1 <= ACC_B.i_c) {
             ACC_B.e_k = 3 + (int16_T)ACC_B.b_k;
             ACC_B.j = ACC_B.e_k;
             if (ACC_B.e_k > 32767) {
@@ -1060,9 +1065,9 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
       if ((int32_T)*status <= b_maxiter) {
         ACC_B.cMin = -FeasTol;
         kNext = 0;
-        for (ACC_B.i_k = 0; ACC_B.i_k < 98; ACC_B.i_k++) {
+        for (ACC_B.i_c = 0; ACC_B.i_c < 98; ACC_B.i_c++) {
           if (!cTolComputed) {
-            ACC_B.idx = 1 + ACC_B.i_k;
+            ACC_B.idx = 1 + ACC_B.i_c;
             ACC_B.b_Ac[0] = b_Ac[ACC_B.idx - 1] * x[0];
             ACC_B.b_Ac[1] = b_Ac[ACC_B.idx + 97] * x[1];
             ACC_B.b_Ac[2] = b_Ac[ACC_B.idx + 195] * x[2];
@@ -1096,20 +1101,20 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
               }
             }
 
-            if ((!(ACC_B.cTol[ACC_B.i_k] > ACC_B.cVal)) && (!rtIsNaN(ACC_B.cVal)))
+            if ((!(ACC_B.cTol[ACC_B.i_c] > ACC_B.cVal)) && (!rtIsNaN(ACC_B.cVal)))
             {
-              ACC_B.cTol[ACC_B.i_k] = ACC_B.cVal;
+              ACC_B.cTol[ACC_B.i_c] = ACC_B.cVal;
             }
           }
 
-          if (iA[ACC_B.i_k] == 0) {
-            ACC_B.idx = 1 + ACC_B.i_k;
+          if (iA[ACC_B.i_c] == 0) {
+            ACC_B.idx = 1 + ACC_B.i_c;
             ACC_B.cVal = (((b_Ac[ACC_B.idx - 1] * x[0] + b_Ac[ACC_B.idx + 97] *
-                            x[1]) + b_Ac[ACC_B.idx + 195] * x[2]) - b[ACC_B.i_k])
-              / ACC_B.cTol[ACC_B.i_k];
+                            x[1]) + b_Ac[ACC_B.idx + 195] * x[2]) - b[ACC_B.i_c])
+              / ACC_B.cTol[ACC_B.i_c];
             if (ACC_B.cVal < ACC_B.cMin) {
               ACC_B.cMin = ACC_B.cVal;
-              kNext = (int16_T)(1 + ACC_B.i_k);
+              kNext = (int16_T)(1 + ACC_B.i_c);
             }
           }
         }
@@ -1142,18 +1147,18 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
                   }
 
                   for (ACC_B.idx = 0; ACC_B.idx < 3; ACC_B.idx++) {
-                    ACC_B.i_k = kNext - 1;
+                    ACC_B.i_c = kNext - 1;
                     ACC_B.AcRow[ACC_B.idx] = ACC_B.U[ACC_B.idx + 6] * b_Ac[kNext
                       + 195] + (ACC_B.U[ACC_B.idx + 3] * b_Ac[kNext + 97] +
-                                b_Ac[ACC_B.i_k] * ACC_B.U[ACC_B.idx]);
+                                b_Ac[ACC_B.i_c] * ACC_B.U[ACC_B.idx]);
                   }
 
                   ACC_B.idx = 1;
                   while (ACC_B.idx - 1 <= nA - 1) {
-                    ACC_B.i_k = ((int16_T)ACC_B.idx - 1) * 3;
-                    ACC_B.r[(int16_T)ACC_B.idx - 1] = (ACC_B.D[ACC_B.i_k + 1] *
-                      b_Ac[kNext + 97] + ACC_B.D[ACC_B.i_k] * b_Ac[kNext - 1]) +
-                      ACC_B.D[ACC_B.i_k + 2] * b_Ac[kNext + 195];
+                    ACC_B.i_c = ((int16_T)ACC_B.idx - 1) * 3;
+                    ACC_B.r[(int16_T)ACC_B.idx - 1] = (ACC_B.D[ACC_B.i_c + 1] *
+                      b_Ac[kNext + 97] + ACC_B.D[ACC_B.i_c] * b_Ac[kNext - 1]) +
+                      ACC_B.D[ACC_B.i_c + 2] * b_Ac[kNext + 195];
                     ACC_B.idx++;
                   }
 
@@ -1180,19 +1185,19 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
                 }
 
                 if ((nA != 0) && (!ColdReset)) {
-                  ACC_B.i_k = 1;
-                  while (ACC_B.i_k - 1 <= nA - 1) {
-                    ACC_B.idx = (int16_T)ACC_B.i_k - 1;
+                  ACC_B.i_c = 1;
+                  while (ACC_B.i_c - 1 <= nA - 1) {
+                    ACC_B.idx = (int16_T)ACC_B.i_c - 1;
                     if (ACC_B.r[ACC_B.idx] > 1.0E-12) {
                       ACC_B.cVal = lambda[ACC_B.iC[ACC_B.idx] - 1] / ACC_B.r
-                        [(int16_T)ACC_B.i_k - 1];
+                        [(int16_T)ACC_B.i_c - 1];
                       if ((kDrop == 0) || (ACC_B.cVal < ACC_B.rMin)) {
                         ACC_B.rMin = ACC_B.cVal;
-                        kDrop = (int16_T)ACC_B.i_k;
+                        kDrop = (int16_T)ACC_B.i_c;
                       }
                     }
 
-                    ACC_B.i_k++;
+                    ACC_B.i_c++;
                   }
 
                   if (kDrop > 0) {
@@ -1230,9 +1235,9 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
 
                   ACC_B.idx = 1;
                   while (ACC_B.idx - 1 <= nA - 1) {
-                    ACC_B.i_k = (int16_T)ACC_B.idx - 1;
-                    ACC_B.e_k = ACC_B.iC[ACC_B.i_k] - 1;
-                    lambda[ACC_B.e_k] -= ACC_B.r[ACC_B.i_k] * ACC_B.t;
+                    ACC_B.i_c = (int16_T)ACC_B.idx - 1;
+                    ACC_B.e_k = ACC_B.iC[ACC_B.i_c] - 1;
+                    lambda[ACC_B.e_k] -= ACC_B.r[ACC_B.i_c] * ACC_B.t;
                     if ((ACC_B.iC[(int16_T)ACC_B.idx - 1] <= 98) &&
                         (lambda[ACC_B.e_k] < 0.0)) {
                       lambda[ACC_B.e_k] = 0.0;
@@ -1267,12 +1272,12 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
                         while ((!exitg4) && (kDrop > 1)) {
                           ACC_B.idx = kDrop - 1;
                           tmp = ACC_B.iC[ACC_B.idx];
-                          ACC_B.i_k = kDrop - 2;
-                          if (ACC_B.iC[ACC_B.idx] > ACC_B.iC[ACC_B.i_k]) {
+                          ACC_B.i_c = kDrop - 2;
+                          if (ACC_B.iC[ACC_B.idx] > ACC_B.iC[ACC_B.i_c]) {
                             exitg4 = true;
                           } else {
-                            ACC_B.iC[ACC_B.idx] = ACC_B.iC[ACC_B.i_k];
-                            ACC_B.iC[ACC_B.i_k] = tmp;
+                            ACC_B.iC[ACC_B.idx] = ACC_B.iC[ACC_B.i_c];
+                            ACC_B.iC[ACC_B.i_c] = tmp;
                             kDrop = (int16_T)ACC_B.idx;
                           }
                         }
@@ -1293,7 +1298,7 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
               ACC_B.cMin = ACC_norm(x);
               if (fabs(ACC_B.cMin - ACC_B.Xnorm0) > 0.001) {
                 ACC_B.Xnorm0 = ACC_B.cMin;
-                ACC_abs_a(b, ACC_B.varargin_1);
+                ACC_abs_h(b, ACC_B.varargin_1);
                 for (ACC_B.idx = 0; ACC_B.idx < 98; ACC_B.idx++) {
                   if (ACC_B.varargin_1[ACC_B.idx] > 1.0) {
                     ACC_B.cTol[ACC_B.idx] = ACC_B.varargin_1[ACC_B.idx];
@@ -1318,6 +1323,94 @@ static void ACC_qpkwik(const real_T b_Linv[9], const real_T b_Hinv[9], const
         exitg2 = 1;
       }
     } while (exitg2 == 0);
+  }
+}
+
+// Function for Chart: '<S6>/ACC Diagnostics'
+static void ACC_Standard(const real_T *set_velocity, const real_T *Merge1, const
+  real_T *safe_distance, real_T *umin_scale1, real_T *Switch1)
+{
+  boolean_T hoisted_cond;
+  if (((ACC_B.In1.ObjDx < 1.4 * ACC_B.In1_p.VehSpd + 9.9) && (ACC_B.In1_p.VehSpd
+        > 0.0)) || ((ACC_B.In1.ObjVx < -20.0) && (ACC_B.In1.ObjDx < 255.0))) {
+    ACC_DW.is_ACC_Normal = ACC_IN_NO_ACTIVE_CHILD;
+    ACC_DW.is_Standard = ACC_IN_NO_ACTIVE_CHILD;
+    ACC_DW.durationLastReferenceTick_1 = ACC_DW.chartAbsoluteTimeCounter;
+    ACC_DW.is_ACC = ACC_IN_FullBrakes;
+    ACC_DW.condWasTrueAtLastTimeStep_1 = (ACC_B.In1.ObjDx > *safe_distance);
+  } else if (ACC_DW.is_Standard == ACC_IN_ACC_Normal) {
+    if (ACC_B.In1.ObjDx < *safe_distance) {
+      ACC_DW.is_ACC_Normal = ACC_IN_NO_ACTIVE_CHILD;
+      ACC_DW.is_Standard = ACC_IN_HalfBrakes;
+    } else {
+      ACC_B.RateLimiter = false;
+      switch (ACC_DW.is_ACC_Normal) {
+       case ACC_IN_ACC_Normal:
+        if (((ACC_B.In1_p.VehSpd > 2.0) && (ACC_B.In1.ObjVx < 0.0) &&
+             (ACC_B.In1_p.VehSpd > 0.0) && (ACC_B.In1.ObjDx < 1.5 * *Merge1)) ||
+            ((ACC_B.In1_p.VehSpd + ACC_B.In1.ObjVx < 1.0) && (ACC_B.In1.ObjDx <
+              2.0 * *safe_distance))) {
+          ACC_DW.durationLastReferenceTick_1_b = ACC_DW.chartAbsoluteTimeCounter;
+          ACC_DW.is_ACC_Normal = ACC_IN_ACC_Zeroed;
+          ACC_DW.condWasTrueAtLastTimeStep_1_i = ((ACC_B.In1.ObjVx > 0.0) &&
+            (ACC_B.In1.ObjDx > 1.5 * *Merge1));
+        } else if ((*set_velocity < 1.1 * ACC_B.In1_p.VehSpd) && (*umin_scale1 >
+                    0.0)) {
+          ACC_DW.durationLastReferenceTick_1_p = ACC_DW.chartAbsoluteTimeCounter;
+          ACC_DW.is_ACC_Normal = ACC_IN_ACC_OverSpd;
+          ACC_DW.condWasTrueAtLastTimeStep_1_o = (*set_velocity >=
+            ACC_B.In1_p.VehSpd);
+        } else {
+          ACC_B.ACC_Accel_Out = *umin_scale1;
+        }
+        break;
+
+       case ACC_IN_ACC_OverSpd:
+        hoisted_cond = (*set_velocity >= ACC_B.In1_p.VehSpd);
+        if ((!hoisted_cond) || (!ACC_DW.condWasTrueAtLastTimeStep_1_o)) {
+          ACC_DW.durationLastReferenceTick_1_p = ACC_DW.chartAbsoluteTimeCounter;
+        }
+
+        ACC_DW.condWasTrueAtLastTimeStep_1_o = hoisted_cond;
+        if ((ACC_DW.chartAbsoluteTimeCounter -
+             ACC_DW.durationLastReferenceTick_1_p > 13) || (*umin_scale1 < 0.0))
+        {
+          ACC_DW.is_ACC_Normal = ACC_IN_ACC_Normal;
+        } else {
+          ACC_B.ACC_Accel_Out = *umin_scale1 / 2.0;
+        }
+        break;
+
+       default:
+        hoisted_cond = ((ACC_B.In1.ObjVx > 0.0) && (ACC_B.In1.ObjDx > 1.5 *
+          *Merge1));
+        if ((!hoisted_cond) || (!ACC_DW.condWasTrueAtLastTimeStep_1_i)) {
+          ACC_DW.durationLastReferenceTick_1_b = ACC_DW.chartAbsoluteTimeCounter;
+        }
+
+        ACC_DW.condWasTrueAtLastTimeStep_1_i = hoisted_cond;
+        if ((ACC_DW.chartAbsoluteTimeCounter -
+             ACC_DW.durationLastReferenceTick_1_b > 18) || (ACC_B.In1_p.VehSpd <
+             2.0)) {
+          ACC_DW.is_ACC_Normal = ACC_IN_ACC_Normal;
+        } else if ((0.0 < *umin_scale1) || rtIsNaN(*umin_scale1)) {
+          ACC_B.ACC_Accel_Out = 0.0;
+        } else {
+          ACC_B.ACC_Accel_Out = *umin_scale1;
+        }
+        break;
+      }
+    }
+  } else if (ACC_B.In1.ObjDx >= 2.0 * *safe_distance) {
+    ACC_DW.is_Standard = ACC_IN_ACC_Normal;
+    ACC_DW.is_ACC_Normal = ACC_IN_ACC_Normal;
+  } else {
+    ACC_B.ACC_Accel_Out = 0.5 * *Switch1;
+    if ((!(ACC_B.ACC_Accel_Out < *umin_scale1)) && (!rtIsNaN(*umin_scale1))) {
+      ACC_B.ACC_Accel_Out = *umin_scale1;
+    }
+
+    ACC_B.RateLimiter = false;
   }
 }
 
@@ -2462,13 +2555,13 @@ void ACC_step(void)
   // MATLABSystem: '<S5>/SourceBlock' incorporates:
   //   Inport: '<S41>/In1'
 
-  b_varargout_1 = Sub_ACC_139.getLatestMessage(&ACC_B.b_varargout_2_m);
+  b_varargout_1 = Sub_ACC_144.getLatestMessage(&ACC_B.b_varargout_2);
 
   // Outputs for Enabled SubSystem: '<S5>/Enabled Subsystem' incorporates:
   //   EnablePort: '<S41>/Enable'
 
   if (b_varargout_1) {
-    ACC_B.In1 = ACC_B.b_varargout_2_m;
+    ACC_B.In1 = ACC_B.b_varargout_2;
   }
 
   // End of MATLABSystem: '<S5>/SourceBlock'
@@ -2479,13 +2572,13 @@ void ACC_step(void)
   // MATLABSystem: '<S4>/SourceBlock' incorporates:
   //   Inport: '<S40>/In1'
 
-  b_varargout_1 = Sub_ACC_140.getLatestMessage(&ACC_B.b_varargout_2);
+  b_varargout_1 = Sub_ACC_145.getLatestMessage(&ACC_B.b_varargout_2_m);
 
   // Outputs for Enabled SubSystem: '<S4>/Enabled Subsystem' incorporates:
   //   EnablePort: '<S40>/Enable'
 
   if (b_varargout_1) {
-    ACC_B.In1_p = ACC_B.b_varargout_2;
+    ACC_B.In1_p = ACC_B.b_varargout_2_m;
   }
 
   // End of MATLABSystem: '<S4>/SourceBlock'
@@ -2506,15 +2599,15 @@ void ACC_step(void)
   //   Inport: '<S15>/In2'
   //   Inport: '<S15>/Input'
 
-  if (ACC_B.In1_p.AccGapLevel == 1.0) {
+  if (ACC_B.In1_p.AccGapLevel == 1) {
     // Outputs for IfAction SubSystem: '<S7>/Near' incorporates:
     //   ActionPort: '<S13>/Action Port'
 
-    ACC_B.Switch2 = ACC_P.Constant_Value_f;
+    ACC_B.Switch2 = ACC_P.Constant_Value_i;
     ACC_B.Merge1 = ACC_P.Constant3_Value_i;
 
     // End of Outputs for SubSystem: '<S7>/Near'
-  } else if (ACC_B.In1_p.AccGapLevel == 3.0) {
+  } else if (ACC_B.In1_p.AccGapLevel == 3) {
     // Outputs for IfAction SubSystem: '<S7>/Time_Far' incorporates:
     //   ActionPort: '<S14>/Action Port'
 
@@ -2527,17 +2620,18 @@ void ACC_step(void)
     //   ActionPort: '<S15>/Action Port'
 
     ACC_B.Switch2 = ACC_P.Constant1_Value;
-    ACC_B.Merge1 = ACC_P.Constant4_Value_n;
+    ACC_B.Merge1 = ACC_P.Constant4_Value_g;
 
     // End of Outputs for SubSystem: '<S7>/Time_Medium'
   }
 
   // End of If: '<S7>/If'
 
-  // Sum: '<S1>/Sum6' incorporates:
-  //   Chart: '<S6>/ACC Diagnostics'
+  // Gain: '<S1>/km//h to m//s'
+  ACC_B.set_velocity = ACC_P.kmhtoms_Gain * ACC_B.In1_p.AccSpeedSetPoint;
 
-  ACC_B.rtb_lead_velocity_tmp = ACC_B.In1_p.VehSpd + ACC_B.In1.ObjVx;
+  // Sum: '<S1>/Sum6'
+  ACC_B.lead_velocity = ACC_B.In1_p.VehSpd + ACC_B.In1.ObjVx;
 
   // Switch: '<S8>/Switch1' incorporates:
   //   Constant: '<S8>/Constant3'
@@ -2557,7 +2651,7 @@ void ACC_step(void)
   // Gain: '<S20>/umax_scale' incorporates:
   //   Constant: '<S8>/Constant2'
 
-  ACC_B.umax_scale = ACC_P.umax_scale_Gain * ACC_P.Constant2_Value_m;
+  ACC_B.umax_scale = ACC_P.umax_scale_Gain * ACC_P.Constant2_Value_i;
 
   // Product: '<S1>/Product2'
   ACC_B.Switch2 *= ACC_B.In1_p.VehSpd;
@@ -2580,16 +2674,9 @@ void ACC_step(void)
   ACC_B.ymax_scale[1] = ACC_P.ymax_scale_Gain[1] *
     ACC_P.Maximumvelocityconstant_Value;
 
-  // SignalConversion: '<S39>/TmpSignal ConversionAt SFunction Inport4' incorporates:
-  //   Gain: '<S1>/km//h to m//s'
-  //   MATLAB Function: '<S20>/optimizer'
-
-  ACC_B.Switch2 = ACC_P.kmhtoms_Gain * ACC_B.In1_p.AccSpeedSetPoint;
-
   // MATLAB Function: '<S20>/optimizer' incorporates:
   //   Memory: '<S20>/last_x'
   //   SignalConversion: '<S39>/TmpSignal ConversionAt SFunction Inport4'
-  //   Sum: '<S1>/Sum6'
 
   memset(&ACC_B.vseq[0], 0, 62U * sizeof(real_T));
   for (ACC_B.i = 0; ACC_B.i < 31; ACC_B.i++) {
@@ -2600,15 +2687,15 @@ void ACC_step(void)
   for (ACC_B.i = 0; ACC_B.i < 30; ACC_B.i++) {
     ACC_B.rseq_tmp = ACC_B.i * (int32_T)ACC_ny;
     ACC_B.rseq[ACC_B.rseq_tmp] = ACC_B.Merge1 * 0.02 - 0.97;
-    ACC_B.rseq[1 + ACC_B.rseq_tmp] = ACC_B.Switch2 * 0.02 - 0.4;
+    ACC_B.rseq[1 + ACC_B.rseq_tmp] = ACC_B.set_velocity * 0.02 - 0.4;
   }
 
   for (ACC_B.i = 0; ACC_B.i < 31; ACC_B.i++) {
-    ACC_B.vseq[ACC_B.i * (int32_T)ACC_nv] = ACC_RMDscale *
-      ACC_B.rtb_lead_velocity_tmp - ACC_voff;
+    ACC_B.vseq[ACC_B.i * (int32_T)ACC_nv] = ACC_RMDscale * ACC_B.lead_velocity -
+      ACC_voff;
   }
 
-  ACC_B.rtb_TmpSignalConversionAtSFun_c = ACC_B.vseq[0];
+  ACC_B.lead_velocity = ACC_B.vseq[0];
   ACC_B.Switch2 = ACC_B.vseq[1];
   ACC_B.xk[0] = ACC_DW.last_x_PreviousInput[0];
   ACC_B.xk[1] = ACC_DW.last_x_PreviousInput[1];
@@ -2627,7 +2714,7 @@ void ACC_step(void)
       ACC_B.xk[2] + (b_a[ACC_B.i + 2] * ACC_B.xk[1] + b_a[ACC_B.i] * ACC_B.xk[0]));
     ACC_B.y_innov[ACC_B.i] = (ACC_B.dv0[ACC_B.i] * 0.02 - (-0.57 * (real_T)
       ACC_B.i + 0.97)) - (ACC_B.umax_incr + (0.0 * ACC_B.Switch2 + 0.0 *
-      ACC_B.rtb_TmpSignalConversionAtSFun_c));
+      ACC_B.lead_velocity));
   }
 
   for (ACC_B.i = 0; ACC_B.i < 4; ACC_B.i++) {
@@ -2643,7 +2730,7 @@ void ACC_step(void)
   //   Constant: '<S1>/Not use ACC output constant'
   //   Constant: '<S1>/Use ACC output constant'
 
-  if (ACC_P.Constant1_Value_m != 0.0) {
+  if (ACC_P.Constant1_Value_k != 0.0) {
     ACC_B.umin_incr = ACC_P.UseACCoutputconstant_Value;
   } else {
     ACC_B.umin_incr = ACC_P.NotuseACCoutputconstant_Value;
@@ -2777,138 +2864,101 @@ void ACC_step(void)
   //   Delay: '<S6>/Delay'
 
   ACC_DW.chartAbsoluteTimeCounter++;
-  b_varargout_1 = ((ACC_B.In1.ObjVx > 0.0) && (ACC_B.In1.ObjDx > 1.5 *
-    ACC_B.Merge1));
+  b_varargout_1 = (ACC_B.In1.ObjDx > ACC_B.safe_distance);
   if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1)) {
     ACC_DW.durationLastReferenceTick_1 = ACC_DW.chartAbsoluteTimeCounter;
   }
 
   ACC_DW.condWasTrueAtLastTimeStep_1 = b_varargout_1;
-  b_varargout_1 = (ACC_B.In1.ObjDx > ACC_B.safe_distance);
-  if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1_d)) {
-    ACC_DW.durationLastReferenceTick_1_e = ACC_DW.chartAbsoluteTimeCounter;
-  }
-
-  ACC_DW.condWasTrueAtLastTimeStep_1_d = b_varargout_1;
   b_varargout_1 = (ACC_DW.Delay_DSTATE > 1.0);
-  if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1_j)) {
-    ACC_DW.durationLastReferenceTick_1_j = ACC_DW.chartAbsoluteTimeCounter;
+  if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1_e)) {
+    ACC_DW.durationLastReferenceTick_1_f = ACC_DW.chartAbsoluteTimeCounter;
   }
 
-  ACC_DW.condWasTrueAtLastTimeStep_1_j = b_varargout_1;
-  if (ACC_DW.is_active_c11_ACC == 0U) {
+  ACC_DW.condWasTrueAtLastTimeStep_1_e = b_varargout_1;
+  b_varargout_1 = ((ACC_B.In1.ObjVx > 0.0) && (ACC_B.In1.ObjDx > 1.5 *
+    ACC_B.Merge1));
+  if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1_i)) {
+    ACC_DW.durationLastReferenceTick_1_b = ACC_DW.chartAbsoluteTimeCounter;
+  }
+
+  ACC_DW.condWasTrueAtLastTimeStep_1_i = b_varargout_1;
+  b_varargout_1 = (ACC_B.set_velocity >= ACC_B.In1_p.VehSpd);
+  if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1_o)) {
+    ACC_DW.durationLastReferenceTick_1_p = ACC_DW.chartAbsoluteTimeCounter;
+  }
+
+  ACC_DW.condWasTrueAtLastTimeStep_1_o = b_varargout_1;
+  if (ACC_DW.is_active_c14_ACC == 0U) {
     ACC_DW.chartAbsoluteTimeCounter = 0;
-    ACC_DW.is_active_c11_ACC = 1U;
-    ACC_DW.is_c11_ACC = ACC_IN_Standard;
+    ACC_DW.is_active_c14_ACC = 1U;
+    ACC_DW.is_c14_ACC = ACC_IN_Init;
+  } else if (ACC_DW.is_c14_ACC == ACC_IN_ACC) {
+    if (!ACC_B.In1_p.AccActivation) {
+      ACC_DW.is_ACC_Normal = ACC_IN_NO_ACTIVE_CHILD;
+      ACC_DW.is_Standard = ACC_IN_NO_ACTIVE_CHILD;
+      ACC_DW.is_ACC = ACC_IN_NO_ACTIVE_CHILD;
+      ACC_DW.is_c14_ACC = ACC_IN_Init;
+    } else {
+      switch (ACC_DW.is_ACC) {
+       case ACC_IN_FullBrakes:
+        b_varargout_1 = (ACC_B.In1.ObjDx > ACC_B.safe_distance);
+        if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1)) {
+          ACC_DW.durationLastReferenceTick_1 = ACC_DW.chartAbsoluteTimeCounter;
+        }
+
+        ACC_DW.condWasTrueAtLastTimeStep_1 = b_varargout_1;
+        if ((ACC_DW.chartAbsoluteTimeCounter -
+             ACC_DW.durationLastReferenceTick_1 > 23) && (ACC_B.In1.ObjVx > 0.0))
+        {
+          ACC_DW.durationLastReferenceTick_1_f = ACC_DW.chartAbsoluteTimeCounter;
+          ACC_DW.is_ACC = ACC_IN_RateLimited;
+          ACC_DW.condWasTrueAtLastTimeStep_1_e = (ACC_DW.Delay_DSTATE > 1.0);
+        } else {
+          ACC_B.ACC_Accel_Out = ACC_B.Switch1;
+          ACC_B.RateLimiter = false;
+        }
+        break;
+
+       case ACC_IN_RateLimited:
+        b_varargout_1 = (ACC_DW.Delay_DSTATE > 1.0);
+        if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1_e)) {
+          ACC_DW.durationLastReferenceTick_1_f = ACC_DW.chartAbsoluteTimeCounter;
+        }
+
+        ACC_DW.condWasTrueAtLastTimeStep_1_e = b_varargout_1;
+        if (ACC_DW.chartAbsoluteTimeCounter -
+            ACC_DW.durationLastReferenceTick_1_f > 29) {
+          ACC_DW.is_ACC = ACC_IN_Standard;
+          ACC_DW.is_Standard = ACC_IN_ACC_Normal;
+          ACC_DW.is_ACC_Normal = ACC_IN_ACC_Normal;
+        } else if (ACC_B.In1.ObjDx < ACC_B.safe_distance) {
+          ACC_DW.durationLastReferenceTick_1 = ACC_DW.chartAbsoluteTimeCounter;
+          ACC_DW.is_ACC = ACC_IN_FullBrakes;
+          ACC_DW.condWasTrueAtLastTimeStep_1 = (ACC_B.In1.ObjDx >
+            ACC_B.safe_distance);
+        } else {
+          ACC_B.ACC_Accel_Out = ACC_B.umin_scale;
+          ACC_B.RateLimiter = true;
+        }
+        break;
+
+       default:
+        ACC_Standard(&ACC_B.set_velocity, &ACC_B.Merge1, &ACC_B.safe_distance,
+                     &ACC_B.umin_scale, &ACC_B.Switch1);
+        break;
+      }
+    }
+  } else if (ACC_B.In1_p.AccActivation) {
+    ACC_DW.is_c14_ACC = ACC_IN_ACC;
+    ACC_DW.is_ACC = ACC_IN_Standard;
     ACC_DW.is_Standard = ACC_IN_ACC_Normal;
     ACC_DW.is_ACC_Normal = ACC_IN_ACC_Normal;
   } else {
-    switch (ACC_DW.is_c11_ACC) {
-     case ACC_IN_FullBrakes:
-      b_varargout_1 = (ACC_B.In1.ObjDx > ACC_B.safe_distance);
-      if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1_d)) {
-        ACC_DW.durationLastReferenceTick_1_e = ACC_DW.chartAbsoluteTimeCounter;
-      }
-
-      ACC_DW.condWasTrueAtLastTimeStep_1_d = b_varargout_1;
-      if ((ACC_DW.chartAbsoluteTimeCounter -
-           ACC_DW.durationLastReferenceTick_1_e > 23) && (ACC_B.In1.ObjVx > 0.0))
-      {
-        ACC_DW.durationLastReferenceTick_1_j = ACC_DW.chartAbsoluteTimeCounter;
-        ACC_DW.is_c11_ACC = ACC_IN_RateLimited;
-        ACC_DW.condWasTrueAtLastTimeStep_1_j = (ACC_DW.Delay_DSTATE > 1.0);
-      } else {
-        ACC_B.ACC_Accel_Out = ACC_B.Switch1;
-        ACC_B.RateLimiter = false;
-      }
-      break;
-
-     case ACC_IN_RateLimited:
-      b_varargout_1 = (ACC_DW.Delay_DSTATE > 1.0);
-      if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1_j)) {
-        ACC_DW.durationLastReferenceTick_1_j = ACC_DW.chartAbsoluteTimeCounter;
-      }
-
-      ACC_DW.condWasTrueAtLastTimeStep_1_j = b_varargout_1;
-      if (ACC_DW.chartAbsoluteTimeCounter - ACC_DW.durationLastReferenceTick_1_j
-          > 29) {
-        ACC_DW.is_c11_ACC = ACC_IN_Standard;
-        ACC_DW.is_Standard = ACC_IN_ACC_Normal;
-        ACC_DW.is_ACC_Normal = ACC_IN_ACC_Normal;
-      } else if (ACC_B.In1.ObjDx < ACC_B.safe_distance) {
-        ACC_DW.durationLastReferenceTick_1_e = ACC_DW.chartAbsoluteTimeCounter;
-        ACC_DW.is_c11_ACC = ACC_IN_FullBrakes;
-        ACC_DW.condWasTrueAtLastTimeStep_1_d = (ACC_B.In1.ObjDx >
-          ACC_B.safe_distance);
-      } else {
-        ACC_B.ACC_Accel_Out = ACC_B.umin_scale;
-        ACC_B.RateLimiter = true;
-      }
-      break;
-
-     default:
-      if (((ACC_B.In1.ObjDx < 1.4 * ACC_B.In1_p.VehSpd + 9.9) &&
-           (ACC_B.In1_p.VehSpd > 0.0)) || ((ACC_B.In1.ObjVx < -20.0) &&
-           (ACC_B.In1.ObjDx < 255.0))) {
-        ACC_DW.is_ACC_Normal = ACC_IN_NO_ACTIVE_CHILD;
-        ACC_DW.is_Standard = ACC_IN_NO_ACTIVE_CHILD;
-        ACC_DW.durationLastReferenceTick_1_e = ACC_DW.chartAbsoluteTimeCounter;
-        ACC_DW.is_c11_ACC = ACC_IN_FullBrakes;
-        ACC_DW.condWasTrueAtLastTimeStep_1_d = (ACC_B.In1.ObjDx >
-          ACC_B.safe_distance);
-      } else if (ACC_DW.is_Standard == ACC_IN_ACC_Normal) {
-        if (ACC_B.In1.ObjDx < ACC_B.safe_distance) {
-          ACC_DW.is_ACC_Normal = ACC_IN_NO_ACTIVE_CHILD;
-          ACC_DW.is_Standard = ACC_IN_HalfBrakes;
-        } else {
-          ACC_B.RateLimiter = false;
-          if (ACC_DW.is_ACC_Normal == ACC_IN_ACC_Normal) {
-            if (((ACC_B.In1.ObjVx < 0.0) && (ACC_B.In1_p.VehSpd > 0.0) &&
-                 (ACC_B.In1.ObjDx < 1.5 * ACC_B.Merge1)) ||
-                ((ACC_B.rtb_lead_velocity_tmp < 1.0) && (ACC_B.In1.ObjDx < 2.0 *
-                  ACC_B.safe_distance))) {
-              ACC_DW.durationLastReferenceTick_1 =
-                ACC_DW.chartAbsoluteTimeCounter;
-              ACC_DW.is_ACC_Normal = ACC_IN_ACC_Zeroed;
-              ACC_DW.condWasTrueAtLastTimeStep_1 = ((ACC_B.In1.ObjVx > 0.0) &&
-                (ACC_B.In1.ObjDx > 1.5 * ACC_B.Merge1));
-            } else {
-              ACC_B.ACC_Accel_Out = ACC_B.umin_scale;
-            }
-          } else {
-            b_varargout_1 = ((ACC_B.In1.ObjVx > 0.0) && (ACC_B.In1.ObjDx > 1.5 *
-              ACC_B.Merge1));
-            if ((!b_varargout_1) || (!ACC_DW.condWasTrueAtLastTimeStep_1)) {
-              ACC_DW.durationLastReferenceTick_1 =
-                ACC_DW.chartAbsoluteTimeCounter;
-            }
-
-            ACC_DW.condWasTrueAtLastTimeStep_1 = b_varargout_1;
-            if (ACC_DW.chartAbsoluteTimeCounter -
-                ACC_DW.durationLastReferenceTick_1 > 18) {
-              ACC_DW.is_ACC_Normal = ACC_IN_ACC_Normal;
-            } else if ((0.0 < ACC_B.umin_scale) || rtIsNaN(ACC_B.umin_scale)) {
-              ACC_B.ACC_Accel_Out = 0.0;
-            } else {
-              ACC_B.ACC_Accel_Out = ACC_B.umin_scale;
-            }
-          }
-        }
-      } else if (ACC_B.In1.ObjDx >= 2.0 * ACC_B.safe_distance) {
-        ACC_DW.is_Standard = ACC_IN_ACC_Normal;
-        ACC_DW.is_ACC_Normal = ACC_IN_ACC_Normal;
-      } else {
-        ACC_B.ACC_Accel_Out = 0.5 * ACC_B.Switch1;
-        if ((!(ACC_B.ACC_Accel_Out < ACC_B.umin_scale)) && (!rtIsNaN
-             (ACC_B.umin_scale))) {
-          ACC_B.ACC_Accel_Out = ACC_B.umin_scale;
-        }
-
-        ACC_B.RateLimiter = false;
-      }
-      break;
-    }
+    ACC_B.ACC_Accel_Out = 0.0;
   }
+
+  // End of Chart: '<S6>/ACC Diagnostics'
 
   // RateLimiter: '<S6>/Rate Limiter' incorporates:
   //   Delay: '<S6>/Delay'
@@ -2940,7 +2990,7 @@ void ACC_step(void)
   // BusAssignment: '<Root>/BusAssign' incorporates:
   //   Constant: '<S2>/Constant'
 
-  ACC_B.BusAssign = ACC_P.Constant_Value_i;
+  ACC_B.BusAssign = ACC_P.Constant_Value_e;
 
   // Switch: '<S12>/Switch2' incorporates:
   //   Constant: '<S8>/Constant2'
@@ -2948,9 +2998,9 @@ void ACC_step(void)
   //   RelationalOperator: '<S12>/UpperRelop'
   //   Switch: '<S12>/Switch'
 
-  if (ACC_B.Merge1 > ACC_P.Constant2_Value_m) {
+  if (ACC_B.Merge1 > ACC_P.Constant2_Value_i) {
     // BusAssignment: '<Root>/BusAssign'
-    ACC_B.BusAssign.AccAccel = ACC_P.Constant2_Value_m;
+    ACC_B.BusAssign.AccAccel = ACC_P.Constant2_Value_i;
   } else if (ACC_B.Merge1 < ACC_B.Switch1) {
     // Switch: '<S12>/Switch' incorporates:
     //   BusAssignment: '<Root>/BusAssign'
@@ -2975,7 +3025,7 @@ void ACC_step(void)
 
   // Outputs for Atomic SubSystem: '<Root>/Publish'
   // MATLABSystem: '<S3>/SinkBlock'
-  Pub_ACC_136.publish(&ACC_B.BusAssign);
+  Pub_ACC_141.publish(&ACC_B.BusAssign);
 
   // End of Outputs for SubSystem: '<Root>/Publish'
   for (ACC_B.i = 0; ACC_B.i < 4; ACC_B.i++) {
@@ -2985,9 +3035,8 @@ void ACC_step(void)
     ACC_DW.last_x_PreviousInput[ACC_B.i] = (((((c_a[ACC_B.i + 4] * ACC_B.xk[1] +
       c_a[ACC_B.i] * ACC_B.xk[0]) + c_a[ACC_B.i + 8] * ACC_B.xk[2]) +
       c_a[ACC_B.i + 12] * ACC_B.xk[3]) + d_a[ACC_B.i] * ACC_DW.last_mv_DSTATE) +
-      (0.0 * ACC_B.Switch2 + e_a[ACC_B.i] *
-       ACC_B.rtb_TmpSignalConversionAtSFun_c)) + (f_a[ACC_B.i + 4] *
-      ACC_B.y_innov[1] + f_a[ACC_B.i] * ACC_B.y_innov[0]);
+      (0.0 * ACC_B.Switch2 + e_a[ACC_B.i] * ACC_B.lead_velocity)) + (f_a[ACC_B.i
+      + 4] * ACC_B.y_innov[1] + f_a[ACC_B.i] * ACC_B.y_innov[0]);
   }
 
   // Update for Memory: '<S20>/Memory'
@@ -3031,36 +3080,36 @@ void ACC_initialize(void)
 
     // Start for Atomic SubSystem: '<Root>/target_output'
     // Start for MATLABSystem: '<S5>/SourceBlock'
-    ACC_DW.obj_c.matlabCodegenIsDeleted = true;
-    ACC_DW.obj_c.isInitialized = 0;
-    ACC_DW.obj_c.matlabCodegenIsDeleted = false;
-    ACC_DW.obj_c.isSetupComplete = false;
-    ACC_DW.obj_c.isInitialized = 1;
+    ACC_DW.obj_f.matlabCodegenIsDeleted = true;
+    ACC_DW.obj_f.isInitialized = 0;
+    ACC_DW.obj_f.matlabCodegenIsDeleted = false;
+    ACC_DW.obj_f.isSetupComplete = false;
+    ACC_DW.obj_f.isInitialized = 1;
     for (i = 0; i < 14; i++) {
       tmp_4[i] = tmp_1[i];
     }
 
     tmp_4[14] = '\x00';
-    Sub_ACC_139.createSubscriber(tmp_4, 1);
-    ACC_DW.obj_c.isSetupComplete = true;
+    Sub_ACC_144.createSubscriber(tmp_4, 1);
+    ACC_DW.obj_f.isSetupComplete = true;
 
     // End of Start for MATLABSystem: '<S5>/SourceBlock'
     // End of Start for SubSystem: '<Root>/target_output'
 
     // Start for Atomic SubSystem: '<Root>/drive_ctrl_input'
     // Start for MATLABSystem: '<S4>/SourceBlock'
-    ACC_DW.obj_b.matlabCodegenIsDeleted = true;
-    ACC_DW.obj_b.isInitialized = 0;
-    ACC_DW.obj_b.matlabCodegenIsDeleted = false;
-    ACC_DW.obj_b.isSetupComplete = false;
-    ACC_DW.obj_b.isInitialized = 1;
+    ACC_DW.obj_p.matlabCodegenIsDeleted = true;
+    ACC_DW.obj_p.isInitialized = 0;
+    ACC_DW.obj_p.matlabCodegenIsDeleted = false;
+    ACC_DW.obj_p.isSetupComplete = false;
+    ACC_DW.obj_p.isInitialized = 1;
     for (i = 0; i < 17; i++) {
       tmp_3[i] = tmp_0[i];
     }
 
     tmp_3[17] = '\x00';
-    Sub_ACC_140.createSubscriber(tmp_3, 1);
-    ACC_DW.obj_b.isSetupComplete = true;
+    Sub_ACC_145.createSubscriber(tmp_3, 1);
+    ACC_DW.obj_p.isSetupComplete = true;
 
     // End of Start for MATLABSystem: '<S4>/SourceBlock'
     // End of Start for SubSystem: '<Root>/drive_ctrl_input'
@@ -3077,7 +3126,7 @@ void ACC_initialize(void)
     }
 
     tmp_2[15] = '\x00';
-    Pub_ACC_136.createPublisher(tmp_2, 1);
+    Pub_ACC_141.createPublisher(tmp_2, 1);
     ACC_DW.obj.isSetupComplete = true;
 
     // End of Start for MATLABSystem: '<S3>/SinkBlock'
@@ -3113,16 +3162,17 @@ void ACC_initialize(void)
     // SystemInitialize for Atomic SubSystem: '<Root>/drive_ctrl_input'
     // SystemInitialize for Enabled SubSystem: '<S4>/Enabled Subsystem'
     // SystemInitialize for Outport: '<S40>/Out1'
-    ACC_B.In1_p = ACC_P.Out1_Y0_i;
+    ACC_B.In1_p = ACC_P.Out1_Y0_a;
 
     // End of SystemInitialize for SubSystem: '<S4>/Enabled Subsystem'
     // End of SystemInitialize for SubSystem: '<Root>/drive_ctrl_input'
 
     // SystemInitialize for Chart: '<S6>/ACC Diagnostics'
+    ACC_DW.is_ACC = ACC_IN_NO_ACTIVE_CHILD;
     ACC_DW.is_Standard = ACC_IN_NO_ACTIVE_CHILD;
     ACC_DW.is_ACC_Normal = ACC_IN_NO_ACTIVE_CHILD;
-    ACC_DW.is_active_c11_ACC = 0U;
-    ACC_DW.is_c11_ACC = ACC_IN_NO_ACTIVE_CHILD;
+    ACC_DW.is_active_c14_ACC = 0U;
+    ACC_DW.is_c14_ACC = ACC_IN_NO_ACTIVE_CHILD;
     ACC_DW.chartAbsoluteTimeCounter = 0;
   }
 }
@@ -3132,13 +3182,13 @@ void ACC_terminate(void)
 {
   // Terminate for Atomic SubSystem: '<Root>/target_output'
   // Terminate for MATLABSystem: '<S5>/SourceBlock'
-  matlabCodegenHandle_matlabCod_e(&ACC_DW.obj_c);
+  matlabCodegenHandle_matlabCod_e(&ACC_DW.obj_f);
 
   // End of Terminate for SubSystem: '<Root>/target_output'
 
   // Terminate for Atomic SubSystem: '<Root>/drive_ctrl_input'
   // Terminate for MATLABSystem: '<S4>/SourceBlock'
-  matlabCodegenHandle_matlabCod_e(&ACC_DW.obj_b);
+  matlabCodegenHandle_matlabCod_e(&ACC_DW.obj_p);
 
   // End of Terminate for SubSystem: '<Root>/drive_ctrl_input'
 

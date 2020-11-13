@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.0
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Fri Aug 14 10:52:58 2020
+// C/C++ source code generated on : Thu Nov 12 19:11:42 2020
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -91,7 +91,7 @@ typedef struct {
   // Int64Type=uint64
   real_T AliveRollingCounterJetson;
   real_T AccSpeedSetPoint;
-  real_T AccGapLevel;
+  uint8_T AccGapLevel;
   real_T VehSpd;
   real_T StrAng;
 
@@ -106,7 +106,8 @@ typedef struct {
 
 // MsgType=common/target_output_msg
 typedef struct {
-  uint8_T ObjId;
+  // Int64Type=uint64
+  real_T ObjId;
   real_T ObjDx;
   uint8_T ObjLane;
   real_T ObjVx;

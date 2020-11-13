@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.0
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Fri Aug 14 10:52:58 2020
+// C/C++ source code generated on : Thu Nov 12 19:11:42 2020
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -51,8 +51,8 @@ typedef struct {
   real_T rseq[60];
   SL_Bus_ACC_common_target_output_msg In1;// '<S41>/In1'
   SL_Bus_ACC_common_drive_ctrl_input_msg In1_p;// '<S40>/In1'
-  SL_Bus_ACC_common_drive_ctrl_input_msg b_varargout_2;
-  SL_Bus_ACC_common_target_output_msg b_varargout_2_m;
+  SL_Bus_ACC_common_target_output_msg b_varargout_2;
+  SL_Bus_ACC_common_drive_ctrl_input_msg b_varargout_2_m;
   int16_T iAnew[98];
   int16_T iC[98];
   SL_Bus_ACC_common_acc_output_msg BusAssign;// '<Root>/BusAssign'
@@ -85,14 +85,14 @@ typedef struct {
   real_T umax_incr;
   real_T umin_incr;
   real_T DelBound;
-  real_T Merge1;                       // '<S7>/Merge1'
-  real_T safe_distance;                // '<S1>/Sum1'
-  real_T Switch1;                      // '<S8>/Switch1'
+  real_T lead_velocity;                // '<S1>/Sum6'
   real_T umax_scale;                   // '<S20>/umax_scale'
   real_T umin_scale;                   // '<S20>/umin_scale'
   real_T Switch2;                      // '<S12>/Switch2'
-  real_T rtb_TmpSignalConversionAtSFun_c;
-  real_T rtb_lead_velocity_tmp;
+  real_T set_velocity;
+  real_T Merge1;
+  real_T safe_distance;
+  real_T Switch1;
   real_T rMin;
   real_T Xnorm0;
   real_T cMin;
@@ -111,11 +111,11 @@ typedef struct {
   int32_T b_k;
   int32_T idx;
   int32_T e_k;
-  int32_T i_k;
+  int32_T i_c;
   int32_T i0;
   int32_T Opt_tmp;
   int32_T U_tmp;
-  int32_T i_c;
+  int32_T i_k;
   int32_T b_i;
   int32_T c_i;
   int32_T e_i;
@@ -126,24 +126,27 @@ typedef struct {
 // Block states (default storage) for system '<Root>'
 typedef struct {
   robotics_slros_internal_block_T obj; // '<S3>/SinkBlock'
-  robotics_slros_internal_blo_e_T obj_c;// '<S5>/SourceBlock'
-  robotics_slros_internal_blo_e_T obj_b;// '<S4>/SourceBlock'
+  robotics_slros_internal_blo_e_T obj_f;// '<S5>/SourceBlock'
+  robotics_slros_internal_blo_e_T obj_p;// '<S4>/SourceBlock'
   real_T last_mv_DSTATE;               // '<S20>/last_mv'
   real_T Delay_DSTATE;                 // '<S6>/Delay'
   real_T last_x_PreviousInput[4];      // '<S20>/last_x'
   real_T PrevY;                        // '<S6>/Rate Limiter'
   int32_T chartAbsoluteTimeCounter;    // '<S6>/ACC Diagnostics'
   int32_T durationLastReferenceTick_1; // '<S6>/ACC Diagnostics'
-  int32_T durationLastReferenceTick_1_e;// '<S6>/ACC Diagnostics'
-  int32_T durationLastReferenceTick_1_j;// '<S6>/ACC Diagnostics'
-  uint8_T is_active_c11_ACC;           // '<S6>/ACC Diagnostics'
-  uint8_T is_c11_ACC;                  // '<S6>/ACC Diagnostics'
+  int32_T durationLastReferenceTick_1_f;// '<S6>/ACC Diagnostics'
+  int32_T durationLastReferenceTick_1_b;// '<S6>/ACC Diagnostics'
+  int32_T durationLastReferenceTick_1_p;// '<S6>/ACC Diagnostics'
+  uint8_T is_active_c14_ACC;           // '<S6>/ACC Diagnostics'
+  uint8_T is_c14_ACC;                  // '<S6>/ACC Diagnostics'
+  uint8_T is_ACC;                      // '<S6>/ACC Diagnostics'
   uint8_T is_Standard;                 // '<S6>/ACC Diagnostics'
   uint8_T is_ACC_Normal;               // '<S6>/ACC Diagnostics'
   boolean_T Memory_PreviousInput[98];  // '<S20>/Memory'
   boolean_T condWasTrueAtLastTimeStep_1;// '<S6>/ACC Diagnostics'
-  boolean_T condWasTrueAtLastTimeStep_1_d;// '<S6>/ACC Diagnostics'
-  boolean_T condWasTrueAtLastTimeStep_1_j;// '<S6>/ACC Diagnostics'
+  boolean_T condWasTrueAtLastTimeStep_1_e;// '<S6>/ACC Diagnostics'
+  boolean_T condWasTrueAtLastTimeStep_1_i;// '<S6>/ACC Diagnostics'
+  boolean_T condWasTrueAtLastTimeStep_1_o;// '<S6>/ACC Diagnostics'
 } DW_ACC_T;
 
 // Parameters (default storage)
@@ -157,13 +160,13 @@ struct P_ACC_T_ {
   SL_Bus_ACC_common_target_output_msg Constant_Value;// Computed Parameter: Constant_Value
                                                      //  Referenced by: '<S5>/Constant'
 
-  SL_Bus_ACC_common_drive_ctrl_input_msg Out1_Y0_i;// Computed Parameter: Out1_Y0_i
+  SL_Bus_ACC_common_drive_ctrl_input_msg Out1_Y0_a;// Computed Parameter: Out1_Y0_a
                                                    //  Referenced by: '<S40>/Out1'
 
-  SL_Bus_ACC_common_drive_ctrl_input_msg Constant_Value_n;// Computed Parameter: Constant_Value_n
+  SL_Bus_ACC_common_drive_ctrl_input_msg Constant_Value_p;// Computed Parameter: Constant_Value_p
                                                           //  Referenced by: '<S4>/Constant'
 
-  SL_Bus_ACC_common_acc_output_msg Constant_Value_i;// Computed Parameter: Constant_Value_i
+  SL_Bus_ACC_common_acc_output_msg Constant_Value_e;// Computed Parameter: Constant_Value_e
                                                     //  Referenced by: '<S2>/Constant'
 
   real_T NotuseACCoutputconstant_Value;// Expression: 1
@@ -187,7 +190,7 @@ struct P_ACC_T_ {
   real_T Constant1_Value;              // Expression: 1.8
                                        //  Referenced by: '<S7>/Constant1'
 
-  real_T Constant4_Value_n;            // Expression: 12.5
+  real_T Constant4_Value_g;            // Expression: 12.5
                                        //  Referenced by: '<S7>/Constant4'
 
   real_T Constant2_Value;              // Expression: 2.3
@@ -196,7 +199,7 @@ struct P_ACC_T_ {
   real_T Constant6_Value;              // Expression: 15
                                        //  Referenced by: '<S7>/Constant6'
 
-  real_T Constant_Value_f;             // Expression: 1.4
+  real_T Constant_Value_i;             // Expression: 1.4
                                        //  Referenced by: '<S7>/Constant'
 
   real_T Constant3_Value_i;            // Expression: 10
@@ -211,7 +214,7 @@ struct P_ACC_T_ {
   real_T umin_scale_Gain;              // Expression: RMVscale
                                        //  Referenced by: '<S20>/umin_scale'
 
-  real_T Constant2_Value_m;            // Expression: 5
+  real_T Constant2_Value_i;            // Expression: 5
                                        //  Referenced by: '<S8>/Constant2'
 
   real_T umax_scale_Gain;              // Expression: RMVscale
@@ -253,7 +256,7 @@ struct P_ACC_T_ {
   real_T ymin_scale2_Gain;             // Expression: MDscale(:,ones(1,max(nCC,1)))'
                                        //  Referenced by: '<S20>/ymin_scale2'
 
-  real_T Constant1_Value_m;            // Expression: 1
+  real_T Constant1_Value_k;            // Expression: 1
                                        //  Referenced by: '<S1>/Constant1'
 
   real_T extmv_zero_Value;             // Expression: zeros(1,1)

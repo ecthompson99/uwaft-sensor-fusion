@@ -73,7 +73,7 @@ void convertFromBus(common::target_output_msg* msgPtr, SL_Bus_ACC_common_target_
   msgPtr->obj_ax =  busPtr->ObjAx;
   msgPtr->obj_dx =  busPtr->ObjDx;
   msgPtr->obj_dy =  busPtr->ObjDy;
-  msgPtr->obj_id =  busPtr->ObjId;
+  msgPtr->obj_id = (uint64_t) busPtr->ObjId;
   msgPtr->obj_lane =  busPtr->ObjLane;
   msgPtr->obj_path =  busPtr->ObjPath;
   msgPtr->obj_timestamp =  busPtr->ObjTimestamp;
@@ -90,7 +90,7 @@ void convertToBus(SL_Bus_ACC_common_target_output_msg* busPtr, common::target_ou
   busPtr->ObjAx =  msgPtr->obj_ax;
   busPtr->ObjDx =  msgPtr->obj_dx;
   busPtr->ObjDy =  msgPtr->obj_dy;
-  busPtr->ObjId =  msgPtr->obj_id;
+  busPtr->ObjId = (real_T) msgPtr->obj_id;
   busPtr->ObjLane =  msgPtr->obj_lane;
   busPtr->ObjPath =  msgPtr->obj_path;
   busPtr->ObjTimestamp =  msgPtr->obj_timestamp;

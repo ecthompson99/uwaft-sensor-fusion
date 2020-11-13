@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 2.8.3)
 project(acc)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(CMAKE_CXX_FLAGS "")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -36,7 +35,7 @@ include_directories(
   include
   ${PROJECT_SOURCE_DIR}
   ${Boost_INCLUDE_DIRS}
-  SYSTEM ${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Get list of .c files in project source directory
