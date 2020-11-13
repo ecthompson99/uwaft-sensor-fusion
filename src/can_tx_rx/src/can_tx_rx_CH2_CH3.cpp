@@ -171,13 +171,13 @@ void Radar_RX::get_static_veh_info(radar_input_mount_info_t &in_mount_info, rada
 double Radar_RX::signals_in_range(double val, bool cond){
     return (cond) ? (val) : 0; 
 };
-uint8_t Radar_RX::crc8bit_calculation(uint8_t can1670signals[7]) {
+uint8_t Radar_RX::crc8bit_calculation(uint8_t can1670signals[7], int f_len) {
     uint8_t crc = 0xFF;
 
-    for (int index = 0; index < 7; index++) {
+    for (int index = 0; index < f_len; index++) {
         crc ^= can1670signals[index];  // Assign data to CRC
 
-        for (int bitIndex = 0; bitIndex < 8; bitIndex++) {  // LOop through 8 bits
+        for (int bitIndex = 0; bitIndex < 8; bitIndex++) {  // Loop through 8 bits
         if ((crc & 0x80 != 0)) {
             crc = (crc << 1);
             crc ^= 0x1D;
@@ -186,6 +186,7 @@ uint8_t Radar_RX::crc8bit_calculation(uint8_t can1670signals[7]) {
         }
         }
     }
+    crc = ~crc;
     return crc;
 };
 void Radar_RX::clear_classes(common::radar_object_data &radar_obj, common::sensor_diagnostic_data_msg &diag_data,     Radar_RX::radar_diagnostic_response &diag_response, Radar_RX::radar_information &radar_info,Radar_RX::target_tracking_info &target_info, Radar_RX::object_tracking_info &object_info, uint8_t &tc_check, uint8_t &mc_check){
@@ -687,7 +688,10 @@ int main(int argc, char **argv) {
             //goal: ensure that there are 7 entries in the unsigned 8 bit integer, grouping smaller 1-4 bits signals or breaking up 16 bit signals as necessary
             //to do: research if crc requires bits to be properly ordered as shown in dbc and if there is an easier way to do so
             if((now.toSec()-mem2.toSec())>1){
-                uint8_t in_mount_signals[7];
+                unsigned char in_mount_signals[7]; 
+                in_mount_signals[0] = in_mount_info.ri_mi_lat_sensor_mount_to_center; //7 bit fits into the first 8 bit sequence (0 in front)   
+                in_mount_signals[1] = in_mount_info.
+                /*uint8_t in_mount_signals[7];
                 int16_2bit = ((uint16_t)in_mount_info.ri_mi_lat_sensor_mount_to_center << 8) | in_mount_info.ri_mi_long_sensor_mount_to_rear_axle;
                 in_mount_signals[0] = static_cast<uint8_t>((int16_2bit & 0xFF00) >> 8);
                 in_mount_signals[1] = static_cast<uint8_t>(int16_2bit & 0x00FF);
@@ -710,7 +714,7 @@ int main(int argc, char **argv) {
                 in_veh_dim_signals[2] = in_veh_dim.ri_vd_long_front_bumper_pos;
                 in_veh_dim_signals[3] = in_veh_dim.ri_vd_long_rear_bumper_pos;
                 in_veh_dim_signals[4] = in_veh_dim.ri_vd_mc;
-
+                */
                 in_mount_info.ri_mi_crc = rad_rx.crc8bit_calculation(in_mount_signals);
                 in_wheel_info.ri_wi_crc = rad_rx.crc8bit_calculation(in_wheel_signals);
                 in_veh_dim.ri_vd_crc = rad_rx.crc8bit_calculation(in_veh_dim_signals);
