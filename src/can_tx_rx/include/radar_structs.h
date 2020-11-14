@@ -184,7 +184,7 @@ class Radar_RX{
     void get_nums(int id, int &case_n, int &radar_n, int &frame_n, int &obj_n, int &target_obj_n, int channel_number);
     double signals_in_range(double val, bool cond);
     static void get_static_veh_info(radar_input_mount_info_t &in_mount_info, radar_input_veh_dyn_data_t &in_veh_dyn, radar_input_wheel_info_t &in_wheel_info, radar_input_veh_dim_t &in_veh_dim, int radar_num);
-    uint8_t crc8bit_calculation(uint8_t can1670signals[7]);
+    uint8_t crc8bit_calculation(uint8_t can1670signals[7], int f_len);
     void clear_classes(common::radar_object_data &radar_obj, common::sensor_diagnostic_data_msg &diag_data,     Radar_RX::radar_diagnostic_response &diag_response, Radar_RX::radar_information &radar_info,Radar_RX::target_tracking_info &target_info, Radar_RX::object_tracking_info &object_info, uint8_t &tc_check, uint8_t &mc_check);
 };
 

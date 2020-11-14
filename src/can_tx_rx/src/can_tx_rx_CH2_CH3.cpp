@@ -688,20 +688,16 @@ int main(int argc, char **argv) {
             //goal: ensure that there are 7 entries in the unsigned 8 bit integer, grouping smaller 1-4 bits signals or breaking up 16 bit signals as necessary
             //to do: research if crc requires bits to be properly ordered as shown in dbc and if there is an easier way to do so
             if((now.toSec()-mem2.toSec())>1){
-                unsigned char in_mount_signals[7]; 
-                in_mount_signals[0] = in_mount_info.ri_mi_lat_sensor_mount_to_center; //7 bit fits into the first 8 bit sequence (0 in front)   
-                in_mount_signals[1] = in_mount_info.
-                /*uint8_t in_mount_signals[7];
-                int16_2bit = ((uint16_t)in_mount_info.ri_mi_lat_sensor_mount_to_center << 8) | in_mount_info.ri_mi_long_sensor_mount_to_rear_axle;
-                in_mount_signals[0] = static_cast<uint8_t>((int16_2bit & 0xFF00) >> 8);
-                in_mount_signals[1] = static_cast<uint8_t>(int16_2bit & 0x00FF);
+                uint8_t in_mount_signals[7]; 
+                //dbc defined motorola (reverse bit order) 
+                in_mount_signals[0] = (in_mount_info.ri_mi_lat_sensor_mount_to_center << 1u) + (in_mount_info.ri_mi_long_sensor_mount_to_rear_axle>>8u); 
+                in_mount_signals[1] =  (in_mount_info.ri_mi_long_sensor_mount_to_rear_axle & 0xFF);
                 in_mount_signals[2] = in_mount_info.ri_mi_sensor_height;
-                in_mount_signals[3] = in_mount_info.ri_mi_sensor_orientation;
-                int16_2bit = ((uint16_t)in_mount_info.ri_mi_sensor_mount_angle << 8) | in_mount_info.ri_mi_sensor_mount_angle;
-                in_mount_signals[4] = static_cast<uint8_t>((int16_2bit & 0xFF00) >> 8);
-                in_mount_signals[5] = static_cast<uint8_t>(int16_2bit & 0x00FF);
-                in_mount_signals[6] = in_mount_info.ri_mi_mc;
-                
+                in_mount_signals[3] = (in_mount_info.ri_mi_sensor_orientation << 7u) + (in_mount_info.ri_mi_sensor_mount_angle>>8u);
+                in_mount_signals[4] = (in_mount_info.ri_mi_sensor_mount_angle & 0xFF);
+                in_mount_signals[5] = {};
+                in_mount_signals[6] =  in_mount_info.ri_mi_mc;
+
                 uint8_t in_wheel_signals[7];
                 in_wheel_signals[0] = in_wheel_info.ri_wi_wheel_base;
                 in_wheel_signals[1] = in_wheel_info.ri_wi_track_width;
@@ -711,14 +707,16 @@ int main(int argc, char **argv) {
                 uint8_t in_veh_dim_signals[7];
                 in_veh_dim_signals[0] = in_veh_dim.ri_vd_max_width;
                 in_veh_dim_signals[1] = in_veh_dim.ri_vd_min_width;
-                in_veh_dim_signals[2] = in_veh_dim.ri_vd_long_front_bumper_pos;
-                in_veh_dim_signals[3] = in_veh_dim.ri_vd_long_rear_bumper_pos;
-                in_veh_dim_signals[4] = in_veh_dim.ri_vd_mc;
-                */
-                in_mount_info.ri_mi_crc = rad_rx.crc8bit_calculation(in_mount_signals);
-                in_wheel_info.ri_wi_crc = rad_rx.crc8bit_calculation(in_wheel_signals);
-                in_veh_dim.ri_vd_crc = rad_rx.crc8bit_calculation(in_veh_dim_signals);
+                in_veh_dim_signals[2] = (in_veh_dim.ri_vd_long_front_bumper_pos>>8u);
+                in_veh_dim_signals[3] = (in_veh_dim.ri_vd_long_front_bumper_pos&0xFF);
+                in_veh_dim_signals[4] = (in_veh_dim.ri_vd_long_rear_bumper_pos>>8u);
+                in_veh_dim_signals[5] = (in_veh_dim.ri_vd_long_rear_bumper_pos&0xFF);
+                in_veh_dim_signals[6] = in_veh_dim.ri_vd_mc;
 
+                in_mount_info.ri_mi_crc = rad_rx.crc8bit_calculation(in_mount_signals, 7);
+                in_wheel_info.ri_wi_crc = rad_rx.crc8bit_calculation(in_wheel_signals, 4);
+                in_veh_dim.ri_vd_crc = rad_rx.crc8bit_calculation(in_veh_dim_signals, 7);
+                
                 uint8_t radar_can_msg_mount[8] = {0};
                 uint8_t radar_can_msg_wheel[8] = {0};
                 uint8_t radar_can_msg_veh_dim[8] = {0};
@@ -759,15 +757,16 @@ int main(int argc, char **argv) {
             }
             if(now.toSec()-mem1.toSec()>0.02){
                 uint8_t in_veh_dyn_signals[7];
-                in_veh_dyn_signals[0] = in_veh_dyn.ri_veh_steer_angle;
-                in_veh_dyn_signals[1] = in_veh_dyn.ri_veh_velocity;
-                in_veh_dyn_signals[2] = in_veh_dyn.ri_veh_standstill;
-                in_veh_dyn_signals[3] = in_veh_dyn.ri_veh_use_steer_angle;
-                in_veh_dyn_signals[4] = in_veh_dyn.ri_veh_yaw_rate;
-                in_veh_dyn_signals[5] = in_veh_dyn.ri_veh_prndstat+in_veh_dyn.ri_veh_any_wheel_slip_event;
-                in_veh_dyn_signals[6] = in_veh_dyn.ri_veh_mc;
+                in_veh_dyn_signals[0] = (in_veh_dyn.ri_veh_steer_angle>>8u);
+                in_veh_dyn_signals[1] = (in_veh_dyn.ri_veh_steer_angle&0xFF);
+                in_veh_dyn_signals[2] = (in_veh_dyn.ri_veh_velocity>>8u);
+                in_veh_dyn_signals[3] = (in_veh_dyn.ri_veh_velocity&0xFF);
+
+                in_veh_dyn_signals[4] = (in_veh_dyn.ri_veh_use_steer_angle<<7u)+(in_veh_dyn.ri_veh_standstill<<6u)+(in_veh_dyn.ri_veh_yaw_rate>>8u);
+                in_veh_dyn_signals[5] = (in_veh_dyn.ri_veh_yaw_rate&0xFF);
+                in_veh_dyn_signals[6] = (in_veh_dyn.ri_veh_mc<<4u) + (in_veh_dyn.ri_veh_any_wheel_slip_event<<3u) + in_veh_dyn.ri_veh_prndstat;
                 
-                in_veh_dyn.ri_veh_crc = rad_rx.crc8bit_calculation(in_veh_dyn_signals);
+                in_veh_dyn.ri_veh_crc = rad_rx.crc8bit_calculation(in_veh_dyn_signals, 7);
 
                 uint8_t radar_can_msg_veh_dyn[8] = {0};                
 
