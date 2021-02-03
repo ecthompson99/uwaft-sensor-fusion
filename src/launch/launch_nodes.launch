@@ -1,0 +1,14 @@
+<launch>
+    <node pkg = "can_tx_rx" type = "can_tx_rx_CH2_CH3" name = "can_tx_rx_CH2_CH3" args="$(arg radar_ch)"/>
+    <node pkg = "can_tx_rx" type = "can_tx_rx_CH1" name = "can_tx_rx_CH1" />
+    <node pkg = "can_tx_rx" type = "can_tx_rx_CH4" name = "can_tx_rx_CH4" />
+   
+    <node pkg = "sensor_fusion" type = "data_association" name = "data_association" />
+    <node pkg = "sensor_fusion" type = "environment_state" name = "environment_state" />
+    <node name="kf_node" pkg="kalman_filter" type="kf_node.py"/>
+
+    <node pkg = "acc" type = "acc_node" name = "acc_node" />
+   
+    <node pkg = "master_task" type = "master_task" name = "master_task" />
+
+</launch>
