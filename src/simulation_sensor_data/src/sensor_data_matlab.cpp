@@ -65,43 +65,43 @@ int main(int argc, char **argv)
       common::radar_object_data radar3;
       common::mobileye_object_data camera;
 
-      radar1.RadarDx = sensor_data[x][1];
-      radar1.RadarDy = sensor_data[x][2];
-      radar1.RadarVx = sensor_data[x][3];
-      radar1.RadarVy = sensor_data[x][4];
-      radar1.RadarAx = sensor_data[x][5];
-      radar1.RadarTimestamp = sensor_data[x][0];
-      radar1.RadarAxSigma = 0;
-      radar1.RadarDxSigma = 0;
-      radar1.RadarDySigma = 0;
-      radar1.RadarVxSigma = 0;
+      radar1.radar_dx = sensor_data[x][1];
+      radar1.radar_dy = sensor_data[x][2];
+      radar1.radar_vx = sensor_data[x][3];
+      radar1.radar_vy = sensor_data[x][4];
+      radar1.radar_ax = sensor_data[x][5];
+      radar1.radar_timestamp = sensor_data[x][0];
+      radar1.radar_ax_sigma = 0;
+      radar1.radar_dx_sigma = 0;
+      radar1.radar_dy_sigma = 0;
+      radar1.radar_vx_sigma = 0;
 
-      radar2.RadarDx = sensor_data[x][6];
-      radar2.RadarDy = sensor_data[x][7];
-      radar2.RadarVx = sensor_data[x][8];
-      radar2.RadarVy = sensor_data[x][9];
-      radar2.RadarAx = sensor_data[x][10];
-      radar2.RadarTimestamp = sensor_data[x][0];
-      radar2.RadarAxSigma = 0;
-      radar2.RadarDxSigma = 0;
-      radar2.RadarDySigma = 0;
-      radar2.RadarVxSigma = 0;
+      radar2.radar_dx = sensor_data[x][6];
+      radar2.radar_dy = sensor_data[x][7];
+      radar2.radar_vx = sensor_data[x][8];
+      radar2.radar_vy = sensor_data[x][9];
+      radar2.radar_ax = sensor_data[x][10];
+      radar2.radar_timestamp = sensor_data[x][0];
+      radar2.radar_ax_sigma = 0;
+      radar2.radar_dx_sigma = 0;
+      radar2.radar_dy_sigma = 0;
+      radar2.radar_vx_sigma = 0;
 
-      radar3.RadarDx = sensor_data[x][11];
-      radar3.RadarDy = sensor_data[x][12];
-      radar3.RadarVx = sensor_data[x][13];
-      radar3.RadarVy = sensor_data[x][14];
-      radar3.RadarAx = sensor_data[x][15];
-      radar3.RadarTimestamp = sensor_data[x][0];
-      radar3.RadarAxSigma = 0;
-      radar3.RadarDxSigma = 0;
-      radar3.RadarDySigma = 0;
-      radar3.RadarVxSigma = 0;
+      radar3.radar_dx = sensor_data[x][11];
+      radar3.radar_dy = sensor_data[x][12];
+      radar3.radar_vx = sensor_data[x][13];
+      radar3.radar_vy = sensor_data[x][14];
+      radar3.radar_ax = sensor_data[x][15];
+      radar3.radar_timestamp = sensor_data[x][0];
+      radar3.radar_ax_sigma = 0;
+      radar3.radar_dx_sigma = 0;
+      radar3.radar_dy_sigma = 0;
+      radar3.radar_vx_sigma = 0;
 
-      camera.MeDx = sensor_data[x][16];
-      camera.MeDy = sensor_data[x][17];
-      camera.MeVx = sensor_data[x][18];
-      camera.MeTimestamp = sensor_data[x][0];
+      camera.me_dx = sensor_data[x][16];
+      camera.me_dy = sensor_data[x][17];
+      camera.me_vx = sensor_data[x][18];
+      camera.me_timestamp = sensor_data[x][0];
 
       if (time.toNSec() == 0) time = ros::TIME_MIN;
 

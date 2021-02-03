@@ -10,5 +10,4 @@ uint8[10] me_cut_in_cut_out
 float64[10] me_age 
 uint8[10] me_lane
 bool[10] me_cipv_flag
-
 float64 me_timestamp

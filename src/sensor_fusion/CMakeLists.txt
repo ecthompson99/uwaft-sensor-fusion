@@ -68,13 +68,13 @@ find_package(
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
- add_message_files(
-   FILES
-   associated_radar_msg.msg
-   associated_me_msg.msg
-   filtered_object_msg.msg
-   binary_class_msg.msg
-)
+# add_message_files(
+#   FILES
+#   associated_radar_msg.msg
+#   associated_me_msg.msg
+#   filtered_object_msg.msg
+#   binary_class_msg.msg
+#)
 
 ## Generate services in the 'srv' folder
  add_service_files(
@@ -161,11 +161,13 @@ include_directories(
 add_executable(
     data_association
     src/data_association.cpp
+    #src/data_association_main.cpp
 )
 
 add_executable(
     environment_state
     src/env_state.cpp
+ #   src/env_state_main.cpp
     src/object_state.cpp
 )
 
@@ -271,29 +273,29 @@ target_link_libraries(
 #############
 ## Testing ##
 ##############
-#if (CATKIN_ENABLE_TESTING)
-#    ## Add gtest based cpp test target and link libraries
-#    catkin_add_gtest(
-#        ${PROJECT_NAME}-test
-##        test/test_sensor_fusion.cpp
-##        src/sensor_fusion_main.cpp
-##        src/server.cpp
-##        src/client.cpp
-##        src/data_association.cpp
-#    )
-#    if(TARGET ${PROJECT_NAME}-test)
-#        target_link_libraries(
-#            ${PROJECT_NAME}-test
-#            ${catkin_LIBRARIES}
-#        )
-#    endif()
-#    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
-#    target_compile_definitions(
-#        ${PROJECT_NAME}-test
-#        PUBLIC
-#        ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_TEST_VERBOSITY}
-#    )
-#endif(CATKIN_ENABLE_TESTING)
+if (CATKIN_ENABLE_TESTING)
+    ## Add gtest based cpp test target and link libraries
+    catkin_add_gtest(
+        ${PROJECT_NAME}-test
+       # test/test_data_association.cpp
+        test/test_env_state.cpp
+        src/env_state.cpp
+        src/object_state.cpp
+       # src/data_association.cpp
+    )
+    if(TARGET ${PROJECT_NAME}-test)
+        target_link_libraries(
+            ${PROJECT_NAME}-test
+            ${catkin_LIBRARIES}
+        )
+    endif()
+    add_dependencies(${PROJECT_NAME}-test ${${PROJECT_NAME}_EXPORTED_TARGETS})
+    target_compile_definitions(
+        ${PROJECT_NAME}-test
+        PUBLIC
+        ROSCONSOLE_MIN_SEVERITY=${SENSOR_FUSION_TEST_VERBOSITY}
+    )
+endif(CATKIN_ENABLE_TESTING)
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

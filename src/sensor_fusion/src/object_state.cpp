@@ -4,7 +4,9 @@ ObjectState::ObjectState(){}
 
 // constructor for testing and initializing targetObjects[]
 ObjectState::ObjectState(uint64_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
-    double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp,uint8_t set_obj_track_num){ //, uint8_t set_obj_count) {
+    double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp, 
+    uint8_t set_obj_track_num){ //, uint8_t set_obj_count) {
+
     obj_id = set_obj_id;
     obj_dx = set_obj_dx;
     obj_lane = set_obj_lane;
@@ -14,9 +16,10 @@ ObjectState::ObjectState(uint64_t set_obj_id, double set_obj_dx, uint8_t set_obj
     obj_path = set_obj_path;
     obj_vy = set_obj_vy;
     obj_timestamp = set_obj_timestamp;
-		obj_track_num = set_obj_track_num;
+    obj_track_num = set_obj_track_num;
 	//	obj_count = set_obj_count;
 }
+
 ObjectState::~ObjectState() {}
 
 uint64_t ObjectState::get_obj_id() const { return obj_id; }
@@ -30,7 +33,7 @@ double ObjectState::get_obj_vy() const {return obj_vy;}
 double ObjectState::get_obj_timestamp() const { return obj_timestamp; }
 //uint8_t ObjectState::get_obj_count() const { return obj_count; }
 
-void ObjectState::copy_info(const sensor_fusion::filtered_object_msg& filtered_msg) {
+void ObjectState::copy_info(const common::filtered_object_msg& filtered_msg) {
     
     obj_id = filtered_msg.obj_id;
     obj_dx = filtered_msg.obj_dx;
@@ -43,8 +46,3 @@ void ObjectState::copy_info(const sensor_fusion::filtered_object_msg& filtered_m
     obj_timestamp = filtered_msg.obj_timestamp;
 //		obj_count = filtered_msg.obj_count;
 }
-
-// TODO:
-// distinguish 3 tracked objects from vector of 32 objects
-// check timestamps, lane of 3 objects
-// publish 3 target vehicle objects to CAN topic

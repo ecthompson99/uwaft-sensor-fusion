@@ -49,6 +49,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   can_comms_data_msg.msg
+  binary_class_msg.msg
   drive_ctrl_input_msg.msg
   filtered_object_msg.msg
   mobileye_object_data.msg
@@ -57,8 +58,8 @@ add_message_files(
   raw_sensor_object_data_msg.msg
   raw_lane_data.msg
   sudo_driver_input_msg.msg
-  target_output_msg.msg
   tracked_output_msg.msg
+  target_output_msg.msg
   associated_me_msg.msg
   associated_radar_msg.msg
   acc_output_msg.msg
