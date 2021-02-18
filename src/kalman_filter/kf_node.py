@@ -11,24 +11,13 @@ import matplotlib.pyplot as plt
 from threading import Lock
 
 # Shouldn't need this definition - have data from mobileye
-def determine_lane(dy, me_lane):
-    # in ego lane
-    if me_lane == 1
-        return 1, True 
-    
-    # next lane
-    elif me_lane == 2
-        if dy < 0:
-            return 2, False # right lane
-        elif dy > 0:
-            return 0, False # left lane
-    
-    #invalid or unassigned: 1.5m  approximately half width of lane
-    else
-        if dy < -1.5:
-            return 2, False # right lane
-        elif dy > 1.5:
-            return 0, False # left lane
+def determine_lane(dy):
+    if dy < -1.5:
+        return 2, False
+    elif dy > 1.5:
+        return 0, False
+    else:
+        return 1, True
 
 class KF(KalmanFilter):
     def __init__(self, initial_measurement):
@@ -53,16 +42,16 @@ class KF(KalmanFilter):
 
 class KF_Node(object):
     def me_association_callback(self, obj):
-        rospy.loginfo('me callback called %d @ %f, %f' % (obj.obj_id, obj.obj.me_dx, obj.obj.me_dy))
-        measurement = [obj.obj.me_dx,
-                       obj.obj.me_dy,
-                       obj.obj.me_vx]
+        rospy.loginfo('me callback called %d @ %f, %f' % (obj.obj_id, obj.me_dx, obj.me_dy))
+        measurement = [obj.me_dx,
+                       obj.me_dy,
+                       obj.me_vx]
 
         self.resource_lock.acquire()
 
         if not obj.obj_id in self.objects:
             self.objects[obj.obj_id] = KF(measurement)
-            self.objects[obj.obj_id].last_me_timestamp = obj.obj.me_timestamp
+            self.objects[obj.obj_id].last_me_timestamp = obj.me_timestamp
 
             rospy.loginfo('creating object %d' % obj.obj_id)
             self.input_history[obj.obj_id] = np.array([[measurement[0], measurement[1]]])
@@ -79,8 +68,8 @@ class KF_Node(object):
                 
                 # change me for the mobileye covariance!!!
                 hashed.R = np.identity(3) * .5**2
-                hashed.dt = obj.obj.me_timestamp - hashed.last_me_timestamp
-                hashed.last_me_timestamp = obj.obj.me_timestamp
+                hashed.dt = obj.me_timestamp - hashed.last_me_timestamp
+                hashed.last_me_timestamp = obj.me_timestamp
                 hashed.F[0][2] = hashed.F[1][3] = hashed.dt
                 # change me for process noise (3rd argument)!!!
                 hashed.Q = Q_discrete_white_noise(2, hashed.dt, 1.5**2, block_size=2)
@@ -97,7 +86,7 @@ class KF_Node(object):
 
                 # print('x',self.objects[0].x, 'P', self.objects[0].P, 'z', self.objects[0].z, 'R', self.objects[0].R, 'dt', self.objects[0].dt, sep='\n', end='\n--------------\n')
             else:
-                hashed.last_me_timestamp = obj.obj.me_timestamp
+                hashed.last_me_timestamp = obj.me_timestamp
 
             self.input_history[obj.obj_id] = np.append(self.input_history[obj.obj_id], [[measurement[0],measurement[1]]], axis=0)
             self.output_history[obj.obj_id] = np.append(self.output_history[obj.obj_id], [hashed.x], axis=0)
@@ -106,25 +95,25 @@ class KF_Node(object):
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
         self.resource_lock.release()
         result.obj_id = obj.obj_id 
-        result.obj_lane, result.obj_path = determine_lane(result.obj_dy, obj.obj.me_lane)
+        result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
         # result.obj_ax = obj.obj.me_ax
-        result.obj_timestamp = obj.obj.me_timestamp
+        result.obj_timestamp = obj.me_timestamp
         result.obj_count = 30
         
         self.output.publish(result)
 
     def radar_association_callback(self, obj):
-        rospy.loginfo('radar callback called %d @ %f, %f' % (obj.obj_id, obj.obj.radar_dx, obj.obj.radar_dy))
-        measurement = [obj.obj.radar_dx,
-                       obj.obj.radar_dy,
-                       obj.obj.radar_vx,
-                       obj.obj.radar_vy]
+        rospy.loginfo('radar callback called %d @ %f, %f' % (obj.obj_id, obj.radar_dx, obj.radar_dy))
+        measurement = [obj.radar_dx,
+                       obj.radar_dy,
+                       obj.radar_vx,
+                       obj.radar_vy]
 
         self.resource_lock.acquire()
 
         if not obj.obj_id in self.objects:
             self.objects[obj.obj_id] = KF(measurement)
-            self.objects[obj.obj_id].last_radar_timestamp = obj.obj.radar_timestamp
+            self.objects[obj.obj_id].last_radar_timestamp = obj.radar_timestamp
 
             rospy.loginfo('creating object %d' % obj.obj_id)
             self.input_history[obj.obj_id] = np.array([[measurement[0], measurement[1]]])
@@ -144,8 +133,8 @@ class KF_Node(object):
 
                 # change me for radar covariance!!!
                 np.fill_diagonal(hashed.R, [1**2 for i in range(4)])
-                hashed.dt = obj.obj.radar_timestamp - hashed.last_radar_timestamp
-                hashed.last_radar_timestamp = obj.obj.radar_timestamp
+                hashed.dt = obj.radar_timestamp - hashed.last_radar_timestamp
+                hashed.last_radar_timestamp = obj.radar_timestamp
                 hashed.F[0][2] = hashed.F[1][3] = hashed.dt
                 # change me for process noise (3rd argument)!!!
                 hashed.Q = Q_discrete_white_noise(2, hashed.dt, 1.5**2, block_size=2)
@@ -163,7 +152,7 @@ class KF_Node(object):
                     hashed.x[1] = -128 
                 # print('x',self.objects[0].x, 'P', self.objects[0].P, 'z', self.objects[0].z, 'R', self.objects[0].R, 'dt', self.objects[0].dt, sep='\n', end='\n--------------\n')
             else:
-                hashed.last_radar_timestamp = obj.obj.radar_timestamp
+                hashed.last_radar_timestamp = obj.radar_timestamp
 
             self.input_history[obj.obj_id] = np.append(self.input_history[obj.obj_id], [[measurement[0], measurement[1]]], axis=0)
             self.output_history[obj.obj_id] = np.append(self.output_history[obj.obj_id], [hashed.x], axis=0)
@@ -172,9 +161,9 @@ class KF_Node(object):
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
         self.resource_lock.release()
         result.obj_id = obj.obj_id 
-        result.obj_lane, result.obj_path = determine_lane(result.obj_dy,  obj.obj.me_lane)
-        result.obj_ax = obj.obj.radar_ax
-        result.obj_timestamp = obj.obj.radar_timestamp
+        result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
+        result.obj_ax = obj.radar_ax
+        result.obj_timestamp = obj.radar_timestamp
         result.obj_count = 30
 
         self.output.publish(result)
@@ -216,12 +205,14 @@ class KF_Node(object):
 
 if __name__ == '__main__':
     node = KF_Node()
-    try:
-        while not rospy.core.is_shutdown():
-            arg = raw_input()
-            if arg[0] == 'r':
-                node.plot_history(int(arg[1:]))
-    except:
-        rospy.loginfo('keyboard interrupt')
-
-    # rospy.spin()
+    rospy.spin()
+    
+    # try:
+    #     while not rospy.core.is_shutdown():
+    #         rospy.spin()
+    #         # arg = raw_input()
+    #         #if arg[0] == 'r':
+    #         #    node.plot_history(int(arg[1:]))
+    #         pass
+    # except:
+    #     rospy.loginfo('keyboard interrupt')

@@ -5,7 +5,7 @@
 
 class RadarObject {
     public:
-        RadarObject();
+        RadarObject(){}
         
         RadarObject(double set_dx, double set_dy, double set_vx, double set_vy, double set_ax,
         double set_dx_s, double set_dy_s, double set_vx_s, double set_ax_s, double set_w_exist,

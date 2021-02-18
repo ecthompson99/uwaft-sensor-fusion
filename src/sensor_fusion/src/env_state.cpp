@@ -87,9 +87,12 @@ void EnvironmentState::filtered_object_callback(const common::filtered_object_ms
 
 void EnvironmentState::publish_binary_class(double t) {
 	common::binary_class_msg out;
+    ROS_INFO("Publishing binary class time: %f", t);
 	for (auto i : trackedObjects) {
 		out.dx.push_back(i.get_obj_dx());
 		out.dy.push_back(i.get_obj_dy());
+        out.vx.push_back(i.get_obj_vx());
+        out.vy.push_back(i.get_obj_vy());
 	}
 	out.global_clk = global_clk;
 	out.timestamp = t;

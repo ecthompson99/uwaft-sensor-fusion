@@ -14,20 +14,22 @@ DataAssociation::DataAssociation(ros::NodeHandle* in_node_handle) : node_handle(
     sensor_me_data_obj_sub = node_handle->subscribe(MOBILEYE_TOPIC, MESSAGE_BUFFER_SIZE, 
                                                 &DataAssociation::sensor_me_data_obj_callback, this);
 
-    sensor_front_radar_data_obj_sub = node_handle->subscribe(RADAR_TOPIC, MESSAGE_BUFFER_SIZE,
+    sensor_front_radar_data_obj_sub = node_handle->subscribe(RADAR_ONE_TOPIC, MESSAGE_BUFFER_SIZE,
                                                             &DataAssociation::sensor_radar_data_obj_callback, this);
 
-    sensor_left_corner_radar_sub = node_handle->subscribe(RADAR_TOPIC, MESSAGE_BUFFER_SIZE,
-                                                        &DataAssociation::sensor_radar_data_obj_callback, this);
+    sensor_left_corner_radar_sub = node_handle->subscribe(RADAR_TWO_TOPIC, MESSAGE_BUFFER_SIZE,
+                                                         &DataAssociation::sensor_radar_data_obj_callback, this);
 
-    sensor_right_corner_radar_sub = node_handle->subscribe(RADAR_TOPIC, MESSAGE_BUFFER_SIZE,
-                                                            &DataAssociation::sensor_radar_data_obj_callback, this);
+    sensor_right_corner_radar_sub = node_handle->subscribe(RADAR_THREE_TOPIC, MESSAGE_BUFFER_SIZE,
+                                                             &DataAssociation::sensor_radar_data_obj_callback, this);
 
     radar_to_kf_pub = node_handle->advertise<common::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
     me_to_kf_pub = node_handle->advertise<common::associated_me_msg>(KALMAN_FILTER_ME_TOPIC, 10);
 
     next_id = 0;
     global_clk = 0;
+
+    filtered_me_obj = std::vector<MobileyeObject>(10);
 
     // diagnostics (assume true, service call if false)
     FRONT_RADAR = 1;
@@ -36,68 +38,64 @@ DataAssociation::DataAssociation(ros::NodeHandle* in_node_handle) : node_handle(
     MOBILEYE = 1;
 }
 
-bool DataAssociation::filter_radar(const common::radar_object_data& recvd_data){
+std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_object_data& recvd_data){
 
-    if (FRONT_RADAR && LEFT_CORNER_RADAR && RIGHT_CORNER_RADAR){
+    std::vector<RadarObject> filtered_radar_obj(RADAR_OBJ);
 
-        // need an algorithm here that will filter out bad sensor readings
-        // reduce object count from 10 objects
+    // need an algorithm here that will filter out bad sensor readings
+    // reduce object count from 10 objects
 
-        size_t filtered_index = 0;
-        for (size_t r_index = 0; r_index < RADAR_OBJ; r_index++){
-            // dx and dy limits
-            if (recvd_data.radar_dx[r_index] < MIN_DX || recvd_data.radar_dx[r_index] > MAX_DX
-                || abs(recvd_data.radar_dy[r_index]) > DY_LIMIT) continue;
+    size_t filtered_index = 0;
+    for (size_t r_index = 0; r_index < RADAR_OBJ; r_index++){
+        // dx and dy limits
+        if (recvd_data.radar_dx[r_index] < MIN_DX || recvd_data.radar_dx[r_index] > MAX_DX
+            || abs(recvd_data.radar_dy[r_index]) > DY_LIMIT) continue;
 
-            // Stationary objects
-            if (((recvd_data.veh_v_ego + recvd_data.radar_vx[r_index]) < VX_LIMIT) 
-                    || recvd_data.moving_state[r_index] == 3) continue;
+        // Stationary objects
+        if (((recvd_data.veh_v_ego + recvd_data.radar_vx[r_index]) < VX_LIMIT) 
+                || recvd_data.moving_state[r_index] == 3) continue;
 
-            // Exist probability flag - needs more testing to confirm threshold
-            if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
+        // Exist probability flag - needs more testing to confirm threshold
+        if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
 
-            // Valid flag - 1 is valid
-            if (recvd_data.radar_flag_valid[r_index] == 0) continue;
+        // Valid flag - 1 is valid
+        if (recvd_data.radar_flag_valid[r_index] == 0) continue;
 
-            // Measured and history flag - want history object only if measured
-            if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
+        // Measured and history flag - want history object only if measured
+        if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
 
-            // dLength - most likely an obj if it has length
-            if (recvd_data.d_length[r_index] == 0) continue;
+        // dLength - most likely an obj if it has length
+        if (recvd_data.d_length[r_index] == 0) continue;
 
-            filtered_radar_obj[filtered_index].radar_dx = recvd_data.radar_dx[r_index];
-            filtered_radar_obj[filtered_index].radar_dy = recvd_data.radar_dy[r_index];
-            filtered_radar_obj[filtered_index].radar_vx = recvd_data.radar_vx[r_index];
-            filtered_radar_obj[filtered_index].radar_vy = recvd_data.radar_vy[r_index];
-            filtered_radar_obj[filtered_index].radar_ax = recvd_data.radar_ax[r_index];
-            filtered_radar_obj[filtered_index].radar_dx_sigma = recvd_data.radar_dx_sigma[r_index];
-            filtered_radar_obj[filtered_index].radar_dy_sigma = recvd_data.radar_dy_sigma[r_index];
-            filtered_radar_obj[filtered_index].radar_vx_sigma = recvd_data.radar_vx_sigma[r_index];
-            filtered_radar_obj[filtered_index].radar_ax_sigma = recvd_data.radar_ax_sigma[r_index];
-            filtered_radar_obj[filtered_index].radar_w_exist = recvd_data.radar_w_exist[r_index];
-            filtered_radar_obj[filtered_index].radar_w_obstacle = recvd_data.radar_w_obstacle[r_index];
-            filtered_radar_obj[filtered_index].radar_flag_valid = recvd_data.radar_flag_valid[r_index]; // MUST HAVE
-            filtered_radar_obj[filtered_index].radar_w_non_obstacle = recvd_data.radar_w_non_obstacle[r_index];
-            filtered_radar_obj[filtered_index].flag_meas = recvd_data.flag_meas[r_index]; // MUST 
-            filtered_radar_obj[filtered_index].flag_hist = recvd_data.flag_hist[r_index];
-            filtered_radar_obj[filtered_index].d_length = recvd_data.d_length[r_index];
-            filtered_radar_obj[filtered_index].radar_dz = recvd_data.radar_dz[r_index];
-            filtered_radar_obj[filtered_index].moving_state = recvd_data.moving_state[r_index];
-            filtered_radar_obj[filtered_index].radar_w_class = recvd_data.radar_w_class[r_index];
-            filtered_radar_obj[filtered_index].radar_obj_class = recvd_data.radar_obj_class[r_index];
-            filtered_radar_obj[filtered_index].dx_rear_loss = recvd_data.dx_rear_loss[r_index];
-            filtered_radar_obj[filtered_index].radar_num = recvd_data.radar_num;
-            filtered_radar_obj[filtered_index].radar_timestamp = recvd_data.radar_timestamp;
+        printf("Success filtering radar data: %f, %f, %f, %f", recvd_data.radar_dx[r_index], recvd_data.radar_dy[r_index], recvd_data.radar_vx[r_index], recvd_data.radar_vy[r_index]);
 
-            filtered_index++;
-        }
-        return 1;
+        filtered_radar_obj[filtered_index].radar_dx = recvd_data.radar_dx[r_index];
+        filtered_radar_obj[filtered_index].radar_dy = recvd_data.radar_dy[r_index];
+        filtered_radar_obj[filtered_index].radar_vx = recvd_data.radar_vx[r_index];
+        filtered_radar_obj[filtered_index].radar_vy = recvd_data.radar_vy[r_index];
+        filtered_radar_obj[filtered_index].radar_ax = recvd_data.radar_ax[r_index];
+        filtered_radar_obj[filtered_index].radar_dx_sigma = recvd_data.radar_dx_sigma[r_index];
+        filtered_radar_obj[filtered_index].radar_dy_sigma = recvd_data.radar_dy_sigma[r_index];
+        filtered_radar_obj[filtered_index].radar_vx_sigma = recvd_data.radar_vx_sigma[r_index];
+        filtered_radar_obj[filtered_index].radar_ax_sigma = recvd_data.radar_ax_sigma[r_index];
+        filtered_radar_obj[filtered_index].radar_w_exist = recvd_data.radar_w_exist[r_index];
+        filtered_radar_obj[filtered_index].radar_w_obstacle = recvd_data.radar_w_obstacle[r_index];
+        filtered_radar_obj[filtered_index].radar_flag_valid = recvd_data.radar_flag_valid[r_index]; // MUST HAVE
+        filtered_radar_obj[filtered_index].radar_w_non_obstacle = recvd_data.radar_w_non_obstacle[r_index];
+        filtered_radar_obj[filtered_index].flag_meas = recvd_data.flag_meas[r_index]; // MUST 
+        filtered_radar_obj[filtered_index].flag_hist = recvd_data.flag_hist[r_index];
+        filtered_radar_obj[filtered_index].d_length = recvd_data.d_length[r_index];
+        filtered_radar_obj[filtered_index].radar_dz = recvd_data.radar_dz[r_index];
+        filtered_radar_obj[filtered_index].moving_state = recvd_data.moving_state[r_index];
+        filtered_radar_obj[filtered_index].radar_w_class = recvd_data.radar_w_class[r_index];
+        filtered_radar_obj[filtered_index].radar_obj_class = recvd_data.radar_obj_class[r_index];
+        filtered_radar_obj[filtered_index].dx_rear_loss = recvd_data.dx_rear_loss[r_index];
+        filtered_radar_obj[filtered_index].radar_num = recvd_data.radar_num;
+        filtered_radar_obj[filtered_index].radar_timestamp = recvd_data.radar_timestamp;
 
+        filtered_index++;
     }
-
-    else{
-        return 0;
-    } 
+    return filtered_radar_obj;
 }
 
 bool DataAssociation::filter_me(const common::mobileye_object_data& recvd_data){
@@ -196,8 +194,11 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
     global_clk = recvd_data.radar_timestamp;
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
+    std::vector<RadarObject> filtered_radar_obj;
+
     // filter detections
-    if(filter_radar(recvd_data)){
+    if(FRONT_RADAR && LEFT_CORNER_RADAR && RIGHT_CORNER_RADAR){
+        filtered_radar_obj = filter_radar(recvd_data);
         std::cout << "Valid Radar diagnostics service call" << std::endl;
 
          // Initialize service to sensor fusion
@@ -211,11 +212,11 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
                 ObjectState someObj(srv.response.id[srv_index], srv.response.dx[srv_index], srv.response.dy[srv_index], srv.response.timestamp[srv_index]);
                 stateVector.push_back(someObj); 
             }
-        } 
-
+        }
         else {
             ROS_ERROR("Failed to call service, but continuing to the already stored potential objects, maybe it matches up there!?");
         }
+        std::cout << "Size of state vector: " << stateVector.size() << std::endl;
 
         // Loop through each object in the filtered list
         for (size_t r_index = 0; r_index < filtered_radar_obj.size(); r_index++){
@@ -223,6 +224,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 
             // Create radar object
             RadarObject radar_obj = filtered_radar_obj[r_index];
+            //printf("Radar object index: %d: %f, %f, %f, %f", r_index, radar_obj.radar_dx, radar_obj.radar_dy, radar_obj.radar_vx, radar_obj.radar_vy);
 
             // check if detections match objects in environment state vector
             for (auto obj : stateVector) {
@@ -293,6 +295,8 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
             ROS_ERROR("Failed to call service, but continuing to the already stored potential objects, maybe it matches up there!?");
         }
 
+        std::cout << "Size of env state vector mobileye: " << envState.size() << std::endl;
+
         // Loop through each object in the filtered list
         for (size_t me_index = 0; me_index < filtered_me_obj.size(); me_index++){
             bool me_matched = 0;
@@ -303,6 +307,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
             // if the object we received is already in the envState, send it to kf
             for (auto obj : envState) {
                 if (objects_match_me(obj, me_obj)) {
+                    printf("%lu matched, sending now\n", obj.id);
                     associated_me_msg.obj_id = obj.id;
                     pub_me_signals(associated_me_msg, me_obj);
                     me_to_kf_pub.publish(associated_me_msg);

@@ -18,7 +18,9 @@
 #include "common/radar_object_data.h"
 
 #define MOBILEYE_TOPIC "Mobileye_CAN_Rx"
-#define RADAR_TOPIC "Radar_CAN_Rx"
+#define RADAR_ONE_TOPIC "Radar_One_CAN_Rx"
+#define RADAR_TWO_TOPIC "Radar_Two_CAN_Rx"
+#define RADAR_THREE_TOPIC "Radar_Three_CAN_Rx"
 #define KALMAN_FILTER_RADAR_TOPIC "associated_radar"
 #define KALMAN_FILTER_ME_TOPIC "associated_me"
 #define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
@@ -57,13 +59,13 @@ class DataAssociation {
         bool sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request& req, common::sensor_diagnostic_flag_CH4::Response &res);
 
         std::vector<ObjectState> potential_objs;
-        std::vector<RadarObject> filtered_radar_obj;
-        std::vector<MobileyeObject> filtered_me_obj;
+        //std::vector<RadarObject> filtered_radar_obj;// = std::vector<RadarObject>(32);
+        std::vector<MobileyeObject> filtered_me_obj;// = std::vector<MobileyeObject>(10);
 
         bool objects_match_radar(ObjectState obj, RadarObject& filtered_data);
         bool objects_match_me(ObjectState obj, MobileyeObject& filtered_data);
 
-        bool filter_radar(const common::radar_object_data& recvd_data);
+        std::vector<RadarObject> filter_radar(const common::radar_object_data& recvd_data);
         bool filter_me(const common::mobileye_object_data& recvd_data);
 
         void pub_radar_signals(common::associated_radar_msg &matched, RadarObject &r_obj);
