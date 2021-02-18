@@ -40,7 +40,7 @@ DataAssociation::DataAssociation(ros::NodeHandle* in_node_handle) : node_handle(
 
 std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_object_data& recvd_data){
 
-    std::vector<RadarObject> filtered_radar_obj(RADAR_OBJ);
+    std::vector<RadarObject> filtered_radar_obj;
 
     // need an algorithm here that will filter out bad sensor readings
     // reduce object count from 10 objects
@@ -51,6 +51,7 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
         if (recvd_data.radar_dx[r_index] < MIN_DX || recvd_data.radar_dx[r_index] > MAX_DX
             || abs(recvd_data.radar_dy[r_index]) > DY_LIMIT) continue;
 
+    /* COMMENT OUT FOR SIMULATION
         // Stationary objects
         if (((recvd_data.veh_v_ego + recvd_data.radar_vx[r_index]) < VX_LIMIT) 
                 || recvd_data.moving_state[r_index] == 3) continue;
@@ -66,74 +67,79 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
 
         // dLength - most likely an obj if it has length
         if (recvd_data.d_length[r_index] == 0) continue;
+    */
 
-        printf("Success filtering radar data: %f, %f, %f, %f", recvd_data.radar_dx[r_index], recvd_data.radar_dy[r_index], recvd_data.radar_vx[r_index], recvd_data.radar_vy[r_index]);
+        // printf("Success filtering radar data: %f, %f, %f, %f", recvd_data.radar_dx[r_index], recvd_data.radar_dy[r_index], recvd_data.radar_vx[r_index], recvd_data.radar_vy[r_index]);
 
-        filtered_radar_obj[filtered_index].radar_dx = recvd_data.radar_dx[r_index];
-        filtered_radar_obj[filtered_index].radar_dy = recvd_data.radar_dy[r_index];
-        filtered_radar_obj[filtered_index].radar_vx = recvd_data.radar_vx[r_index];
-        filtered_radar_obj[filtered_index].radar_vy = recvd_data.radar_vy[r_index];
-        filtered_radar_obj[filtered_index].radar_ax = recvd_data.radar_ax[r_index];
-        filtered_radar_obj[filtered_index].radar_dx_sigma = recvd_data.radar_dx_sigma[r_index];
-        filtered_radar_obj[filtered_index].radar_dy_sigma = recvd_data.radar_dy_sigma[r_index];
-        filtered_radar_obj[filtered_index].radar_vx_sigma = recvd_data.radar_vx_sigma[r_index];
-        filtered_radar_obj[filtered_index].radar_ax_sigma = recvd_data.radar_ax_sigma[r_index];
-        filtered_radar_obj[filtered_index].radar_w_exist = recvd_data.radar_w_exist[r_index];
-        filtered_radar_obj[filtered_index].radar_w_obstacle = recvd_data.radar_w_obstacle[r_index];
-        filtered_radar_obj[filtered_index].radar_flag_valid = recvd_data.radar_flag_valid[r_index]; // MUST HAVE
-        filtered_radar_obj[filtered_index].radar_w_non_obstacle = recvd_data.radar_w_non_obstacle[r_index];
-        filtered_radar_obj[filtered_index].flag_meas = recvd_data.flag_meas[r_index]; // MUST 
-        filtered_radar_obj[filtered_index].flag_hist = recvd_data.flag_hist[r_index];
-        filtered_radar_obj[filtered_index].d_length = recvd_data.d_length[r_index];
-        filtered_radar_obj[filtered_index].radar_dz = recvd_data.radar_dz[r_index];
-        filtered_radar_obj[filtered_index].moving_state = recvd_data.moving_state[r_index];
-        filtered_radar_obj[filtered_index].radar_w_class = recvd_data.radar_w_class[r_index];
-        filtered_radar_obj[filtered_index].radar_obj_class = recvd_data.radar_obj_class[r_index];
-        filtered_radar_obj[filtered_index].dx_rear_loss = recvd_data.dx_rear_loss[r_index];
-        filtered_radar_obj[filtered_index].radar_num = recvd_data.radar_num;
-        filtered_radar_obj[filtered_index].radar_timestamp = recvd_data.radar_timestamp;
+        RadarObject filtered_temp;
 
-        filtered_index++;
+        filtered_temp.radar_dx = recvd_data.radar_dx[r_index];
+        filtered_temp.radar_dy = recvd_data.radar_dy[r_index];
+        filtered_temp.radar_vx = recvd_data.radar_vx[r_index];
+        filtered_temp.radar_ax = recvd_data.radar_ax[r_index];
+        filtered_temp.radar_dx_sigma = recvd_data.radar_dx_sigma[r_index];
+        filtered_temp.radar_dy_sigma = recvd_data.radar_dy_sigma[r_index];
+        filtered_temp.radar_vx_sigma = recvd_data.radar_vx_sigma[r_index];
+        filtered_temp.radar_ax_sigma = recvd_data.radar_ax_sigma[r_index];
+        filtered_temp.radar_w_exist = recvd_data.radar_w_exist[r_index];
+        filtered_temp.radar_w_obstacle = recvd_data.radar_w_obstacle[r_index];
+        filtered_temp.radar_flag_valid = recvd_data.radar_flag_valid[r_index]; // MUST HAVE
+        filtered_temp.radar_w_non_obstacle = recvd_data.radar_w_non_obstacle[r_index];
+        filtered_temp.flag_meas = recvd_data.flag_meas[r_index]; // MUST 
+        filtered_temp.flag_hist = recvd_data.flag_hist[r_index];
+        filtered_temp.d_length = recvd_data.d_length[r_index];
+        filtered_temp.radar_dz = recvd_data.radar_dz[r_index];
+        filtered_temp.moving_state = recvd_data.moving_state[r_index];
+        filtered_temp.radar_w_class = recvd_data.radar_w_class[r_index];
+        filtered_temp.radar_obj_class = recvd_data.radar_obj_class[r_index];
+        filtered_temp.dx_rear_loss = recvd_data.dx_rear_loss[r_index];
+        filtered_temp.radar_num = recvd_data.radar_num;
+        filtered_temp.radar_timestamp = recvd_data.radar_timestamp;
+        filtered_temp.radar_vy = recvd_data.radar_vy[r_index];
+
+        filtered_radar_obj.push_back(filtered_temp);
     }
     return filtered_radar_obj;
 }
 
-bool DataAssociation::filter_me(const common::mobileye_object_data& recvd_data){
+std::vector<MobileyeObject> DataAssociation::filter_me(const common::mobileye_object_data& recvd_data){
+
+    std::vector<MobileyeObject> filtered_me_obj;
+
+    // need an algorithm here that will filter out bad sensor readings (for now just copy them over)
+    // this will likely reduce object count from 32 objects every new message
+    size_t filtered_index = 0;
+    for (size_t me_index = 0; me_index < ME_OBJ; me_index++){
+        // dx and dy threshold
+        if (recvd_data.me_dx[me_index] < MIN_DX || recvd_data.me_dx[me_index] > MAX_DX
+            || abs(recvd_data.me_dy[me_index] > DY_LIMIT) ) continue;
+
+    /* COMMENT OUT FOR SIMULATION
+        // Stationary objects - status: never moved
+        if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
+        
+        // Valid objects
+        if (recvd_data.me_valid[me_index] == 0) continue;
+    */
+
+        MobileyeObject filtered_me_temp;
+
+        filtered_me_temp.me_dx = recvd_data.me_dx[me_index];
+        filtered_me_temp.me_dy = recvd_data.me_dy[me_index];
+        filtered_me_temp.me_vx = recvd_data.me_vx[me_index];
+        filtered_me_temp.me_ax = recvd_data.me_ax[me_index];
+        filtered_me_temp.me_type = recvd_data.me_type[me_index];
+        filtered_me_temp.me_status = recvd_data.me_status[me_index];
+        filtered_me_temp.me_valid = recvd_data.me_valid[me_index];
+        filtered_me_temp.me_cut_in_cut_out = recvd_data.me_cut_in_cut_out[me_index];
+        filtered_me_temp.me_age = recvd_data.me_age[me_index];
+        filtered_me_temp.me_lane = recvd_data.me_lane[me_index];
+        filtered_me_temp.me_cipv_flag = recvd_data.me_cipv_flag[me_index];
+        filtered_me_temp.me_timestamp = recvd_data.me_timestamp;
     
-    if (MOBILEYE){
-        // need an algorithm here that will filter out bad sensor readings (for now just copy them over)
-        // this will likely reduce object count from 32 objects every new message
-        size_t filtered_index = 0;
-        for (size_t me_index = 0; me_index < ME_OBJ; me_index++){
-            // dx and dy threshold
-            if (recvd_data.me_dx[me_index] < MIN_DX || recvd_data.me_dx[me_index] > MAX_DX
-                || abs(recvd_data.me_dy[me_index] > DY_LIMIT) ) continue;
-
-            // Stationary objects - status: never moved
-            if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
-            
-            // Valid objects
-            if (recvd_data.me_valid[me_index] == 0) continue;
-
-            filtered_me_obj[filtered_index].me_dx = recvd_data.me_dx[me_index];
-            filtered_me_obj[filtered_index].me_dy = recvd_data.me_dy[me_index];
-            filtered_me_obj[filtered_index].me_vx = recvd_data.me_vx[me_index];
-            filtered_me_obj[filtered_index].me_ax = recvd_data.me_ax[me_index];
-            filtered_me_obj[filtered_index].me_type = recvd_data.me_type[me_index];
-            filtered_me_obj[filtered_index].me_status = recvd_data.me_status[me_index];
-            filtered_me_obj[filtered_index].me_valid = recvd_data.me_valid[me_index];
-            filtered_me_obj[filtered_index].me_cut_in_cut_out = recvd_data.me_cut_in_cut_out[me_index];
-            filtered_me_obj[filtered_index].me_age = recvd_data.me_age[me_index];
-            filtered_me_obj[filtered_index].me_lane = recvd_data.me_lane[me_index];
-            filtered_me_obj[filtered_index].me_cipv_flag = recvd_data.me_cipv_flag[me_index];
-            filtered_me_obj[filtered_index].me_timestamp = recvd_data.me_timestamp;
-        }
-        return 1;
+        filtered_me_obj.push_back(filtered_me_temp);
     }
-    else{
-        return 0;
-    }
-
+    return filtered_me_obj;
 }
 
 void DataAssociation::pub_radar_signals(common::associated_radar_msg &associated_radar_msg, RadarObject &r_obj){
@@ -162,7 +168,7 @@ void DataAssociation::delete_potential_objects() {
 
     for (unsigned i = 0; i < potential_objs.size(); i++){
         if(global_clk - potential_objs[i].timestamp > secondsToDelete){
-            std::cout << "Potential object deleted because too old in temp array" << std::endl;
+            // std::cout << "Potential object deleted because too old in temp array" << std::endl;
             potential_objs.erase(potential_objs.begin()+i);
         }
     }
@@ -171,7 +177,7 @@ void DataAssociation::delete_potential_objects() {
 
 bool DataAssociation::objects_match_radar(ObjectState obj, RadarObject& filtered) {
     // filter dx, dy, vx
-    if (abs(filtered.radar_dx - obj.dx) < DX_TOL && abs(filtered.radar_dy - obj.dy) < DY_TOL && abs(filtered.radar_vx - obj.vx) < VX_TOL) {
+    if ((abs(filtered.radar_dx - obj.dx) < DX_TOL) && (abs(filtered.radar_dy - obj.dy) < DY_TOL) && (abs(filtered.radar_vx - obj.vx) < VX_TOL)) {
         printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n", 
             filtered.radar_dx - obj.dx, filtered.radar_dy - obj.dy, filtered.radar_vx - obj.vx);
         return 1;
@@ -181,7 +187,7 @@ bool DataAssociation::objects_match_radar(ObjectState obj, RadarObject& filtered
 
 bool DataAssociation::objects_match_me(ObjectState obj, MobileyeObject& filtered) {
     // filter dx, dy, vx
-    if (abs(filtered.me_dx - obj.dx) < DX_TOL && abs(filtered.me_dy - obj.dy) < DY_TOL && abs(filtered.me_vx - obj.vx) < VX_TOL) {
+    if ((abs(filtered.me_dx - obj.dx) < DX_TOL) && (abs(filtered.me_dy - obj.dy) < DY_TOL) && (abs(filtered.me_vx - obj.vx) < VX_TOL)) {
         printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n", 
             filtered.me_dx - obj.dx, filtered.me_dy - obj.dy, filtered.me_vx - obj.vx);
         return 1;
@@ -199,7 +205,8 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
     // filter detections
     if(FRONT_RADAR && LEFT_CORNER_RADAR && RIGHT_CORNER_RADAR){
         filtered_radar_obj = filter_radar(recvd_data);
-        std::cout << "Valid Radar diagnostics service call" << std::endl;
+        std::cout << "Filtered radar object size " << filtered_radar_obj.size() << std::endl;
+        // std::cout << "Valid Radar diagnostics service call" << std::endl;
 
          // Initialize service to sensor fusion
         sensor_fusion::env_state_srv srv;
@@ -207,7 +214,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 
         // Make a service call every time a new message comes in
         if (client.call(srv)){
-            std::cout<<"Radar service called successfully\n";
+            // std::cout<<"Radar service called successfully\n";
             for (size_t srv_index = 0; srv_index < srv.response.id.size(); srv_index++) {
                 ObjectState someObj(srv.response.id[srv_index], srv.response.dx[srv_index], srv.response.dy[srv_index], srv.response.timestamp[srv_index]);
                 stateVector.push_back(someObj); 
@@ -216,7 +223,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
         else {
             ROS_ERROR("Failed to call service, but continuing to the already stored potential objects, maybe it matches up there!?");
         }
-        std::cout << "Size of state vector: " << stateVector.size() << std::endl;
+        // std::cout << "Size of state vector: " << stateVector.size() << std::endl;
 
         // Loop through each object in the filtered list
         for (size_t r_index = 0; r_index < filtered_radar_obj.size(); r_index++){
@@ -224,7 +231,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 
             // Create radar object
             RadarObject radar_obj = filtered_radar_obj[r_index];
-            //printf("Radar object index: %d: %f, %f, %f, %f", r_index, radar_obj.radar_dx, radar_obj.radar_dy, radar_obj.radar_vx, radar_obj.radar_vy);
+            printf("Radar object index: %d: %f, %f, %f, %f\n", r_index, radar_obj.radar_dx, radar_obj.radar_dy, radar_obj.radar_vx, radar_obj.radar_vy);
 
             // check if detections match objects in environment state vector
             for (auto obj : stateVector) {
@@ -247,7 +254,8 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
                         obj_iterator->dx = radar_obj.radar_dx;
                         obj_iterator->dy = radar_obj.radar_dy;
                         obj_iterator->count++;
-
+                        matched = 1;
+                        printf("radar temp match count: %d \n", obj_iterator->count);
                         // Once iterator > threshold, publish
                         if (obj_iterator->count > POTENTIAL_THRESHOLD) {
                             associated_radar_msg.obj_id = next_id++;
@@ -260,14 +268,17 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
                     }
                 }
             }
-        }
 
+            // // Not match env state vector or temporary array 
+            // if (!matched) {                 
+            //     std::cout << "added radar object to potentials" << std::endl;
+            //     potential_objs.emplace_back(ObjectState(radar_obj.radar_dx, radar_obj.radar_dy));
+            // }      
+        }
     }
     else{
         std::cout<< "Invalid radar service call" << std::endl;
     }
-
-   
 }
 
 void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_data& recvd_data) {
@@ -275,17 +286,19 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
     global_clk = recvd_data.me_timestamp;
     std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
-    // filter detections
-    if(filter_me(recvd_data)){
-        std::cout << "Mobileye message valid!" << std::endl;
+    std::vector<MobileyeObject> filtered_me_obj;
 
+    // filter detections
+    if(MOBILEYE){
+        std::cout << "Mobileye message valid!" << std::endl;
+        filtered_me_obj = filter_me(recvd_data);
         // Initalize service
         sensor_fusion::env_state_srv srv;
         std::vector<ObjectState> envState;
 
         // Call service everytime new me callback message received
         if (client.call(srv)){
-            std::cout<<"Mobileye service called successfully\n";
+            // std::cout<<"Mobileye service called successfully\n";
             for (size_t srv_index = 0; srv_index < srv.response.id.size(); srv_index ++) {
                 ObjectState someObj(srv.response.id[srv_index], srv.response.dx[srv_index], srv.response.dy[srv_index], srv.response.timestamp[srv_index]);
                 envState.push_back(someObj); 
@@ -303,7 +316,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
 
             // create mobileye object
             MobileyeObject me_obj = filtered_me_obj[me_index];
-
+            printf("ME object index: %d: %f, %f\n", me_index, me_obj.me_dx, me_obj.me_dy);
             // if the object we received is already in the envState, send it to kf
             for (auto obj : envState) {
                 if (objects_match_me(obj, me_obj)) {

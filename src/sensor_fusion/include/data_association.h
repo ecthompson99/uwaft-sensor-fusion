@@ -31,7 +31,7 @@
 
 #define DX_TOL 5
 #define DY_TOL 1.5
-#define VX_TOL 3
+#define VX_TOL 10
 #define POTENTIAL_THRESHOLD 5
 #define secondsToDelete 3
 #define MESSAGE_BUFFER_SIZE 10
@@ -66,7 +66,7 @@ class DataAssociation {
         bool objects_match_me(ObjectState obj, MobileyeObject& filtered_data);
 
         std::vector<RadarObject> filter_radar(const common::radar_object_data& recvd_data);
-        bool filter_me(const common::mobileye_object_data& recvd_data);
+        std::vector<MobileyeObject> filter_me(const common::mobileye_object_data& recvd_data);
 
         void pub_radar_signals(common::associated_radar_msg &matched, RadarObject &r_obj);
         void pub_me_signals(common::associated_me_msg &matched, MobileyeObject &me_obj);
