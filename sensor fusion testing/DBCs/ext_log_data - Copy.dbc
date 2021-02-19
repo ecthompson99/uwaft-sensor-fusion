@@ -1,0 +1,173 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/4/%%%/4/'%**4YYY///"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_:
+
+
+BO_ 1792 AWSDisplay: 8 Vector__XXX
+ SG_ HeadwayWarningLevel : 56|2@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Ped_in_DZ : 42|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Ped_FCW : 41|1@1- (1,0) [0|0] "" Vector__XXX
+ SG_ Failsafe : 39|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Maintenance : 38|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ RightCrossing : 37|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ LeftCrossing : 36|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ FCW_on : 35|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ RightLDWOn : 34|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ LeftLDWOn : 33|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ LanesOn : 32|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ HeadwayMeasurement : 17|7@1+ (0.1,0) [0|9.9] "s" Vector__XXX
+ SG_ HeadwayValid : 16|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Suppress : 7|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ NightTimeIndicator : 4|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ DuskTimeIndicator : 3|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ SoundType : 0|3@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 1897 LKA_Right_Lane_B: 8 Vector__XXX
+ SG_ View_Range_Availability : 31|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ View_Range : 16|15@1+ (0.00390625,0) [0|127.99609375] "meters" Vector__XXX
+ SG_ Heading_Angle : 0|16@1+ (0.0009765625,-31.9990234375) [-0.357|0.357] "radians" Vector__XXX
+
+BO_ 1895 LKA_Left_Lane_B: 8 Vector__XXX
+ SG_ View_Range_Availability : 31|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ View_Range : 16|15@1+ (0.00390625,0) [0|127.99609375] "meters" Vector__XXX
+ SG_ Heading_Angle : 0|16@1+ (0.0009765625,-31.9990234375) [-0.357|0.357] "radians" Vector__XXX
+
+BO_ 1896 LKA_Right_Lane_A: 8 Vector__XXX
+ SG_ Width_right_marking : 56|8@1+ (0.01,0) [0|2.55] "m" Vector__XXX
+ SG_ Curvature_Derivative : 40|16@1+ (3.7252902985E-009,-0.00012206658721) [-0.00012206658721|0.000122070312502198] "1/meter^2" Vector__XXX
+ SG_ Curvature : 24|16@1+ (9.76563E-007,-0.031999023438) [-0.031999023438|0.032000032767] "1/meters" Vector__XXX
+ SG_ Position : 8|16@1- (0.00390625,0) [-128|127.99609375] "meters" Vector__XXX
+ SG_ Model_Degree : 6|2@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Quality : 4|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ LaneType : 0|4@1+ (1,0) [0|6] "" Vector__XXX
+
+BO_ 1894 LKA_Left_Lane_A: 8 Vector__XXX
+ SG_ Width_right_marking : 56|8@1+ (0.01,0) [0|2.55] "m" Vector__XXX
+ SG_ Curvature_Derivative : 40|16@1+ (3.7252902985E-009,-0.00012206658721) [-0.00012206658721|0.000122070312502198] "1/meter^2" Vector__XXX
+ SG_ Curvature : 24|16@1+ (9.76563E-007,-0.031999023438) [-0.031999023438|0.032000032767] "1/meters" Vector__XXX
+ SG_ Position : 8|16@1- (0.00390625,0) [-128|127.99609375] "meters" Vector__XXX
+ SG_ Model_Degree : 6|2@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Quality : 4|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ LaneType : 0|4@1+ (1,0) [0|6] "" Vector__XXX
+
+BO_ 1847 Lane_Details: 8 Vector__XXX
+ SG_ Position_in_Lanes : 7|4@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ Number_of_Lanes : 3|4@0+ (1,0) [0|0] "" Vector__XXX
+ SG_ Left_Guard_Rail : 26|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Right_Guard_Rail : 27|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ Yaw_Angle : 32|16@1+ (0.000976563,-31.999) [-31.999|32] "radians" Vector__XXX
+ SG_ Left_LDW_Availability : 30|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Right_LDW_Availability : 29|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Pitch_Angle : 48|16@1+ (1.5259E-006,-0.05) [-0.05|0.05] "radians" Vector__XXX
+ SG_ construction_area : 28|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 1851 ObstacleDataC: 8 Vector__XXX
+ SG_ Object_Accel_X : 32|10@1- (0.03,0) [-14.97|14.97] "m/s square" Vector__XXX
+ SG_ ObstacleAngle : 48|16@1- (0.01,0) [-327.68|327.68] "degree" Vector__XXX
+ SG_ ObstacleReplaced : 44|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ObstacleScaleChange : 16|16@1- (0.0002,0) [-6.5534|6.5534] "pix/sec" Vector__XXX
+ SG_ ObstacleAngleRate : 0|16@1- (0.01,0) [-327.68|327.67] "degree" Vector__XXX
+
+BO_ 1850 ObstacleDataB: 8 Vector__XXX
+ SG_ MatchedRadarID : 56|7@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RadarMatchConfidence : 52|3@1+ (1,0) [0|5] "" Vector__XXX
+ SG_ RadarVelX : 40|12@1- (0.0625,0) [-128|128] "m/sec" Vector__XXX
+ SG_ RadarPosX : 28|12@1+ (0.0625,0) [0|255.938] "m" Vector__XXX
+ SG_ CIPVFlag : 26|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ ObstacleLane : 24|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ ObstacleAge : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ ObstacleWidth : 8|8@1+ (0.05,0) [0|12.5] "m" Vector__XXX
+ SG_ ObstacleLenght : 0|8@1+ (0.5,0) [0|31.5] "m" Vector__XXX
+
+BO_ 1849 ObstacleDataA: 8 Vector__XXX
+ SG_ Cut_in_and_Out : 37|3@1+ (1,0) [0|7] "" Vector__XXX
+ SG_ BlinkerInfo : 34|3@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ ObstacleValid : 62|2@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ ObstacleBrakeLights : 59|1@1+ (1,0) [0|0] "" Vector__XXX
+ SG_ ObstacleStatus : 56|3@1+ (1,0) [0|7] "" Vector__XXX
+ SG_ ObstacleType : 52|3@1+ (1,0) [0|7] "" Vector__XXX
+ SG_ ObstacleVelX : 40|12@1- (0.0625,0) [-127.93|127.93] "m/sec" Vector__XXX
+ SG_ ObstaclePosY : 24|10@1- (0.0625,0) [-32|31.9375] "m" Vector__XXX
+ SG_ ObstaclePosX : 8|12@1+ (0.0625,0) [0|250] "m" Vector__XXX
+ SG_ ObstacleID : 0|8@1+ (1,0) [0|63] "" Vector__XXX
+
+
+
+CM_ SG_ 1851 Object_Accel_X "The longitude acceleration of the object. 
+Type: 10 bit, signed integer 
+Range: -14.97 : 14.97 [m/s2]
+Conversion: (HEX)* 0.03
+Invalid value: 200h";
+CM_ SG_ 1851 ObstacleScaleChange "currently not in use
+always zero";
+CM_ SG_ 1850 CIPVFlag "0 - not CIPV
+1 - CIPV";
+CM_ SG_ 1849 Cut_in_and_Out "The signal is based on our estimation of where the target is now relatively to the lanes, its rate of change, and our estimation of where it is going to be within one second.
+
+";
+CM_ SG_ 1849 ObstacleBrakeLights "0 = off or not identifined
+1 = on";
+CM_ SG_ 1849 ObstacleID "New obstacles are given the last used free ID";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "BusType" "CAN";
+VAL_ 1792 HeadwayWarningLevel 3 "CIPV presents, HW < 0.6 (Red)" 2 "CIPV presents 0.6>HW>1.0 Orange" 1 "CIPV presents, HW >1.0 (Green)" 0 "no CPV is present" ;
+VAL_ 1792 Ped_in_DZ 1 "ped is in danger zone" 0 "ped is not in a danger zone" ;
+VAL_ 1792 Ped_FCW 1 "There is an FCW warning" 0 "No FCW warning" ;
+VAL_ 1792 Failsafe 1 "internal FailSafe mode" 0 "no internal FailSafe mode" ;
+VAL_ 1792 Maintenance 1 "internal error" 0 "no internal error" ;
+VAL_ 1792 RightCrossing 1 "right crossing" 0 "no right crossing" ;
+VAL_ 1792 LeftCrossing 1 "left crossing" 0 "no left crossing" ;
+VAL_ 1792 FCW_on 1 "There is an FCW warning" 0 "No FCW warning" ;
+VAL_ 1792 RightLDWOn 1 "right LDW" 0 "no right LDW" ;
+VAL_ 1792 LeftLDWOn 1 "left LDW" 0 "no left LDW" ;
+VAL_ 1792 LanesOn 1 "LD algorithm ON" 0 "LD algorithm OFF (no speed)" ;
+VAL_ 1792 HeadwayValid 1 "valid" 0 "not valid" ;
+VAL_ 1792 Suppress 1 "new sound or suppressed sound" 0 "old sound" ;
+VAL_ 1792 NightTimeIndicator 1 "night mode " 0 "not in night mode" ;
+VAL_ 1792 DuskTimeIndicator 1 "dusk mode" 0 "not in dusk mode" ;
+VAL_ 1792 SoundType 7 "Reserved" 6 "Hard FCW + Peds FCW" 5 "Soft FCW" 4 "Near_HW" 3 "Far_HW (=HW1/HW2/HW3)" 2 "LDWR" 1 "LDWL" 0 "silent" ;
+VAL_ 1847 Left_Guard_Rail 1 "Guard rail detected" 0 "No guard rail detected" ;
+VAL_ 1847 Right_Guard_Rail 1 "Guard rail detected" 0 "No guard rail detected" ;
+VAL_ 1851 ObstacleReplaced 1 "replaced in this frame" 0 "not replaced in this frame" ;
+VAL_ 1850 CIPVFlag 1 "CIPV" 0 "not CIPV" ;
+VAL_ 1850 ObstacleLane 3 "invalid" 2 "next lane (left or right)" 1 "ego lane" 0 "not assigned" ;
+VAL_ 1849 Cut_in_and_Out 4 "cut_out" 3 "cut_in" 2 "out_host_lane" 1 "in_host_lane" 0 "undefined" ;
+VAL_ 1849 BlinkerInfo 4 "both" 3 "right" 2 "left" 1 "off" 0 "unavailable" ;
+VAL_ 1849 ObstacleValid 2 "older valid" 1 "new valid (detected this frame)" ;
+VAL_ 1849 ObstacleBrakeLights 1 "object's brake lights are on" 0 "object's brake lights are off" ;
+VAL_ 1849 ObstacleStatus 6 "Unused" 5 "Parked never moved, BckLightsOff" 4 "Oncoming" 3 "moving" 2 "stopped (movable)" 1 "standing neverMoved bckLightsOn" 0 "not defined" ;
+VAL_ 1849 ObstacleType 4 "Bicycle" 3 "pedestrian" 2 "bike" 1 "truck" 0 "vehicle" ;
+
