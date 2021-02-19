@@ -77,7 +77,7 @@ void EnvironmentState::filtered_object_callback(const common::filtered_object_ms
 		global_clk = filtered_msg.obj_timestamp;
 		first_timestamp = 0;
 	}
-	else if (filtered_msg.obj_timestamp > global_clk + 0.1) {
+	else if (filtered_msg.obj_timestamp > global_clk + 0.01) {
 		publish_binary_class(filtered_msg.obj_timestamp);
 		publish_tracked_obj();
         publish_target_obj();
