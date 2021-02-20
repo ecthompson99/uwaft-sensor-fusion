@@ -5,9 +5,9 @@ load('./mat files/mobileye.mat');
 load('./mat files/radar.mat');
 
 rosinit
-me_pub = rospublisher('/mobileye','common/mobileye_object_data');
+me_pub = rospublisher('/Mobileye_CAN_Rx','common/mobileye_object_data');
 me_msg = rosmessage(me_pub);
-radar_pub = rospublisher('/front_radar','common/radar_object_data');
+radar_pub = rospublisher('/Radar_One_CAN_Rx','common/radar_object_data');
 radar_msg = rosmessage(radar_pub);
 
 radar_index = 0;
@@ -15,16 +15,17 @@ radar_obj = 0;
 me_index = 0;
 me_obj = 0;
 clk = 0;
-radar_msg.RadarTimestamp = radar_final.time_in_sec(radar_index);
-me_msg.MeTimestamp = me_final.time_in_sec(me_index);
+time_interval = 0.01;
+radar_msg.radar_timestamp = radar_final.time_in_sec(radar_index);
+me_msg.me_timestamp = me_final.time_in_sec(me_index);
 
 while true
 
-    while radar_msg.RadarTimestamp > clk + .001 && me_msg.MeTimestamp > clk + .001
-        clk = clk + .001;
+    while radar_msg.radar_timestamp > clk + time_interval && me_msg.me_timestamp > clk + time_interval
+        clk = clk + time_interval;
     end
 
-    if radar_msg.RadarTimestamp < clk + .001
+    if radar_msg.radar_timestamp < clk + time_interval
         if radar_obj == 31
             radar_obj = 0;
         end
@@ -60,7 +61,7 @@ while true
         radar_msg.radar_timestamp = radar_final.time_in_sec(radar_index);
     end
 
-    if me_msg.MeTimestamp < clk + .001
+    if me_msg.me_timestamp < clk + time_interval
         if me_obj == 9
             me_obj = 0;
         end
