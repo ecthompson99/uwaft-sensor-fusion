@@ -97,7 +97,7 @@ void EnvironmentState::publish_binary_class(double t) {
 	out.global_clk = global_clk;
 	out.timestamp = t;
 	binary_class_pub.publish(out);
-	global_clk += 0.1;
+	global_clk += 0.01;
 }
 
 common::target_output_msg EnvironmentState::get_target_output_msg() { return target_output_msg; }
