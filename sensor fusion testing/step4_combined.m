@@ -27,7 +27,7 @@ while true
     end
 
     if radar_msg.RadarTimestamp < clk + time_interval
-        if radar_obj == 32
+        if radar_obj > 32
             radar_obj = 1;
         end
             
@@ -63,7 +63,7 @@ while true
     end
 
     if me_msg.MeTimestamp < clk + time_interval
-        if me_obj == 10
+        if me_obj > 10
             me_obj = 1;
         end
         

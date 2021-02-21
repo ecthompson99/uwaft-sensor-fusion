@@ -51,23 +51,23 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
         if (recvd_data.radar_dx[r_index] < MIN_DX || recvd_data.radar_dx[r_index] > MAX_DX
             || abs(recvd_data.radar_dy[r_index]) > DY_LIMIT) continue;
 
-    /* COMMENT OUT FOR SIMULATION
+    // COMMENT OUT FOR SIMULATION
         // Stationary objects
-        if (((recvd_data.veh_v_ego + recvd_data.radar_vx[r_index]) < VX_LIMIT) 
-                || recvd_data.moving_state[r_index] == 3) continue;
+        // if (((recvd_data.veh_v_ego + recvd_data.radar_vx[r_index]) < VX_LIMIT) 
+        //         || recvd_data.moving_state[r_index] == 3) continue;
 
         // Exist probability flag - needs more testing to confirm threshold
-        if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
+        // if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
 
         // Valid flag - 1 is valid
-        if (recvd_data.radar_flag_valid[r_index] == 0) continue;
+        // if (recvd_data.radar_flag_valid[r_index] == 0) continue;
 
         // Measured and history flag - want history object only if measured
-        if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
+        // if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
 
         // dLength - most likely an obj if it has length
-        if (recvd_data.d_length[r_index] == 0) continue;
-    */
+        // if (recvd_data.d_length[r_index] == 0) continue;
+    
 
         // printf("Success filtering radar data: %f, %f, %f, %f", recvd_data.radar_dx[r_index], recvd_data.radar_dy[r_index], recvd_data.radar_vx[r_index], recvd_data.radar_vy[r_index]);
 
@@ -114,13 +114,13 @@ std::vector<MobileyeObject> DataAssociation::filter_me(const common::mobileye_ob
         if (recvd_data.me_dx[me_index] < MIN_DX || recvd_data.me_dx[me_index] > MAX_DX
             || abs(recvd_data.me_dy[me_index] > DY_LIMIT) ) continue;
 
-    /* COMMENT OUT FOR SIMULATION
+    //  COMMENT OUT FOR SIMULATION
         // Stationary objects - status: never moved
         if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
         
         // Valid objects
         if (recvd_data.me_valid[me_index] == 0) continue;
-    */
+    
 
         MobileyeObject filtered_me_temp;
 
@@ -269,11 +269,11 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
                 }
             }
 
-            // // Not match env state vector or temporary array 
-            // if (!matched) {                 
-            //     std::cout << "added radar object to potentials" << std::endl;
-            //     potential_objs.emplace_back(ObjectState(radar_obj.radar_dx, radar_obj.radar_dy));
-            // }      
+            // Not match env state vector or temporary array 
+            if (!matched) {                 
+                std::cout << "added radar object to potentials" << std::endl;
+                potential_objs.emplace_back(ObjectState(radar_obj.radar_dx, radar_obj.radar_dy));
+            }      
         }
     }
     else{

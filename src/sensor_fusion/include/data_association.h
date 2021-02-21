@@ -38,7 +38,7 @@
 #define RADAR_OBJ 32
 #define ME_OBJ 10
 #define MIN_DX 1
-#define MAX_DX 100
+#define MAX_DX 150
 #define DY_LIMIT 10
 #define VX_LIMIT 1
 #define EXIST 0.85

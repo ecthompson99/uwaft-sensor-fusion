@@ -2,7 +2,7 @@ clear all
 clc
 %% Load rosbag from SF output
 
-bag = rosbag('sensor_fusion_test.bag');
+bag = rosbag('2021-02-20-20-40-48.bag');
 
 % Select tracked obj topic
 tracked_obj_bag = select(bag, 'Topic', 'binary_class'); 
@@ -34,5 +34,5 @@ for i = 1:data_size
     end
 end
 
-save('sf_output','sf_results');
+save('sf_output.mat','sf_results');
 
