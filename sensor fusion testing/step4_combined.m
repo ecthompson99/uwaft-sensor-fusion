@@ -3,6 +3,7 @@ clear
 clc
 load('./mat files/mobileye.mat');
 load('./mat files/radar.mat');
+load('./mat files/vehicle.mat');
 
 rosinit
 me_pub = rospublisher('/Mobileye_CAN_Rx','common/mobileye_object_data');
@@ -11,12 +12,13 @@ radar_pub = rospublisher('/Radar_One_CAN_Rx','common/radar_object_data');
 radar_msg = rosmessage(radar_pub);
 
 % array index start from 1
+veh_index = 1;
 radar_index = 1;
 radar_obj = 1;
 me_index = 1;
 me_obj = 1;
 clk = 0;
-time_interval = 0.01;
+time_interval = 0.01; % publish rate
 radar_msg.RadarTimestamp = radar_final.time_in_sec(radar_index);
 me_msg.MeTimestamp = me_final.time_in_sec(me_index);
 
@@ -42,7 +44,6 @@ while true
         radar_msg.RadarDySigma(radar_obj) = radar_final.Signals{radar_index+1,1}.(fields_B{3});
         radar_msg.RadarVxSigma(radar_obj) = radar_final.Signals{radar_index+1,1}.(fields_B{9});
         radar_msg.RadarAxSigma(radar_obj) = radar_final.Signals{radar_index+1,1}.(fields_B{11});
-       
         radar_msg.RadarWExist(radar_obj) = radar_final.Signals{radar_index,1}.(fields_A{3});
         radar_msg.RadarWObstacle(radar_obj) = radar_final.Signals{radar_index,1}.(fields_A{1});
         radar_msg.RadarFlagValid(radar_obj) = radar_final.Signals{radar_index,1}.(fields_A{8});
@@ -56,9 +57,15 @@ while true
         radar_msg.RadarObjClass(radar_obj) = radar_final.Signals{radar_index+1,1}.(fields_B{5});
         radar_msg.DxRearLoss(radar_obj) = radar_final.Signals{radar_index+1,1}.(fields_B{2});        
         
+        % 1000/3600 is conversion from km/h to m/s (match radar velocity
+        % units)
+        radar_msg.VehVEgo = veh_final.Signals{veh_index,1}.VehSpdAvgDrvn*1000/3600; 
+        
         send(radar_pub,radar_msg);
         radar_index = radar_index + 2;
         radar_obj = radar_obj + 1;
+        veh_index = veh_index + 1;
+        
         radar_msg.RadarTimestamp = radar_final.time_in_sec(radar_index);
     end
 
@@ -86,6 +93,7 @@ while true
         send(me_pub,me_msg);
         me_index = me_index + 3;
         me_obj = me_obj + 1;
+        
         me_msg.MeTimestamp = me_final.time_in_sec(me_index);
     end
 
