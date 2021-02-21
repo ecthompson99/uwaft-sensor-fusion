@@ -10,10 +10,12 @@ me_pub = rospublisher('/Mobileye_CAN_Rx','common/mobileye_object_data');
 me_msg = rosmessage(me_pub);
 radar_pub = rospublisher('/Radar_One_CAN_Rx','common/radar_object_data');
 radar_msg = rosmessage(radar_pub);
+veh_pub = rospublisher('/Radar_One_CAN_Rx','common/radar_object_data');
+veh_msg = rosmessage(veh_pub);
 
 % array index start from 1
 veh_index = 1;
-radar_index = 1;
+radar_index = 2;
 radar_obj = 1;
 me_index = 1;
 me_obj = 1;
@@ -22,9 +24,11 @@ time_interval = 0.01; % publish rate
 radar_msg.RadarTimestamp = radar_final.time_in_sec(radar_index);
 me_msg.MeTimestamp = me_final.time_in_sec(me_index);
 
+
 while true
 
-    while radar_msg.RadarTimestamp > clk + time_interval && me_msg.MeTimestamp > clk + time_interval
+    while radar_msg.RadarTimestamp > clk + time_interval && me_msg.MeTimestamp > clk + time_interval ...
+            && veh_final.time_in_sec(veh_index) > clk + time_interval
         clk = clk + time_interval;
     end
 
@@ -57,17 +61,20 @@ while true
         radar_msg.RadarObjClass(radar_obj) = radar_final.Signals{radar_index+1,1}.(fields_B{5});
         radar_msg.DxRearLoss(radar_obj) = radar_final.Signals{radar_index+1,1}.(fields_B{2});        
         
-        % 1000/3600 is conversion from km/h to m/s (match radar velocity
-        % units)
-        radar_msg.VehVEgo = veh_final.Signals{veh_index,1}.VehSpdAvgDrvn*1000/3600; 
-        
         send(radar_pub,radar_msg);
         radar_index = radar_index + 2;
         radar_obj = radar_obj + 1;
-        veh_index = veh_index + 1;
         
         radar_msg.RadarTimestamp = radar_final.time_in_sec(radar_index);
     end
+    
+    if veh_final.time_in_sec(veh_index) < clk + time_interval
+        % 1000/3600 is conversion from km/h to m/s (match radar velocity
+        % units)
+        veh_msg.VehVEgo = veh_final.Signals{veh_index,1}.VehSpdAvgDrvn*1000/3600; 
+        send(veh_pub,veh_msg);
+        veh_index = veh_index + 1;
+    end        
 
     if me_msg.MeTimestamp < clk + time_interval
         if me_obj > 10

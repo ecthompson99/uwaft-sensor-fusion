@@ -2,7 +2,7 @@ clear all
 clc
 %% Load rosbag from SF output
 
-bag = rosbag('2021-02-20-20-40-48.bag');
+bag = rosbag('test1_10mph.bag');
 
 % Select tracked obj topic
 tracked_obj_bag = select(bag, 'Topic', 'binary_class'); 
@@ -16,14 +16,14 @@ sf_results = struct('Time',[],'Objects', [], 'Num_Objects', []);
 
 for i = 1:data_size
     % Populate time
-    sf_results(i).Time = tracked_obj_struct(i).GlobalClk;
+    sf_results(i).Time = tracked_obj_struct(i).Timestamp;
     
     % Populate num_obj w/ size of Dx
     sf_results(i).Num_Objects = size(tracked_obj_struct(i).Dx,1);
     
     % Populate objects
     for j = 1:size(tracked_obj_struct(i).Dx,1)
-        object = objectDetection(tracked_obj_struct(i).GlobalClk,...
+        object = objectDetection(tracked_obj_struct(i).Timestamp,...
         [tracked_obj_struct(i).Dx(j); tracked_obj_struct(i).Dy(j)]);
     
        if size(sf_results(i).Objects,2) == 0

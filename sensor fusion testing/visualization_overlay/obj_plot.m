@@ -3,7 +3,7 @@
 load('sf_output.mat'); %sf_results
 set(0,'DefaultFigureVisible','off');
 
-newVid = VideoWriter('drive_20mph_test3.avi');
+newVid = VideoWriter('drive_10mph_test1.avi');
 newVid.FrameRate = 50;
 newVid.Quality = 100;
 open(newVid);

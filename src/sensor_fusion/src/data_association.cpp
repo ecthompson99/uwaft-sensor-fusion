@@ -53,20 +53,20 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
 
     // COMMENT OUT FOR SIMULATION
         // Stationary objects
-        // if (((recvd_data.veh_v_ego + recvd_data.radar_vx[r_index]) < VX_LIMIT) 
+        // if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < VX_LIMIT) 
         //         || recvd_data.moving_state[r_index] == 3) continue;
 
         // Exist probability flag - needs more testing to confirm threshold
-        // if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
+        if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
 
         // Valid flag - 1 is valid
-        // if (recvd_data.radar_flag_valid[r_index] == 0) continue;
+        if (recvd_data.radar_flag_valid[r_index] == 0) continue;
 
         // Measured and history flag - want history object only if measured
-        // if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
+        if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
 
         // dLength - most likely an obj if it has length
-        // if (recvd_data.d_length[r_index] == 0) continue;
+        if (recvd_data.d_length[r_index] == 0) continue;
     
 
         // printf("Success filtering radar data: %f, %f, %f, %f", recvd_data.radar_dx[r_index], recvd_data.radar_dy[r_index], recvd_data.radar_vx[r_index], recvd_data.radar_vy[r_index]);
