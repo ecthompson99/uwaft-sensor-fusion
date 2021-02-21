@@ -16,25 +16,27 @@ while radar_index < 20416
 
 end
 
-% writematrix(dx,'./Excel files/test.xlsx','Sheet',1);
+writematrix(dx_radar,'./Excel files/radar_test.xlsx','Sheet',1);
+writematrix(dy_radar,'./Excel files/radar_test.xlsx','Sheet',2);
 
-% me_obj = 1;
-% me_index = 1;
-% while me_index < 498
-%     if me_obj > 10
-%         me_obj = 1;
-%     end
-% 
-%     fields_A_me=fieldnames(me_final.Signals{me_index,1});
-%     dx_mobileye(me_index, me_obj) = me_final.Signals{me_index,1}.(fields_A_me{9});
-%     dy_mobileye(me_index, me_obj) = me_final.Signals{me_index,1}.(fields_A_me{8});
-% 
-%         
-%     me_index = me_index + 3;
-%     me_obj = me_obj + 1;
-%     
-% 
-% end
+me_obj = 1;
+me_index = 1;
+while me_index < 498
+    if me_obj > 10
+        me_obj = 1;
+    end
 
-% writematrix(dx,'./Excel files/test.xlsx','Sheet',2);
+    fields_A_me=fieldnames(me_final.Signals{me_index,1});
+    dx_mobileye(me_index, me_obj) = me_final.Signals{me_index,1}.(fields_A_me{9});
+    dy_mobileye(me_index, me_obj) = me_final.Signals{me_index,1}.(fields_A_me{8});
+
+        
+    me_index = me_index + 3;
+    me_obj = me_obj + 1;
+    
+
+end
+
+writematrix(dx_mobileye,'./Excel files/me_test.xlsx','Sheet',1);
+writematrix(dy_mobileye,'./Excel files/me_test.xlsx','Sheet',2);
 
