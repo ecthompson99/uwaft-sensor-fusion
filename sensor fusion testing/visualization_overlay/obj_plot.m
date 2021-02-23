@@ -3,7 +3,7 @@
 load('sf_output.mat'); %sf_results
 set(0,'DefaultFigureVisible','off');
 
-newVid = VideoWriter('test2_10mph.avi');
+newVid = VideoWriter('2021-02-23-01-23-47.avi');
 newVid.FrameRate = 50;
 newVid.Quality = 100;
 open(newVid);
@@ -12,7 +12,7 @@ open(newVid);
 
 for i = 1:100:size(sf_results,2) % sample plot for now (start:iteration:end)
 
-    bep = birdsEyePlot('XLim',[0,150],'YLim',[-15,15]);
+    bep = birdsEyePlot('XLim',[0,100],'YLim',[-10,10]);
 %     blazerPlotter = detectionPlotter(bep,'MarkerEdgeColor','black','DisplayName','Ground Truth Objects', 'Marker', 'o');
     sfPlotter = detectionPlotter(bep,'MarkerEdgeColor','red','DisplayName','Sensor Fusion Objects', 'Marker', '+');
 

@@ -38,8 +38,8 @@
 #define RADAR_OBJ 32
 #define ME_OBJ 10
 #define MIN_DX 10.00
-#define MAX_DX 100.00
-#define MAX_DY 5.00
+#define MAX_DX 90.00
+#define MAX_DY 2.00
 #define MAX_VX 1.00
 #define EXIST 0.95
 
