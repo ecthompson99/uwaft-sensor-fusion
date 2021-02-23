@@ -15,7 +15,7 @@ veh_msg = rosmessage(veh_pub);
 
 % array index start from 1
 veh_index = 1;
-radar_index = 2;
+radar_index = 1;
 radar_obj = 1;
 me_index = 1;
 me_obj = 1;

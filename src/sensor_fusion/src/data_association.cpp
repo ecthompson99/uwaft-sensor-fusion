@@ -49,12 +49,12 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
     for (size_t r_index = 0; r_index < RADAR_OBJ; r_index++){
         // dx and dy limits
         if (recvd_data.radar_dx[r_index] < MIN_DX || recvd_data.radar_dx[r_index] > MAX_DX
-            || abs(recvd_data.radar_dy[r_index]) > DY_LIMIT) continue;
+            || abs(recvd_data.radar_dy[r_index]) > MAX_DY) continue;
 
     // COMMENT OUT FOR SIMULATION
         // Stationary objects
-        // if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < VX_LIMIT) 
-        //         || recvd_data.moving_state[r_index] == 3) continue;
+        if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MAX_VX) 
+                || recvd_data.moving_state[r_index] == 3) continue;
 
         // Exist probability flag - needs more testing to confirm threshold
         if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
@@ -66,7 +66,7 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
         if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
 
         // dLength - most likely an obj if it has length
-        if (recvd_data.d_length[r_index] == 0) continue;
+        // if (recvd_data.d_length[r_index] == 0) continue;
     
 
         // printf("Success filtering radar data: %f, %f, %f, %f", recvd_data.radar_dx[r_index], recvd_data.radar_dy[r_index], recvd_data.radar_vx[r_index], recvd_data.radar_vy[r_index]);
@@ -112,7 +112,7 @@ std::vector<MobileyeObject> DataAssociation::filter_me(const common::mobileye_ob
     for (size_t me_index = 0; me_index < ME_OBJ; me_index++){
         // dx and dy threshold
         if (recvd_data.me_dx[me_index] < MIN_DX || recvd_data.me_dx[me_index] > MAX_DX
-            || abs(recvd_data.me_dy[me_index] > DY_LIMIT) ) continue;
+            || abs(recvd_data.me_dy[me_index] > MAX_DY) ) continue;
 
     //  COMMENT OUT FOR SIMULATION
         // Stationary objects - status: never moved
@@ -203,7 +203,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
     std::vector<RadarObject> filtered_radar_obj;
 
     // filter detections
-    if(FRONT_RADAR && LEFT_CORNER_RADAR && RIGHT_CORNER_RADAR){
+    if(FRONT_RADAR){ // && LEFT_CORNER_RADAR && RIGHT_CORNER_RADAR){
         filtered_radar_obj = filter_radar(recvd_data);
         std::cout << "Filtered radar object size " << filtered_radar_obj.size() << std::endl;
         // std::cout << "Valid Radar diagnostics service call" << std::endl;
@@ -231,7 +231,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 
             // Create radar object
             RadarObject radar_obj = filtered_radar_obj[r_index];
-            printf("Radar object index: %d: %f, %f, %f, %f\n", r_index, radar_obj.radar_dx, radar_obj.radar_dy, radar_obj.radar_vx, radar_obj.radar_vy);
+            printf("Radar object index: %lu: %f, %f, %f, %f\n", r_index, radar_obj.radar_dx, radar_obj.radar_dy, radar_obj.radar_vx, radar_obj.radar_vy);
 
             // check if detections match objects in environment state vector
             for (auto obj : stateVector) {
@@ -316,7 +316,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
 
             // create mobileye object
             MobileyeObject me_obj = filtered_me_obj[me_index];
-            printf("ME object index: %d: %f, %f\n", me_index, me_obj.me_dx, me_obj.me_dy);
+            printf("ME object index: %lu: %f, %f\n", me_index, me_obj.me_dx, me_obj.me_dy);
             // if the object we received is already in the envState, send it to kf
             for (auto obj : envState) {
                 if (objects_match_me(obj, me_obj)) {

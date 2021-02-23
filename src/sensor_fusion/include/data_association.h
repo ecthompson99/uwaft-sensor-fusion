@@ -29,19 +29,19 @@
 #define CH3_SERVICE "sensor_diagnostic_CH3"
 #define CH4_SERVICE "sensor_diagnostic_CH4"
 
-#define DX_TOL 5
-#define DY_TOL 1.5
-#define VX_TOL 10
+#define DX_TOL 5.00
+#define DY_TOL 1.50
+#define VX_TOL 10.00
 #define POTENTIAL_THRESHOLD 5
 #define secondsToDelete 3
 #define MESSAGE_BUFFER_SIZE 10
 #define RADAR_OBJ 32
 #define ME_OBJ 10
-#define MIN_DX 1
-#define MAX_DX 150
-#define DY_LIMIT 10
-#define VX_LIMIT 1
-#define EXIST 0.85
+#define MIN_DX 10.00
+#define MAX_DX 100.00
+#define MAX_DY 5.00
+#define MAX_VX 1.00
+#define EXIST 0.95
 
 
 class DataAssociation {

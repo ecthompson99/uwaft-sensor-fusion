@@ -2,7 +2,7 @@ clear all
 clc
 %% Load rosbag from SF output
 
-bag = rosbag('test1_10mph.bag');
+bag = rosbag('2021-02-23-00-27-44.bag');
 
 % Select tracked obj topic
 tracked_obj_bag = select(bag, 'Topic', 'binary_class'); 
