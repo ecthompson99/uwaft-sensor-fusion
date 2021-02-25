@@ -38,12 +38,51 @@ void CAV_PCM_TX_RX::can_callback(const common::can_comms_data_msg& recvd_data){
     cav_out.right_radar_fault = recvd_data.right_radar_fault;
     cav_out.mobileye_fault = recvd_data.mobileye_fault;
     cav_out.cav_rolling_counter =  recvd_data.alive_rolling_counter;
+
+    cav_out.lat_pv++;
+    cav_out.long_pv++;
+    cav_out.lat_rc++;
+    cav_out.long_rc++;
+
+    // Reset PV and RC
+    if (cav_out.lat_pv >= 2147483647u){
+        cav_out.lat_pv = 0;
+    }
+    if (cav_out.long_pv >= 2147483647u){
+        cav_out.long_pv = 0;
+    }
+    if (cav_out.lat_rc >= 3u){
+        cav_out.lat_rc = 0;
+    }
+    if (cav_out.long_rc >= 3u){
+        cav_out.long_rc = 0;
+    }
+
+    // std::cout << "\n\nComms input from master task --- ";
+    // std::cout << "CAV out Long accel: " << cav_out.long_accel << std::endl;
+    // std::cout << "CAV out LCC steer: " << cav_out.lcc_steer << std::endl;
+    // std::cout << "CAV out ACC valid: " << cav_out.acc_valid << std::endl;
+    // std::cout << "CAV out AEB valid: " << cav_out.aeb_valid << std::endl;
+    // std::cout << "CAV out LCC valid: " << cav_out.lcc_valid << std::endl;
+    // std::cout << "CAV out ACC fault: " << cav_out.acc_fault << std::endl;
+    // std::cout << "CAV out AEB fault: " << cav_out.aeb_fault << std::endl;
+    // std::cout << "CAV out LCC fault: " << cav_out.lcc_fault << std::endl;
+    // std::cout << "CAV out FRadar fault: " << cav_out.front_radar_fault << std::endl;
+    // std::cout << "CAV out LRadar fault: " << cav_out.left_radar_fault << std::endl;
+    // std::cout << "CAV out RRadar fault: " << cav_out.right_radar_fault << std::endl;
+    // std::cout << "CAV out Mobileye Fault: " << cav_out.mobileye_fault << std::endl;
+    // std::cout << "CAV out CAV RC: " << cav_out.cav_rolling_counter << std::endl;
+    // std::cout << "CAV out Lat PV: " << cav_out.lat_pv << std::endl;
+    // std::cout << "CAV out Long PV: " << cav_out.long_pv << std::endl;
+    // std::cout << "CAV out Lat RC: " << cav_out.lat_rc << std::endl;
+    // std::cout << "CAV out Long RC: " << cav_out.long_rc << std::endl;
+
 }
 
 int main(int argc, char **argv){
     ros::init(argc, argv, "can_tx_rx_CH1");
     ros::NodeHandle can_tx_rx_CH1_handle;
-    
+
     CAV_PCM_TX_RX cav_rx = CAV_PCM_TX_RX(&can_tx_rx_CH1_handle);
     
     common::drive_ctrl_input_msg drive_ctrl;
@@ -112,6 +151,15 @@ int main(int argc, char **argv){
                     drive_ctrl.alive_rolling_counter_MABx = cav_rx.signals_in_range(cav_in.hsc_alive_decode, cav_in.hsc_alive_is_in_range);
                     drive_ctrl.veh_spd = cav_rx.signals_in_range(cav_in.veh_spd_decode, cav_in.veh_spd_is_in_range);
                     drive_ctrl.str_ang = cav_rx.signals_in_range(cav_in.str_ang_decode, cav_in.str_ang_is_in_range);
+                    
+                    // std::cout << "\nPCM input--- ";
+                    // std::cout << "PCM to CAV RC1: " << cav_in.pcm_rc1_decode << std::endl;
+                    // std::cout << "LCC Allowed: " << cav_in.lcc_allowed_decode << std::endl;
+                    // std::cout << "ACC Allowed: " << cav_in.acc_allowed_decode << std::endl;
+                    // std::cout << "AEB Allowed: " << cav_in.aeb_allowed_decode << std::endl;
+                    // std::cout << "Vehicle speed: " << cav_in.veh_spd_decode << std::endl;
+                    // std::cout << "Steering angle: " << cav_in.str_ang_decode << std::endl;
+                    // std::cout << "PCM HSC alive: " << cav_in.hsc_alive_decode << std::endl;
 
                     cav_rx.drive_ctrl_pub.publish(drive_ctrl);
                     break;
@@ -119,11 +167,17 @@ int main(int argc, char **argv){
                     emc_pcm_cav_interface_pcm_to_cav_2_t pcm2; 
                     cav_in.pcm_rc2_decode = emc_pcm_cav_interface_pcm_to_cav_2_pcm_to_cav2_rc_decode(pcm2.pcm_to_cav2_rc);
                     cav_in.pcm_rc2_is_in_range = emc_pcm_cav_interface_pcm_to_cav_2_pcm_to_cav2_rc_is_in_range(pcm2.pcm_to_cav2_rc);
+                    
+                    // std::cout << "PCM to CAV RC2: " << cav_in.pcm_rc2_decode << std::endl;
+
                     break;
                 case 3:
                     emc_pcm_cav_interface_pcm_to_cav_3_t pcm3; 
                     cav_in.pcm_rc3_decode = emc_pcm_cav_interface_pcm_to_cav_3_pcm_to_cav3_rc_decode(pcm3.pcm_to_cav3_rc);
                     cav_in.pcm_rc3_is_in_range = emc_pcm_cav_interface_pcm_to_cav_3_pcm_to_cav3_rc_is_in_range(pcm3.pcm_to_cav3_rc);
+                    
+                    // std::cout << "PCM to CAV RC3: " << cav_in.pcm_rc3_decode << std::endl;
+
                     break;
             }
         }
@@ -135,11 +189,15 @@ int main(int argc, char **argv){
             lateral_ctrl.cav_lcc_valid = emc_pcm_cav_interface_cav_lateral_ctrl_cav_lcc_valid_encode(cav_rx.cav_out.lcc_valid);
             lateral_ctrl.cav_lcc_str_ang = emc_pcm_cav_interface_cav_lateral_ctrl_cav_lcc_str_ang_encode(cav_rx.cav_out.lcc_steer);
             lateral_ctrl.cav_cav_sys_alive = emc_pcm_cav_interface_cav_lateral_ctrl_cav_cav_sys_alive_encode(cav_rx.cav_out.cav_rolling_counter);
-            
+            lateral_ctrl.cav_to_pcm_lat_pv = emc_pcm_cav_interface_cav_lateral_ctrl_cav_to_pcm_lat_pv_encode(cav_rx.cav_out.lat_pv);
+            lateral_ctrl.cav_to_pcm_lat_rc = emc_pcm_cav_interface_cav_lateral_ctrl_cav_to_pcm_lat_rc_encode(cav_rx.cav_out.lat_rc);
+
             long_ctrl.cav_aeb_valid = emc_pcm_cav_interface_cav_long_ctrl_cav_aeb_valid_encode(cav_rx.cav_out.aeb_valid);
             long_ctrl.cav_acc_valid = emc_pcm_cav_interface_cav_long_ctrl_cav_acc_valid_encode(cav_rx.cav_out.acc_valid);
             long_ctrl.cav_long_accel = emc_pcm_cav_interface_cav_long_ctrl_cav_long_accel_encode(cav_rx.cav_out.long_accel);
-            
+            long_ctrl.cav_to_pcm_long_pv = emc_pcm_cav_interface_cav_long_ctrl_cav_to_pcm_long_pv_encode(cav_rx.cav_out.long_pv);
+            long_ctrl.cav_to_pcm_long_rc = emc_pcm_cav_interface_cav_long_ctrl_cav_to_pcm_long_rc_encode(cav_rx.cav_out.long_rc);
+
             uint8_t lateral_ctrl_msg[8] = {0};
             uint8_t long_ctrl_msg[8] = {0};
 
@@ -150,7 +208,9 @@ int main(int argc, char **argv){
             emc_pcm_cav_interface_cav_lateral_ctrl_pack(lateral_ctrl_msg,lateral_ctrl_struct, size);
 
             canWrite(hnd, 1040, lateral_ctrl_msg, SIZE_OF_MSG, canOPEN_ACCEPT_VIRTUAL);
-            canWrite(hnd, 1056, long_ctrl_msg, SIZE_OF_MSG, canOPEN_ACCEPT_VIRTUAL); 
+            canWrite(hnd, 1056, long_ctrl_msg, SIZE_OF_MSG, canOPEN_ACCEPT_VIRTUAL);
+            
+            ros::Rate(10).sleep();
 
         ros::spinOnce();
     }

@@ -58,6 +58,10 @@ class CAV_PCM_TX_RX{
             bool right_radar_fault;
             bool mobileye_fault;
             unsigned int cav_rolling_counter;
+            unsigned int lat_rc;
+            unsigned int long_rc;
+            unsigned int lat_pv;
+            unsigned int long_pv;
             unsigned long timestamp;
         };
         CAV_PCM_TX_RX::cav_pcm_csw_out cav_out; 
