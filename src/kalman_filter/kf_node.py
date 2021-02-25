@@ -13,18 +13,18 @@ from threading import Lock
 # Shouldn't need this definition - have data from mobileye
 def determine_lane(dy, me_lane):
     # in ego lane
-    if me_lane == 1
+    if me_lane == 1:
         return 1, True 
     
     # next lane
-    elif me_lane == 2
+    elif me_lane == 2:
         if dy < 0:
             return 2, False # right lane
         elif dy > 0:
             return 0, False # left lane
     
     #invalid or unassigned: 1.5m  approximately half width of lane
-    else
+    else:
         if dy < -1.5:
             return 2, False # right lane
         elif dy > 1.5:

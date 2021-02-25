@@ -144,9 +144,13 @@ add_executable(can_tx_rx_CH1 src/can_tx_rx_CH1.cpp src/cav_pcm_csw.cpp)
 #add_dependencies(can_tx_rx_CH1 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH1 ${catkin_LIBRARIES} canlib)
 
-add_executable(can_tx_rx_CH2_CH3 src/can_tx_rx_CH2_CH3.cpp src/radar.cpp)
-#add_dependencies(can_tx_rx_CH2_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
-target_link_libraries(can_tx_rx_CH2_CH3 ${catkin_LIBRARIES} canlib)
+add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp src/radar.cpp)
+#add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES} canlib)
+
+add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp src/radar.cpp)
+#add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
+target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES} canlib)
 
 add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp src/ext_log_data.cpp)
 #add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)

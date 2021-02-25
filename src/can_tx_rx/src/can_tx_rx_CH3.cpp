@@ -211,28 +211,11 @@ void Radar_RX::clear_classes(common::radar_object_data &radar_obj, common::senso
 };
 
 int main(int argc, char **argv) {
-  // channel
-  int channel = 0;
-  // get command line arg for which channel is to be run
-  ros::V_string args_out;
-  ros::removeROSArgs(argc, argv, args_out);
-  if (args_out[1] == "2") {
-    channel = 2;
-  } else if (args_out[1] == "3") {
-    channel = 3;
-  } else {
-    std::cout << "Argument: " << args_out[1];
-    throw ros::Exception("Bad arg: can only pick 2 or 3 for their corresponding channels");
-  }
+  ros::init(argc, argv, "can_tx_rx_CH3");
+  ros::NodeHandle can_tx_rx_CH3_handle;
 
-  if (channel == 2)
-    ros::init(argc, argv, "can_tx_rx_CH2");
-  else
-    ros::init(argc, argv, "can_tx_rx_CH3");
-  ros::NodeHandle can_tx_rx_CH2_CH3_handle;
-
-  Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH2_CH3_handle);
-  SensorDiagnostics sens_diag = SensorDiagnostics(&can_tx_rx_CH2_CH3_handle);
+  Radar_RX rad_rx = Radar_RX(&can_tx_rx_CH3_handle);
+  SensorDiagnostics sens_diag = SensorDiagnostics(&can_tx_rx_CH3_handle);
 
   common::radar_object_data radar_obj;
   common::sensor_diagnostic_data_msg diag_data;
@@ -255,7 +238,7 @@ int main(int argc, char **argv) {
   ros::Time mem1 = ros::Time::now();
   ros::Time mem2 = ros::Time::now();
 
-  radar_info.channel_number = channel - 1;  // no significance of subtracting 1, it is just 1 for ch2 and 2 for ch3
+  radar_info.channel_number = 2;  // 1 for ch2 and 2 for ch3
 
   long int id;
   unsigned int dlc;
@@ -629,23 +612,6 @@ int main(int argc, char **argv) {
                 break;
             }
             if(pub_data && (id == 1667 || id== 1665)){//message must end with the ender bit and have started with an end bit
-
-              if (channel == 2) {
-                // validate radar, using service calls for specific channels
-                ros::ServiceClient client_ch2;
-                common::sensor_diagnostic_flag_CH2 srv_ch2;
-
-                srv_ch2.request.front_radar = sens_diag.validate_radar(diag_data);
-                if (srv_ch2.request.front_radar) {
-                  std::cout << "Valid Ch2" << std::endl;
-                } else {
-                  std::cout << "Invalid Ch2" << std::endl;
-                }
-
-                if (!client_ch2.call(srv_ch2)) {  // CLIENT.CALL ACTUALLY INITIATES THE SERVICE CALL
-                  std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
-                }
-              } else {
                 // service call to validate radars
                 ros::ServiceClient client_ch3;
                 common::sensor_diagnostic_flag_CH3 srv_ch3_left;
@@ -670,7 +636,6 @@ int main(int argc, char **argv) {
                     std::cout << "Invalid Ch3 service call for right radar" << std::endl;
                   }
                 }
-              }
 
                 //publish here
                 rad_rx.rad_pub.publish(radar_obj);
