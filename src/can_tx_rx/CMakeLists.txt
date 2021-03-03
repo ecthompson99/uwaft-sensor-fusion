@@ -140,35 +140,35 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/can_tx_rx_node.cpp)
 
-add_executable(can_tx_rx_CH1 src/can_tx_rx_CH1.cpp src/cav_pcm_csw.cpp)
+add_executable(can_tx_rx_CH1 src/can_tx_rx_CH1.cpp helper_cpp_files/cav_pcm_csw.cpp helper_cpp_files/can_helper_CH1.cpp helper_cpp_files/helper_can.cpp)
 #add_dependencies(can_tx_rx_CH1 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH1 ${catkin_LIBRARIES} canlib)
 
-add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp src/radar.cpp)
+add_executable(can_tx_rx_CH2 src/can_tx_rx_CH2.cpp helper_cpp_files/radar.cpp helper_cpp_files/can_helper_CH2_3.cpp helper_cpp_files/helper_can.cpp)
 #add_dependencies(can_tx_rx_CH2 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH2 ${catkin_LIBRARIES} canlib)
 
-add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp src/radar.cpp)
+add_executable(can_tx_rx_CH3 src/can_tx_rx_CH3.cpp helper_cpp_files/radar.cpp helper_cpp_files/can_helper_CH2_3.cpp helper_cpp_files/helper_can.cpp)
 #add_dependencies(can_tx_rx_CH3 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH3 ${catkin_LIBRARIES} canlib)
 
-add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp src/ext_log_data.cpp)
+add_executable(can_tx_rx_CH4 src/can_tx_rx_CH4.cpp helper_cpp_files/ext_log_data.cpp helper_cpp_files/can_helper_CH4.cpp helper_cpp_files/helper_can.cpp)
 #add_dependencies(can_tx_rx_CH4 ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(can_tx_rx_CH4 ${catkin_LIBRARIES} canlib)
 
-add_executable(mobileye_virtual_can_tx src/mobileye_virtual_can_tx.cpp src/ext_log_data.cpp src/radar.cpp)
+add_executable(mobileye_virtual_can_tx test_files/mobileye_virtual_can_tx.cpp helper_cpp_files/ext_log_data.cpp helper_cpp_files/radar.cpp)
 #add_dependencies(mobileye_virtual_can_tx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(mobileye_virtual_can_tx ${catkin_LIBRARIES} canlib)
 
-add_executable(radar_virtual_can_tx src/radar_virtual_can_tx.cpp src/ext_log_data.cpp src/radar.cpp)
+add_executable(radar_virtual_can_tx test_files/radar_virtual_can_tx.cpp helper_cpp_files/ext_log_data.cpp helper_cpp_files/radar.cpp)
 #add_dependencies(radar_virtual_can_tx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(radar_virtual_can_tx ${catkin_LIBRARIES} canlib)
 
-add_executable(virtual_can_rx src/virtual_can_rx.cpp src/ext_log_data.cpp src/radar.cpp)
+add_executable(virtual_can_rx test_files/virtual_can_rx.cpp helper_cpp_files/ext_log_data.cpp helper_cpp_files/radar.cpp)
 #add_dependencies(virtual_can_rx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(virtual_can_rx ${catkin_LIBRARIES} canlib)
 
-add_executable(virtual_can_tx src/virtual_can_tx.cpp src/cav_pcm_csw.cpp)
+add_executable(virtual_can_tx test_files/virtual_can_tx.cpp helper_cpp_files/cav_pcm_csw.cpp)
 #add_dependencies(virtual_can_tx ${${PROJECT_NAME}_EXPORTED_TARGETS} common)
 target_link_libraries(virtual_can_tx ${catkin_LIBRARIES} canlib)
 

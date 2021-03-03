@@ -9,6 +9,8 @@
 #include "common/drive_ctrl_input_msg.h"
 #include "common/can_comms_data_msg.h"
 
+#include "helper_can.h"
+
 #define MESSAGE_BUFFER_SIZE 1000
 #define TOPIC_RX "CCP_Interface"
 #define SIZE_OF_MSG 8 
@@ -65,7 +67,7 @@ class CAV_PCM_TX_RX{
             unsigned long timestamp;
         };
         CAV_PCM_TX_RX::cav_pcm_csw_out cav_out; 
-        double signals_in_range(double val, bool cond);
         void get_nums(int id, uint8_t &case_num);
         void can_callback(const common::can_comms_data_msg& recvd_data);
+        struct CAN_Helper::message_constants CAN_message;
 };
