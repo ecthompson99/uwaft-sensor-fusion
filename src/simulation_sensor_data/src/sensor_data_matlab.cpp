@@ -7,10 +7,69 @@
 #include <time.h>
 #include <common/mobileye_object_data.h>
 #include <common/radar_object_data.h>
+
 using namespace std;
 
+struct radar_data 
+{
+    float dx[32];
+    float dy[32];
+    float vx[32];
+    float vy[32];
+};
 
-void read_sensor_data_csv(string filename, vector<vector<double> >& v2d)
+struct mobileye_data 
+{
+    float dx[10];
+    float dy[10];
+    float vx[10];
+    float vy[10];
+};
+
+void radar_data_parser(stringstream& ss, radar_data& radar) 
+{
+    // Iterate comma-seperated entries of radar sensor data and copy to radar_data struct
+    // 128 entries correspond to 32 objects in order: dx[32], dy[32], vx[32], vy[32]
+    string word;
+    for (int x = 0; x < 128; x++) 
+    {
+        std::getline(ss, word, ',');
+        float sensor_val = atof(word.c_str());
+        // Index of object (0->31) calculated from csv value index
+        int idx = x % 32;
+        if (x < 32)
+            radar.dx[idx] = sensor_val;
+        else if (32 <= x && x < 64)
+            radar.dy[idx] = sensor_val;
+        else if (64 <= x && x < 96)
+            radar.vx[idx] = sensor_val;
+        else if (96 <= x && x < 128)
+            radar.vy[idx] = sensor_val;
+    }
+}
+
+void camera_data_parser(stringstream& ss, mobileye_data& camera) 
+{
+    // Iterate comma-seperated entries of mobileye sensor data and copy to mobileye_data struct
+    // 30 entries correspond to 10 objects in order: dx[10], dy[10], vx[10]
+    string word;
+    for (int x = 0; x < 30; x++) 
+    {
+        std::getline(ss, word, ',');
+        float sensor_val = atof(word.c_str());
+        // Index of object (0->9) calculated from csv value index
+        int idx = x % 10;
+        if (x < 10)
+            camera.dx[idx] = sensor_val;
+        else if (10 <= x && x < 20)
+            camera.dy[idx] = sensor_val;
+        else if (20 <= x && x < 30)
+            camera.vx[idx] = sensor_val;
+    }
+}
+
+void read_sensor_data_csv(string filename, vector<double>& time, vector<radar_data>& front_radar, vector<radar_data>& right_radar,
+                          vector<radar_data>& left_radar, vector<mobileye_data>& mobileye) 
 {
     ifstream fin(filename.c_str());
     if (!fin.is_open())
@@ -22,20 +81,29 @@ void read_sensor_data_csv(string filename, vector<vector<double> >& v2d)
     string line, word;
     size_t i = 0;
 
+    // Get radar and mobileye data from driving scenario csv output
+    // File Format: Time Stamp, Front Radar Data, Right Radar Data, Left Radar Data, Mobileye Data
     while (fin)
     {
-        v2d.push_back(vector<double>());
         std::getline(fin, line, '\n');
         stringstream ss(line);
-        for (int x = 0; x < 19; x++)
-        {
-            std::getline(ss, word, ',');
-            v2d[i].push_back(atof(word.c_str()));
-        }
+
+        std::getline(ss, word, ',');
+        time.push_back(atof(word.c_str()));
+
+        front_radar.push_back(radar_data());
+        right_radar.push_back(radar_data());
+        left_radar.push_back(radar_data());
+        mobileye.push_back(mobileye_data());
+
+        radar_data_parser(ss, front_radar[i]);
+        radar_data_parser(ss, right_radar[i]);
+        radar_data_parser(ss, left_radar[i]);
+        camera_data_parser(ss, mobileye[i]);
+        
         i++;
     }
 }
-
 
 int main(int argc, char **argv)
 {
@@ -44,73 +112,89 @@ int main(int argc, char **argv)
     rosbag::Bag bag;
     bag.open("sim_sensor_data.bag", rosbag::bagmode::Write);
     
-    std::vector<vector<double> > sensor_data;
-    read_sensor_data_csv("/home/joannadiao/kaiROS/src/simulation_sensor_data/src/sim_sensor_output_matlab.csv", sensor_data);
+    std::vector<double> time_stamps;
+    std::vector<radar_data> front_radar;
+    std::vector<radar_data> right_radar;
+    std::vector<radar_data> left_radar;
+    std::vector<mobileye_data> mobileye;
+    
+    string simulation_file_path = getenv("HOME");
+    simulation_file_path.append("/kaiROS/src/simulation_sensor_data/src/sim_sensor_output_stationary_approach.csv");
+    read_sensor_data_csv(simulation_file_path, time_stamps, front_radar, right_radar, left_radar, mobileye);
 
+    for (size_t x = 0; x < time_stamps.size(); x++) 
+    {
+        ros::Time time(time_stamps[x]);
+        common::radar_object_data front_radar_data;
+        common::radar_object_data right_radar_data;
+        common::radar_object_data left_radar_data;
+        common::mobileye_object_data mobileye_data;
 
-    //Output "sensor_data" vector content
-    // for (int a = 0; a < sensor_data.size(); a++)
-    // {
-    //     for (int b = 0; b < sensor_data[a].size(); b++)
-    //     {
-    //         cout << sensor_data[a][b] << "  ";
-    //     }
-    //     cout << endl;
-    // }
+        // Assign radar data to ROS radar_object_data messages
+        for(int obj_idx = 0; obj_idx < 32; obj_idx++)
+        {
+            front_radar_data.radar_dx[obj_idx] = front_radar[x].dx[obj_idx];
+            front_radar_data.radar_dy[obj_idx] = front_radar[x].dy[obj_idx];
+            front_radar_data.radar_vx[obj_idx] = front_radar[x].vx[obj_idx];
+            front_radar_data.radar_vy[obj_idx] = front_radar[x].vy[obj_idx];
+            front_radar_data.radar_ax[obj_idx] = 0;
+            front_radar_data.radar_timestamp = time_stamps[x];
+            front_radar_data.radar_ax_sigma[obj_idx] = 0;
+            front_radar_data.radar_dx_sigma[obj_idx] = 0;
+            front_radar_data.radar_dy_sigma[obj_idx] = 0;
+            front_radar_data.radar_vx_sigma[obj_idx] = 0;
+            front_radar_data.radar_w_exist[obj_idx] = 1;
+            front_radar_data.radar_flag_valid[obj_idx] = 1;
+            front_radar_data.d_length[obj_idx] = 1;
 
-    for (size_t x = 0; x < sensor_data.size(); x++) {
-      ros::Time time(sensor_data[x][0]);
-      common::radar_object_data radar1;
-      common::radar_object_data radar2;
-      common::radar_object_data radar3;
-      common::mobileye_object_data camera;
+            right_radar_data.radar_dx[obj_idx] = right_radar[x].dx[obj_idx];
+            right_radar_data.radar_dy[obj_idx] = right_radar[x].dy[obj_idx];
+            right_radar_data.radar_vx[obj_idx] = right_radar[x].vx[obj_idx];
+            right_radar_data.radar_vy[obj_idx] = right_radar[x].vy[obj_idx];
+            right_radar_data.radar_ax[obj_idx] = 0;
+            right_radar_data.radar_timestamp = time_stamps[x];
+            right_radar_data.radar_ax_sigma[obj_idx] = 0;
+            right_radar_data.radar_dx_sigma[obj_idx] = 0;
+            right_radar_data.radar_dy_sigma[obj_idx] = 0;
+            right_radar_data.radar_vx_sigma[obj_idx] = 0;
+            right_radar_data.radar_w_exist[obj_idx] = 1;
+            right_radar_data.radar_flag_valid[obj_idx] = 1;
+            right_radar_data.d_length[obj_idx] = 1;
 
-      radar1.radar_dx = sensor_data[x][1];
-      radar1.radar_dy = sensor_data[x][2];
-      radar1.radar_vx = sensor_data[x][3];
-      radar1.radar_vy = sensor_data[x][4];
-      radar1.radar_ax = sensor_data[x][5];
-      radar1.radar_timestamp = sensor_data[x][0];
-      radar1.radar_ax_sigma = 0;
-      radar1.radar_dx_sigma = 0;
-      radar1.radar_dy_sigma = 0;
-      radar1.radar_vx_sigma = 0;
+            left_radar_data.radar_dx[obj_idx] = left_radar[x].dx[obj_idx];
+            left_radar_data.radar_dy[obj_idx] = left_radar[x].dy[obj_idx];
+            left_radar_data.radar_vx[obj_idx] = left_radar[x].vx[obj_idx];
+            left_radar_data.radar_vy[obj_idx] = left_radar[x].vy[obj_idx];
+            left_radar_data.radar_ax[obj_idx] = 0;
+            left_radar_data.radar_timestamp = time_stamps[x];
+            left_radar_data.radar_ax_sigma[obj_idx] = 0;
+            left_radar_data.radar_dx_sigma[obj_idx] = 0;
+            left_radar_data.radar_dy_sigma[obj_idx] = 0;
+            left_radar_data.radar_vx_sigma[obj_idx] = 0;
+            left_radar_data.radar_w_exist[obj_idx] = 1;
+            left_radar_data.radar_flag_valid[obj_idx] = 1;
+            left_radar_data.d_length[obj_idx] = 1;
+        }
 
-      radar2.radar_dx = sensor_data[x][6];
-      radar2.radar_dy = sensor_data[x][7];
-      radar2.radar_vx = sensor_data[x][8];
-      radar2.radar_vy = sensor_data[x][9];
-      radar2.radar_ax = sensor_data[x][10];
-      radar2.radar_timestamp = sensor_data[x][0];
-      radar2.radar_ax_sigma = 0;
-      radar2.radar_dx_sigma = 0;
-      radar2.radar_dy_sigma = 0;
-      radar2.radar_vx_sigma = 0;
+        // Assign mobileye data to ROS mobileye_object_data message
+        for(int obj_idx = 0; obj_idx < 10; obj_idx++)
+        {
+            mobileye_data.me_dx[obj_idx] = mobileye[x].dx[obj_idx];
+            mobileye_data.me_dy[obj_idx] = mobileye[x].dy[obj_idx];
+            mobileye_data.me_vx[obj_idx] = mobileye[x].vx[obj_idx];
+            mobileye_data.me_timestamp = time_stamps[x];
+            mobileye_data.me_valid[obj_idx] = 1;
+        }
 
-      radar3.radar_dx = sensor_data[x][11];
-      radar3.radar_dy = sensor_data[x][12];
-      radar3.radar_vx = sensor_data[x][13];
-      radar3.radar_vy = sensor_data[x][14];
-      radar3.radar_ax = sensor_data[x][15];
-      radar3.radar_timestamp = sensor_data[x][0];
-      radar3.radar_ax_sigma = 0;
-      radar3.radar_dx_sigma = 0;
-      radar3.radar_dy_sigma = 0;
-      radar3.radar_vx_sigma = 0;
+        if (time.toNSec() == 0) time = ros::TIME_MIN;
 
-      camera.me_dx = sensor_data[x][16];
-      camera.me_dy = sensor_data[x][17];
-      camera.me_vx = sensor_data[x][18];
-      camera.me_timestamp = sensor_data[x][0];
-
-      if (time.toNSec() == 0) time = ros::TIME_MIN;
-
-      bag.write("FRONT_RADAR_TOPIC", time, radar1);
-      bag.write("LEFT_CORNER_RADAR_TOPIC", time, radar2);
-      bag.write("RIGHT_CORNER_RADAR_TOPIC", time, radar3);
-      bag.write("MOBILEYE_TOPIC", time, camera);        
-        
+        // Write radar and mobileye messages along with timestamp to corresponding topics in bag file
+        bag.write("Front_Radar_CAN_Rx", time, front_radar_data);
+        bag.write("Right_Radar_CAN_Rx", time, right_radar_data);
+        bag.write("Left_Radar_CAN_Rx", time, left_radar_data);
+        bag.write("Mobileye_CAN_Rx", time, mobileye_data);        
     }
+
     bag.close();
 
     void close();

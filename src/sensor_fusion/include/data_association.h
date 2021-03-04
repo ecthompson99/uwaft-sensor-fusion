@@ -18,7 +18,9 @@
 #include "common/radar_object_data.h"
 
 #define MOBILEYE_TOPIC "Mobileye_CAN_Rx"
-#define RADAR_TOPIC "Radar_CAN_Rx"
+#define RADAR_FRONT_TOPIC "Front_Radar_CAN_Rx"
+#define RADAR_RIGHT_TOPIC "Right_Radar_CAN_Rx"
+#define RADAR_LEFT_TOPIC "Left_Radar_CAN_Rx"
 #define KALMAN_FILTER_RADAR_TOPIC "associated_radar"
 #define KALMAN_FILTER_ME_TOPIC "associated_me"
 #define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
@@ -29,7 +31,7 @@
 
 #define DX_TOL 5
 #define DY_TOL 1.5
-#define VX_TOL 3
+#define VX_TOL 10
 #define POTENTIAL_THRESHOLD 5
 #define secondsToDelete 3
 #define MESSAGE_BUFFER_SIZE 10
@@ -57,14 +59,12 @@ class DataAssociation {
         bool sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request& req, common::sensor_diagnostic_flag_CH4::Response &res);
 
         std::vector<ObjectState> potential_objs;
-        std::vector<RadarObject> filtered_radar_obj;
-        std::vector<MobileyeObject> filtered_me_obj;
 
         bool objects_match_radar(ObjectState obj, RadarObject& filtered_data);
         bool objects_match_me(ObjectState obj, MobileyeObject& filtered_data);
 
-        bool filter_radar(const common::radar_object_data& recvd_data);
-        bool filter_me(const common::mobileye_object_data& recvd_data);
+        std::vector<RadarObject> filter_radar(const common::radar_object_data& recvd_data);
+        std::vector<MobileyeObject> filter_me(const common::mobileye_object_data& recvd_data);
 
         void pub_radar_signals(common::associated_radar_msg &matched, RadarObject &r_obj);
         void pub_me_signals(common::associated_me_msg &matched, MobileyeObject &me_obj);
@@ -74,7 +74,7 @@ class DataAssociation {
         void set_right_corner_radar(bool rc){RIGHT_CORNER_RADAR = rc;}
         void set_left_corner_radar(bool lc){LEFT_CORNER_RADAR = lc;}
         void set_me(bool me){MOBILEYE = me;}
-        common::associated_radar_msg get_associated_radar_msg();
+        //common::associated_radar_msg get_associated_radar_msg();
         common::associated_me_msg get_associated_me_msg();
         
         bool FRONT_RADAR;
@@ -103,7 +103,6 @@ class DataAssociation {
 		ros::Subscriber sensor_right_corner_radar_sub;
 		ros::Subscriber sensor_me_data_obj_sub;
 
-        common::associated_radar_msg associated_radar_msg;
         common::associated_me_msg associated_me_msg;
         
 };

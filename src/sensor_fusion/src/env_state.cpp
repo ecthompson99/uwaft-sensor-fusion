@@ -77,7 +77,7 @@ void EnvironmentState::filtered_object_callback(const common::filtered_object_ms
 		global_clk = filtered_msg.obj_timestamp;
 		first_timestamp = 0;
 	}
-	else if (filtered_msg.obj_timestamp > global_clk + 0.1) {
+	else if (filtered_msg.obj_timestamp > global_clk + 0.01) {
 		publish_binary_class(filtered_msg.obj_timestamp);
 		publish_tracked_obj();
         publish_target_obj();
@@ -87,14 +87,17 @@ void EnvironmentState::filtered_object_callback(const common::filtered_object_ms
 
 void EnvironmentState::publish_binary_class(double t) {
 	common::binary_class_msg out;
+    ROS_INFO("Publishing binary class time: %f", t);
 	for (auto i : trackedObjects) {
 		out.dx.push_back(i.get_obj_dx());
 		out.dy.push_back(i.get_obj_dy());
+        out.vx.push_back(i.get_obj_vx());
+        out.vy.push_back(i.get_obj_vy());
 	}
 	out.global_clk = global_clk;
 	out.timestamp = t;
 	binary_class_pub.publish(out);
-	global_clk += 0.1;
+	global_clk += 0.01;
 }
 
 common::target_output_msg EnvironmentState::get_target_output_msg() { return target_output_msg; }
@@ -210,7 +213,3 @@ int main(int argc, char** argv){
 
 	return 0;
 }
-
-
-
-

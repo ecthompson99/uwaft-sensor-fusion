@@ -5,7 +5,7 @@
 
 class MobileyeObject {
     public:
-        MobileyeObject();    
+        MobileyeObject(){}   
         MobileyeObject(uint8_t set_me_id, double set_me_dx, double set_me_dy, 
         double set_me_vx, double set_me_ax, uint8_t set_me_type, uint8_t set_me_status, uint8_t set_me_valid,
         uint8_t set_me_cut, double set_me_age, uint8_t set_me_lane, bool set_me_cipv,
