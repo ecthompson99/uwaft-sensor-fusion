@@ -7,7 +7,7 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "can_tx_rx_CH4");
     ros::NodeHandle can_tx_rx_CH4_handle;
 
-    Mobileye_RX mobeye_rx = Mobileye_RX(&can_tx_rx_CH4_handle); 
+    Mobileye_RX mobileye_rx = Mobileye_RX(&can_tx_rx_CH4_handle); 
     SensorDiagnostics sens_diag = SensorDiagnostics(&can_tx_rx_CH4_handle);
 
     common::mobileye_object_data me_obj; //Processed values for object detection
@@ -30,26 +30,15 @@ int main(int argc, char **argv) {
 
     int unpack_return = -1;  // 0 is successful, negative error code 
 
-    canInitializeLibrary();
     canHandle hnd;
     canStatus stat;
-
-    hnd = canOpenChannel(mobileye_obj.channel_number, canOPEN_ACCEPT_VIRTUAL); 
-    if (hnd < 0) {
-        char msg[64];
-        canGetErrorText((canStatus)hnd, msg, sizeof(msg));
-        fprintf(stderr, "canOpenChannel failed (%s)\n", msg);
-        exit(1);
-    }
-    canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
-    canSetBusOutputControl(hnd, canDRIVER_NORMAL);
-    canBusOn(hnd);
+    CAN_Helper::initialize_can(mobileye_obj.channel_number, hnd, stat);
 
     while (ros::ok()) {
 
         stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
         if(canOK==stat){
-            Mobileye_RX::get_nums(id, case_num, obj_num); 
+            mobileye_rx.get_nums(id, case_num, obj_num); 
             std::cout << "ID, Case, Obj" << std::endl;
             std::cout << +id << std::endl;
             std::cout << +case_num << std::endl;
@@ -88,14 +77,14 @@ int main(int argc, char **argv) {
                 mobileye_obj.obstacle_id_decode = ext_log_data_obstacle_data_a_obstacle_id_decode(frame_a_unpacked.obstacle_id);
                 mobileye_obj.obstacle_id_is_in_range = ext_log_data_obstacle_data_a_obstacle_id_is_in_range(frame_a_unpacked.obstacle_id);
 
-                me_obj.me_cut_in_cut_out[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_cut_in_cut_out_decode, mobileye_obj.obstacle_cut_in_cut_out_is_in_range);
-                me_obj.me_valid[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_valid_decode, mobileye_obj.obstacle_valid_is_in_range); 
-                me_obj.me_status[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_status_decode, mobileye_obj.obstacle_status_is_in_range); 
-                me_obj.me_type[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_type_decode, mobileye_obj.obstacle_type_is_in_range);
-                me_obj.me_id[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_id_decode, mobileye_obj.obstacle_id_is_in_range);
-                me_obj.me_vx[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_vel_x_decode, mobileye_obj.obstacle_vel_x_is_in_range); 
-                me_obj.me_dx[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_pos_y_decode, mobileye_obj.obstacle_pos_y_is_in_range); 
-                me_obj.me_dy[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_pos_x_decode, mobileye_obj.obstacle_pos_x_is_in_range);
+                me_obj.me_cut_in_cut_out[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_cut_in_cut_out_decode, mobileye_obj.obstacle_cut_in_cut_out_is_in_range);
+                me_obj.me_valid[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_valid_decode, mobileye_obj.obstacle_valid_is_in_range); 
+                me_obj.me_status[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_status_decode, mobileye_obj.obstacle_status_is_in_range); 
+                me_obj.me_type[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_type_decode, mobileye_obj.obstacle_type_is_in_range);
+                me_obj.me_id[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_id_decode, mobileye_obj.obstacle_id_is_in_range);
+                me_obj.me_vx[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_vel_x_decode, mobileye_obj.obstacle_vel_x_is_in_range); 
+                me_obj.me_dx[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_pos_y_decode, mobileye_obj.obstacle_pos_y_is_in_range); 
+                me_obj.me_dy[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_pos_x_decode, mobileye_obj.obstacle_pos_x_is_in_range);
                 
                 me_obj.me_timestamp = mobileye_obj.time_stamp;
                 diag_data.timestamp = mobileye_obj.time_stamp;
@@ -115,9 +104,9 @@ int main(int argc, char **argv) {
                 mobileye_obj.obstacle_age_decode = ext_log_data_obstacle_data_b_obstacle_age_decode(frame_b_unpacked.obstacle_age);
                 mobileye_obj.obstacle_age_is_in_range = ext_log_data_obstacle_data_b_obstacle_age_is_in_range(frame_b_unpacked.obstacle_age);
                                 
-                me_obj.me_lane[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_lane_decode, mobileye_obj.obstacle_lane_is_in_range);
-                me_obj.me_cipv_flag[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_cipv_flag_decode, mobileye_obj.obstacle_cipv_flag_is_in_range);
-                me_obj.me_age[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_age_decode, mobileye_obj.obstacle_age_is_in_range);
+                me_obj.me_lane[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_lane_decode, mobileye_obj.obstacle_lane_is_in_range);
+                me_obj.me_cipv_flag[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_cipv_flag_decode, mobileye_obj.obstacle_cipv_flag_is_in_range);
+                me_obj.me_age[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_age_decode, mobileye_obj.obstacle_age_is_in_range);
 
                 break;
             case 4: // Obstacle frame C
@@ -127,7 +116,7 @@ int main(int argc, char **argv) {
                 mobileye_obj.obstacle_accel_x_decode = ext_log_data_obstacle_data_c_object_accel_x_decode(frame_b_unpacked.obstacle_age);
                 mobileye_obj.obstacle_accel_x_is_in_range = ext_log_data_obstacle_data_c_object_accel_x_is_in_range(frame_b_unpacked.obstacle_age);
 
-                me_obj.me_ax[obj_num] = mobeye_rx.signal_in_range(mobileye_obj.obstacle_accel_x_decode, mobileye_obj.obstacle_accel_x_is_in_range);
+                me_obj.me_ax[obj_num] = CAN_Helper::signal_in_range(mobileye_obj.obstacle_accel_x_decode, mobileye_obj.obstacle_accel_x_is_in_range);
    
                 break;
             case 5: // Left Lane Frame A
@@ -149,13 +138,13 @@ int main(int argc, char **argv) {
                 mobileye_lane.left_curvature_derivative_decode =  ext_log_data_lka_left_lane_a_curvature_derivative_decode(left_a_unpacked.curvature_derivative); 
                 mobileye_lane.left_curvature_derivative_is_in_range =  ext_log_data_lka_left_lane_a_curvature_derivative_is_in_range(left_a_unpacked.curvature_derivative); 
                 
-                me_raw_lane.me_lane_position_L = mobeye_rx.signal_in_range(mobileye_lane.left_position_decode, mobileye_lane.left_position_is_in_range);
-                me_raw_lane.me_lane_type_L = mobeye_rx.signal_in_range(mobileye_lane.left_lane_type_decode, mobileye_lane.left_lane_type_is_in_range);
-                me_raw_lane.me_lane_quality_L = mobeye_rx.signal_in_range(mobileye_lane.left_quality_decode, mobileye_lane.left_quality_is_in_range);
-                me_raw_lane.me_lane_curvature_L = mobeye_rx.signal_in_range(mobileye_lane.left_curvature_decode, mobileye_lane.left_curvature_is_in_range);
-                me_raw_lane.me_lane_curvature_derivative_L = mobeye_rx.signal_in_range(mobileye_lane.left_curvature_derivative_decode, mobileye_lane.left_curvature_derivative_is_in_range);
+                me_raw_lane.me_lane_position_L = CAN_Helper::signal_in_range(mobileye_lane.left_position_decode, mobileye_lane.left_position_is_in_range);
+                me_raw_lane.me_lane_type_L = CAN_Helper::signal_in_range(mobileye_lane.left_lane_type_decode, mobileye_lane.left_lane_type_is_in_range);
+                me_raw_lane.me_lane_quality_L = CAN_Helper::signal_in_range(mobileye_lane.left_quality_decode, mobileye_lane.left_quality_is_in_range);
+                me_raw_lane.me_lane_curvature_L = CAN_Helper::signal_in_range(mobileye_lane.left_curvature_decode, mobileye_lane.left_curvature_is_in_range);
+                me_raw_lane.me_lane_curvature_derivative_L = CAN_Helper::signal_in_range(mobileye_lane.left_curvature_derivative_decode, mobileye_lane.left_curvature_derivative_is_in_range);
                 
-                diag_data.quality_L = mobeye_rx.signal_in_range(mobileye_lane.left_quality_decode, mobileye_lane.left_quality_is_in_range);
+                diag_data.quality_L = CAN_Helper::signal_in_range(mobileye_lane.left_quality_decode, mobileye_lane.left_quality_is_in_range);
 
                 break; 
             case 6: // Left Lane Frame B
@@ -165,7 +154,7 @@ int main(int argc, char **argv) {
                 mobileye_lane.left_heading_angle_decode =  ext_log_data_lka_left_lane_b_heading_angle_decode(left_b_unpacked.heading_angle); 
                 mobileye_lane.left_heading_angle_is_in_range =  ext_log_data_lka_left_lane_b_heading_angle_is_in_range(left_b_unpacked.heading_angle); 
                 
-                me_raw_lane.me_lane_heading_angle_L = mobeye_rx.signal_in_range(mobileye_lane.left_heading_angle_decode, mobileye_lane.left_heading_angle_is_in_range);
+                me_raw_lane.me_lane_heading_angle_L = CAN_Helper::signal_in_range(mobileye_lane.left_heading_angle_decode, mobileye_lane.left_heading_angle_is_in_range);
                                 
 
                 break;
@@ -188,13 +177,13 @@ int main(int argc, char **argv) {
                 mobileye_lane.right_curvature_derivative_decode =  ext_log_data_lka_right_lane_a_curvature_derivative_decode(right_a_unpacked.curvature_derivative); 
                 mobileye_lane.right_curvature_derivative_is_in_range =  ext_log_data_lka_right_lane_a_curvature_derivative_is_in_range(right_a_unpacked.curvature_derivative); 
                 
-                me_raw_lane.me_lane_type_R = mobeye_rx.signal_in_range(mobileye_lane.right_lane_type_decode, mobileye_lane.right_lane_type_is_in_range);
-                me_raw_lane.me_lane_quality_R = mobeye_rx.signal_in_range(mobileye_lane.right_quality_decode, mobileye_lane.right_quality_is_in_range);
-                me_raw_lane.me_lane_position_R = mobeye_rx.signal_in_range(mobileye_lane.right_position_decode, mobileye_lane.right_position_is_in_range);
-                me_raw_lane.me_lane_curvature_R = mobeye_rx.signal_in_range(mobileye_lane.right_curvature_decode, mobileye_lane.right_curvature_is_in_range);
-                me_raw_lane.me_lane_curvature_derivative_R = mobeye_rx.signal_in_range(mobileye_lane.right_curvature_derivative_decode, mobileye_lane.right_curvature_derivative_is_in_range);
+                me_raw_lane.me_lane_type_R = CAN_Helper::signal_in_range(mobileye_lane.right_lane_type_decode, mobileye_lane.right_lane_type_is_in_range);
+                me_raw_lane.me_lane_quality_R = CAN_Helper::signal_in_range(mobileye_lane.right_quality_decode, mobileye_lane.right_quality_is_in_range);
+                me_raw_lane.me_lane_position_R = CAN_Helper::signal_in_range(mobileye_lane.right_position_decode, mobileye_lane.right_position_is_in_range);
+                me_raw_lane.me_lane_curvature_R = CAN_Helper::signal_in_range(mobileye_lane.right_curvature_decode, mobileye_lane.right_curvature_is_in_range);
+                me_raw_lane.me_lane_curvature_derivative_R = CAN_Helper::signal_in_range(mobileye_lane.right_curvature_derivative_decode, mobileye_lane.right_curvature_derivative_is_in_range);
 
-                diag_data.quality_R = mobeye_rx.signal_in_range(mobileye_lane.right_quality_decode, mobileye_lane.right_quality_is_in_range);
+                diag_data.quality_R = CAN_Helper::signal_in_range(mobileye_lane.right_quality_decode, mobileye_lane.right_quality_is_in_range);
 
                 break; 
             case 8: // Right Lane Frame B
@@ -204,7 +193,7 @@ int main(int argc, char **argv) {
                 mobileye_lane.right_heading_angle_decode =  ext_log_data_lka_right_lane_b_heading_angle_decode(right_b_unpacked.heading_angle); 
                 mobileye_lane.right_heading_angle_is_in_range =  ext_log_data_lka_right_lane_b_heading_angle_is_in_range(right_b_unpacked.heading_angle); 
                 
-                me_raw_lane.me_lane_heading_angle_R = mobeye_rx.signal_in_range(mobileye_lane.right_heading_angle_decode, mobileye_lane.right_heading_angle_is_in_range);
+                me_raw_lane.me_lane_heading_angle_R = CAN_Helper::signal_in_range(mobileye_lane.right_heading_angle_decode, mobileye_lane.right_heading_angle_is_in_range);
                 break;
             
             case 9: // mobileye diagnostics 1792    
@@ -220,9 +209,9 @@ int main(int argc, char **argv) {
                 mobileye_diag.maintenance_decode =  ext_log_data_aws_display_maintenance_decode(aws_display_unpacked.maintenance); 
                 mobileye_diag.maintenance_is_in_range =  ext_log_data_aws_display_maintenance_is_in_range(aws_display_unpacked.maintenance); 
                                
-                diag_data.headway_valid = mobeye_rx.signal_in_range(mobileye_diag.headway_valid_decode, mobileye_diag.headway_valid_is_in_range);
-                diag_data.maintenance = mobeye_rx.signal_in_range(mobileye_diag.maintenance_decode, mobileye_diag.maintenance_is_in_range);
-                diag_data.failsafe = mobeye_rx.signal_in_range(mobileye_diag.failsafe_decode, mobileye_diag.failsafe_is_in_range);
+                diag_data.headway_valid = CAN_Helper::signal_in_range(mobileye_diag.headway_valid_decode, mobileye_diag.headway_valid_is_in_range);
+                diag_data.maintenance = CAN_Helper::signal_in_range(mobileye_diag.maintenance_decode, mobileye_diag.maintenance_is_in_range);
+                diag_data.failsafe = CAN_Helper::signal_in_range(mobileye_diag.failsafe_decode, mobileye_diag.failsafe_is_in_range);
                
                 break;
 
@@ -239,9 +228,9 @@ int main(int argc, char **argv) {
                 std::cout << "Invalid Ch4 service call" << std::endl;
             }
 
-            mobeye_rx.mob_pub_obj.publish(me_obj);
-            mobeye_rx.mob_pub_lane.publish(me_raw_lane);
-            mobeye_rx.diag_pub.publish(diag_data);
+            mobileye_rx.mob_pub_obj.publish(me_obj);
+            mobileye_rx.mob_pub_lane.publish(me_raw_lane);
+            mobileye_rx.diag_pub.publish(diag_data);
                                 
         }
 

@@ -1,5 +1,6 @@
 <launch>
-    <node pkg = "can_tx_rx" type = "can_tx_rx_CH2_CH3" name = "can_tx_rx_CH2_CH3" args="$(arg radar_ch)"/>
+    <node pkg = "can_tx_rx" type = "can_tx_rx_CH2" name = "can_tx_rx_CH2"/>
+    <node pkg = "can_tx_rx" type = "can_tx_rx_CH3" name = "can_tx_rx_CH3"/>
     <node pkg = "can_tx_rx" type = "can_tx_rx_CH1" name = "can_tx_rx_CH1" />
     <node pkg = "can_tx_rx" type = "can_tx_rx_CH4" name = "can_tx_rx_CH4" />
    

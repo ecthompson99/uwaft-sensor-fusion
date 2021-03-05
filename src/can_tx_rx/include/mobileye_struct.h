@@ -11,6 +11,8 @@
 #include "common/mobileye_object_data.h"
 #include "common/raw_lane_data.h"
 
+#include "helper_can.h"
+
 #define TX_RX_MESSAGE_BUFFER_SIZE 1000
 #define TOPIC_RX_OBJ "Mobileye_CAN_Rx_Object"
 #define TOPIC_RX_LANE "Mobileye_CAN_Rx_Lane"
@@ -101,50 +103,9 @@ class Mobileye_RX{
             bool maintenance_is_in_range; 
         };
 
-        static void get_nums(int id, int &case_num, int &obj_num){ 
-            
-            // deafault values set to -1
-            obj_num = -1;
-
-            if(id >=1824 && id <=1830){
-                case_num = 1; //Traffic Sensor 
-            } else if(id >= 1849 && id <= 1876 && id % 3 == 1){
-                case_num = 2; //Obstacle A Frame
-            } else if(id >= 1850 && id <= 1877 && id % 3 == 2){
-                case_num = 3; //Obstacle B Frame
-            } else if(id >= 1851 && id <= 1878 && id % 3 == 0){
-                case_num = 4; //Obstacle C Frame
-            } else if(id == 1894){
-                case_num = 5; //LKA Left Lane Frame A
-            } else if(id == 1895){
-                case_num = 6; //LKA Left Lane Frame B 
-            } else if(id == 1896){
-                case_num = 7; //LKA Right Lane Frame A 
-            } else if(id == 1897){
-                case_num = 8; //LKA Right Lane Frame B 
-            } else if(id == 1792){ // Diagnostics
-                case_num == 9;
-            }else{
-                case_num = 0; // faulted 
-            }
-            
-            if (case_num >=2 && case_num <= 4){
-                /* Obs A frame: 1876, 1873, 1870, 1867, 1864, 1861, 1858, 1855, 1852, 1849	
-                Obs B frame: 1877, 1874, 1871, 1868, 1865, 1862, 1859, 1856, 1853, 1850
-                Obs C frame: 1878, 1875, 1872, 1869, 1866, 1863,1860, 1857, 1854, 1851	
-                Lowest ID is 1849, increments by 3. Formula allows for calculating object ID from 0-9 given the case where the IDs are A,B, or C frame
-                eg. if the id is 1867, (1867 - (1849 + 2-2))/3 = object #6
-                */
-                obj_num = (id - (1849 + case_num - 2)) / 3; 
-            }
-
-        }; 
-
-
-        static double signal_in_range(double val, bool cond){
-            return (cond) ? (val) : 0; 
-        };
-
+        void get_nums(int id, int &case_num, int &obj_num);
+        
+        struct CAN_Helper::message_constants CAN_message;
     private:
         ros::Time start = ros::Time::now(); 
 };

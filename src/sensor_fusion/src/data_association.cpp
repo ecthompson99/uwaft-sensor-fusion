@@ -14,13 +14,13 @@ DataAssociation::DataAssociation(ros::NodeHandle* in_node_handle) : node_handle(
     sensor_me_data_obj_sub = node_handle->subscribe(MOBILEYE_TOPIC, MESSAGE_BUFFER_SIZE, 
                                                 &DataAssociation::sensor_me_data_obj_callback, this);
 
-    sensor_front_radar_data_obj_sub = node_handle->subscribe(RADAR_ONE_TOPIC, MESSAGE_BUFFER_SIZE,
+    sensor_front_radar_data_obj_sub = node_handle->subscribe(RADAR_FRONT_TOPIC, MESSAGE_BUFFER_SIZE,
                                                             &DataAssociation::sensor_radar_data_obj_callback, this);
 
-    sensor_left_corner_radar_sub = node_handle->subscribe(RADAR_TWO_TOPIC, MESSAGE_BUFFER_SIZE,
+    sensor_left_corner_radar_sub = node_handle->subscribe(RADAR_RIGHT_TOPIC, MESSAGE_BUFFER_SIZE,
                                                          &DataAssociation::sensor_radar_data_obj_callback, this);
 
-    sensor_right_corner_radar_sub = node_handle->subscribe(RADAR_THREE_TOPIC, MESSAGE_BUFFER_SIZE,
+    sensor_right_corner_radar_sub = node_handle->subscribe(RADAR_LEFT_TOPIC, MESSAGE_BUFFER_SIZE,
                                                              &DataAssociation::sensor_radar_data_obj_callback, this);
 
     radar_to_kf_pub = node_handle->advertise<common::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
@@ -41,9 +41,6 @@ DataAssociation::DataAssociation(ros::NodeHandle* in_node_handle) : node_handle(
 std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_object_data& recvd_data){
 
     std::vector<RadarObject> filtered_radar_obj;
-
-    // need an algorithm here that will filter out bad sensor readings
-    // reduce object count from 10 objects
 
     size_t filtered_index = 0;
     for (size_t r_index = 0; r_index < RADAR_OBJ; r_index++){
@@ -385,7 +382,7 @@ bool DataAssociation::sensor_diagnostic_callback_CH4(common::sensor_diagnostic_f
     return true;
 }
 
-common::associated_radar_msg DataAssociation::get_associated_radar_msg(){return associated_radar_msg;}
+//common::associated_radar_msg DataAssociation::get_associated_radar_msg(){return associated_radar_msg;}
 common::associated_me_msg DataAssociation::get_associated_me_msg(){return associated_me_msg;}
 
 int main(int argc, char** argv){

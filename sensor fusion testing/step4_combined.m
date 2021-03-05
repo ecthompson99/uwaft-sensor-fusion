@@ -8,9 +8,9 @@ load('./mat files/vehicle.mat');
 rosinit
 me_pub = rospublisher('/Mobileye_CAN_Rx','common/mobileye_object_data');
 me_msg = rosmessage(me_pub);
-radar_pub = rospublisher('/Radar_One_CAN_Rx','common/radar_object_data');
+radar_pub = rospublisher('/Front_Radar_CAN_Rx','common/radar_object_data');
 radar_msg = rosmessage(radar_pub);
-veh_pub = rospublisher('/Radar_One_CAN_Rx','common/radar_object_data');
+veh_pub = rospublisher('/Front_Radar_CAN_Rx','common/radar_object_data');
 veh_msg = rosmessage(veh_pub);
 
 % array index start from 1

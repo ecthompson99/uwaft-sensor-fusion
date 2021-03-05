@@ -18,9 +18,9 @@
 #include "common/radar_object_data.h"
 
 #define MOBILEYE_TOPIC "Mobileye_CAN_Rx"
-#define RADAR_ONE_TOPIC "Radar_One_CAN_Rx"
-#define RADAR_TWO_TOPIC "Radar_Two_CAN_Rx"
-#define RADAR_THREE_TOPIC "Radar_Three_CAN_Rx"
+#define RADAR_FRONT_TOPIC "Front_Radar_CAN_Rx"
+#define RADAR_RIGHT_TOPIC "Right_Radar_CAN_Rx"
+#define RADAR_LEFT_TOPIC "Left_Radar_CAN_Rx"
 #define KALMAN_FILTER_RADAR_TOPIC "associated_radar"
 #define KALMAN_FILTER_ME_TOPIC "associated_me"
 #define SENSOR_DIAG_TOPIC "sensor_diagnostic_flags"
@@ -51,7 +51,7 @@ class DataAssociation {
 
 		friend class ObjectState;
 
-        void sensor_radar_data_obj_callback(const common::radar_object_data& sensor_data);
+		void sensor_radar_data_obj_callback(const common::radar_object_data& sensor_data);
 		void sensor_me_data_obj_callback(const common::mobileye_object_data& sensor_data);
        
         bool sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request& req, common::sensor_diagnostic_flag_CH2::Response &res);

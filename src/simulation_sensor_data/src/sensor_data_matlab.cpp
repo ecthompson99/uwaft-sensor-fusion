@@ -18,7 +18,7 @@ struct radar_data
     float vy[32];
 };
 
-struct camera_data 
+struct mobileye_data 
 {
     float dx[10];
     float dy[10];
@@ -28,11 +28,14 @@ struct camera_data
 
 void radar_data_parser(stringstream& ss, radar_data& radar) 
 {
+    // Iterate comma-seperated entries of radar sensor data and copy to radar_data struct
+    // 128 entries correspond to 32 objects in order: dx[32], dy[32], vx[32], vy[32]
     string word;
     for (int x = 0; x < 128; x++) 
     {
         std::getline(ss, word, ',');
         float sensor_val = atof(word.c_str());
+        // Index of object (0->31) calculated from csv value index
         int idx = x % 32;
         if (x < 32)
             radar.dx[idx] = sensor_val;
@@ -45,13 +48,16 @@ void radar_data_parser(stringstream& ss, radar_data& radar)
     }
 }
 
-void camera_data_parser(stringstream& ss, camera_data& camera) 
+void camera_data_parser(stringstream& ss, mobileye_data& camera) 
 {
+    // Iterate comma-seperated entries of mobileye sensor data and copy to mobileye_data struct
+    // 30 entries correspond to 10 objects in order: dx[10], dy[10], vx[10]
     string word;
     for (int x = 0; x < 30; x++) 
     {
         std::getline(ss, word, ',');
         float sensor_val = atof(word.c_str());
+        // Index of object (0->9) calculated from csv value index
         int idx = x % 10;
         if (x < 10)
             camera.dx[idx] = sensor_val;
@@ -62,8 +68,8 @@ void camera_data_parser(stringstream& ss, camera_data& camera)
     }
 }
 
-void read_sensor_data_csv(string filename, vector<double>& time, vector<radar_data>& radar1, vector<radar_data>& radar2,
-                          vector<radar_data>& radar3, vector<camera_data>& camera) 
+void read_sensor_data_csv(string filename, vector<double>& time, vector<radar_data>& front_radar, vector<radar_data>& right_radar,
+                          vector<radar_data>& left_radar, vector<mobileye_data>& mobileye) 
 {
     ifstream fin(filename.c_str());
     if (!fin.is_open())
@@ -75,6 +81,8 @@ void read_sensor_data_csv(string filename, vector<double>& time, vector<radar_da
     string line, word;
     size_t i = 0;
 
+    // Get radar and mobileye data from driving scenario csv output
+    // File Format: Time Stamp, Front Radar Data, Right Radar Data, Left Radar Data, Mobileye Data
     while (fin)
     {
         std::getline(fin, line, '\n');
@@ -83,15 +91,15 @@ void read_sensor_data_csv(string filename, vector<double>& time, vector<radar_da
         std::getline(ss, word, ',');
         time.push_back(atof(word.c_str()));
 
-        radar1.push_back(radar_data());
-        radar2.push_back(radar_data());
-        radar3.push_back(radar_data());
-        camera.push_back(camera_data());
+        front_radar.push_back(radar_data());
+        right_radar.push_back(radar_data());
+        left_radar.push_back(radar_data());
+        mobileye.push_back(mobileye_data());
 
-        radar_data_parser(ss, radar1[i]);
-        radar_data_parser(ss, radar2[i]);
-        radar_data_parser(ss, radar3[i]);
-        camera_data_parser(ss, camera[i]);
+        radar_data_parser(ss, front_radar[i]);
+        radar_data_parser(ss, right_radar[i]);
+        radar_data_parser(ss, left_radar[i]);
+        camera_data_parser(ss, mobileye[i]);
         
         i++;
     }
@@ -105,98 +113,86 @@ int main(int argc, char **argv)
     bag.open("sim_sensor_data.bag", rosbag::bagmode::Write);
     
     std::vector<double> time_stamps;
-    std::vector<radar_data> radar1;
-    std::vector<radar_data> radar2;
-    std::vector<radar_data> radar3;
-    std::vector<camera_data> camera;
-    read_sensor_data_csv("/home/jaiprajapati/kaiROS/src/simulation_sensor_data/src/sim_sensor_output_stationary_approach.csv", time_stamps, radar1, radar2, radar3, camera);
-
-    //Output "sensor_data" vector content
-    for (int i = 0; i < time_stamps.size(); i++)
-    {
-        cout << "Time: " << time_stamps[i] << endl;
-
-        for (int j = 0; j < 32; j++)
-        {
-            printf("Radar1: %.2f, %.2f, %.2f, %.2f\n", radar1[i].dx[j], radar1[i].dy[j], radar1[i].vx[j], radar1[i].vy[j]);
-            printf("Radar2: %.2f, %.2f, %.2f, %.2f\n", radar2[i].dx[j], radar2[i].dy[j], radar2[i].vx[j], radar2[i].vy[j]);
-            printf("Radar3: %.2f, %.2f, %.2f, %.2f\n", radar3[i].dx[j], radar3[i].dy[j], radar3[i].vx[j], radar3[i].vy[j]);
-            if(j < 10)
-                printf("Camera: %.2f, %.2f, %.2f\n", camera[i].dx[j], camera[i].dy[j], camera[i].vx[j]);
-        }
-        cout << endl;
-    }
+    std::vector<radar_data> front_radar;
+    std::vector<radar_data> right_radar;
+    std::vector<radar_data> left_radar;
+    std::vector<mobileye_data> mobileye;
+    
+    string simulation_file_path = getenv("HOME");
+    simulation_file_path.append("/kaiROS/src/simulation_sensor_data/src/sim_sensor_output_stationary_approach.csv");
+    read_sensor_data_csv(simulation_file_path, time_stamps, front_radar, right_radar, left_radar, mobileye);
 
     for (size_t x = 0; x < time_stamps.size(); x++) 
     {
         ros::Time time(time_stamps[x]);
-        common::radar_object_data radar1_data;
-        common::radar_object_data radar2_data;
-        common::radar_object_data radar3_data;
-        common::mobileye_object_data camera_data;
+        common::radar_object_data front_radar_data;
+        common::radar_object_data right_radar_data;
+        common::radar_object_data left_radar_data;
+        common::mobileye_object_data mobileye_data;
 
+        // Assign radar data to ROS radar_object_data messages
         for(int obj_idx = 0; obj_idx < 32; obj_idx++)
         {
-            radar1_data.radar_dx[obj_idx] = radar1[x].dx[obj_idx];
-            radar1_data.radar_dy[obj_idx] = radar1[x].dy[obj_idx];
-            radar1_data.radar_vx[obj_idx] = radar1[x].vx[obj_idx];
-            radar1_data.radar_vy[obj_idx] = radar1[x].vy[obj_idx];
-            radar1_data.radar_ax[obj_idx] = 0;
-            radar1_data.radar_timestamp = time_stamps[x];
-            radar1_data.radar_ax_sigma[obj_idx] = 0;
-            radar1_data.radar_dx_sigma[obj_idx] = 0;
-            radar1_data.radar_dy_sigma[obj_idx] = 0;
-            radar1_data.radar_vx_sigma[obj_idx] = 0;
-            radar1_data.radar_w_exist[obj_idx] = 1;
-            radar1_data.radar_flag_valid[obj_idx] = 1;
-            radar1_data.d_length[obj_idx] = 1;
+            front_radar_data.radar_dx[obj_idx] = front_radar[x].dx[obj_idx];
+            front_radar_data.radar_dy[obj_idx] = front_radar[x].dy[obj_idx];
+            front_radar_data.radar_vx[obj_idx] = front_radar[x].vx[obj_idx];
+            front_radar_data.radar_vy[obj_idx] = front_radar[x].vy[obj_idx];
+            front_radar_data.radar_ax[obj_idx] = 0;
+            front_radar_data.radar_timestamp = time_stamps[x];
+            front_radar_data.radar_ax_sigma[obj_idx] = 0;
+            front_radar_data.radar_dx_sigma[obj_idx] = 0;
+            front_radar_data.radar_dy_sigma[obj_idx] = 0;
+            front_radar_data.radar_vx_sigma[obj_idx] = 0;
+            front_radar_data.radar_w_exist[obj_idx] = 1;
+            front_radar_data.radar_flag_valid[obj_idx] = 1;
+            front_radar_data.d_length[obj_idx] = 1;
 
+            right_radar_data.radar_dx[obj_idx] = right_radar[x].dx[obj_idx];
+            right_radar_data.radar_dy[obj_idx] = right_radar[x].dy[obj_idx];
+            right_radar_data.radar_vx[obj_idx] = right_radar[x].vx[obj_idx];
+            right_radar_data.radar_vy[obj_idx] = right_radar[x].vy[obj_idx];
+            right_radar_data.radar_ax[obj_idx] = 0;
+            right_radar_data.radar_timestamp = time_stamps[x];
+            right_radar_data.radar_ax_sigma[obj_idx] = 0;
+            right_radar_data.radar_dx_sigma[obj_idx] = 0;
+            right_radar_data.radar_dy_sigma[obj_idx] = 0;
+            right_radar_data.radar_vx_sigma[obj_idx] = 0;
+            right_radar_data.radar_w_exist[obj_idx] = 1;
+            right_radar_data.radar_flag_valid[obj_idx] = 1;
+            right_radar_data.d_length[obj_idx] = 1;
 
-            radar2_data.radar_dx[obj_idx] = radar2[x].dx[obj_idx];
-            radar2_data.radar_dy[obj_idx] = radar2[x].dy[obj_idx];
-            radar2_data.radar_vx[obj_idx] = radar2[x].vx[obj_idx];
-            radar2_data.radar_vy[obj_idx] = radar2[x].vy[obj_idx];
-            radar2_data.radar_ax[obj_idx] = 0;
-            radar2_data.radar_timestamp = time_stamps[x];
-            radar2_data.radar_ax_sigma[obj_idx] = 0;
-            radar2_data.radar_dx_sigma[obj_idx] = 0;
-            radar2_data.radar_dy_sigma[obj_idx] = 0;
-            radar2_data.radar_vx_sigma[obj_idx] = 0;
-            radar2_data.radar_w_exist[obj_idx] = 1;
-            radar2_data.radar_flag_valid[obj_idx] = 1;
-            radar2_data.d_length[obj_idx] = 1;
-
-            radar3_data.radar_dx[obj_idx] = radar3[x].dx[obj_idx];
-            radar3_data.radar_dy[obj_idx] = radar3[x].dy[obj_idx];
-            radar3_data.radar_vx[obj_idx] = radar3[x].vx[obj_idx];
-            radar3_data.radar_vy[obj_idx] = radar3[x].vy[obj_idx];
-            radar3_data.radar_ax[obj_idx] = 0;
-            radar3_data.radar_timestamp = time_stamps[x];
-            radar3_data.radar_ax_sigma[obj_idx] = 0;
-            radar3_data.radar_dx_sigma[obj_idx] = 0;
-            radar3_data.radar_dy_sigma[obj_idx] = 0;
-            radar3_data.radar_vx_sigma[obj_idx] = 0;
-            radar3_data.radar_w_exist[obj_idx] = 1;
-            radar3_data.radar_flag_valid[obj_idx] = 1;
-            radar3_data.d_length[obj_idx] = 1;
+            left_radar_data.radar_dx[obj_idx] = left_radar[x].dx[obj_idx];
+            left_radar_data.radar_dy[obj_idx] = left_radar[x].dy[obj_idx];
+            left_radar_data.radar_vx[obj_idx] = left_radar[x].vx[obj_idx];
+            left_radar_data.radar_vy[obj_idx] = left_radar[x].vy[obj_idx];
+            left_radar_data.radar_ax[obj_idx] = 0;
+            left_radar_data.radar_timestamp = time_stamps[x];
+            left_radar_data.radar_ax_sigma[obj_idx] = 0;
+            left_radar_data.radar_dx_sigma[obj_idx] = 0;
+            left_radar_data.radar_dy_sigma[obj_idx] = 0;
+            left_radar_data.radar_vx_sigma[obj_idx] = 0;
+            left_radar_data.radar_w_exist[obj_idx] = 1;
+            left_radar_data.radar_flag_valid[obj_idx] = 1;
+            left_radar_data.d_length[obj_idx] = 1;
         }
 
+        // Assign mobileye data to ROS mobileye_object_data message
         for(int obj_idx = 0; obj_idx < 10; obj_idx++)
         {
-            camera_data.me_dx[obj_idx] = camera[x].dx[obj_idx];
-            camera_data.me_dy[obj_idx] = camera[x].dy[obj_idx];
-            camera_data.me_vx[obj_idx] = camera[x].vx[obj_idx];
-            camera_data.me_timestamp = time_stamps[x];
-            camera_data.me_valid[obj_idx] = 1;
+            mobileye_data.me_dx[obj_idx] = mobileye[x].dx[obj_idx];
+            mobileye_data.me_dy[obj_idx] = mobileye[x].dy[obj_idx];
+            mobileye_data.me_vx[obj_idx] = mobileye[x].vx[obj_idx];
+            mobileye_data.me_timestamp = time_stamps[x];
+            mobileye_data.me_valid[obj_idx] = 1;
         }
 
         if (time.toNSec() == 0) time = ros::TIME_MIN;
 
-        bag.write("Radar_One_CAN_Rx", time, radar1_data);
-        bag.write("Radar_Two_CAN_Rx", time, radar2_data);
-        bag.write("Radar_Three_CAN_Rx", time, radar3_data);
-        bag.write("Mobileye_CAN_Rx", time, camera_data);        
-
+        // Write radar and mobileye messages along with timestamp to corresponding topics in bag file
+        bag.write("Front_Radar_CAN_Rx", time, front_radar_data);
+        bag.write("Right_Radar_CAN_Rx", time, right_radar_data);
+        bag.write("Left_Radar_CAN_Rx", time, left_radar_data);
+        bag.write("Mobileye_CAN_Rx", time, mobileye_data);        
     }
 
     bag.close();
