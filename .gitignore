@@ -37,6 +37,9 @@
 #Bag files
 *.bag
 
+#Excel files
+*.xlsx
+
 #Matlab files
 *.mat
 *.asv
