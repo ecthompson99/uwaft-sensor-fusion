@@ -1,7 +1,7 @@
 rosshutdown
 clear
 clc
-load('~/kaiROS/sensor fusion testing/mat files/mobileye.mat');
+load('~/kaiROS/sensor fusion testing/mobileye.mat');
 
 rosinit
 me_pub = rospublisher('/mobileye_from_matlab','sensor_fusion_testing/mobileye_object_data_from_matlab');
