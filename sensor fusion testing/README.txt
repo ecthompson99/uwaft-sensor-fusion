@@ -1,8 +1,1 @@
-There are some empty folders that need to be created in sensor fusion testing. 
-This is because some of the scripts load and save data to certain folders.
-The folders to created should have the following names.
-
-Excel files
-mat files
-rosbags
-video(.avi)
+For visualization of OXTS and sensor fusion with rosbag file, blf file and oxts dbc file for to the folder "conversion and visual". Go to individual and follow the instructions in that README file. The "conversion and visual" folder also contains scripts to turn oxts and sensor fusion data into a more readable format.
