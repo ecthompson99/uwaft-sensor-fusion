@@ -13,7 +13,7 @@ candb_oxts = canDatabase("./input files/oxts_v2.dbc");
 %fourth argument: this Value1 for Name1 and is the actual dbc file
 %fifth argument: Name2 is for message standard ID's
 %sixth argument:Value1 
-data_oxts = blfread("./input files/WVE_Approach_Test_10mph_test2002_2021-02-18_21-31-15.blf",5,...
+data_oxts = blfread("./input files/WVE_Approach_Test_20mph_test3006_2021-02-18_21-39-54.blf",5,...
                 "Database", candb_oxts,"CANStandardFilter", [1537 1543]);
 time_in_sec = seconds(data_oxts.Time);
 oxts_final = addvars(data_oxts,time_in_sec);
