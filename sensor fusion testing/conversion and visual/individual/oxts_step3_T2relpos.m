@@ -75,7 +75,7 @@ for i = t:acclength
     
 end
 
-save('./mat files/range_test2_10mph', 'relpos_oxts','-append');
+save('./mat files/range_test3_20mph', 'relpos_oxts','-append');
 save('./mat files/oxts_relative','relpos_oxts');
 
 
