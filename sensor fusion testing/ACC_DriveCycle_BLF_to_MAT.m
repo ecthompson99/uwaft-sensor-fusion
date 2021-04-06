@@ -50,12 +50,12 @@ save('./mat files/veh_speed.mat', 'veh_speed');
 writetable(veh_speed, strcat("./Excel files/","CAV_veh_speed",".xlsx"),'Sheet',1);
 
 veh_torque_request = table(blf_torque_request_final.time_in_sec, torque_request_extracted(:,1));
-%save('./mat files/veh_torque_request.mat', 'veh_torque_request');
-%writetable(veh_torque_request, strcat("./Excel files/","CAV_veh_torque_request",".xlsx"),'Sheet',1);
 
 %% Plots the eng torque request
 FILE_NAME = './Excel files/CAV_model_torque_request.xlsx';
 SHEET = 1;
+
+% Need to check the range of the excel file and populate it here
 XL_RANGE = 'A2:B35447';
 
 model_drive_cycle = xlsread(FILE_NAME, SHEET, XL_RANGE);
@@ -63,6 +63,7 @@ plot(veh_torque_request.Var1, veh_torque_request.Var2); % in Nm
 hold on;
 plot(model_drive_cycle(:,1), model_drive_cycle(:,2)); %in Nm
 
+%xlim([25, 45]);
 legend('Drive Cycle Output','Model Output');
 xlabel('Time (s)') ;
 ylabel('Torque Request (Nm)') ;
