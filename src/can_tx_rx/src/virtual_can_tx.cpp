@@ -17,10 +17,10 @@ int main(int argc, char **argv)
     struct emc_pcm_cav_interface_pcm_to_cav_3_t pcm3;
 
     canHandle hnd;
-    canInitializeLibrary(); 
-    canStatus stat; 
+    canInitializeLibrary();
+    canStatus stat;
 
-    hnd = canOpenChannel(1, canOPEN_ACCEPT_VIRTUAL);
+    hnd = canOpenChannel(0, canOPEN_EXCLUSIVE);
     if (hnd < 0) {
         char msg[64];
         canGetErrorText((canStatus)hnd, msg, sizeof(msg));
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    canSetBusParams(hnd, canBITRATE_250K, 0, 0, 0, 0, 0);
+    canSetBusParams(hnd, canBITRATE_500K, 0, 0, 0, 0, 0);
     canSetBusOutputControl(hnd, canDRIVER_NORMAL);
     canBusOn(hnd);
 
@@ -41,12 +41,11 @@ int main(int argc, char **argv)
     while (ros::ok()) 
     {
         // mock data for virtual testing purposes
-        if (iter > 5)
-            iter = 0;
+        if (iter > 8) iter = 0;
 
         // mock comms message from master task
         commsmsg.long_accel = 5*iter;
-        commsmsg.lcc_steer = 2*iter;
+        commsmsg.lcc_steer = 6 * iter;
         commsmsg.acc_valid = 1;
         commsmsg.aeb_valid = 1;
         commsmsg.lcc_valid = 1;
@@ -63,7 +62,7 @@ int main(int argc, char **argv)
         publish_comms.publish(commsmsg);
         // std::cout << "comms message sent! ";
 
-        // mock PCM data to send to CAVs
+        // // mock PCM data to send to CAVs
         pcm1.pcm_to_cav1_rc = iter;
         pcm1.pcm_lcc_allowed = 1;
         pcm1.pcm_acc_allowed = 1;
@@ -73,8 +72,8 @@ int main(int argc, char **argv)
         pcm1.pcm_hsc_alive = 1;
         pcm2.pcm_to_cav2_rc = iter;
         pcm3.pcm_to_cav3_rc = iter;
-    
-        // encode mock PCM data to send to CAV channel 1 ROS node
+
+        // // encode mock PCM data to send to CAV channel 1 ROS node
         pcm1.pcm_to_cav1_rc = emc_pcm_cav_interface_pcm_to_cav_1_pcm_to_cav1_rc_encode(pcm1.pcm_to_cav1_rc);
         pcm1.pcm_lcc_allowed = emc_pcm_cav_interface_pcm_to_cav_1_pcm_lcc_allowed_encode(pcm1.pcm_lcc_allowed);
         pcm1.pcm_acc_allowed = emc_pcm_cav_interface_pcm_to_cav_1_pcm_acc_allowed_encode(pcm1.pcm_acc_allowed);
@@ -106,17 +105,16 @@ int main(int argc, char **argv)
         
         canStatus stat; 
         if(id == 1072){ // 1st pcm to cav message
-            stat = canWrite(hnd,id, pcm_to_cav_msg_1, 8, canOPEN_ACCEPT_VIRTUAL);
+          stat = canWrite(hnd, id, pcm_to_cav_msg_1, 8, canOPEN_EXCLUSIVE);
         }
         else if(id == 1073){ //2nd cav to pcm message
-            stat = canWrite(hnd,id, pcm_to_cav_msg_2, 8, canOPEN_ACCEPT_VIRTUAL);
+          stat = canWrite(hnd, id, pcm_to_cav_msg_2, 8, canOPEN_EXCLUSIVE);
         }
         else if(id ==1074){ //3rd cav to pcm message
-            stat = canWrite(hnd,id, pcm_to_cav_msg_3, 8, canOPEN_ACCEPT_VIRTUAL);
-        }
-        else{ //incorrect frame 
-            stat = canWrite(hnd, id, blank_msg, 8, canOPEN_ACCEPT_VIRTUAL); 
-            std::cout << "Empty message sent" << std::endl; 
+          stat = canWrite(hnd, id, pcm_to_cav_msg_3, 8, canOPEN_EXCLUSIVE);
+        } else {  // incorrect frame
+          stat = canWrite(hnd, id, blank_msg, 8, canOPEN_EXCLUSIVE);
+          std::cout << "Empty message sent" << std::endl;
         }
         if (stat < 0)
         {
@@ -125,7 +123,7 @@ int main(int argc, char **argv)
         
         ros::spinOnce();
         ros::Duration(0.5).sleep();
-        std::cout << "id = " << id << std::endl; 
+        // std::cout << "id = " << id << std::endl;
         id++; 
         iter++;
     }

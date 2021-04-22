@@ -11,11 +11,9 @@
 
 #include "common/radar_object_data.h"
 
-#include "helper_can.h"
-
 #define MESSAGE_BUFFER_SIZE 1000
-#define TOPIC_RX "Radar_CAN_RX"
-#define TOPIC_DIAG "Radar_CAN_Diagnostics"
+#define TOPIC_RX "Front_Radar_CAN_Rx"
+#define TOPIC_DIAG "sensor_diagnostic_flags"
 #define SIZE_OF_MSG 8 
 
 class Radar_RX{
@@ -183,10 +181,11 @@ class Radar_RX{
       uint8_t radar_number;
       uint8_t object_number;
     };
-    void get_nums(int id, int &case_n, int &radar_n, int &frame_n, int &obj_n, int &target_obj_n, int channel_number);
+    void get_nums(long int id, int &case_n, int &radar_n, int &frame_n, int &obj_n, int &target_obj_n,
+                  int channel_number);
+    double signals_in_range(double val, bool cond);
     static void get_static_veh_info(radar_input_mount_info_t &in_mount_info, radar_input_veh_dyn_data_t &in_veh_dyn, radar_input_wheel_info_t &in_wheel_info, radar_input_veh_dim_t &in_veh_dim, int radar_num);
     uint8_t crc8bit_calculation(uint8_t can1670signals[7], int f_len);
     void clear_classes(common::radar_object_data &radar_obj, common::sensor_diagnostic_data_msg &diag_data,     Radar_RX::radar_diagnostic_response &diag_response, Radar_RX::radar_information &radar_info,Radar_RX::target_tracking_info &target_info, Radar_RX::object_tracking_info &object_info, uint8_t &tc_check, uint8_t &mc_check);
-    struct CAN_Helper::message_constants CAN_message;
 };
 

@@ -1,0 +1,249 @@
+/*@!Encoding:1252*/
+includes
+{
+ 
+}
+variables
+{
+  // Message Timers
+  msTimer timerMountInfo1000ms;
+  msTimer timerVehDim1000ms;
+  msTimer timerVehDynData20ms;
+  msTimer timerWheelInfo1000ms;
+ 
+  // Messages
+  // front
+  message CAN3.XGU::Radar1_Input_MountInfo front_rxMountInfo = {DIR = TX};
+  message CAN3.XGU::Radar_Input_Veh_Dim front_rxVehDim = {DIR = TX};
+  message CAN3.XGU::Radar_Input_Veh_DynData front_rxVehDynData = {DIR = TX};
+  message CAN3.XGU::Radar_Input_Wheel_Info front_rxWheelInfo = {DIR = TX};
+ 
+  // corner left
+  message CAN1.Bosch_XGU_CornerRadar::Radar2_Input_MountInfo cornerLeft2_rxMountInfo = {DIR = TX};
+ 
+  message CAN1.Bosch_XGU_CornerRadar::Radar_Input_Veh_Dim cornerLeft_rxVehDim = {DIR = TX};
+  message CAN1.Bosch_XGU_CornerRadar::Radar_Input_Veh_DynData cornerLeft_rxVehDynData = {DIR = TX};
+  message CAN1.Bosch_XGU_CornerRadar::Radar_Input_Wheel_Info cornerLeft_rxWheelInfo = {DIR = TX};
+ 
+  // corner right
+  message CAN2.Bosch_XGU_CornerRadar::Radar1_Input_MountInfo cornerRight1_rxMountInfo = {DIR = TX};
+ 
+  message CAN2.Bosch_XGU_CornerRadar::Radar_Input_Veh_Dim cornerRight_rxVehDim = {DIR = TX};
+  message CAN2.Bosch_XGU_CornerRadar::Radar_Input_Veh_DynData cornerRight_rxVehDynData = {DIR = TX};
+  message CAN2.Bosch_XGU_CornerRadar::Radar_Input_Wheel_Info cornerRight_rxWheelInfo = {DIR = TX};
+ 
+  int front_mtInfoR1I_MI_MC = 0;
+  int front_vehDimRI_VD_MC = 0;
+  int front_vehDynDataRI_Veh_MC = 0;
+  int front_wheelInfoRI_WI_MC = 0;
+ 
+  int cornerLeft2_mtInfoR2I_MI_MC = 0;
+  int cornerLeft_vehDimRI_VD_MC = 0;
+  int cornerLeft_vehDynDataRI_Veh_MC = 0;
+  int cornerLeft_wheelInfoRI_WI_MC = 0;
+ 
+  int cornerRight1_mtInfoR1I_MI_MC = 0;
+  int cornerRight_vehDimRI_VD_MC = 0;
+  int cornerRight_vehDynDataRI_Veh_MC = 0;
+  int cornerRight_wheelInfoRI_WI_MC = 0;
+}
+on timer timerMountInfo1000ms {
+  setMsgMountInfo();
+  output(front_rxMountInfo);
+  output(cornerLeft2_rxMountInfo);
+  output(cornerRight1_rxMountInfo);
+  setTimer(timerMountInfo1000ms, 1000);
+}
+on timer timerVehDim1000ms {
+  setMsgVehDim();
+  output(front_rxVehDim);
+  output(cornerLeft_rxVehDim);
+  output(cornerRight_rxVehDim);
+  setTimer(timerVehDim1000ms, 1000);
+}
+on timer timerVehDynData20ms {
+  setMsgVehDynData();
+  output(front_rxVehDynData);
+  output(cornerLeft_rxVehDynData);
+  output(cornerRight_rxVehDynData);
+  setTimer(timerVehDynData20ms, 20);
+}
+on timer timerWheelInfo1000ms {
+  setMsgWheelInfo();
+  output(front_rxWheelInfo);
+  output(cornerLeft_rxWheelInfo);
+  output(cornerRight_rxWheelInfo);
+  setTimer(timerWheelInfo1000ms, 1000);
+}
+ 
+on start {
+  setTimer(timerMountInfo1000ms, 1000);
+  setTimer(timerVehDim1000ms, 1000);
+  setTimer(timerVehDynData20ms, 20);
+  setTimer(timerWheelInfo1000ms, 1000);
+}
+setMsgMountInfo() {
+  front_rxMountInfo.R1I_MI_LatSensorMountToCenter.phys = 0;
+  front_rxMountInfo.R1I_MI_LongSensorMountToRearAxle.phys = 3.784;
+  front_rxMountInfo.R1I_MI_SensorHeight.phys = 0.558;
+  front_rxMountInfo.R1I_MI_SensorOrientation.phys = 0;
+  front_rxMountInfo.R1I_MI_SensorMountAngle.phys = 0;
+ 
+  front_rxMountInfo.R1I_MI_MC = front_mtInfoR1I_MI_MC;
+  front_mtInfoR1I_MI_MC++;
+ 
+  front_rxMountInfo.R1I_MI_CRC = CalcJ1850Crc(front_rxMountInfo, 7);
+   
+  // Left, radar 2
+  cornerLeft2_rxMountInfo.R2I_MI_LatSensorMountToCenter.phys = 0.885;
+  cornerLeft2_rxMountInfo.R2I_MI_LongSensorMountToRearAxle.phys = 3.37;
+  cornerLeft2_rxMountInfo.R2I_MI_SensorHeight.phys = 0.681;
+  cornerLeft2_rxMountInfo.R2I_MI_SensorOrientation.phys = 1;
+  cornerLeft2_rxMountInfo.R2I_MI_SensorMountAngle.phys = 0.785398;
+ 
+  cornerLeft2_rxMountInfo.R2I_MI_MC = cornerLeft2_mtInfoR2I_MI_MC;
+  cornerLeft2_mtInfoR2I_MI_MC++;
+ 
+  cornerLeft2_rxMountInfo.R2I_MI_CRC = CalcJ1850Crc(cornerLeft2_rxMountInfo, 7);
+  // right, radar 1
+  cornerRight1_rxMountInfo.R1I_MI_LatSensorMountToCenter.phys = -0.91;
+  cornerRight1_rxMountInfo.R1I_MI_LongSensorMountToRearAxle.phys = 3.35;
+  cornerRight1_rxMountInfo.R1I_MI_SensorHeight.phys = 0.673;
+  cornerRight1_rxMountInfo.R1I_MI_SensorOrientation.phys = 0;
+  cornerRight1_rxMountInfo.R1I_MI_SensorMountAngle.phys = -0.785398;
+ 
+  cornerRight1_rxMountInfo.R1I_MI_MC = cornerRight1_mtInfoR1I_MI_MC;
+  cornerRight1_mtInfoR1I_MI_MC++;
+ 
+  cornerRight1_rxMountInfo.R1I_MI_CRC = CalcJ1850Crc(cornerRight1_rxMountInfo, 7);
+}
+setMsgVehDim() {
+  front_rxVehDim.RI_VD_Max_Width.phys = 2.158;
+  front_rxVehDim.RI_VD_Min_Width.phys = 1.948;
+  front_rxVehDim.RI_VD_LongFrontBumperPos.phys = 3.881;
+  front_rxVehDim.RI_VD_LongRearBumperPos.phys = 0.964;
+ 
+  front_rxVehDim.RI_VD_MC = front_vehDimRI_VD_MC;
+  front_vehDimRI_VD_MC++;
+ 
+  front_rxVehDim.RI_VD_CRC = CalcJ1850Crc(front_rxVehDim, 7);
+ 
+ 
+  cornerLeft_rxVehDim.RI_VD_Max_Width.phys = 2.158;
+  cornerLeft_rxVehDim.RI_VD_Min_Width.phys = 1.948;
+  cornerLeft_rxVehDim.RI_VD_LongFrontBumperPos.phys = 3.881;
+  cornerLeft_rxVehDim.RI_VD_LongRearBumperPos.phys = 0.964;
+ 
+  cornerLeft_rxVehDim.RI_VD_MC = cornerLeft_vehDimRI_VD_MC;
+  cornerLeft_vehDimRI_VD_MC++;
+ 
+  cornerLeft_rxVehDim.RI_VD_CRC = CalcJ1850Crc(cornerLeft_rxVehDim, 7);
+ 
+ 
+  cornerRight_rxVehDim.RI_VD_Max_Width.phys = 2.158;
+  cornerRight_rxVehDim.RI_VD_Min_Width.phys = 1.948;
+  cornerRight_rxVehDim.RI_VD_LongFrontBumperPos.phys = 3.881;
+  cornerRight_rxVehDim.RI_VD_LongRearBumperPos.phys = 0.964;
+ 
+  cornerRight_rxVehDim.RI_VD_MC = cornerRight_vehDimRI_VD_MC;
+  cornerRight_vehDimRI_VD_MC++;
+ 
+  cornerRight_rxVehDim.RI_VD_CRC = CalcJ1850Crc(cornerRight_rxVehDim, 7);
+}
+setMsgVehDynData() {
+  front_rxVehDynData.RI_Veh_velocity.phys = 0;
+  front_rxVehDynData.RI_Veh_yawRate.phys = 0;
+  front_rxVehDynData.RI_Veh_standstill.phys = 0;
+  front_rxVehDynData.RI_Veh_Steer_angle.phys = 0;
+  front_rxVehDynData.RI_Veh_Use_Steer_angle.phys = 1;
+  front_rxVehDynData.RI_Veh_PRNDSTAT.phys = 3;
+  front_rxVehDynData.RI_Veh_AnyWheelSlipEvent.phys = 0;
+ 
+  front_rxVehDynData.RI_Veh_MC = front_vehDynDataRI_Veh_MC;
+  front_vehDynDataRI_Veh_MC++;
+ 
+  front_rxVehDynData.RI_Veh_CRC = CalcJ1850Crc(front_rxVehDynData, 7);
+ 
+ 
+  cornerLeft_rxVehDynData.RI_Veh_velocity.phys = 0;
+  cornerLeft_rxVehDynData.RI_Veh_yawRate.phys = 0;
+  cornerLeft_rxVehDynData.RI_Veh_standstill.phys = 0;
+  cornerLeft_rxVehDynData.RI_Veh_Steer_angle.phys = 0;
+  cornerLeft_rxVehDynData.RI_Veh_Use_Steer_angle.phys = 1;
+  cornerLeft_rxVehDynData.RI_Veh_PRNDSTAT.phys = 3;
+  cornerLeft_rxVehDynData.RI_Veh_AnyWheelSlipEvent.phys = 0;
+ 
+  cornerLeft_rxVehDynData.RI_Veh_MC = cornerLeft_vehDynDataRI_Veh_MC;
+  cornerLeft_vehDynDataRI_Veh_MC++;
+ 
+  cornerLeft_rxVehDynData.RI_Veh_CRC = CalcJ1850Crc(cornerLeft_rxVehDynData, 7);
+ 
+ 
+  cornerRight_rxVehDynData.RI_Veh_velocity.phys = 0;
+  cornerRight_rxVehDynData.RI_Veh_yawRate.phys = 0;
+  cornerRight_rxVehDynData.RI_Veh_standstill.phys = 0;
+  cornerRight_rxVehDynData.RI_Veh_Steer_angle.phys = 0;
+  cornerRight_rxVehDynData.RI_Veh_Use_Steer_angle.phys = 1;
+  cornerRight_rxVehDynData.RI_Veh_PRNDSTAT.phys = 3;
+  cornerRight_rxVehDynData.RI_Veh_AnyWheelSlipEvent.phys = 0;
+ 
+  cornerRight_rxVehDynData.RI_Veh_MC = cornerRight_vehDynDataRI_Veh_MC;
+  cornerRight_vehDynDataRI_Veh_MC++;
+ 
+  cornerRight_rxVehDynData.RI_Veh_CRC = CalcJ1850Crc(cornerRight_rxVehDynData, 7);
+}
+setMsgWheelInfo() {
+  front_rxWheelInfo.RI_WI_WheelBase.phys = 2.863;
+  front_rxWheelInfo.RI_WI_TrackWidth.phys = 1.681;
+  front_rxWheelInfo.RI_WI_Steering_Angle_Ratio.phys = 15.1;
+ 
+  front_rxWheelInfo.RI_WI_MC = front_wheelInfoRI_WI_MC;
+  front_wheelInfoRI_WI_MC++;
+ 
+  front_rxWheelInfo.RI_WI_CRC = CalcJ1850Crc(front_rxWheelInfo, 4);
+ 
+ 
+  cornerLeft_rxWheelInfo.RI_WI_WheelBase.phys = 2.863;
+  cornerLeft_rxWheelInfo.RI_WI_TrackWidth.phys = 1.681;
+  cornerLeft_rxWheelInfo.RI_WI_Steering_Angle_Ratio.phys = 15.1;
+ 
+  cornerLeft_rxWheelInfo.RI_WI_MC = cornerLeft_wheelInfoRI_WI_MC;
+  cornerLeft_wheelInfoRI_WI_MC++;
+ 
+  cornerLeft_rxWheelInfo.RI_WI_CRC = CalcJ1850Crc(cornerLeft_rxWheelInfo, 4);
+ 
+ 
+  cornerRight_rxWheelInfo.RI_WI_WheelBase.phys = 2.863;
+  cornerRight_rxWheelInfo.RI_WI_TrackWidth.phys = 1.681;
+  cornerRight_rxWheelInfo.RI_WI_Steering_Angle_Ratio.phys = 15.1;
+ 
+  cornerRight_rxWheelInfo.RI_WI_MC = cornerRight_wheelInfoRI_WI_MC;
+  cornerRight_wheelInfoRI_WI_MC++;
+ 
+  cornerRight_rxWheelInfo.RI_WI_CRC = CalcJ1850Crc(cornerRight_rxWheelInfo, 4);
+}
+byte CalcJ1850Crc (message * f_data_pub, int f_len) {
+  int t_byteIndex;
+  int t_bitIndex;
+  byte t_crc_ub;
+   
+  t_crc_ub = 0xFF;  
+  for (t_byteIndex=0; t_byteIndex < f_len; t_byteIndex++)
+  {
+      t_crc_ub ^= f_data_pub.byte(t_byteIndex);    // assign data to CRC
+      for (t_bitIndex=0; t_bitIndex < 8; t_bitIndex++) // scan all bits
+      {
+          if ((t_crc_ub & 0x80) != 0) // check bit state
+          {
+             t_crc_ub = (t_crc_ub << 1);
+             t_crc_ub ^= 0x1D; // cb_CRC_POLY: 0x1D
+          }
+          else
+          {
+              t_crc_ub = (t_crc_ub << 1);
+          }
+      }
+  }
+  t_crc_ub = ~t_crc_ub;
+  return t_crc_ub;
+}

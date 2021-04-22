@@ -29,7 +29,7 @@ DataAssociation::DataAssociation(ros::NodeHandle* in_node_handle) : node_handle(
     next_id = 0;
     global_clk = 0;
 
-    filtered_me_obj = std::vector<MobileyeObject>(10);
+    filtered_me_obj = std::vector<MobileyeObject>(1);
 
     // diagnostics (assume true, service call if false)
     FRONT_RADAR = 1;
@@ -108,13 +108,15 @@ std::vector<MobileyeObject> DataAssociation::filter_me(const common::mobileye_ob
     size_t filtered_index = 0;
     for (size_t me_index = 0; me_index < ME_OBJ; me_index++){
         // dx and dy threshold
-        if (recvd_data.me_dx[me_index] < MIN_DX || recvd_data.me_dx[me_index] > MAX_DX
-            || abs(recvd_data.me_dy[me_index] > MAX_DY) ) continue;
+        if (recvd_data.me_dx[me_index] < MIN_DX || recvd_data.me_dx[me_index] > MAX_DX ||
+            abs(recvd_data.me_dy[me_index]) > MAX_DY)
+          continue;
 
-    //  COMMENT OUT FOR SIMULATION
+        //  COMMENT OUT FOR SIMULATION
         // Stationary objects - status: never moved
-        if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
-        
+        // **commented line below for testing purposes**
+        // if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
+
         // Valid objects
         if (recvd_data.me_valid[me_index] == 0) continue;
     
@@ -162,11 +164,12 @@ void DataAssociation::pub_me_signals(common::associated_me_msg &associated_me_ms
 
 // Used to delete potential objects (in temporary array) if havn't seen for a long time
 void DataAssociation::delete_potential_objects() {
-
     for (unsigned i = 0; i < potential_objs.size(); i++){
-        if(global_clk - potential_objs[i].timestamp > secondsToDelete){
-            // std::cout << "Potential object deleted because too old in temp array" << std::endl;
-            potential_objs.erase(potential_objs.begin()+i);
+      if ((global_clk - potential_objs[i].timestamp > secondsToDelete)) {
+        // std::cout << "Potential object deleted because too old in temp array" << std::endl;
+        // std::cout << "Global clock: " << +global_clk << std::endl;
+        // std::cout << "Pot obj "<< +i << " time " << +potential_objs[i].timestamp << std::endl;
+        potential_objs.erase(potential_objs.begin() + i);
         }
     }
 }
@@ -184,6 +187,9 @@ bool DataAssociation::objects_match_radar(ObjectState obj, RadarObject& filtered
 
 bool DataAssociation::objects_match_me(ObjectState obj, MobileyeObject& filtered) {
     // filter dx, dy, vx
+    printf("Dx difference: %f", (abs(filtered.me_dx - obj.dx)));
+    printf("Dy difference: %f", (abs(filtered.me_dy - obj.dy)));
+    printf("Vx difference: %f", (abs(filtered.me_vx - obj.vx)));
     if ((abs(filtered.me_dx - obj.dx) < DX_TOL) && (abs(filtered.me_dy - obj.dy) < DY_TOL) && (abs(filtered.me_vx - obj.vx) < VX_TOL)) {
         printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n", 
             filtered.me_dx - obj.dx, filtered.me_dy - obj.dy, filtered.me_vx - obj.vx);
@@ -195,17 +201,17 @@ bool DataAssociation::objects_match_me(ObjectState obj, MobileyeObject& filtered
 void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_data& recvd_data) {
 
     global_clk = recvd_data.radar_timestamp;
-    std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
+    // std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
     std::vector<RadarObject> filtered_radar_obj;
 
     // filter detections
     if(FRONT_RADAR){ // && LEFT_CORNER_RADAR && RIGHT_CORNER_RADAR){
         filtered_radar_obj = filter_radar(recvd_data);
-        std::cout << "Filtered radar object size " << filtered_radar_obj.size() << std::endl;
+        // std::cout << "Filtered radar object size " << filtered_radar_obj.size() << std::endl;
         // std::cout << "Valid Radar diagnostics service call" << std::endl;
 
-         // Initialize service to sensor fusion
+        // Initialize service to sensor fusion
         sensor_fusion::env_state_srv srv;
         std::vector<ObjectState> stateVector;
 
@@ -248,6 +254,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
                     
                     if (objects_match_radar(*obj_iterator, radar_obj)){
                         // if match criterion, increment iterator
+                        obj_iterator->timestamp = global_clk;
                         obj_iterator->dx = radar_obj.radar_dx;
                         obj_iterator->dy = radar_obj.radar_dy;
                         obj_iterator->count++;
@@ -264,6 +271,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
                         break;
                     }
                 }
+                delete_potential_objects();
             }
 
             // Not match env state vector or temporary array 
@@ -287,25 +295,27 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
 
     // filter detections
     if(MOBILEYE){
-        std::cout << "Mobileye message valid!" << std::endl;
-        filtered_me_obj = filter_me(recvd_data);
-        // Initalize service
-        sensor_fusion::env_state_srv srv;
-        std::vector<ObjectState> envState;
+      // std::cout << "Mobileye message valid!" << std::endl;
+      filtered_me_obj = filter_me(recvd_data);
+      std::cout << "Size of ME filtered: " << filtered_me_obj.size() << std::endl;
+      // Initalize service
+      sensor_fusion::env_state_srv srv;
+      std::vector<ObjectState> envState;
 
-        // Call service everytime new me callback message received
-        if (client.call(srv)){
-            // std::cout<<"Mobileye service called successfully\n";
-            for (size_t srv_index = 0; srv_index < srv.response.id.size(); srv_index ++) {
-                ObjectState someObj(srv.response.id[srv_index], srv.response.dx[srv_index], srv.response.dy[srv_index], srv.response.timestamp[srv_index]);
-                envState.push_back(someObj); 
-            }
+      // Call service everytime new me callback message received
+      if (client.call(srv)) {
+        std::cout << "Mobileye service called successfully\n";
+        for (size_t srv_index = 0; srv_index < srv.response.id.size(); srv_index++) {
+          ObjectState someObj(srv.response.id[srv_index], srv.response.dx[srv_index], srv.response.dy[srv_index],
+                              srv.response.timestamp[srv_index]);
+          envState.push_back(someObj);
+        }
         } 
         else {
             ROS_ERROR("Failed to call service, but continuing to the already stored potential objects, maybe it matches up there!?");
         }
 
-        std::cout << "Size of env state vector mobileye: " << envState.size() << std::endl;
+        // std::cout << "Size of env state vector mobileye: " << envState.size() << std::endl;
 
         // Loop through each object in the filtered list
         for (size_t me_index = 0; me_index < filtered_me_obj.size(); me_index++){
@@ -330,22 +340,25 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
             if (!me_matched) {                
                 for (auto obj_iterator = potential_objs.begin(); obj_iterator != potential_objs.end(); obj_iterator++) {                    
                     if (objects_match_me(*obj_iterator, me_obj)) {
-                        obj_iterator->dx = me_obj.me_dx;
-                        obj_iterator->dy = me_obj.me_dy;
-                        obj_iterator->count++;
+                      obj_iterator->timestamp = global_clk;
+                      obj_iterator->dx = me_obj.me_dx;
+                      obj_iterator->dy = me_obj.me_dy;
+                      obj_iterator->count++;
+                      printf("Potential Object Count: %d \n", obj_iterator->count);
 
-                        // Once iterator > threshold, publish
-                        if (obj_iterator->count > POTENTIAL_THRESHOLD) {
-                            associated_me_msg.obj_id = next_id++;
-                            pub_me_signals(associated_me_msg, me_obj);
-                            me_to_kf_pub.publish(associated_me_msg);                    
-                            potential_objs.erase(obj_iterator);
-                            std::cout << "Publishing ME object passed threshold" << std::endl;
+                      // Once iterator > threshold, publish
+                      if (obj_iterator->count > POTENTIAL_THRESHOLD) {
+                        associated_me_msg.obj_id = next_id++;
+                        pub_me_signals(associated_me_msg, me_obj);
+                        me_to_kf_pub.publish(associated_me_msg);
+                        potential_objs.erase(obj_iterator);
+                        std::cout << "Publishing ME object passed threshold" << std::endl;
                         }
                         me_matched = 1;
                         break;
                     }
                 }
+                delete_potential_objects();
             }
 
             // Not match env state vector or temporary array
@@ -390,9 +403,9 @@ int main(int argc, char** argv){
     ros::NodeHandle data_association_handle;
     DataAssociation data_assc = DataAssociation(&data_association_handle);
     while (ros::ok()) {
-        data_assc.delete_potential_objects();
-        ros::Rate(10).sleep();
-        ros::spinOnce();
+      // data_assc.delete_potential_objects();
+      ros::Rate(10).sleep();
+      ros::spinOnce();
     }
     return 0;
 }
