@@ -339,10 +339,13 @@ int main(int argc, char **argv) {
 
         srv_ch4.request.mobileye = sens_diag.validate_mobileye(diag_data);
         if (srv_ch4.request.mobileye) {
-            std::cout << "Valid Ch4 service call" << std::endl;
+          std::cout << "Valid Ch4" << std::endl;
+        } else {
+          std::cout << "Invalid Ch4" << std::endl;
         }
-        else{
-        std::cout << "Invalid Ch4 service call" << std::endl;
+
+        if (!client_ch4.call(srv_ch4)) {
+          std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
         }
 
         mobeye_rx.mob_pub_obj.publish(me_obj);
