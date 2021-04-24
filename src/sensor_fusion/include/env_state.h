@@ -34,9 +34,10 @@ class EnvironmentState {
     bool changed_lane(int target_lane);
 
     std::vector<ObjectState> trackedObjects;
-    ObjectState target;
-    bool target1;
+    ObjectState targetObjectsInLanes[3];
     double global_clk;
+    double prev_time[3] = {-1,-1,-1};
+    double prev_time_target = -1;
 
   private:
     ros::NodeHandle* env_state_node_handle;

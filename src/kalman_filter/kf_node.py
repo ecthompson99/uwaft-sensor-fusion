@@ -11,11 +11,12 @@ import matplotlib.pyplot as plt
 from threading import Lock
 
 # Shouldn't need this definition - have data from mobileye
+# 1 = center lane, 2 = left lane, 3 = right lane
 def determine_lane(dy):
     if dy < -1.5:
         return 2, False
     elif dy > 1.5:
-        return 0, False
+        return 3, False
     else:
         return 1, True
 
