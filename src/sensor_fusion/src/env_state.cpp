@@ -7,7 +7,7 @@
 EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_node_handle(node_handle) {
   filtered_object_sub = env_state_node_handle->subscribe("filtered_obj", MESSAGE_BUFFER_SIZE, &EnvironmentState::filtered_object_callback, this);
   tracked_obj_pub = env_state_node_handle->advertise<common::tracked_output_msg>("tracked_obj", MESSAGE_BUFFER_SIZE);
-  target_obj_pub = env_state_node_handle->advertise<common::target_output_msg>("target_obj", MESSAGE_BUFFER_SIZE);
+  target_obj_pub = env_state_node_handle->advertise<common::target_output_msg>("target_output", MESSAGE_BUFFER_SIZE);
   binary_class_pub = env_state_node_handle->advertise<common::binary_class_msg>("binary_class", MESSAGE_BUFFER_SIZE);
     
   global_clk = 0;

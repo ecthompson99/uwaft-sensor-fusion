@@ -2,7 +2,7 @@
 
 MasterTask::MasterTask(ros::NodeHandle* nodeHandle) : nh(nodeHandle) {
   drive_ctrl_sub =
-      nh->subscribe("drive_control_input", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::drive_ctrl_msg_callback, this);
+      nh->subscribe("drive_ctrl_input", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::drive_ctrl_msg_callback, this);
   acc_sub = 
       nh->subscribe("acc_output_msg", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::acc_output_msg_callback, this);
   aeb_sub = 

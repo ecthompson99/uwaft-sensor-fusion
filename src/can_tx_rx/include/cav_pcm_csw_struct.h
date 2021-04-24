@@ -10,7 +10,6 @@
 #include "common/can_comms_data_msg.h"
 
 #define MESSAGE_BUFFER_SIZE 1000
-#define TOPIC_RX "CCP_Interface"
 #define SIZE_OF_MSG 8 
 
 class CAV_PCM_TX_RX{
