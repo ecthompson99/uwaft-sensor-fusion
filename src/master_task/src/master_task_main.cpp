@@ -4,9 +4,11 @@ int main(int argc, char** argv) {
   ros::init(argc, argv, "master_task");
   ros::NodeHandle master_task_handle;
   MasterTask master_task(&master_task_handle);  
+  
+  // ros::Rate rate(40);
 
   while (ros::ok()) {
-    
+    master_task.check_rolling_counters_called();
     master_task.LCC_1();
     master_task.AEB_24();
     master_task.LCC_10();
@@ -22,11 +24,13 @@ int main(int argc, char** argv) {
     master_task.CAV_1_5();
     master_task.CAV_1_6();
     master_task.ACC_1_1();
-    master_task.CAV_2_2();    
-    
+    master_task.CAV_2_2();
+    master_task.INT_1();
+
     master_task.publish_can_comms_msg();
+    // rate.sleep();
     ros::spinOnce();
-    // ros::Duration(1).sleep();
+    ros::Duration(0.005).sleep();  // the sleep must be less than 50 ms
   }
 
   return 0;
