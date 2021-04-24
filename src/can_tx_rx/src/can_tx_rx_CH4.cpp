@@ -333,17 +333,17 @@ int main(int argc, char **argv) {
           std::cout << "maintenance: " << +diag_data.maintenance << std::endl;
         }
 
-        // // validate Mobileye
-        // ros::ServiceClient client_ch4;
-        // common::sensor_diagnostic_flag_CH4 srv_ch4;
+        // validate Mobileye
+        ros::ServiceClient client_ch4;
+        common::sensor_diagnostic_flag_CH4 srv_ch4;
 
-        // srv_ch4.request.mobileye = sens_diag.validate_mobileye(diag_data);
-        // if (srv_ch4.request.mobileye) {
-        //     std::cout << "Valid Ch4 service call" << std::endl;
-        // }
-        // else{
-        // std::cout << "Invalid Ch4 service call" << std::endl;
-        // }
+        srv_ch4.request.mobileye = sens_diag.validate_mobileye(diag_data);
+        if (srv_ch4.request.mobileye) {
+            std::cout << "Valid Ch4 service call" << std::endl;
+        }
+        else{
+        std::cout << "Invalid Ch4 service call" << std::endl;
+        }
 
         mobeye_rx.mob_pub_obj.publish(me_obj);
         mobeye_rx.mob_pub_lane.publish(me_raw_lane);
