@@ -4,9 +4,16 @@
 #include <ros/ros.h>
 
 Radar_RX::Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
-    rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_RX,MESSAGE_BUFFER_SIZE);
+    rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_TX,MESSAGE_BUFFER_SIZE);
     diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG, MESSAGE_BUFFER_SIZE);
+    veh_sub = node_handle->subscribe(TOPIC_RX, MESSAGE_BUFFER_SIZE, &Radar_RX::drive_ctrl_callback, this);
 };
+
+void Radar_RX::drive_ctrl_callback(const common::drive_ctrl_input_msg& recvd_data) {
+  vehicle_data.vehicle_speed = recvd_data.veh_spd;
+  vehicle_data.steering_angle = recvd_data.str_ang;
+}
+
 void Radar_RX::get_nums(long int id, int &case_n, int &radar_n, int &frame_n, int &obj_n, int &target_obj_n,
                         int channel_number) {
   if (id == 1985 || id == 1958 || id == 1879 || id == 1957) {
@@ -88,8 +95,32 @@ void Radar_RX::get_nums(long int id, int &case_n, int &radar_n, int &frame_n, in
       break;
   }
 };
-void Radar_RX::get_static_veh_info(radar_input_mount_info_t &in_mount_info, radar_input_veh_dyn_data_t &in_veh_dyn,
-                                   radar_input_wheel_info_t &in_wheel_info, radar_input_veh_dim_t &in_veh_dim,
+
+void Radar_RX::get_dynamic_veh_info(radar_input_veh_dyn_data_t &in_veh_dyn) {
+  
+  // Vehicle dynamics Info
+  float str_ang = vehicle_data.steering_angle; // from channel 1
+  float v_ego = vehicle_data.vehicle_speed;  // from channel 1
+  float prnd = 3;      // default enumeration, drive
+  bool wheelslip = 0;  // default don't send information
+  bool v_stand = 0;
+  bool use_str_ang = 1;  // debug 0, should be 1
+  float yawrate = 0;
+
+  in_veh_dyn.ri_veh_steer_angle = radar_input_veh_dyn_data_ri_veh_steer_angle_encode(str_ang);
+  in_veh_dyn.ri_veh_velocity = radar_input_veh_dyn_data_ri_veh_velocity_encode(v_ego);
+  // in_veh_dyn.ri_veh_velocity = radar_input_veh_dyn_data_ri_veh_velocity_encode(10);
+  in_veh_dyn.ri_veh_use_steer_angle = radar_input_veh_dyn_data_ri_veh_use_steer_angle_encode(use_str_ang);
+  // in_veh_dyn.ri_veh_use_steer_angle = radar_input_veh_dyn_data_ri_veh_use_steer_angle_encode(1);
+  in_veh_dyn.ri_veh_standstill = radar_input_veh_dyn_data_ri_veh_standstill_encode(v_stand);  // use_str_ang
+  // in_veh_dyn.ri_veh_standstill = radar_input_veh_dyn_data_ri_veh_standstill_encode(1);
+  in_veh_dyn.ri_veh_yaw_rate = radar_input_veh_dyn_data_ri_veh_yaw_rate_encode(yawrate);
+  in_veh_dyn.ri_veh_any_wheel_slip_event = radar_input_veh_dyn_data_ri_veh_any_wheel_slip_event_encode(wheelslip);  // prnd
+  // in_veh_dyn.ri_veh_any_wheel_slip_event = radar_input_veh_dyn_data_ri_veh_any_wheel_slip_event_encode(3);
+  in_veh_dyn.ri_veh_prndstat = radar_input_veh_dyn_data_ri_veh_prndstat_encode(prnd);  // wheelslip
+};
+
+void Radar_RX::get_static_veh_info(radar_input_mount_info_t &in_mount_info, radar_input_wheel_info_t &in_wheel_info, radar_input_veh_dim_t &in_veh_dim,
                                    int radar_num) {
   // Mount Info
   float latsensor_tocenter;
@@ -97,15 +128,6 @@ void Radar_RX::get_static_veh_info(radar_input_mount_info_t &in_mount_info, rada
   float sensor_height;
   bool sensor_orient;
   float sensor_angle;
-
-  // Vehicle dynamics Info
-  float str_ang = 0;
-  float prnd = 3;      // default enumeration, drive
-  bool wheelslip = 0;  // default don't send information
-  float v_ego = 0;     // debug set to 10, should be 0
-  bool v_stand = 0;
-  bool use_str_ang = 1;  // debug 0, should be 1
-  float yawrate = 0;
 
   float wheelbase = 2.863;       // distance from front to rear axles [m]
   float trackwidth = 1.681;      // distance from right and left wheel [m]
@@ -145,26 +167,11 @@ void Radar_RX::get_static_veh_info(radar_input_mount_info_t &in_mount_info, rada
       break;
   }
 
-  in_mount_info.ri_mi_lat_sensor_mount_to_center =
-      radar_input_mount_info_ri_mi_lat_sensor_mount_to_center_encode(latsensor_tocenter);
-  in_mount_info.ri_mi_long_sensor_mount_to_rear_axle =
-      radar_input_mount_info_ri_mi_long_sensor_mount_to_rear_axle_encode(longsensor_torear);
+  in_mount_info.ri_mi_lat_sensor_mount_to_center = radar_input_mount_info_ri_mi_lat_sensor_mount_to_center_encode(latsensor_tocenter);
+  in_mount_info.ri_mi_long_sensor_mount_to_rear_axle = radar_input_mount_info_ri_mi_long_sensor_mount_to_rear_axle_encode(longsensor_torear);
   in_mount_info.ri_mi_sensor_height = radar_input_mount_info_ri_mi_sensor_height_encode(sensor_height);
   in_mount_info.ri_mi_sensor_orientation = radar_input_mount_info_ri_mi_sensor_orientation_encode(sensor_orient);
   in_mount_info.ri_mi_sensor_mount_angle = radar_input_mount_info_ri_mi_sensor_mount_angle_encode(sensor_angle);
-
-  in_veh_dyn.ri_veh_steer_angle = radar_input_veh_dyn_data_ri_veh_steer_angle_encode(str_ang);
-  in_veh_dyn.ri_veh_velocity = radar_input_veh_dyn_data_ri_veh_velocity_encode(v_ego);
-  // in_veh_dyn.ri_veh_velocity = radar_input_veh_dyn_data_ri_veh_velocity_encode(10);
-  in_veh_dyn.ri_veh_use_steer_angle = radar_input_veh_dyn_data_ri_veh_use_steer_angle_encode(use_str_ang);
-  // in_veh_dyn.ri_veh_use_steer_angle = radar_input_veh_dyn_data_ri_veh_use_steer_angle_encode(1);
-  in_veh_dyn.ri_veh_standstill = radar_input_veh_dyn_data_ri_veh_standstill_encode(v_stand);  // use_str_ang
-  // in_veh_dyn.ri_veh_standstill = radar_input_veh_dyn_data_ri_veh_standstill_encode(1);
-  in_veh_dyn.ri_veh_yaw_rate = radar_input_veh_dyn_data_ri_veh_yaw_rate_encode(yawrate);
-  in_veh_dyn.ri_veh_any_wheel_slip_event =
-      radar_input_veh_dyn_data_ri_veh_any_wheel_slip_event_encode(wheelslip);  // prnd
-  // in_veh_dyn.ri_veh_any_wheel_slip_event = radar_input_veh_dyn_data_ri_veh_any_wheel_slip_event_encode(3);
-  in_veh_dyn.ri_veh_prndstat = radar_input_veh_dyn_data_ri_veh_prndstat_encode(prnd);  // wheelslip
 
   in_wheel_info.ri_wi_wheel_base = radar_input_wheel_info_ri_wi_wheel_base_encode(wheelbase);
   in_wheel_info.ri_wi_track_width = radar_input_wheel_info_ri_wi_track_width_encode(trackwidth);
@@ -175,6 +182,7 @@ void Radar_RX::get_static_veh_info(radar_input_mount_info_t &in_mount_info, rada
   in_veh_dim.ri_vd_long_front_bumper_pos = radar_input_veh_dim_ri_vd_long_front_bumper_pos_encode(frontbump_pos);
   in_veh_dim.ri_vd_long_rear_bumper_pos = radar_input_veh_dim_ri_vd_long_rear_bumper_pos_encode(rearbump_pos);
 };
+
 double Radar_RX::signals_in_range(double val, bool cond) { return (cond) ? (val) : 0; };
 uint8_t Radar_RX::crc8bit_calculation(uint8_t *can1670signals, int f_len) {
   uint8_t crc = 0xFF;
@@ -294,7 +302,8 @@ int main(int argc, char **argv) {
   while (ros::ok()) {
     ros::Time now = ros::Time::now();
 
-    rad_rx.get_static_veh_info(in_mount_info, in_veh_dyn, in_wheel_info, in_veh_dim, radar_num);
+    rad_rx.get_static_veh_info(in_mount_info, in_wheel_info, in_veh_dim, radar_num);
+    rad_rx.get_dynamic_veh_info(in_veh_dyn);
 
     size_t size1 = 8u;
     size_t size2 = 5u;

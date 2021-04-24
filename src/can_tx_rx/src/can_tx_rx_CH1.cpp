@@ -3,12 +3,12 @@
 
 #define canDRIVER_NORMAL 4
 #define SIZE_OF_MSG 8
-#define TOPIC_TX "can_comms_data"
-#define TOPIC_RX "drive_ctrl_input"
+#define TOPIC_RX "can_comms_data"
+#define TOPIC_TX "drive_ctrl_input"
 
 CAV_PCM_TX_RX::CAV_PCM_TX_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
-  drive_ctrl_pub = node_handle->advertise<common::drive_ctrl_input_msg>(TOPIC_RX,MESSAGE_BUFFER_SIZE);
-  can_comms_sub = node_handle ->subscribe(TOPIC_TX, MESSAGE_BUFFER_SIZE, &CAV_PCM_TX_RX::can_callback, this);
+  drive_ctrl_pub = node_handle->advertise<common::drive_ctrl_input_msg>(TOPIC_TX,MESSAGE_BUFFER_SIZE);
+  can_comms_sub = node_handle ->subscribe(TOPIC_RX, MESSAGE_BUFFER_SIZE, &CAV_PCM_TX_RX::can_callback, this);
   cav_out = {0};
 };
 
