@@ -27,7 +27,7 @@ class Radar_RX{
 
     Radar_RX(ros::NodeHandle* node_handle);
     
-    struct vehicle_information {
+    struct dynamic_vehicle_info {
       double vehicle_speed;
       double steering_angle;
     };
@@ -197,6 +197,6 @@ class Radar_RX{
     uint8_t crc8bit_calculation(uint8_t can1670signals[7], int f_len);
     void clear_classes(common::radar_object_data &radar_obj, common::sensor_diagnostic_data_msg &diag_data,     Radar_RX::radar_diagnostic_response &diag_response, Radar_RX::radar_information &radar_info,Radar_RX::target_tracking_info &target_info, Radar_RX::object_tracking_info &object_info, uint8_t &tc_check, uint8_t &mc_check);
     void drive_ctrl_callback(const common::drive_ctrl_input_msg& recvd_data);
-    Radar_RX::vehicle_information vehicle_data;
+    Radar_RX::dynamic_vehicle_info vehicle_data;
 };
 
