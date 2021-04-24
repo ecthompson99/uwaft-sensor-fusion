@@ -16,15 +16,15 @@ int main(int argc, char** argv) {
     master_task.ACC_15();
     master_task.ACC_17();
     master_task.ACC_20();
-    master_task.ACC_4();
-    master_task.AEB_13();
+    // master_task.ACC_4(); // Commenting this out for now since we dont have AEB
+    // master_task.AEB_13(); // Commenting this out for now since we dont have AEB
     master_task.AEB_22();
     master_task.AEB_26();
     master_task.LCC_11();
     master_task.CAV_1_5();
     master_task.CAV_1_6();
     master_task.ACC_1_1();
-    master_task.CAV_2_2();
+    // master_task.CAV_2_2(); // Commenting this out for now since we dont have AEB
     master_task.INT_1();
 
     master_task.publish_can_comms_msg();

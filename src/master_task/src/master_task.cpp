@@ -4,7 +4,7 @@ MasterTask::MasterTask(ros::NodeHandle* nodeHandle) : nh(nodeHandle) {
   drive_ctrl_sub =
       nh->subscribe("drive_control_input", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::drive_ctrl_msg_callback, this);
   acc_sub = 
-      nh->subscribe("acc_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::acc_output_msg_callback, this);
+      nh->subscribe("acc_output_msg", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::acc_output_msg_callback, this);
   aeb_sub = 
       nh->subscribe("aeb_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::aeb_output_msg_callback, this);
   lcc_sub = 
@@ -44,7 +44,7 @@ void MasterTask::drive_ctrl_msg_callback(const common::drive_ctrl_input_msg& dri
     STEERING_ANGLE = drive_ctrl_msg.str_ang;
 
     INT_2();
-    INT_7();
+    // INT_7(); // Commented out for now since we dont have Jetson sending us messages
     // put other functions here if you want to unit test them
     // publish_can_comms_msg(); // uncomment if unit testing the above functions
     // ros::spinOnce();
@@ -81,8 +81,11 @@ bool MasterTask::sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_C
 
 bool MasterTask::sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request& req_CH3,
                                                 common::sensor_diagnostic_flag_CH3::Response& /*res_CH3*/) {
-  LEFT_CORNER_RADAR = req_CH3.left_corner_radar;
-  RIGHT_CORNER_RADAR = req_CH3.right_corner_radar;
+  // Note: since we aren't using corner radars at the moment for testing, set these values to true
+  // LEFT_CORNER_RADAR = req_CH3.left_corner_radar;
+  // RIGHT_CORNER_RADAR = req_CH3.right_corner_radar;
+  LEFT_CORNER_RADAR = true;
+  RIGHT_CORNER_RADAR = true;
   can_comms_msg.left_radar_fault = !(req_CH3.left_corner_radar);
   can_comms_msg.right_radar_fault = !(req_CH3.right_corner_radar);
   return true;
@@ -109,7 +112,9 @@ void MasterTask::ACC_1_1() {
             can_comms_msg.long_accel = 0;
         }
     }
-    else    initial_OFF_request = true; 
+    else {
+      initial_OFF_request = true;
+    } 
 }
 
 void MasterTask::ACC_4() {
@@ -136,7 +141,9 @@ void MasterTask::ACC_16() {
         }
       }
     }
-    else    initial_OFF_request_8 = true;
+    else {
+      initial_OFF_request_8 = true;
+    }
 }
 
 void MasterTask::ACC_17() {
@@ -149,7 +156,9 @@ void MasterTask::ACC_17() {
         can_comms_msg.acc_valid = 0;
       }
     }
-    else    initial_OFF_request_2 = true;
+    else{
+      initial_OFF_request_2 = true;
+    }  
 }
 
 void MasterTask::ACC_18() {
@@ -219,7 +228,9 @@ void MasterTask::AEB_24() {
         }
       }
     }
-    else    initial_OFF_request_5 = true;
+    else {
+      initial_OFF_request_5 = true;
+    }
 }
 
 void MasterTask::AEB_26() {
@@ -244,14 +255,19 @@ void MasterTask::CAV_1_6() {
 }
 
 void MasterTask::CAV_2_2() {
-    if (abs(AEB_ACCEL) > 4.9)   can_comms_msg.long_accel = -4.9;
+    if (abs(AEB_ACCEL) > 4.9) {
+      can_comms_msg.long_accel = -4.9;
+    }
 }
 
 void MasterTask::INT_1() {
-    if (!(can_comms_msg.alive_rolling_counter == 15))
-        can_comms_msg.alive_rolling_counter += 1;
-    else
-        can_comms_msg.alive_rolling_counter = 0;
+    if (!(can_comms_msg.alive_rolling_counter == 15)) {
+      can_comms_msg.alive_rolling_counter += 1;
+    }
+        
+    else {
+      can_comms_msg.alive_rolling_counter = 0;
+    }
 }
 
 void MasterTask::INT_2() {
@@ -370,7 +386,9 @@ void MasterTask::LCC_10() {
         }
       }
     }
-    else    initial_OFF_request_6 = true;
+    else {
+      initial_OFF_request_6 = true;
+    }
 }
 
 void MasterTask::LCC_11() {
@@ -383,7 +401,9 @@ void MasterTask::LCC_11() {
         can_comms_msg.lcc_valid = 0;
       }
     }
-    else    initial_OFF_request_7 = true;
+    else {
+      initial_OFF_request_7 = true;
+    }
 }
 
 void MasterTask::LCC_12() {
@@ -425,7 +445,10 @@ void MasterTask::LCC_12() {
 // that they are called frequently
 void MasterTask::check_rolling_counters_called() {
   ros::SteadyTime curr = ros::SteadyTime::now();
-  if (((curr - prev_time_rc) > ros::WallDuration(0.050)) || ((curr - prev_time_rc_jetson) > ros::WallDuration(0.050))) {
+  // Commenting this out for now since Jetson is not sending us any messages for Year 3
+  // if (((curr - prev_time_rc) > ros::WallDuration(0.050)) || ((curr - prev_time_rc_jetson) > ros::WallDuration(0.050))) {
+  if ((curr - prev_time_rc) > ros::WallDuration(0.050)) {
+
     // std::cout << "HSC / Jetson time out" << std::endl;
     initial_HSC_alive = true;
     can_comms_msg.acc_valid = 0;
