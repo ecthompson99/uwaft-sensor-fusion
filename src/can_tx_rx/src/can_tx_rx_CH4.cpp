@@ -1,8 +1,10 @@
 #include <canlib.h>
 #include "ext_log_data.h"
 #include "mobileye_struct.h"
+
 #define canDRIVER_SILENT 1
 #define SIZE_OF_MSG 8
+
 // #define canOPEN_EXCLUSIVE 0x0008
 
 static void check(char* id, canStatus stat) {
@@ -334,18 +336,24 @@ int main(int argc, char **argv) {
         }
 
         // validate Mobileye
-        ros::ServiceClient client_ch4;
         common::sensor_diagnostic_flag_CH4 srv_ch4;
 
-        srv_ch4.request.mobileye = sens_diag.validate_mobileye(diag_data);
+        // srv_ch4.request.mobileye = sens_diag.validate_mobileye(diag_data);
+        srv_ch4.request.mobileye = true;  // override for testing
         if (srv_ch4.request.mobileye) {
           std::cout << "Valid Ch4" << std::endl;
         } else {
           std::cout << "Invalid Ch4" << std::endl;
         }
 
-        if (!client_ch4.call(srv_ch4)) {
-          std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
+        if (mobeye_rx.client_ch4.exists()) {
+          if (mobeye_rx.client_ch4.call(srv_ch4)) {
+            std::cout << "SERVICE REQUEST CHANNEL 4 SUCCESSFUL" << std::endl;
+          } else {
+            std::cout << "SERVICE REQUEST CHANNEL 4 FAILED" << std::endl;
+          }
+        } else {
+          std::cout << "SERVICE DOESNT EXIST" << std::endl;
         }
 
         mobeye_rx.mob_pub_obj.publish(me_obj);

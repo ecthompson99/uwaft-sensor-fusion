@@ -1,12 +1,14 @@
+#include <ros/ros.h>
 #include "radar_structs.h"
+
 #define canDRIVER_NORMAL 4
 #define SIZE_OF_MSG 8
-#include <ros/ros.h>
 
 Radar_RX::Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
     rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_TX,MESSAGE_BUFFER_SIZE);
     diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG, MESSAGE_BUFFER_SIZE);
     veh_sub = node_handle->subscribe(TOPIC_RX, MESSAGE_BUFFER_SIZE, &Radar_RX::drive_ctrl_callback, this);
+    client_ch2 = node_handle->serviceClient<common::sensor_diagnostic_flag_CH2>(CH2_SERVICE);
 };
 
 void Radar_RX::drive_ctrl_callback(const common::drive_ctrl_input_msg& recvd_data) {
@@ -414,11 +416,11 @@ int main(int argc, char **argv) {
       // // Left corner radar = radar_1 and right corner radar = radar_2
       // // front radar = 3
       // std::cout << "ID, Case, Radar, Frame, Obj, Target_Obj" << std::endl;
-      std::cout << "ID" << +id << std::endl;
-      std::cout << "Case" << +case_num << std::endl;
-      std::cout << "Radar Number" << +radar_num << std::endl;
-      std::cout << "Frame Number" << +frame_num << std::endl;
-      std::cout << "Object Number" << +obj_num << std::endl;
+      // std::cout << "ID" << +id << std::endl;
+      // std::cout << "Case" << +case_num << std::endl;
+      // std::cout << "Radar Number" << +radar_num << std::endl;
+      // std::cout << "Frame Number" << +frame_num << std::endl;
+      // std::cout << "Object Number" << +obj_num << std::endl;
       // std::cout << "Target Object Number" << +target_object_num << std::endl;
 
       if (id == 1280 || id == 1282) {
@@ -851,21 +853,21 @@ int main(int argc, char **argv) {
       if (pub_data && (id == 1667 || id == 1665) &&
           (now.toSec() - mem1.toSec() > 0.1)) {  // message must end with the ender bit and have started with an end bit
 
-        std::cout << "Publishing" << std::endl;
-
         // validate radar, using service calls for specific channels
         ros::ServiceClient client_ch2;
         common::sensor_diagnostic_flag_CH2 srv_ch2;
 
-        srv_ch2.request.front_radar = sens_diag.validate_radar(diag_data);
+        // srv_ch2.request.front_radar = sens_diag.validate_radar(diag_data);
+        srv_ch2.request.front_radar = true;  // override for testing
+
         if (srv_ch2.request.front_radar) {
           std::cout << "Valid Ch2" << std::endl;
         } else {
           std::cout << "Invalid Ch2" << std::endl;
         }
 
-        if (client_ch2.exists()) {
-          if (client_ch2.call(srv_ch2)) {
+        if (rad_rx.client_ch2.exists()) {
+          if (rad_rx.client_ch2.call(srv_ch2)) {
             std::cout << "SERVICE REQUEST CHANNEL 2 SUCCESSFUL" << std::endl;
           } else {
             std::cout << "SERVICE REQUEST CHANNEL 2 FAILED" << std::endl;
@@ -883,6 +885,8 @@ int main(int argc, char **argv) {
 
         // resetting for next data cluster
         pub_data = false;
+
+        mem1 = now;
       }
 
       }

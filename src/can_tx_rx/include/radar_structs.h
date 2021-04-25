@@ -9,13 +9,15 @@
 #include "radar.h"
 #include "sensor_diag.h"
 
-#include "common/radar_object_data.h"
 #include "common/drive_ctrl_input_msg.h"
+#include "common/radar_object_data.h"
+#include "common/sensor_diagnostic_flag_CH2.h"
 
 #define MESSAGE_BUFFER_SIZE 1000
 #define TOPIC_TX "Front_Radar_CAN_Rx" // ouput radar info
 #define TOPIC_DIAG "sensor_diagnostic_flags"
 #define TOPIC_RX "drive_ctrl_input" // listen from vehicle speed
+#define CH2_SERVICE "sensor_diagnostic_CH2"
 #define SIZE_OF_MSG 8 
 
 class Radar_RX{
@@ -23,7 +25,8 @@ class Radar_RX{
     ros::NodeHandle* node_handle;
     ros::Publisher rad_pub;
     ros::Publisher diag_pub; 
-    ros::Subscriber veh_sub; 
+    ros::Subscriber veh_sub;
+    ros::ServiceClient client_ch2;
 
     Radar_RX(ros::NodeHandle* node_handle);
     
