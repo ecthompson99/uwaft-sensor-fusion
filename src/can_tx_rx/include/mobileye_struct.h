@@ -10,12 +10,14 @@
 
 #include "common/mobileye_object_data.h"
 #include "common/raw_lane_data.h"
+#include "common/sensor_diagnostic_flag_CH4.h"
 
 #define TX_RX_MESSAGE_BUFFER_SIZE 1000
 #define TOPIC_RX_OBJ "Mobileye_CAN_Rx"
 #define TOPIC_RX_LANE "Mobileye_CAN_Rx_Lane"
 #define TOPIC_DIAG "Mobileye_CAN_Diagnostics"
 #define SIZE_OF_MSG 8 
+#define CH4_SERVICE "sensor_diagnostic_CH4"
 
 class Mobileye_RX{
     public:
@@ -23,10 +25,13 @@ class Mobileye_RX{
         ros::Publisher mob_pub_obj;
         ros::Publisher mob_pub_lane;
         ros::Publisher diag_pub;
+        ros::ServiceClient client_ch4;
+
         Mobileye_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
             mob_pub_obj = node_handle->advertise<common::mobileye_object_data>(TOPIC_RX_OBJ,TX_RX_MESSAGE_BUFFER_SIZE);
             diag_pub = node_handle ->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG,TX_RX_MESSAGE_BUFFER_SIZE);
             mob_pub_lane = node_handle->advertise<common::raw_lane_data>(TOPIC_RX_LANE,TX_RX_MESSAGE_BUFFER_SIZE);
+            client_ch4 = node_handle->serviceClient<common::sensor_diagnostic_flag_CH4>(CH4_SERVICE);
         };
         struct mobileye_object{
             double obstacle_pos_x_decode;

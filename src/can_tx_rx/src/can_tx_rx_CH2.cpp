@@ -1,12 +1,14 @@
 #include "radar_structs.h"
+#include <ros/ros.h>
+
 #define canDRIVER_NORMAL 4
 #define SIZE_OF_MSG 8
-#include <ros/ros.h>
 
 Radar_RX::Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
     rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_TX,MESSAGE_BUFFER_SIZE);
     diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG, MESSAGE_BUFFER_SIZE);
     veh_sub = node_handle->subscribe(TOPIC_RX, MESSAGE_BUFFER_SIZE, &Radar_RX::drive_ctrl_callback, this);
+    client_ch2 = node_handle->serviceClient<common::sensor_diagnostic_flag_CH2>(CH2_SERVICE);
 };
 
 void Radar_RX::drive_ctrl_callback(const common::drive_ctrl_input_msg& recvd_data) {
@@ -865,7 +867,6 @@ int main(int argc, char **argv) {
             (id == 1667 || id == 1665)) {  // message must end with the ender bit and have started with an end bit
 
           // validate radar, using service calls for specific channels
-          ros::ServiceClient client_ch2;
           common::sensor_diagnostic_flag_CH2 srv_ch2;
 
           srv_ch2.request.front_radar = sens_diag.validate_radar(diag_data);
@@ -875,8 +876,14 @@ int main(int argc, char **argv) {
             std::cout << "Invalid Ch2" << std::endl;
           }
 
-          if (!client_ch2.call(srv_ch2)) {
-            std::cout << "SERVICE REQUEST CHANNEL 2 FRONT RADAR FAILED" << std::endl;
+          if (rad_rx.client_ch2.exists()) {
+            if (rad_rx.client_ch2.call(srv_ch2)) {
+              std::cout << "SERVICE REQUEST CHANNEL 2 SUCCESSFUL" << std::endl;
+            } else {
+              std::cout << "SERVICE REQUEST CHANNEL 2 FAILED" << std::endl;
+            }
+          } else {
+            std::cout << "SERVICE DOESNT EXIST" << std::endl;
           }
 
           // publish here
