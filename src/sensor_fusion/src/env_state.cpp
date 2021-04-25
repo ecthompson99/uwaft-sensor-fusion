@@ -210,13 +210,16 @@ int main(int argc, char** argv){
   ros::init(argc, argv, "env_state");
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state = EnvironmentState(&env_state_node_handle);
-  
+  ros::Time mem1 = ros::Time::now();
+
   while (ros::ok()) {
-    env_state.publish_target_obj();
-    env_state.publish_tracked_obj();
-    env_state.publish_binary_class();
-    env_state.global_clk += 0.1;
-    ros::Duration(0.1).sleep(); // sleep for 0.1 seconds
+    ros::Time time_now = ros::Time::now();
+    if (time_now.toSec() - mem1.toSec() > 0.1) {
+      env_state.publish_target_obj();
+      env_state.publish_tracked_obj();
+      env_state.publish_binary_class();
+      env_state.global_clk += 0.1;
+    }
     ros::spinOnce();
   }
 	// ros::spin();
