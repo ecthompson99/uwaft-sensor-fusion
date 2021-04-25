@@ -93,8 +93,6 @@ void EnvironmentState::filtered_object_callback(const common::filtered_object_ms
   update_env_state(tracked_msg); // update id of objects in state vector
 
   check_timestamp(tracked_msg); // removes outdated state vector
-
-  find_target_object(tracked_msg);     // fill array with target obj
 }
 
 void EnvironmentState::publish_binary_class() {
@@ -166,36 +164,40 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
   printf("%lu: %f %f\n", trackedObjects[0].get_obj_id(), trackedObjects[0].get_obj_dx(), trackedObjects[0].get_obj_dy());
 }
 
-void EnvironmentState::find_target_object(const ObjectState& tracked_msg){
-    
-  int tracked_lane = tracked_msg.get_obj_lane();
+// void EnvironmentState::find_target_object(const ObjectState& tracked_msg){
+void EnvironmentState::find_target_object(){
+
   ObjectState empty_obj(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-  // 1 = center lane, 2 = left lane, 3 = right lane
-  // update target object if a new object is closer than current target or if the current target moves
-  
-  if (tracked_lane == 1) {
-    if ((tracked_msg.get_obj_dx() <= targetObjectsInLanes[0].get_obj_dx()) || 
-        (tracked_msg.get_obj_id() == targetObjectsInLanes[0].get_obj_id())) {
-          targetObjectsInLanes[0] = tracked_msg;
-    } else {
-      targetObjectsInLanes[0] = empty_obj;
+  for (size_t i = 0; i < trackedObjects.size(); i++) {
+    int tracked_lane = trackedObjects[i].get_obj_lane();
+    // 1 = center lane, 2 = left lane, 3 = right lane
+    // update target object if a new object is closer than current target or if the current target moves
+    
+    if (tracked_lane == 1) {
+      if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[0].get_obj_dx()) || 
+          (trackedObjects[i].get_obj_id() == targetObjectsInLanes[0].get_obj_id())) {
+            targetObjectsInLanes[0] = trackedObjects[i];
+      } else {
+        targetObjectsInLanes[0] = empty_obj;
+      }
+    } else if (tracked_lane == 2) {
+        if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[1].get_obj_dx()) ||
+            (trackedObjects[i].get_obj_id() == targetObjectsInLanes[1].get_obj_id())) {
+              targetObjectsInLanes[1] = trackedObjects[i];
+        } else {
+          targetObjectsInLanes[1] = empty_obj;
+        }
+    } else if (tracked_lane == 3) {
+        if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[2].get_obj_dx()) ||
+            (trackedObjects[i].get_obj_id() == targetObjectsInLanes[2].get_obj_id())) {
+              targetObjectsInLanes[2] = trackedObjects[i];
+        } else {
+          targetObjectsInLanes[2] = empty_obj;
+        }
     }
-  } else if (tracked_lane == 2) {
-      if ((tracked_msg.get_obj_dx() <= targetObjectsInLanes[1].get_obj_dx()) ||
-          (tracked_msg.get_obj_id() == targetObjectsInLanes[1].get_obj_id())) {
-            targetObjectsInLanes[1] = tracked_msg;
-      } else {
-        targetObjectsInLanes[1] = empty_obj;
-      }
-  } else if (tracked_lane == 3) {
-      if ((tracked_msg.get_obj_dx() <= targetObjectsInLanes[2].get_obj_dx()) ||
-          (tracked_msg.get_obj_id() == targetObjectsInLanes[2].get_obj_id())) {
-            targetObjectsInLanes[2] = tracked_msg;
-      } else {
-        targetObjectsInLanes[2] = empty_obj;
-      }
   }
+
 }
 
 bool EnvironmentState::env_state_srv_callback(sensor_fusion::env_state_srv::Request& /*req*/,
@@ -221,6 +223,9 @@ int main(int argc, char** argv){
 
   while (ros::ok()) {
     ros::Time time_now = ros::Time::now();
+    
+    env_state.find_target_object();     // fill array with target obj
+
     if (time_now.toSec() - mem1.toSec() > 0.1) {
       env_state.publish_target_obj();
       env_state.publish_tracked_obj();

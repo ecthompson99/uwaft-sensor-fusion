@@ -28,7 +28,8 @@ class EnvironmentState {
     void update_object(const ObjectState& tracked_msg, size_t index);
     void check_timestamp(const ObjectState& tracked_msg);
     void update_env_state(const ObjectState& tracked_msg); 
-    void find_target_object(const ObjectState& tracked_msg);
+    // void find_target_object(const ObjectState& tracked_msg);
+    void find_target_object();
 
     bool env_state_srv_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res);
     bool changed_lane(int target_lane);
