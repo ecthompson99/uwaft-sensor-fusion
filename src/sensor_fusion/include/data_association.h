@@ -40,7 +40,7 @@
 // Values below for testing purposes
 #define MIN_DX 1.00   // Real value = 10.00
 #define MAX_DX 20.00  // Real value = 90.00
-#define MAX_DY 10.00  // Real value = 2.00
+#define MAX_DY 2.00   // Real value = 2.00
 #define MAX_VX 1.00
 #define EXIST 0.95
 

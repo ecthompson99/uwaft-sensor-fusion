@@ -39,8 +39,9 @@ class EnvironmentState {
     double global_clk;
     double prev_time[3] = {-1,-1,-1};
     double prev_time_target = -1;
+    double counter = 0;
 
-  private:
+   private:
     ros::NodeHandle* env_state_node_handle;
     ros::Subscriber filtered_object_sub;
     ros::Publisher tracked_obj_pub;

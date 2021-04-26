@@ -27,19 +27,24 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
 EnvironmentState::~EnvironmentState() {}
 
 void EnvironmentState::publish_target_obj() { // from left to right
-  // if (targetObjectsInLanes[0].get_obj_timestamp() == prev_time_target)
-  // {
-  //   target_output_msg.obj_id = 0;
-  //   target_output_msg.obj_dx = 255;
-  //   target_output_msg.obj_lane = 0;
-  //   target_output_msg.obj_vx = 0;
-  //   target_output_msg.obj_dy = 0;
-  //   target_output_msg.obj_ax = 0;
-  //   target_output_msg.obj_path = 0;
-  //   target_output_msg.obj_vy = 0;
-  //   target_output_msg.obj_timestamp = 0;
 
-  // } else {
+  // ROS_INFO_STREAM("counter" << counter);
+  // ROS_INFO_STREAM("a" << targetObjectsInLanes[0].get_obj_timestamp());
+  // ROS_INFO_STREAM("b" << prev_time_target);
+  // if ((targetObjectsInLanes[0].get_obj_timestamp() == prev_time_target)){
+  // ROS_INFO_STREAM("counter: " << +counter);
+  if (counter > 2) {
+    target_output_msg.obj_id = 0;
+    target_output_msg.obj_dx = 255;
+    target_output_msg.obj_lane = 0;
+    target_output_msg.obj_vx = 0;
+    target_output_msg.obj_dy = 0;
+    target_output_msg.obj_ax = 0;
+    target_output_msg.obj_path = 0;
+    target_output_msg.obj_vy = 0;
+    target_output_msg.obj_timestamp = 0;
+
+  } else {
     target_output_msg.obj_id = targetObjectsInLanes[0].get_obj_id();
     target_output_msg.obj_dx = targetObjectsInLanes[0].get_obj_dx();
     target_output_msg.obj_lane = targetObjectsInLanes[0].get_obj_lane(); // 1 to 3
@@ -50,7 +55,7 @@ void EnvironmentState::publish_target_obj() { // from left to right
     target_output_msg.obj_vy = targetObjectsInLanes[0].get_obj_vy();
     target_output_msg.obj_timestamp = targetObjectsInLanes[0].get_obj_timestamp();
     // target_output_msg.obj_track_num = static_cast<uint8_t>(targetObjectsInLanes[0].get_obj_lane() + 1);  // 1 to 3
-  // }
+  }
   // prev_time_target = targetObjectsInLanes[0].get_obj_timestamp();
   target_obj_pub.publish(target_output_msg);
 }
@@ -87,6 +92,8 @@ void EnvironmentState::publish_tracked_obj() { // from left to right
 }
 
 void EnvironmentState::filtered_object_callback(const common::filtered_object_msg& filtered_msg) {
+  counter = 0;
+  // ROS_INFO_STREAM("thereeeeeeeeeeeeeeeee");
   ObjectState tracked_msg;
   tracked_msg.copy_info(filtered_msg); // copy constructor
   
@@ -141,8 +148,7 @@ void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
 }
 
 void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
-  
-  bool found = false;
+  bool found = 0;
   size_t index_found = 0;
 
   for (size_t index = 0; index < EnvironmentState::trackedObjects.size(); index++) {
@@ -220,18 +226,22 @@ int main(int argc, char** argv){
   ros::NodeHandle env_state_node_handle;
   EnvironmentState env_state = EnvironmentState(&env_state_node_handle);
   ros::Time mem1 = ros::Time::now();
+  ros::Time mem2 = ros::Time::now();
 
   while (ros::ok()) {
     ros::Time time_now = ros::Time::now();
     
     env_state.find_target_object();     // fill array with target obj
 
-    if (time_now.toSec() - mem1.toSec() > 0.1) {
+    if (time_now.toSec() - mem1.toSec() > 0.05) {
       env_state.publish_target_obj();
       env_state.publish_tracked_obj();
       env_state.publish_binary_class();
-      env_state.global_clk += 0.1;
+      env_state.global_clk += 0.05;
+      env_state.counter = env_state.counter + 0.05;
+      mem1 = time_now;
     }
+
     ros::spinOnce();
   }
 	// ros::spin();

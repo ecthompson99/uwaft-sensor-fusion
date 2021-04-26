@@ -423,6 +423,12 @@ int main(int argc, char **argv) {
       // std::cout << "Object Number" << +obj_num << std::endl;
       // std::cout << "Target Object Number" << +target_object_num << std::endl;
 
+      object_info.timestamp = time;
+      object_info.radar_number = radar_num;
+      object_info.object_number = obj_num;
+      radar_obj.radar_timestamp = time;
+      radar_obj.radar_num = radar_num;
+
       if (id == 1280 || id == 1282) {
         pub_data = true;
         rad_rx.clear_classes(radar_obj, diag_data, diag_response, radar_info, target_info, object_info, tc_check,
@@ -586,8 +592,8 @@ int main(int argc, char **argv) {
             radar_info.packet_checksum_is_in_range =
                 radar_object_ender_radar_packet_checksum_is_in_range(r_ender.radar_packet_checksum);
 
-            radar_obj.radar_timestamp =
-                rad_rx.signals_in_range(radar_info.radar_timestamp_decode, radar_info.radar_timestamp_is_in_range);
+            // radar_obj.radar_timestamp =
+            //     rad_rx.signals_in_range(radar_info.radar_timestamp_decode, radar_info.radar_timestamp_is_in_range);
 
             diag_data.timestamp =
                 rad_rx.signals_in_range(radar_info.radar_timestamp_decode, radar_info.radar_timestamp_is_in_range);
@@ -841,17 +847,23 @@ int main(int argc, char **argv) {
               break;
           }
 
-          object_info.timestamp = time;
-          object_info.radar_number = radar_num;
-          object_info.object_number = obj_num;
-          radar_obj.radar_timestamp = time;
-          radar_obj.radar_num = radar_num;
           break;
-          break;
+          // break;
       }
 
       if (pub_data && (id == 1667 || id == 1665) &&
-          (now.toSec() - mem1.toSec() > 0.1)) {  // message must end with the ender bit and have started with an end bit
+          (now.toSec() - mem1.toSec() >
+           0.05)) {  // message must end with the ender bit and have started with an end bit
+
+        // Left corner radar = radar_1 and right corner radar = radar_2
+        // front radar = 3
+        // std::cout << "ID, Case, Radar, Frame, Obj, Target_Obj" << std::endl;
+        // std::cout << "ID" << +id << std::endl;
+        // std::cout << "Case" << +case_num << std::endl;
+        // std::cout << "Radar Number" << +radar_num << std::endl;
+        // std::cout << "Frame Number" << +frame_num << std::endl;
+        // std::cout << "Object Number" << +obj_num << std::endl;
+        // std::cout << "Target Object Number" << +target_object_num << std::endl;
 
         // validate radar, using service calls for specific channels
         ros::ServiceClient client_ch2;

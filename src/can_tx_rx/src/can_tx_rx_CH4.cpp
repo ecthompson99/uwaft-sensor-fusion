@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
     while (ros::ok()) {
       ros::Time now = ros::Time::now();
 
-      if (now.toSec() - mem1.toSec() > 0.5) {  // 0.1
+      if ((now.toSec() - mem1.toSec()) > 0.05) {  // 0.1
         obj_num = 0;                           // for testing purposes (see mobileye_struct.h)
 
         // Obstacle Frame A

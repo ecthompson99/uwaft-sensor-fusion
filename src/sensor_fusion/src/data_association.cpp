@@ -404,7 +404,7 @@ int main(int argc, char** argv){
     DataAssociation data_assc = DataAssociation(&data_association_handle);
     while (ros::ok()) {
       // data_assc.delete_potential_objects();
-      ros::Rate(10).sleep();
+      // ros::Rate(10).sleep();
       ros::spinOnce();
     }
     return 0;
