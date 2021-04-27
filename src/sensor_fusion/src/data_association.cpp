@@ -50,8 +50,8 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
 
     // COMMENT OUT FOR SIMULATION
         // Stationary objects
-        if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MAX_VX) 
-                || recvd_data.moving_state[r_index] == 3) continue;
+        // if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MAX_VX)
+        //         || recvd_data.moving_state[r_index] == 3) continue;
 
         // Exist probability flag - needs more testing to confirm threshold
         if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
@@ -178,22 +178,22 @@ void DataAssociation::delete_potential_objects() {
 bool DataAssociation::objects_match_radar(ObjectState obj, RadarObject& filtered) {
     // filter dx, dy, vx
     if ((abs(filtered.radar_dx - obj.dx) < DX_TOL) && (abs(filtered.radar_dy - obj.dy) < DY_TOL) && (abs(filtered.radar_vx - obj.vx) < VX_TOL)) {
-        printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n", 
-            filtered.radar_dx - obj.dx, filtered.radar_dy - obj.dy, filtered.radar_vx - obj.vx);
-        return 1;
+      // printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n",
+      // filtered.radar_dx - obj.dx, filtered.radar_dy - obj.dy, filtered.radar_vx - obj.vx);
+      return 1;
     }
     return 0;
 }
 
 bool DataAssociation::objects_match_me(ObjectState obj, MobileyeObject& filtered) {
     // filter dx, dy, vx
-    printf("Dx difference: %f", (abs(filtered.me_dx - obj.dx)));
-    printf("Dy difference: %f", (abs(filtered.me_dy - obj.dy)));
-    printf("Vx difference: %f", (abs(filtered.me_vx - obj.vx)));
+    // printf("Dx difference: %f", (abs(filtered.me_dx - obj.dx)));
+    // printf("Dy difference: %f", (abs(filtered.me_dy - obj.dy)));
+    // printf("Vx difference: %f", (abs(filtered.me_vx - obj.vx)));
     if ((abs(filtered.me_dx - obj.dx) < DX_TOL) && (abs(filtered.me_dy - obj.dy) < DY_TOL) && (abs(filtered.me_vx - obj.vx) < VX_TOL)) {
-        printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n", 
-            filtered.me_dx - obj.dx, filtered.me_dy - obj.dy, filtered.me_vx - obj.vx);
-        return 1;
+      // printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n",
+      // filtered.me_dx - obj.dx, filtered.me_dy - obj.dy, filtered.me_vx - obj.vx);
+      return 1;
     }
     return 0;
 }
@@ -217,10 +217,11 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 
         // Make a service call every time a new message comes in
         if (client.call(srv)){
-            // std::cout<<"Radar service called successfully\n";
-            for (size_t srv_index = 0; srv_index < srv.response.id.size(); srv_index++) {
-                ObjectState someObj(srv.response.id[srv_index], srv.response.dx[srv_index], srv.response.dy[srv_index], srv.response.timestamp[srv_index]);
-                stateVector.push_back(someObj); 
+          std::cout << "Radar service called successfully\n";
+          for (size_t srv_index = 0; srv_index < srv.response.id.size(); srv_index++) {
+            ObjectState someObj(srv.response.id[srv_index], srv.response.dx[srv_index], srv.response.dy[srv_index],
+                                srv.response.timestamp[srv_index]);
+            stateVector.push_back(someObj); 
             }
         }
         else {
@@ -234,17 +235,18 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 
             // Create radar object
             RadarObject radar_obj = filtered_radar_obj[r_index];
-            printf("Radar object index: %lu: %f, %f, %f, %f\n", r_index, radar_obj.radar_dx, radar_obj.radar_dy, radar_obj.radar_vx, radar_obj.radar_vy);
+            // printf("Radar object index: %lu: %f, %f, %f, %f\n", r_index, radar_obj.radar_dx, radar_obj.radar_dy,
+            // radar_obj.radar_vx, radar_obj.radar_vy);
 
             // check if detections match objects in environment state vector
             for (auto obj : stateVector) {
                 if (objects_match_radar(obj, radar_obj)){
-                    printf("%lu matched, sending now\n", obj.id);
-                    associated_radar_msg.obj_id = obj.id;
-                    pub_radar_signals(associated_radar_msg, radar_obj);
-                    radar_to_kf_pub.publish(associated_radar_msg);
-                    matched = 1;
-                    break;
+                  // printf("%lu matched, sending now\n", obj.id);
+                  associated_radar_msg.obj_id = obj.id;
+                  pub_radar_signals(associated_radar_msg, radar_obj);
+                  radar_to_kf_pub.publish(associated_radar_msg);
+                  matched = 1;
+                  break;
                 }
             }         
 
@@ -259,14 +261,15 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
                         obj_iterator->dy = radar_obj.radar_dy;
                         obj_iterator->count++;
                         matched = 1;
-                        printf("radar temp match count: %d \n", obj_iterator->count);
+                        // printf("radar temp match count: %d \n", obj_iterator->count);
                         // Once iterator > threshold, publish
                         if (obj_iterator->count > POTENTIAL_THRESHOLD) {
                             associated_radar_msg.obj_id = next_id++;
                             pub_radar_signals(associated_radar_msg, radar_obj);
                             radar_to_kf_pub.publish(associated_radar_msg);
                             potential_objs.erase(obj_iterator); // erase this object from temporary list since it has been confirmed
-                            std::cout << "Publishing new object that passed threshold and removing from potential queue" << std::endl;
+                            // std::cout << "Publishing new object that passed threshold and removing from potential
+                            // queue" << std::endl;
                         }
                         break;
                     }
@@ -275,9 +278,9 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
             }
 
             // Not match env state vector or temporary array 
-            if (!matched) {                 
-                std::cout << "added radar object to potentials" << std::endl;
-                potential_objs.emplace_back(ObjectState(radar_obj.radar_dx, radar_obj.radar_dy));
+            if (!matched) {
+              // std::cout << "added radar object to potentials" << std::endl;
+              potential_objs.emplace_back(ObjectState(radar_obj.radar_dx, radar_obj.radar_dy));
             }      
         }
     }
@@ -289,7 +292,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_data& recvd_data) {
 
     global_clk = recvd_data.me_timestamp;
-    std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
+    // std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
     std::vector<MobileyeObject> filtered_me_obj;
 
@@ -297,7 +300,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
     if(MOBILEYE){
       // std::cout << "Mobileye message valid!" << std::endl;
       filtered_me_obj = filter_me(recvd_data);
-      std::cout << "Size of ME filtered: " << filtered_me_obj.size() << std::endl;
+      //   std::cout << "Size of ME filtered: " << filtered_me_obj.size() << std::endl;
       // Initalize service
       sensor_fusion::env_state_srv srv;
       std::vector<ObjectState> envState;
@@ -323,16 +326,16 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
 
             // create mobileye object
             MobileyeObject me_obj = filtered_me_obj[me_index];
-            printf("ME object index: %lu: %f, %f\n", me_index, me_obj.me_dx, me_obj.me_dy);
+            // printf("ME object index: %lu: %f, %f\n", me_index, me_obj.me_dx, me_obj.me_dy);
             // if the object we received is already in the envState, send it to kf
             for (auto obj : envState) {
                 if (objects_match_me(obj, me_obj)) {
-                    printf("%lu matched, sending now\n", obj.id);
-                    associated_me_msg.obj_id = obj.id;
-                    pub_me_signals(associated_me_msg, me_obj);
-                    me_to_kf_pub.publish(associated_me_msg);
-                    me_matched = 1;
-                    break;
+                  // printf("%lu matched, sending now\n", obj.id);
+                  associated_me_msg.obj_id = obj.id;
+                  pub_me_signals(associated_me_msg, me_obj);
+                  me_to_kf_pub.publish(associated_me_msg);
+                  me_matched = 1;
+                  break;
                 }
             }     
 
@@ -344,7 +347,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
                       obj_iterator->dx = me_obj.me_dx;
                       obj_iterator->dy = me_obj.me_dy;
                       obj_iterator->count++;
-                      printf("Potential Object Count: %d \n", obj_iterator->count);
+                      //   printf("Potential Object Count: %d \n", obj_iterator->count);
 
                       // Once iterator > threshold, publish
                       if (obj_iterator->count > POTENTIAL_THRESHOLD) {
@@ -352,7 +355,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
                         pub_me_signals(associated_me_msg, me_obj);
                         me_to_kf_pub.publish(associated_me_msg);
                         potential_objs.erase(obj_iterator);
-                        std::cout << "Publishing ME object passed threshold" << std::endl;
+                        // std::cout << "Publishing ME object passed threshold" << std::endl;
                         }
                         me_matched = 1;
                         break;
@@ -362,9 +365,9 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
             }
 
             // Not match env state vector or temporary array
-            if (!me_matched) {                 
-                std::cout << "added ME object to potentials" << std::endl;
-                potential_objs.emplace_back(ObjectState(me_obj.me_dx, me_obj.me_dy));
+            if (!me_matched) {
+              // std::cout << "added ME object to potentials" << std::endl;
+              potential_objs.emplace_back(ObjectState(me_obj.me_dx, me_obj.me_dy));
             }            
         }
     }

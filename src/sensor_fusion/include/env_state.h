@@ -12,6 +12,7 @@
 #include <vector>
 
 static const uint8_t MESSAGE_BUFFER_SIZE = 10;
+#define COUNTER_LIM 0.5
 
 class EnvironmentState {
   public:        
