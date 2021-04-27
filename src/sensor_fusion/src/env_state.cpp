@@ -14,7 +14,7 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
   trackedObjects.reserve(MAX_OBJ); 	// reserve memory for vector (MAX_OBJ)
 
   // initialize target object (default)
-  ObjectState initialize_target(0, 255, 0, 0, 0, 0, 0, 0, 0, 0);
+  ObjectState initialize_target(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   
   // Initialize target obj in each lane
   targetObjectsInLanes[0] = initialize_target;
@@ -131,22 +131,29 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, size_t inde
 
 void EnvironmentState::check_timestamp(const ObjectState& tracked_msg) {
 
-  bool indices[MAX_OBJ] = {0};
-  int count = 1;
-
   for (size_t index = 0; index < EnvironmentState::trackedObjects.size(); index++) {
     if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp()) > TIMESTAMP_TOL) {  // assume more recent timestamps are larger
-     indices[index + 1] = true;  // have to add 1 since vector .begin starts at 1
+      EnvironmentState::trackedObjects.erase(EnvironmentState::trackedObjects.begin() + index);
+      index--;
     }
   }
 
-  for (auto temp = EnvironmentState::trackedObjects.begin(); temp != EnvironmentState::trackedObjects.end(); temp++){
-    if (indices[count] == true){
-      // iterator is decremented after it is passed to erase() but before erase() is executed
-      EnvironmentState::trackedObjects.erase(temp--);
-    }
-    count++;
-  }
+  // bool indices[MAX_OBJ] = {0};
+  // int count = 1;
+
+  // for (size_t index = 0; index < EnvironmentState::trackedObjects.size(); index++) {
+  //   if ((tracked_msg.get_obj_timestamp() - EnvironmentState::trackedObjects[index].get_obj_timestamp()) > TIMESTAMP_TOL) {  // assume more recent timestamps are larger
+  //    indices[index + 1] = true;  // have to add 1 since vector .begin starts at 1
+  //   }
+  // }
+
+  // for (auto temp = EnvironmentState::trackedObjects.begin(); temp != EnvironmentState::trackedObjects.end(); temp++){
+  //   if (indices[count] == true){
+  //     // iterator is decremented after it is passed to erase() but before erase() is executed
+  //     EnvironmentState::trackedObjects.erase(temp--);
+  //   }
+  //   count++;
+  // }
 }
 
 void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
@@ -169,7 +176,8 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
   else {
     add_object(tracked_msg);
   }
-  printf("%lu: %f %f\n", trackedObjects[0].get_obj_id(), trackedObjects[0].get_obj_dx(), trackedObjects[0].get_obj_dy());
+  for(size_t i = 0; i < trackedObjects.size(); i++)
+    printf("Tracked: %lu: %f %f\n", trackedObjects[i].get_obj_id(), trackedObjects[i].get_obj_dx(), trackedObjects[i].get_obj_dy());
 }
 
 // void EnvironmentState::find_target_object(const ObjectState& tracked_msg){

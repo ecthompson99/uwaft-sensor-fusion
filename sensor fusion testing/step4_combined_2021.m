@@ -20,19 +20,19 @@ radar_obj = 1;
 me_index = 1;
 me_obj = 1;
 clk = 0;
-time_interval = 0.01; % publish rate
+time_interval = 0.05; % publish rate
 radar_msg.RadarTimestamp = radar_final.time_in_sec(radar_index);
 me_msg.MeTimestamp = me_final.time_in_sec(me_index);
-
+tic;
 
 while true
 
-    while radar_msg.RadarTimestamp > clk + time_interval && me_msg.MeTimestamp > clk + time_interval ...
-            && veh_final.time_in_sec(veh_index) > clk + time_interval
-        clk = clk + time_interval;
+    while (radar_msg.RadarTimestamp > toc + time_interval) && (me_msg.MeTimestamp > toc + time_interval) ...
+            && (veh_final.time_in_sec(veh_index) > toc + time_interval)
+        clk = tok;
     end
 
-    if radar_msg.RadarTimestamp < clk + time_interval
+    if (radar_msg.RadarTimestamp < toc + time_interval) && (radar_index < size(radar_final, 1) - 1)
         if radar_obj > 32
             radar_obj = 1;
         end
@@ -61,22 +61,24 @@ while true
         radar_msg.RadarObjClass(radar_obj) = radar_final.Signals{radar_index+1,1}.(fields_B{5});
         radar_msg.DxRearLoss(radar_obj) = radar_final.Signals{radar_index+1,1}.(fields_B{2});        
         
-        send(radar_pub,radar_msg);
+        if radar_obj > 31
+            %send(radar_pub,radar_msg);
+            radar_msg = rosmessage(radar_pub);
+        end
         radar_index = radar_index + 2;
         radar_obj = radar_obj + 1;
-        
         radar_msg.RadarTimestamp = radar_final.time_in_sec(radar_index);
     end
     
-    if veh_final.time_in_sec(veh_index) < clk + time_interval
+    if (veh_final.time_in_sec(veh_index) < toc + time_interval) && (veh_index < size(veh_final,1))
         % 1000/3600 is conversion from km/h to m/s (match radar velocity
         % units)
-        veh_msg.VehVEgo = veh_final.Signals{veh_index,1}.VehSpdAvgDrvn*1000/3600; 
-        send(veh_pub,veh_msg);
+        veh_msg.VehVEgo = veh_final.Signals{veh_index,1}.Pcm_VehSpd; 
+        %send(veh_pub,veh_msg);
         veh_index = veh_index + 1;
     end        
 
-    if me_msg.MeTimestamp < clk + time_interval
+    if (me_msg.MeTimestamp < toc + time_interval) && (me_index < size(me_final, 1) - 2)
         if me_obj > 10
             me_obj = 1;
         end
@@ -99,8 +101,7 @@ while true
      
         send(me_pub,me_msg);
         me_index = me_index + 3;
-        me_obj = me_obj + 1;
-        
+        %me_obj = me_obj + 1;
         me_msg.MeTimestamp = me_final.time_in_sec(me_index);
     end
 

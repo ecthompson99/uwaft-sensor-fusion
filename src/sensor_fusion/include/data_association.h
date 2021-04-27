@@ -29,9 +29,9 @@
 #define CH3_SERVICE "sensor_diagnostic_CH3"
 #define CH4_SERVICE "sensor_diagnostic_CH4"
 
-#define DX_TOL 5.00
-#define DY_TOL 1.50
-#define VX_TOL 10.00
+#define DX_TOL 60.0
+#define DY_TOL 5.0
+#define VX_TOL 20.0
 #define POTENTIAL_THRESHOLD 5
 #define secondsToDelete 3
 #define MESSAGE_BUFFER_SIZE 10
@@ -40,7 +40,7 @@
 // Values below for testing purposes
 #define MIN_DX 1.00   // Real value = 10.00
 #define MAX_DX 130.00  // Real value = 90.00
-#define MAX_DY 2.00   // Real value = 2.00
+#define MAX_DY 12.00   // Real value = 2.00
 #define MAX_VX 1.00
 #define EXIST 0.95
 

@@ -80,6 +80,8 @@ class KF_Node(object):
 
                 if hashed.x[0] > 250:
                     hashed.x[0] = 250 
+                if hashed.x[0] < 0:
+                    hashed.x[0] = 0
                 if hashed.x[1] > 32:
                     hashed.x[1] = 32 
                 if hashed.x[1] < -32:
