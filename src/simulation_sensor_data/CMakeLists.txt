@@ -144,6 +144,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(sensor_data_matlab src/sensor_data_matlab.cpp)
+add_executable(blf_sensor_data_matlab src/blf_sensor_data_matlab.cpp)
+
 
 #add_executable(test_hehe src/test.cpp)
 
@@ -156,13 +158,22 @@ add_executable(sensor_data_matlab src/sensor_data_matlab.cpp)
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(sensor_data_matlab ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(blf_sensor_data_matlab ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(sensor_data_matlab
-   ${catkin_LIBRARIES}
+target_link_libraries(
+  sensor_data_matlab
+  ${catkin_LIBRARIES}
   # /usr/local/MATLAB/R2019b/bin/glnxa64/libmat.so
   # /usr/local/MATLAB/R2019b/bin/glnxa64/libmx.so
  )
+
+ target_link_libraries(
+  blf_sensor_data_matlab
+  ${catkin_LIBRARIES}
+)
+
  #target_link_libraries(test_hehe
  #  ${catkin_LIBRARIES}
  #)

@@ -1,0 +1,98 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCM CAV
+
+
+BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
+ SG_ PcmToCav1_PV : 0|31@0+ (1,0) [0|2147483647] "" Vector__XXX
+
+BO_ 1056 CavLongCtrl: 8 CAV
+ SG_ CavToPcmLong_PV : 23|31@0+ (1,0) [0|2147483647] ""  PCM
+ SG_ Cav_Aeb_Valid : 5|1@0+ (1,0) [0|1] ""  PCM
+ SG_ Cav_Long_Accel : 15|8@0- (0.16,0) [-20.48|20.32] "m/s^2"  PCM
+ SG_ Cav_Acc_Valid : 4|1@0+ (1,0) [0|1] ""  PCM
+ SG_ CavToPcmLong_RC : 7|2@0+ (1,0) [0|3] ""  PCM
+
+BO_ 1040 CavLateralCtrl: 8 CAV
+ SG_ Cav_Lcc_Valid : 24|1@0+ (1,0) [0|1] ""  PCM
+ SG_ Cav_Lcc_StrAng : 39|12@0- (0.125,0) [-256|255.875] "deg"  PCM
+ SG_ Cav_Cav_Sys_Alive : 43|4@0+ (1,0) [0|15] ""  PCM
+ SG_ CavToPcmLat_PV : 7|31@0+ (1,0) [0|2147483647] ""  PCM
+ SG_ CavToPcmLat_RC : 55|2@0+ (1,0) [0|3] ""  PCM
+
+BO_ 1074 PcmToCav_3: 8 PCM
+ SG_ YawRate : 7|12@0- (0.0625,0) [-126|127] "deg/sec"  CAV
+ SG_ PcmToCav3_RC : 57|2@0+ (1,0) [0|3] ""  CAV
+
+BO_ 1073 PcmToCav_2: 8 PCM
+ SG_ AccButtonStatus : 1|2@0+ (1,0) [0|0] ""  CAV
+ SG_ PcmToCav2_RC : 57|2@0+ (1,0) [0|3] ""  CAV
+
+BO_ 1072 PcmToCav_1: 8 PCM
+ SG_ Pcm_VehSpd : 15|8@0- (0.5,0) [-64|63.5] "m/s"  CAV
+ SG_ Pcm_Aeb_Allowed : 3|1@0+ (1,0) [0|1] ""  CAV
+ SG_ Pcm_Acc_Allowed : 4|1@0+ (1,0) [0|1] ""  CAV
+ SG_ Pcm_Lcc_Allowed : 5|1@0+ (1,0) [0|1] ""  CAV
+ SG_ Pcm_StrAng : 23|12@0- (0.125,0) [-256|255.875] "deg"  CAV
+ SG_ Pcm_Hsc_Alive : 27|4@0+ (1,0) [0|15] ""  CAV
+ SG_ PcmToCav1_RC : 7|2@0+ (1,0) [0|3] ""  CAV
+
+
+
+CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+CM_ SG_ 1056 Cav_Aeb_Valid "CAV Controller sending to Hybrid Supervisory Controller that AEB is Engaged";
+CM_ SG_ 1056 Cav_Long_Accel "CAV Controller sending to Hybrid Supervisory Controller value for ACC Accel Request";
+CM_ SG_ 1056 Cav_Acc_Valid "CAV Controller sending to Hybrid Supervisory Controller that ACC is Engaged ";
+CM_ SG_ 1040 Cav_Lcc_Valid "CAV Controller sending to Hybrid Supervisory Controller that LCC is Engaged";
+CM_ SG_ 1040 Cav_Lcc_StrAng "CAV Controller sending to Hybrid Supervisory Controller the LCC Steering Angle Request";
+CM_ SG_ 1040 Cav_Cav_Sys_Alive "CAV Controller sending to Hybrid Supervisory Controller that CAV systems are alive ";
+CM_ BO_ 1073 "0-2: Steering Button Status. 1-Off ; 5- CC On; 6- CancelOn";
+CM_ SG_ 1072 Pcm_Aeb_Allowed "Hybrid Supervisory Controller allowing AEB to be calculated from CAVs Controller";
+CM_ SG_ 1072 Pcm_Acc_Allowed "Hybrid Supervisory Controller allowing ACC to be calculated from CAVs Controller";
+CM_ SG_ 1072 Pcm_Lcc_Allowed "Hybrid Supervisory Controller to Tank LCC is allowed 
+";
+CM_ SG_ 1072 Pcm_StrAng "Hybrid Supervisory Controller to Tank Steering Angle deg";
+CM_ SG_ 1072 Pcm_Hsc_Alive "Hybrid Supervisory Controller to Tank Hybrid Supervisory Controller Alive Status";
+BA_DEF_ BO_  "AppGenMsgCycleTime" INT 0 0;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "AppGenMsgCycleTime" 0;
+BA_DEF_DEF_  "BusType" "";
+BA_ "AppGenMsgCycleTime" BO_ 1056 40;
+BA_ "AppGenMsgCycleTime" BO_ 1040 40;
+BA_ "AppGenMsgCycleTime" BO_ 1074 20;
+BA_ "AppGenMsgCycleTime" BO_ 1073 20;
+BA_ "AppGenMsgCycleTime" BO_ 1072 20;
+

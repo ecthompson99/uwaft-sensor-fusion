@@ -1,8 +1,8 @@
 clear
 clc
 
-load('C:\Users\Jillian\Documents\UWAFT\kaiROS\sensor fusion testing\highway_sensor_data.mat');
-detections = struct2table(highway);
+load('driving_scenarios/stationary_target_approach_100m_20mph_sensor_data.mat');
+detections = struct2table(sensor_data);
 
 ground_truth = struct('Time', [], 'Objects', []);
 
@@ -20,4 +20,4 @@ for i = 1:height(detections)
 
 end
 
-save('sim_gt', 'ground_truth');
+save('mat files/stationary_target_approach_100m_20mph_ground_truth.mat', 'ground_truth'); 
