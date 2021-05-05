@@ -9,8 +9,11 @@
 #include "common/drive_ctrl_input_msg.h"
 #include "common/can_comms_data_msg.h"
 
+#define canDRIVER_NORMAL 4
+#define SIZE_OF_MSG 8
 #define MESSAGE_BUFFER_SIZE 1000
-#define SIZE_OF_MSG 8 
+#define TOPIC_RX "can_comms_data"
+#define TOPIC_TX "drive_ctrl_input"
 
 class CAV_PCM_TX_RX{
     public: 

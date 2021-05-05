@@ -12,11 +12,12 @@
 #include "common/raw_lane_data.h"
 #include "common/sensor_diagnostic_flag_CH4.h"
 
+#define canDRIVER_SILENT 1
+#define SIZE_OF_MSG 8
 #define TX_RX_MESSAGE_BUFFER_SIZE 1000
 #define TOPIC_RX_OBJ "Mobileye_CAN_Rx"
 #define TOPIC_RX_LANE "Mobileye_CAN_Rx_Lane"
 #define TOPIC_DIAG "Mobileye_CAN_Diagnostics"
-#define SIZE_OF_MSG 8
 #define CH4_SERVICE "sensor_diagnostic_CH4"
 
 class Mobileye_RX{

@@ -1,11 +1,6 @@
 #include "cav_pcm_csw.h"
 #include "cav_pcm_csw_struct.h"  // "canlib.h pre-included for Kvaser"
 
-#define canDRIVER_NORMAL 4
-#define SIZE_OF_MSG 8
-#define TOPIC_RX "can_comms_data"
-#define TOPIC_TX "drive_ctrl_input"
-
 CAV_PCM_TX_RX::CAV_PCM_TX_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
   drive_ctrl_pub = node_handle->advertise<common::drive_ctrl_input_msg>(TOPIC_TX,MESSAGE_BUFFER_SIZE);
   can_comms_sub = node_handle ->subscribe(TOPIC_RX, MESSAGE_BUFFER_SIZE, &CAV_PCM_TX_RX::can_callback, this);
@@ -22,7 +17,8 @@ void CAV_PCM_TX_RX::get_nums(int id, uint8_t &case_num) {
   } else if (id == 1074) {
     case_num = 3;  // unused 3rd pcm to cav message, and will be ignored (potential for diagnostics later on)
   }
-}
+};
+
 void CAV_PCM_TX_RX::can_callback(const common::can_comms_data_msg &recvd_data) {
   cav_out.long_accel = recvd_data.long_accel;
   cav_out.lcc_steer = recvd_data.lcc_steer;
@@ -62,7 +58,7 @@ void CAV_PCM_TX_RX::can_callback(const common::can_comms_data_msg &recvd_data) {
   } else {
     cav_out.long_rc++;
   }
-}
+};
 
 int main(int argc, char **argv){
   ros::init(argc, argv, "can_tx_rx_CH1");
@@ -101,9 +97,10 @@ int main(int argc, char **argv){
   canSetBusParams(hnd, canBITRATE_500K, 0, 0, 0, 0, 0);
   canSetBusOutputControl(hnd, canDRIVER_NORMAL);
   canBusOn(hnd);
-  // propose to move this to a KVASER header file //
+  // propose to move this to a KVASER header file
   while (ros::ok()) {
     stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
+    // stat = canReadSpecific(hnd, 0x73A, &can_data, &dlc, &flag, &time);
     cav_rx.get_nums(id, case_num);
 
     if (stat == canOK) {

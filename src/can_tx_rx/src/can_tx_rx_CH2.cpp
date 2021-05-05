@@ -1,9 +1,6 @@
 #include <ros/ros.h>
 #include "radar_structs.h"
 
-#define canDRIVER_NORMAL 4
-#define SIZE_OF_MSG 8
-
 Radar_RX::Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
     rad_pub = node_handle->advertise<common::radar_object_data>(TOPIC_TX,MESSAGE_BUFFER_SIZE);
     diag_pub = node_handle->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG, MESSAGE_BUFFER_SIZE);
@@ -14,7 +11,7 @@ Radar_RX::Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
 void Radar_RX::drive_ctrl_callback(const common::drive_ctrl_input_msg& recvd_data) {
   vehicle_data.vehicle_speed = recvd_data.veh_spd;
   vehicle_data.steering_angle = recvd_data.str_ang;
-}
+};
 
 void Radar_RX::get_nums(long int id, int &case_n, int &radar_n, int &frame_n, int &obj_n, int &target_obj_n,
                         int channel_number) {
@@ -111,14 +108,10 @@ void Radar_RX::get_dynamic_veh_info(radar_input_veh_dyn_data_t &in_veh_dyn) {
 
   in_veh_dyn.ri_veh_steer_angle = radar_input_veh_dyn_data_ri_veh_steer_angle_encode(str_ang);
   in_veh_dyn.ri_veh_velocity = radar_input_veh_dyn_data_ri_veh_velocity_encode(v_ego);
-  // in_veh_dyn.ri_veh_velocity = radar_input_veh_dyn_data_ri_veh_velocity_encode(10);
   in_veh_dyn.ri_veh_use_steer_angle = radar_input_veh_dyn_data_ri_veh_use_steer_angle_encode(use_str_ang);
-  // in_veh_dyn.ri_veh_use_steer_angle = radar_input_veh_dyn_data_ri_veh_use_steer_angle_encode(1);
   in_veh_dyn.ri_veh_standstill = radar_input_veh_dyn_data_ri_veh_standstill_encode(v_stand);  // use_str_ang
-  // in_veh_dyn.ri_veh_standstill = radar_input_veh_dyn_data_ri_veh_standstill_encode(1);
   in_veh_dyn.ri_veh_yaw_rate = radar_input_veh_dyn_data_ri_veh_yaw_rate_encode(yawrate);
   in_veh_dyn.ri_veh_any_wheel_slip_event = radar_input_veh_dyn_data_ri_veh_any_wheel_slip_event_encode(wheelslip);  // prnd
-  // in_veh_dyn.ri_veh_any_wheel_slip_event = radar_input_veh_dyn_data_ri_veh_any_wheel_slip_event_encode(3);
   in_veh_dyn.ri_veh_prndstat = radar_input_veh_dyn_data_ri_veh_prndstat_encode(prnd);  // wheelslip
 };
 
@@ -188,16 +181,15 @@ void Radar_RX::get_static_veh_info(radar_input_mount_info_t &in_mount_info, rada
 double Radar_RX::signals_in_range(double val, bool cond) { return (cond) ? (val) : 0; };
 uint8_t Radar_RX::crc8bit_calculation(uint8_t *can1670signals, int f_len) {
   uint8_t crc = 0xFF;
-  // std::cout << "Msg" << +can1670signals << std::endl;
 
   for (int index = 0; index < f_len; index++) {
     crc ^= can1670signals[index];  // Assign data to CRC
-    // std::cout << "Index" << +index << "---" << +crc << std::endl;
+
     for (int bitIndex = 0; bitIndex < 8; bitIndex++) {  // Loop through 8 bits
-      // std::cout << "bitIndex" << +bitIndex << std::endl;
-      if ((crc & 0x80) != 0) {  // 0x80 == 128 == 10000000
+
+      if ((crc & 0x80) != 0) {
         crc = (crc << 1);
-        crc ^= (0x1D);  // 0x1D == 29
+        crc ^= (0x1D);
       } else {
         crc = (crc << 1);
       }
@@ -318,7 +310,6 @@ int main(int argc, char **argv) {
       in_mount_signals[4] = (in_mount_info.ri_mi_sensor_mount_angle & 0xFF);
       in_mount_signals[5] = {};
       in_mount_signals[6] = in_mount_info.ri_mi_mc;
-      // std::cout << "Mount" << std::endl;
       in_mount_info.ri_mi_crc = rad_rx.crc8bit_calculation(in_mount_signals, 7);
 
       uint8_t radar_can_msg_mount[8] = {0};
@@ -341,7 +332,6 @@ int main(int argc, char **argv) {
       in_wheel_signals[1] = in_wheel_info.ri_wi_track_width;
       in_wheel_signals[2] = in_wheel_info.ri_wi_steering_angle_ratio;
       in_wheel_signals[3] = in_wheel_info.ri_wi_mc;
-      // std::cout << "In Wheel" << std::endl;
       in_wheel_info.ri_wi_crc = rad_rx.crc8bit_calculation(in_wheel_signals, 4);
 
       uint8_t radar_can_msg_wheel[5] = {0};
@@ -359,7 +349,7 @@ int main(int argc, char **argv) {
       in_veh_dim_signals[6] = in_veh_dim.ri_vd_mc;
       in_veh_dim_signals[6] = in_veh_dim.ri_vd_mc;
       in_veh_dim_signals[6] = in_veh_dim.ri_vd_mc;
-      // std::cout << "Vehicle Dim" << std::endl;
+      ;
       in_veh_dim.ri_vd_crc = rad_rx.crc8bit_calculation(in_veh_dim_signals, 7);
 
       uint8_t radar_can_msg_veh_dim[8] = {0};
@@ -379,8 +369,7 @@ int main(int argc, char **argv) {
       mem3 = now;
     }
 
-    if ((now.toSec() - mem2.toSec()) > 0.02) {  // 0.02) {
-
+    if ((now.toSec() - mem2.toSec()) > 0.02) {
       uint8_t in_veh_dyn_signals[7];
       in_veh_dyn_signals[0] = (in_veh_dyn.ri_veh_steer_angle >> 8u);
       in_veh_dyn_signals[1] = (in_veh_dyn.ri_veh_steer_angle & 0xFF);
@@ -391,7 +380,6 @@ int main(int argc, char **argv) {
       in_veh_dyn_signals[5] = (in_veh_dyn.ri_veh_yaw_rate & 0xFF);
       in_veh_dyn_signals[6] =
           (in_veh_dyn.ri_veh_mc << 4u) + (in_veh_dyn.ri_veh_any_wheel_slip_event << 3u) + in_veh_dyn.ri_veh_prndstat;
-      // std::cout << "Dynamics" << std::endl;
       in_veh_dyn.ri_veh_crc = rad_rx.crc8bit_calculation(in_veh_dyn_signals, 7);
 
       uint8_t radar_can_msg_veh_dyn[8] = {0};
@@ -407,8 +395,6 @@ int main(int argc, char **argv) {
 
       mem2 = now;
     }
-
-    // if (now.toSec() - mem1.toSec() > 0.1) {  // try commenting out
 
     stat = canRead(hnd, &id, &can_data, &dlc, &flag, &time);
     if (stat == canOK) {
@@ -591,7 +577,7 @@ int main(int argc, char **argv) {
                 radar_object_ender_radar_packet_checksum_decode(r_ender.radar_packet_checksum);
             radar_info.packet_checksum_is_in_range =
                 radar_object_ender_radar_packet_checksum_is_in_range(r_ender.radar_packet_checksum);
-
+            // We're using canRead timestamp instead of internal radar timestamp
             // radar_obj.radar_timestamp =
             //     rad_rx.signals_in_range(radar_info.radar_timestamp_decode, radar_info.radar_timestamp_is_in_range);
 
@@ -853,7 +839,7 @@ int main(int argc, char **argv) {
 
       if (pub_data && (id == 1667 || id == 1665) &&
           (now.toSec() - mem1.toSec() >
-           0.05)) {  // message must end with the ender bit and have started with an end bit
+           0.05)) {  // message must end with the ender bit and have started with a start bit
 
         // Left corner radar = radar_1 and right corner radar = radar_2
         // front radar = 3
@@ -870,7 +856,7 @@ int main(int argc, char **argv) {
         common::sensor_diagnostic_flag_CH2 srv_ch2;
 
         // srv_ch2.request.front_radar = sens_diag.validate_radar(diag_data);
-        srv_ch2.request.front_radar = true;  // override for testing
+        srv_ch2.request.front_radar = true;  // TESTING OVERRIDE
 
         if (srv_ch2.request.front_radar) {
           std::cout << "Valid Ch2" << std::endl;
@@ -892,18 +878,15 @@ int main(int argc, char **argv) {
         rad_rx.rad_pub.publish(radar_obj);
         rad_rx.diag_pub.publish(diag_data);
 
+        // resetting for next data cluster
         rad_rx.clear_classes(radar_obj, diag_data, diag_response, radar_info, target_info, object_info, tc_check,
                              mc_check);
-
-        // resetting for next data cluster
         pub_data = false;
 
         mem1 = now;
       }
 
       }
-
-      // }
 
       ros::spinOnce();
     }

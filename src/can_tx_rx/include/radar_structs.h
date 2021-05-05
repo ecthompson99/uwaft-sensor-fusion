@@ -13,12 +13,13 @@
 #include "common/radar_object_data.h"
 #include "common/sensor_diagnostic_flag_CH2.h"
 
+#define canDRIVER_NORMAL 4
+#define SIZE_OF_MSG 8
 #define MESSAGE_BUFFER_SIZE 1000
 #define TOPIC_TX "Front_Radar_CAN_Rx" // ouput radar info
 #define TOPIC_DIAG "sensor_diagnostic_flags"
 #define TOPIC_RX "drive_ctrl_input" // listen from vehicle speed
 #define CH2_SERVICE "sensor_diagnostic_CH2"
-#define SIZE_OF_MSG 8 
 
 class Radar_RX{
   public:
