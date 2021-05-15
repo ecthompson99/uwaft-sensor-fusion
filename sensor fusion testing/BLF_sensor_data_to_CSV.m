@@ -6,7 +6,7 @@ clear
 clc
 
 % Name of BLF file located in BLFs folder
-drive_cycle = "CAV_ScenarioA_252021-04-27_12-37-17";
+drive_cycle = "CAV_ScenarioD_52021-04-27_12-40-13";
 
 % Front radar is on channel 2
 candb_radar = canDatabase("./DBCs/XGU.dbc");
@@ -53,7 +53,7 @@ veh_index = 1;
 radar_index = 1;
 me_index = 1;
 
-for i = radar_index:64:height(radar_final)
+for i = radar_index:64:(height(radar_final) - 64)
     time = radar_final.time_in_sec(i);
     radar_entry = zeros(1, 32*21); % 32 objects with 21 data values each
     
@@ -74,7 +74,7 @@ for i = radar_index:64:height(radar_final)
         radar_entry(1, 10 + 21*obj) = radar_final.Signals{i+j,1}.(fields_A{3}); % radar_W_exist
         radar_entry(1, 11 + 21*obj) = radar_final.Signals{i+j,1}.(fields_A{1}); % radar_W_obstacle
         radar_entry(1, 12 + 21*obj) = radar_final.Signals{i+j,1}.(fields_A{8}); % radar_flag_valid
-        radar_entry(1, 13 + 21*obj) = radar_final.Signals{i+j+1,1}.(fields_B{2}); % radar_W_non_obstacle
+        radar_entry(1, 13 + 21*obj) = radar_final.Signals{i+j,1}.(fields_A{2}); % radar_W_non_obstacle
         radar_entry(1, 14 + 21*obj) = radar_final.Signals{i+j,1}.(fields_A{10}); % flag_meas
         radar_entry(1, 15 + 21*obj) = radar_final.Signals{i+j,1}.(fields_A{9}); % flag_history
         radar_entry(1, 16 + 21*obj) = radar_final.Signals{i+j+1,1}.(fields_B{4}); % d_length
@@ -87,11 +87,11 @@ for i = radar_index:64:height(radar_final)
     
     data_output_ = {time, radar_entry};
                 
-    writecell(data_output_, "Excel Files\blf_radar_sensor_data_scenario_A_25.csv", "WriteMode", "append");
+    writecell(data_output_, "Excel Files\blf_radar_sensor_data_scenario_D_5.csv", "WriteMode", "append");
     
 end
 
-for i = me_index:3:height(me_final)
+for i = me_index:3:(height(me_final) - 3)
     time = me_final.time_in_sec(i);
     me_entry = zeros(1, 1*11); % 1 object(s) with 11 data values each
     
@@ -116,7 +116,7 @@ for i = me_index:3:height(me_final)
     
     data_output_ = {time, me_entry};
                 
-    writecell(data_output_, "Excel Files\blf_mobileye_sensor_data_scenario_A_25.csv", "WriteMode", "append");
+    writecell(data_output_, "Excel Files\blf_mobileye_sensor_data_scenario_D_5.csv", "WriteMode", "append");
     
 end
 
@@ -128,6 +128,6 @@ for i = veh_index:1:height(veh_final)
     
     data_output_ = {time, veh_entry};
                 
-    writecell(data_output_, "Excel Files\blf_vehicle_data_scenario_A_25.csv", "WriteMode", "append");
+    writecell(data_output_, "Excel Files\blf_vehicle_data_scenario_D_5.csv", "WriteMode", "append");
     
 end
