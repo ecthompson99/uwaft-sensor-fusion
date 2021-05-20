@@ -130,6 +130,7 @@ int main(int argc, char **argv){
           cav_in.str_ang_decode = emc_pcm_cav_interface_pcm_to_cav_1_pcm_str_ang_decode(pcm1.pcm_str_ang);
           cav_in.str_ang_is_in_range = emc_pcm_cav_interface_pcm_to_cav_1_pcm_str_ang_is_in_range(pcm1.pcm_str_ang);
 
+          drive_ctrl.acc_activation = true;
           drive_ctrl.aeb_allowed = cav_rx.signals_in_range(cav_in.aeb_allowed_decode, cav_in.aeb_allowed_is_in_range);
           drive_ctrl.acc_allowed = cav_rx.signals_in_range(cav_in.acc_allowed_decode, cav_in.acc_allowed_is_in_range);
           drive_ctrl.lcc_allowed = cav_rx.signals_in_range(cav_in.lcc_allowed_decode, cav_in.lcc_allowed_is_in_range);

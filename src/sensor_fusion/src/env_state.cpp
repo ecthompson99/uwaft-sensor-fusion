@@ -14,8 +14,8 @@ EnvironmentState::EnvironmentState(ros::NodeHandle* node_handle) : env_state_nod
   trackedObjects.reserve(MAX_OBJ); 	// reserve memory for vector (MAX_OBJ)
 
   // initialize target object (default)
-  ObjectState initialize_target(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  
+  ObjectState initialize_target(0, 255, 0, 0, 0, 0, 0, 0, 0, 0);
+
   // Initialize target obj in each lane
   targetObjectsInLanes[0] = initialize_target;
   targetObjectsInLanes[1] = initialize_target;
@@ -35,7 +35,7 @@ void EnvironmentState::publish_target_obj() { // from left to right
 
   if (counter > COUNTER_LIM) {
     target_output_msg.obj_id = 0;
-    target_output_msg.obj_dx = 0;
+    target_output_msg.obj_dx = 255;
     target_output_msg.obj_lane = 0;
     target_output_msg.obj_vx = 0;
     target_output_msg.obj_dy = 0;
@@ -66,7 +66,7 @@ void EnvironmentState::publish_tracked_obj() { // from left to right
     if (counter > COUNTER_LIM) {
       // ROS_INFO_STREAM("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       tracked_output_msg.obj_id[lane] = 0;
-      tracked_output_msg.obj_dx[lane] = 0;
+      tracked_output_msg.obj_dx[lane] = 255;
       tracked_output_msg.obj_lane[lane] = 0;  // 0 to 2
       tracked_output_msg.obj_vx[lane] = 0;
       tracked_output_msg.obj_dy[lane] = 0;
@@ -182,14 +182,12 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
 
 // void EnvironmentState::find_target_object(const ObjectState& tracked_msg){
 void EnvironmentState::find_target_object(){
-
-  ObjectState empty_obj(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  ObjectState empty_obj(0, 255, 0, 0, 0, 0, 0, 0, 0, 0);
 
   for (size_t i = 0; i < trackedObjects.size(); i++) {
     int tracked_lane = trackedObjects[i].get_obj_lane();
     // 1 = center lane, 2 = left lane, 3 = right lane
     // update target object if a new object is closer than current target or if the current target moves
-    
     if (tracked_lane == 1) {
       if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[0].get_obj_dx()) || 
           (trackedObjects[i].get_obj_id() == targetObjectsInLanes[0].get_obj_id())) {
