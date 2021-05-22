@@ -6,7 +6,7 @@ clear
 clc
 
 % Name of BLF file located in BLFs folder
-drive_cycle = "CAV_ScenarioD_52021-04-27_12-40-13";
+drive_cycle = "Approach1";
 
 % Front radar is on channel 2
 candb_radar = canDatabase("./DBCs/XGU.dbc");
@@ -87,7 +87,7 @@ for i = radar_index:64:(height(radar_final) - 64)
     
     data_output_ = {time, radar_entry};
                 
-    writecell(data_output_, "Excel Files\blf_radar_sensor_data_scenario_D_5.csv", "WriteMode", "append");
+    writecell(data_output_, strcat("./Excel files/",drive_cycle,"_radar.csv"), "WriteMode", "append");
     
 end
 
@@ -116,18 +116,19 @@ for i = me_index:3:(height(me_final) - 3)
     
     data_output_ = {time, me_entry};
                 
-    writecell(data_output_, "Excel Files\blf_mobileye_sensor_data_scenario_D_5.csv", "WriteMode", "append");
+    writecell(data_output_, strcat("./Excel files/",drive_cycle,"_mobileye.csv"), "WriteMode", "append");
     
 end
 
 for i = veh_index:1:height(veh_final)
     time = veh_final.time_in_sec(i);
-    veh_entry = zeros(1, 1);
+    veh_entry = zeros(1, 2);
     
-    veh_entry(1,1) = veh_final.Signals{i,1}.Pcm_VehSpd; % veh_v_ego         
-    
+    veh_entry(1,1) = veh_final.Signals{i,1}.Pcm_VehSpd; % vehicle speed         
+    veh_entry(1,2) = veh_final.Signals{i,1}.Pcm_StrAng; % steering angle         
+
     data_output_ = {time, veh_entry};
                 
-    writecell(data_output_, "Excel Files\blf_vehicle_data_scenario_D_5.csv", "WriteMode", "append");
+    writecell(data_output_, strcat("./Excel files/",drive_cycle,"_vehicle.csv"), "WriteMode", "append");
     
 end
