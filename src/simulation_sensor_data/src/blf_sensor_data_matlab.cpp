@@ -6,6 +6,7 @@
 #include <time.h>
 #include <common/mobileye_object_data.h>
 #include <common/radar_object_data.h>
+#include <common/drive_ctrl_input_msg.h>
 
 using namespace std;
 
@@ -16,17 +17,21 @@ const char* parse_word(stringstream &ss)
     return word.c_str();
 }
 
+bool to_bool(std::string const& s) {
+  return s != "0";
+}
+
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "blf_sensor_data_matlab");
     ros::NodeHandle nh;
     rosbag::Bag bag;
     // Bag file to output combined data to
-    bag.open("ScenarioA_25_sensor_data.bag", rosbag::bagmode::Write);
+    bag.open("Approachtest.bag", rosbag::bagmode::Write);
 
     // Radar data CSV file path
     string file_path = getenv("HOME");
-    file_path.append("/kaiROS/sensor fusion testing/Excel files/blf_radar_sensor_data_scenario_A_25.csv");
+    file_path.append("/kaiROS/sensor fusion testing/Excel files/Approach1_radar.csv");
     
     ifstream fin_front_radar(file_path.c_str());
     if (!fin_front_radar.is_open())
@@ -37,7 +42,7 @@ int main(int argc, char **argv)
 
     // Mobileye data CSV file path
     file_path = getenv("HOME");
-    file_path.append("/kaiROS/sensor fusion testing/Excel files/blf_mobileye_sensor_data_scenario_A_25.csv");
+    file_path.append("/kaiROS/sensor fusion testing/Excel files/Approach1_mobileye.csv");
     
     ifstream fin_mobileye(file_path.c_str());
     if (!fin_mobileye.is_open())
@@ -48,7 +53,7 @@ int main(int argc, char **argv)
 
     // Vehicle data CSV file path
     file_path = getenv("HOME");
-    file_path.append("/kaiROS/sensor fusion testing/Excel files/blf_vehicle_data_scenario_A_25.csv");
+    file_path.append("/kaiROS/sensor fusion testing/Excel files/Approach1_vehicle.csv");
     
     ifstream fin_vehicle(file_path.c_str());
     if (!fin_vehicle.is_open())
@@ -85,10 +90,10 @@ int main(int argc, char **argv)
             front_radar_data.radar_ax_sigma[obj_idx] = atof(parse_word(ss));
             front_radar_data.radar_w_exist[obj_idx] = atof(parse_word(ss));
             front_radar_data.radar_w_obstacle[obj_idx] = atof(parse_word(ss));
-            front_radar_data.radar_flag_valid[obj_idx] = atoi(parse_word(ss));            
+            front_radar_data.radar_flag_valid[obj_idx] = to_bool(parse_word(ss));
             front_radar_data.radar_w_non_obstacle[obj_idx] = atof(parse_word(ss)); 
-            front_radar_data.flag_meas[obj_idx] = atoi(parse_word(ss)); 
-            front_radar_data.flag_hist[obj_idx] = atoi(parse_word(ss)); 
+            front_radar_data.flag_meas[obj_idx] = to_bool(parse_word(ss)); 
+            front_radar_data.flag_hist[obj_idx] = to_bool(parse_word(ss)); 
             front_radar_data.d_length[obj_idx] = atof(parse_word(ss));
             front_radar_data.radar_dz[obj_idx] = atof(parse_word(ss)); 
             front_radar_data.moving_state[obj_idx] = atof(parse_word(ss)); 
@@ -128,7 +133,7 @@ int main(int argc, char **argv)
             mobileye_data.me_cut_in_cut_out[obj_idx] = atoi(parse_word(ss));
             mobileye_data.me_age[obj_idx] = atof(parse_word(ss));
             mobileye_data.me_lane[obj_idx] = atoi(parse_word(ss));
-            mobileye_data.me_cipv_flag[obj_idx] = atoi(parse_word(ss));
+            mobileye_data.me_cipv_flag[obj_idx] = to_bool(parse_word(ss));
         }
         if (time.toNSec() == 0) time = ros::TIME_MIN;
 
@@ -136,7 +141,7 @@ int main(int argc, char **argv)
         bag.write("Mobileye_CAN_Rx", time, mobileye_data); 
     }
 
-    /*
+
     while (fin_vehicle)
     {
         std::getline(fin_vehicle, line, '\n');
@@ -146,18 +151,17 @@ int main(int argc, char **argv)
         double timestamp = atof(word.c_str());
 
         ros::Time time(timestamp);
+        common::drive_ctrl_input_msg vehicle_data;
 
-        common::radar_object_data vehicle_data;
-
-        vehicle_data.radar_timestamp = timestamp;
-        vehicle_data.veh_v_ego = atof(parse_word(ss));
+        vehicle_data.veh_spd = atof(parse_word(ss));
+        vehicle_data.str_ang = atof(parse_word(ss));
 
         if (time.toNSec() == 0) time = ros::TIME_MIN;
 
         // Write mobileye message along with timestamp to corresponding topic in bag file
-        bag.write("Front_Radar_CAN_Rx", time, vehicle_data);
+        bag.write("drive_ctrl_input", time, vehicle_data);
     }
-    */
+    
 
     bag.close();
 
