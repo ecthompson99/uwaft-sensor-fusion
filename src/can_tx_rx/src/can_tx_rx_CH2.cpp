@@ -839,7 +839,7 @@ int main(int argc, char **argv) {
 
       if (pub_data && (id == 1667 || id == 1665) &&
           (now.toSec() - mem1.toSec() >
-           0.05)) {  // message must end with the ender bit and have started with a start bit
+           0.01)) {  // message must end with the ender bit and have started with a start bit
 
         // Left corner radar = radar_1 and right corner radar = radar_2
         // front radar = 3

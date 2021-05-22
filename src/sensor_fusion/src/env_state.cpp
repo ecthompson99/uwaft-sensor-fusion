@@ -241,12 +241,12 @@ int main(int argc, char** argv){
     
     env_state.find_target_object();     // fill array with target obj
 
-    if (time_now.toSec() - mem1.toSec() > 0.05) {
+    if (time_now.toSec() - mem1.toSec() > 0.01) {
       env_state.publish_target_obj();
       env_state.publish_tracked_obj();
       env_state.publish_binary_class();
-      env_state.global_clk += 0.05;
-      env_state.counter = env_state.counter + 0.05;
+      env_state.global_clk += 0.01;
+      env_state.counter = env_state.counter + 0.01;
       // env_state.counter = env_state.counter + (time_now.toSec() - mem1.toSec());
       mem1 = time_now;
     }

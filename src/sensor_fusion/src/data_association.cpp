@@ -26,7 +26,7 @@ DataAssociation::DataAssociation(ros::NodeHandle* in_node_handle) : node_handle(
     radar_to_kf_pub = node_handle->advertise<common::associated_radar_msg>(KALMAN_FILTER_RADAR_TOPIC, 10);
     me_to_kf_pub = node_handle->advertise<common::associated_me_msg>(KALMAN_FILTER_ME_TOPIC, 10);
 
-    next_id = 0;
+    next_id = 1;
     global_clk = 0;
 
     filtered_me_obj = std::vector<MobileyeObject>(1);
@@ -50,8 +50,9 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
 
     // COMMENT OUT FOR SIMULATION
         // Stationary objects
-        // if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MAX_VX)
-        //         || recvd_data.moving_state[r_index] == 3) continue;
+        if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MAX_VX) ||
+            recvd_data.moving_state[r_index] == 3)
+          continue;
 
         // Exist probability flag - needs more testing to confirm threshold
         if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
@@ -115,7 +116,7 @@ std::vector<MobileyeObject> DataAssociation::filter_me(const common::mobileye_ob
         //  COMMENT OUT FOR SIMULATION
         // Stationary objects - status: never moved
         // **commented line below for testing purposes**
-        // if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
+        if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
 
         // Valid objects
         if (recvd_data.me_valid[me_index] == 0) continue;

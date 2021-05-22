@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
       ros::Time now = ros::Time::now();
 
         obj_num = 0;                           // for testing purposes (see mobileye_struct.h)
-        if ((now.toSec() - mem1.toSec()) > 0.05) {  // 0.1
+        if ((now.toSec() - mem1.toSec()) > 0.01) {  // 0.1
 
           // Obstacle Frame A
           stat = canReadSpecific(hnd, 0x739, &can_data, &dlc, &flag, &time);
