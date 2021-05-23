@@ -1,8 +1,20 @@
 #include "object_state.h"
 
-ObjectState::ObjectState(){}
+// Default constructor
+ObjectState::ObjectState() {
+    obj_id = 0;
+    obj_dx = 255;
+    obj_lane = 0;
+    obj_vx = 0;
+    obj_dy = 0;
+    obj_ax = 0;
+    obj_path = 0;
+    obj_vy = 0;
+    obj_timestamp = 0;
+    obj_track_num = 0;
+}
 
-// constructor for testing and initializing targetObjects[]
+// Constructor for testing and initializing targetObjects[]
 ObjectState::ObjectState(uint64_t set_obj_id, double set_obj_dx, uint8_t set_obj_lane, double set_obj_vx, 
     double set_obj_dy, double set_obj_ax, bool set_obj_path, double set_obj_vy, double set_obj_timestamp, 
     uint8_t set_obj_track_num){ //, uint8_t set_obj_count) {

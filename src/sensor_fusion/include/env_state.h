@@ -9,10 +9,13 @@
 #include "common/binary_class_msg.h"
 #include "sensor_fusion/env_state_srv.h"  //service
 
+
 #include <vector>
 
 static const uint8_t MESSAGE_BUFFER_SIZE = 10;
-#define COUNTER_LIM 2
+// #define COUNTER_LIM 2
+#define UPDATE_TOL 2.00
+#define MAX_OBJ 32
 
 class EnvironmentState {
   public:        
@@ -20,6 +23,7 @@ class EnvironmentState {
     virtual ~EnvironmentState();
     void publish_target_obj();
     void publish_tracked_obj();
+    void publish_all_tracked_obj();
     void publish_binary_class();
     void filtered_object_callback(const common::filtered_object_msg& filtered_msg);
     common::tracked_output_msg get_tracked_output_msg();
@@ -27,10 +31,11 @@ class EnvironmentState {
 
     void add_object(const ObjectState& tracked_msg);
     void update_object(const ObjectState& tracked_msg, size_t index);
-    void check_timestamp(const ObjectState& tracked_msg);
+    void check_tracked_time();
     void update_env_state(const ObjectState& tracked_msg); 
     // void find_target_object(const ObjectState& tracked_msg);
     void find_target_object();
+    void reset_tracks();
 
     bool env_state_srv_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res);
     bool changed_lane(int target_lane);
@@ -40,16 +45,20 @@ class EnvironmentState {
     double global_clk;
     double prev_time[3] = {-1,-1,-1};
     double prev_time_target = -1;
-    double counter = 0;
+    // double counter = 0;
+    ros::Time last_msg_ros_timestamp;
+    double last_msg_timestamp;
 
    private:
     ros::NodeHandle* env_state_node_handle;
     ros::Subscriber filtered_object_sub;
     ros::Publisher tracked_obj_pub;
+    ros::Publisher all_tracked_obj_pub;
     ros::Publisher target_obj_pub;
     ros::Publisher binary_class_pub;
     common::tracked_output_msg tracked_output_msg;
     common::target_output_msg target_output_msg;
+    common::target_output_msg all_tracked_output_msg;
     ros::ServiceServer service;
 };
 

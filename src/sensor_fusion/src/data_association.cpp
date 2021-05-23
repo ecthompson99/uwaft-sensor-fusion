@@ -63,7 +63,7 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
         // Measured and history flag - want history object only if measured
         if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
 
-        // Dz should be in range
+        // Dz should be in range (needs calibration likely)
         if (recvd_data.radar_dz[r_index] > MAX_DZ || recvd_data.radar_dz[r_index] < -MAX_DZ) continue;
         // printf("Success filtering radar data: %f, %f, %f, %f", recvd_data.radar_dx[r_index], recvd_data.radar_dy[r_index], recvd_data.radar_vx[r_index], recvd_data.radar_vy[r_index]);
 
