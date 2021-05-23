@@ -50,7 +50,7 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
 
     // COMMENT OUT FOR SIMULATION
         // Stationary objects
-        // if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MAX_VX) ||
+        // if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MIN_MOVING_VELOCITY) ||
         //     recvd_data.moving_state[r_index] == 3)
         //   continue;
 

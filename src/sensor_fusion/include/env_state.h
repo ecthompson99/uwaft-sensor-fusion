@@ -14,7 +14,7 @@
 
 static const uint8_t MESSAGE_BUFFER_SIZE = 10;
 // #define COUNTER_LIM 2
-#define UPDATE_TOL 2.00
+#define UPDATE_TOL 5.00
 #define MAX_OBJ 32
 
 class EnvironmentState {

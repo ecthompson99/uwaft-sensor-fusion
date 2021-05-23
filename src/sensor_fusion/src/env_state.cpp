@@ -150,7 +150,7 @@ void EnvironmentState::update_object(const ObjectState& tracked_msg, size_t inde
 
 void EnvironmentState::check_tracked_time() {
   for (size_t index = 0; index < trackedObjects.size(); index++) {
-    printf("Tracked obj id: %lu, time difference: %f\r\n", trackedObjects[index].get_obj_id(), last_msg_timestamp - trackedObjects[index].get_obj_timestamp());
+    // printf("Tracked obj id: %lu, time difference: %f\r\n", trackedObjects[index].get_obj_id(), last_msg_timestamp - trackedObjects[index].get_obj_timestamp());
     if ((last_msg_timestamp - trackedObjects[index].get_obj_timestamp()) > UPDATE_TOL) {  // more recent timestamps are larger
       trackedObjects.erase(trackedObjects.begin() + index);
       index--;
