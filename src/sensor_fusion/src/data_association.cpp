@@ -50,9 +50,9 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
 
     // COMMENT OUT FOR SIMULATION
         // Stationary objects
-        if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MAX_VX) ||
-            recvd_data.moving_state[r_index] == 3)
-          continue;
+        // if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MAX_VX) ||
+        //     recvd_data.moving_state[r_index] == 3)
+        //   continue;
 
         // Exist probability flag - needs more testing to confirm threshold
         if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
@@ -63,10 +63,8 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
         // Measured and history flag - want history object only if measured
         if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
 
-        // dLength - most likely an obj if it has length
-        // if (recvd_data.d_length[r_index] == 0) continue;
-    
-
+        // Dz should be in range
+        if (recvd_data.radar_dz[r_index] > MAX_DZ || recvd_data.radar_dz[r_index] < -MAX_DZ) continue;
         // printf("Success filtering radar data: %f, %f, %f, %f", recvd_data.radar_dx[r_index], recvd_data.radar_dy[r_index], recvd_data.radar_vx[r_index], recvd_data.radar_vy[r_index]);
 
         RadarObject filtered_temp;
@@ -202,14 +200,14 @@ bool DataAssociation::objects_match_me(ObjectState obj, MobileyeObject& filtered
 void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_data& recvd_data) {
 
     //global_clk = recvd_data.radar_timestamp;
-    // std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
+    std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
     std::vector<RadarObject> filtered_radar_obj;
 
     // filter detections
     if(FRONT_RADAR){ // && LEFT_CORNER_RADAR && RIGHT_CORNER_RADAR){
         filtered_radar_obj = filter_radar(recvd_data);
-        // std::cout << "Filtered radar object size " << filtered_radar_obj.size() << std::endl;
+        std::cout << "Filtered radar object size " << filtered_radar_obj.size() << std::endl;
         // std::cout << "Valid Radar diagnostics service call" << std::endl;
 
         // Initialize service to sensor fusion
@@ -293,7 +291,7 @@ void DataAssociation::sensor_radar_data_obj_callback(const common::radar_object_
 void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_data& recvd_data) {
 
     global_clk = recvd_data.me_timestamp;
-    std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
+    // std::cout << "Potential objs size: " << potential_objs.size() << std::endl;
 
     std::vector<MobileyeObject> filtered_me_obj;
 
@@ -301,7 +299,7 @@ void DataAssociation::sensor_me_data_obj_callback(const common::mobileye_object_
     if(MOBILEYE){
       // std::cout << "Mobileye message valid!" << std::endl;
       filtered_me_obj = filter_me(recvd_data);
-      std::cout << "Size of ME filtered: " << filtered_me_obj.size() << std::endl;
+      // std::cout << "Size of ME filtered: " << filtered_me_obj.size() << std::endl;
       // Initalize service
       sensor_fusion::env_state_srv srv;
       std::vector<ObjectState> envState;
