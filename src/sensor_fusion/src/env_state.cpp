@@ -192,25 +192,29 @@ void EnvironmentState::find_target_object(){
   for (size_t i = 0; i < trackedObjects.size(); i++) {
     int tracked_lane = trackedObjects[i].get_obj_lane();
     // 1 = center lane, 2 = left lane, 3 = right lane
-    // update target object if a new object is closer than current target in the same lane, or if the current target moves
+    // update target object if a new object is closer than current target in the same lane, or if the current target
+    // moves or if lane is empty (i.e. dx = 0)
     if (tracked_lane == 1) {
-      if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[0].get_obj_dx()) || 
-          (trackedObjects[i].get_obj_id() == targetObjectsInLanes[0].get_obj_id())) {
-          targetObjectsInLanes[0] = trackedObjects[i];
+      if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[0].get_obj_dx()) ||
+          (trackedObjects[i].get_obj_id() == targetObjectsInLanes[0].get_obj_id()) ||
+          (targetObjectsInLanes[0].get_obj_dx() == 0)) {
+        targetObjectsInLanes[0] = trackedObjects[i];
       } else {
         targetObjectsInLanes[0] = empty_obj;
       }
     } else if (tracked_lane == 2) {
-        if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[1].get_obj_dx()) ||
-            (trackedObjects[i].get_obj_id() == targetObjectsInLanes[1].get_obj_id())) {
-            targetObjectsInLanes[1] = trackedObjects[i];
+      if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[1].get_obj_dx()) ||
+          (trackedObjects[i].get_obj_id() == targetObjectsInLanes[1].get_obj_id()) ||
+          (targetObjectsInLanes[1].get_obj_dx() == 0)) {
+        targetObjectsInLanes[1] = trackedObjects[i];
         } else {
           targetObjectsInLanes[1] = empty_obj;
         }
     } else if (tracked_lane == 3) {
-        if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[2].get_obj_dx()) ||
-            (trackedObjects[i].get_obj_id() == targetObjectsInLanes[2].get_obj_id())) {
-            targetObjectsInLanes[2] = trackedObjects[i];
+      if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[2].get_obj_dx()) ||
+          (trackedObjects[i].get_obj_id() == targetObjectsInLanes[2].get_obj_id()) ||
+          (targetObjectsInLanes[1].get_obj_dx() == 0)) {
+        targetObjectsInLanes[2] = trackedObjects[i];
         } else {
           targetObjectsInLanes[2] = empty_obj;
         }
