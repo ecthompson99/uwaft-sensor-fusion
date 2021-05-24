@@ -50,9 +50,9 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
 
     // COMMENT OUT FOR SIMULATION
         // Stationary objects
-        // if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MIN_MOVING_VELOCITY) ||
-        //     recvd_data.moving_state[r_index] == 3)
-        //   continue;
+        if (((recvd_data.veh_v_ego + abs(recvd_data.radar_vx[r_index])) < MIN_MOVING_VELOCITY) ||
+            recvd_data.moving_state[r_index] == 3)
+          continue;
 
         // Exist probability flag - needs more testing to confirm threshold
         if (recvd_data.radar_w_exist[r_index] < EXIST) continue;
@@ -61,7 +61,7 @@ std::vector<RadarObject> DataAssociation::filter_radar(const common::radar_objec
         if (recvd_data.radar_flag_valid[r_index] == 0) continue;
 
         // Measured and history flag - want history object only if measured
-        if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue;
+        // if (recvd_data.flag_hist[r_index] == 1 && recvd_data.flag_meas[r_index] == 0) continue; // not accurate
 
         // Dz should be in range (needs calibration likely)
         if (recvd_data.radar_dz[r_index] > MAX_DZ || recvd_data.radar_dz[r_index] < -MAX_DZ) continue;
@@ -112,14 +112,11 @@ std::vector<MobileyeObject> DataAssociation::filter_me(const common::mobileye_ob
           continue;
 
         //  COMMENT OUT FOR SIMULATION
-        // Stationary objects - status: never moved
-        // **commented line below for testing purposes**
         if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
 
         // Valid objects
         if (recvd_data.me_valid[me_index] == 0) continue;
     
-
         MobileyeObject filtered_me_temp;
 
         filtered_me_temp.me_dx = recvd_data.me_dx[me_index];
