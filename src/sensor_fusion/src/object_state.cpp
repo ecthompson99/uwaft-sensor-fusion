@@ -3,7 +3,7 @@
 // Default constructor
 ObjectState::ObjectState() {
     obj_id = 0;
-    obj_dx = 255;
+    obj_dx = 0;
     obj_lane = 0;
     obj_vx = 0;
     obj_dy = 0;

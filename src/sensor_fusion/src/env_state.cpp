@@ -187,7 +187,7 @@ void EnvironmentState::update_env_state(const ObjectState& tracked_msg) {
 
 // void EnvironmentState::find_target_object(const ObjectState& tracked_msg){
 void EnvironmentState::find_target_object(){
-  ObjectState empty_obj(0, 255, 0, 0, 0, 0, 0, 0, 0, 0);
+  ObjectState empty_obj(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
   for (size_t i = 0; i < trackedObjects.size(); i++) {
     int tracked_lane = trackedObjects[i].get_obj_lane();
