@@ -135,7 +135,9 @@ int main(int argc, char **argv){
         cav_in.str_ang_is_in_range = emc_pcm_cav_interface_pcm_to_cav_1_pcm_str_ang_is_in_range(pcm1.pcm_str_ang);
 
         drive_ctrl.acc_activation = true;
-        drive_ctrl.acc_speed_set_point = 11.1;  // (i.e. 40 kmph)
+        drive_ctrl.aeb_activation = true;  // override for Master Task
+        drive_ctrl.lcc_activation = true;
+        drive_ctrl.acc_gap_level = 1;
         drive_ctrl.aeb_allowed = cav_rx.signals_in_range(cav_in.aeb_allowed_decode, cav_in.aeb_allowed_is_in_range);
         drive_ctrl.acc_allowed = cav_rx.signals_in_range(cav_in.acc_allowed_decode, cav_in.acc_allowed_is_in_range);
         drive_ctrl.lcc_allowed = cav_rx.signals_in_range(cav_in.lcc_allowed_decode, cav_in.lcc_allowed_is_in_range);
@@ -143,6 +145,7 @@ int main(int argc, char **argv){
             cav_rx.signals_in_range(cav_in.hsc_alive_decode, cav_in.hsc_alive_is_in_range);
         drive_ctrl.veh_spd = cav_rx.signals_in_range(cav_in.veh_spd_decode, cav_in.veh_spd_is_in_range);
         drive_ctrl.str_ang = cav_rx.signals_in_range(cav_in.str_ang_decode, cav_in.str_ang_is_in_range);
+        drive_ctrl.acc_speed_set_point = 11.1;  // (i.e. 40 kmph)
 
         // std::cout << "\nPCM input--- ";
         // std::cout << "PCM to CAV RC1: " << cav_in.pcm_rc1_decode << std::endl;
@@ -214,14 +217,16 @@ int main(int argc, char **argv){
       }
 
       // if longitudinal switch + 12V on
-      if (drive_ctrl.acc_allowed || drive_ctrl.aeb_allowed) {
-        canWrite(hnd, 1056, long_ctrl_msg, SIZE_OF_MSG, canOPEN_EXCLUSIVE);
-      }
+      // if (drive_ctrl.acc_allowed || drive_ctrl.aeb_allowed) {
+      // ROS_INFO_STREAM("WRITING acc accel");
+      canWrite(hnd, 1056, long_ctrl_msg, SIZE_OF_MSG, canOPEN_EXCLUSIVE);
+      // }
 
       mem1 = now;
     }
     // ros::Rate(10).sleep();
     ros::spinOnce();
+    ros::Duration(0.005).sleep();  // the sleep must be less than 5 ms
   }
   canBusOff(hnd);
   canClose(hnd);

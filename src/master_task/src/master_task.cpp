@@ -5,17 +5,17 @@ MasterTask::MasterTask(ros::NodeHandle* nodeHandle) : nh(nodeHandle) {
       nh->subscribe("drive_ctrl_input", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::drive_ctrl_msg_callback, this);
   acc_sub = 
       nh->subscribe("acc_output_msg", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::acc_output_msg_callback, this);
-  aeb_sub = 
-      nh->subscribe("aeb_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::aeb_output_msg_callback, this);
-  lcc_sub = 
-      nh->subscribe("lcc_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::lcc_output_msg_callback, this);
-  sensor_diagnostic_CH2_server = 
-      nh->advertiseService("sensor_diagnostic_CH2", &MasterTask::sensor_diagnostic_callback_CH2, this);
-  sensor_diagnostic_CH3_server = 
-      nh->advertiseService("sensor_diagnostic_CH3", &MasterTask::sensor_diagnostic_callback_CH3, this);
-  sensor_diagnostic_CH4_server = 
-      nh->advertiseService("sensor_diagnostic_CH4", &MasterTask::sensor_diagnostic_callback_CH4, this);
-  
+  // aeb_sub =
+  //     nh->subscribe("aeb_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::aeb_output_msg_callback, this);
+  // lcc_sub =
+  //     nh->subscribe("lcc_output", MASTER_MESSAGE_BUFFER_SIZE, &MasterTask::lcc_output_msg_callback, this);
+  // sensor_diagnostic_CH2_server =
+  //     nh->advertiseService("sensor_diagnostic_CH2", &MasterTask::sensor_diagnostic_callback_CH2, this);
+  // sensor_diagnostic_CH3_server =
+  //     nh->advertiseService("sensor_diagnostic_CH3", &MasterTask::sensor_diagnostic_callback_CH3, this);
+  // sensor_diagnostic_CH4_server =
+  //     nh->advertiseService("sensor_diagnostic_CH4", &MasterTask::sensor_diagnostic_callback_CH4, this);
+
   master_task_pub = nh->advertise<common::can_comms_data_msg>("can_comms_data", MASTER_MESSAGE_BUFFER_SIZE);
 }
 
@@ -43,7 +43,7 @@ void MasterTask::drive_ctrl_msg_callback(const common::drive_ctrl_input_msg& dri
     VEHICLE_SPEED = drive_ctrl_msg.veh_spd;
     STEERING_ANGLE = drive_ctrl_msg.str_ang;
 
-    INT_2();
+    // INT_2();
     // INT_7(); // Commented out for now since we dont have Jetson sending us messages
     // put other functions here if you want to unit test them
     // publish_can_comms_msg(); // uncomment if unit testing the above functions
@@ -54,6 +54,8 @@ void MasterTask::acc_output_msg_callback(const common::acc_output_msg& acc_msg)
 {
     ACC_FAULT = acc_msg.acc_fault;
     ACC_ACCEL = acc_msg.acc_accel;
+    can_comms_msg.long_accel = ACC_ACCEL;
+    ROS_INFO_STREAM("ACC acceleration in callback:" << can_comms_msg.long_accel);
     can_comms_msg.acc_fault = acc_msg.acc_fault;
 }
 
