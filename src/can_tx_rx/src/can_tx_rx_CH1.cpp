@@ -172,7 +172,7 @@ int main(int argc, char **argv){
         cav_in.acc_st_speed_is_in_range = emc_pcm_cav_interface_pcm_to_cav_2_acc_st_spd_is_in_range(pcm2.acc_st_spd);
 
         drive_ctrl.acc_activation = cav_rx.signals_in_range(cav_in.acc_active_decode, cav_in.acc_active_is_in_range);
-        drive_ctrl.acc_speed_set_point = cav_rx.signals_in_range(cav_in.acc_active_decode, cav_in.acc_active_is_in_range);
+        drive_ctrl.acc_speed_set_point = cav_rx.signals_in_range(cav_in.acc_st_speed_decode, cav_in.acc_st_speed_is_in_range);
         
         // Overrides for testing
         // drive_ctrl.acc_activation = true;
