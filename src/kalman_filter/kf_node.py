@@ -20,6 +20,14 @@ def determine_lane(dy):
     else:
         return 1, True
 
+def determine_lane_me(dy, dx):
+    if (dy/dx) < -0.14: # ratio threshold should be tuned/tested
+        return 2, False
+    elif (dy/dx) > 0.14:
+        return 3, False
+    else:
+        return 1, True
+
 class KF(KalmanFilter):
     def __init__(self, initial_measurement):
         '''
@@ -98,7 +106,7 @@ class KF_Node(object):
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
         self.resource_lock.release()
         result.obj_id = obj.obj_id 
-        result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
+        result.obj_lane, result.obj_path = determine_lane_me(result.obj_dy, result.obj_dx)
         # result.obj_ax = obj.obj.me_ax
         result.obj_timestamp = obj.me_timestamp
         result.obj_count = 30
