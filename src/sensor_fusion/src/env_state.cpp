@@ -214,7 +214,7 @@ void EnvironmentState::find_target_object(){
       if ((trackedObjects[i].get_obj_dx() <= targetObjectsInLanes[2].get_obj_dx()) ||
           (trackedObjects[i].get_obj_id() == targetObjectsInLanes[2].get_obj_id()) ||
           (targetObjectsInLanes[2].get_obj_dx() == 0)) {
-        targetObjectsInLanes[2] = trackedObjects[i];
+        targetObjectsInLanes[1] = trackedObjects[i];
         } else {
           targetObjectsInLanes[2] = empty_obj;
         }

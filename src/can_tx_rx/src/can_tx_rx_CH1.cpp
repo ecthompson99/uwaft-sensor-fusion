@@ -134,10 +134,7 @@ int main(int argc, char **argv){
         cav_in.str_ang_decode = emc_pcm_cav_interface_pcm_to_cav_1_pcm_str_ang_decode(pcm1.pcm_str_ang);
         cav_in.str_ang_is_in_range = emc_pcm_cav_interface_pcm_to_cav_1_pcm_str_ang_is_in_range(pcm1.pcm_str_ang);
 
-        drive_ctrl.acc_activation = true;
-        drive_ctrl.aeb_activation = true;  // override for Master Task
-        drive_ctrl.lcc_activation = true;
-        drive_ctrl.acc_gap_level = 1;
+       
         drive_ctrl.aeb_allowed = cav_rx.signals_in_range(cav_in.aeb_allowed_decode, cav_in.aeb_allowed_is_in_range);
         drive_ctrl.acc_allowed = cav_rx.signals_in_range(cav_in.acc_allowed_decode, cav_in.acc_allowed_is_in_range);
         drive_ctrl.lcc_allowed = cav_rx.signals_in_range(cav_in.lcc_allowed_decode, cav_in.lcc_allowed_is_in_range);
@@ -145,7 +142,7 @@ int main(int argc, char **argv){
             cav_rx.signals_in_range(cav_in.hsc_alive_decode, cav_in.hsc_alive_is_in_range);
         drive_ctrl.veh_spd = cav_rx.signals_in_range(cav_in.veh_spd_decode, cav_in.veh_spd_is_in_range);
         drive_ctrl.str_ang = cav_rx.signals_in_range(cav_in.str_ang_decode, cav_in.str_ang_is_in_range);
-        drive_ctrl.acc_speed_set_point = 11.1;  // (i.e. 40 kmph)
+        
 
         // std::cout << "\nPCM input--- ";
         // std::cout << "PCM to CAV RC1: " << cav_in.pcm_rc1_decode << std::endl;
@@ -163,8 +160,26 @@ int main(int argc, char **argv){
       if (stat == canOK) {
         std::cout << "b" << std::endl;
         emc_pcm_cav_interface_pcm_to_cav_2_t pcm2;
+        unpack_return = emc_pcm_cav_interface_pcm_to_cav_2_unpack(&pcm2, can_data, SIZE_OF_MSG);
+
         cav_in.pcm_rc2_decode = emc_pcm_cav_interface_pcm_to_cav_2_pcm_to_cav2_rc_decode(pcm2.pcm_to_cav2_rc);
         cav_in.pcm_rc2_is_in_range = emc_pcm_cav_interface_pcm_to_cav_2_pcm_to_cav2_rc_is_in_range(pcm2.pcm_to_cav2_rc);
+
+        cav_in.acc_active_decode = emc_pcm_cav_interface_pcm_to_cav_2_acc_active_decode(pcm2.acc_active);
+        cav_in.acc_active_is_in_range = emc_pcm_cav_interface_pcm_to_cav_2_pcm_to_cav2_acc_active_is_in_range(pcm2.acc_active);
+
+        cav_in.acc_st_speed_decode = emc_pcm_cav_interface_pcm_to_cav_2_acc_st_spd_decode(pcm2.acc_st_spd);
+        cav_in.acc_active_is_in_range = emc_pcm_cav_interface_pcm_to_cav_2_acc_st_spd_is_in_range(pcm2.acc_st_spd);
+
+        drive_ctrl.acc_activation = cav_rx.signals_in_range(cav_in.acc_active_decode, cav_in.acc_active_is_in_range);
+        drive_ctrl.acc_speed_set_point = cav_rx.signals_in_range(cav_in.acc_active_decode, cav_in.acc_active_is_in_range);
+        
+        // Overrides for testing
+        // drive_ctrl.acc_activation = true;
+        drive_ctrl.aeb_activation = true;  
+        drive_ctrl.lcc_activation = true;
+        drive_ctrl.acc_gap_level = 1; // 1 = close (1.4s or 10m) / 2 = medium (1.8s or 12.5m) / 3 = far (2.3s or 15m)
+        // drive_ctrl.acc_speed_set_point = 11.1;  // (i.e. 40 kmph)
 
         // std::cout << "PCM to CAV RC2: " << cav_in.pcm_rc2_decode << std::endl;
       }

@@ -35,6 +35,10 @@ class CAV_PCM_TX_RX{
             bool hsc_alive_is_in_range;
             double str_ang_decode;
             bool str_ang_is_in_range;
+            double acc_active_decode;
+            bool acc_active_is_in_range;
+            double acc_st_speed_decode;
+            bool acc_st_speed_is_in_range;
 
             double pcm_rc1_decode;
             bool pcm_rc1_is_in_range;
