@@ -241,7 +241,7 @@ int main(int argc, char **argv){
     }
     // ros::Rate(10).sleep();
     ros::spinOnce();
-    ros::Duration(0.005).sleep();  // the sleep must be less than 5 ms
+    // ros::Duration(0.005).sleep();  // the sleep must be less than 5 ms
   }
   canBusOff(hnd);
   canClose(hnd);

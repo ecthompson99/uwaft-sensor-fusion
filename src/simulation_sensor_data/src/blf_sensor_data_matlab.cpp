@@ -27,12 +27,11 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
     rosbag::Bag bag;
     // Bag file to output combined data to
-    bag.open("Approachtest.bag", rosbag::bagmode::Write);
+    bag.open("approach_5-27.bag", rosbag::bagmode::Write);
 
     // Radar data CSV file path
     string file_path = getenv("HOME");
-    file_path.append("/kaiROS/sensor fusion testing/Excel files/Approach1_radar.csv");
-    
+    file_path.append("/kaiROS/sensor fusion testing/Excel files/UWAFT_EMC_Y3_ScenarioA15_2021-05-27_18-59-56_radar.csv");
     ifstream fin_front_radar(file_path.c_str());
     if (!fin_front_radar.is_open())
     {
@@ -42,7 +41,7 @@ int main(int argc, char **argv)
 
     // Mobileye data CSV file path
     file_path = getenv("HOME");
-    file_path.append("/kaiROS/sensor fusion testing/Excel files/Approach1_mobileye.csv");
+    file_path.append("/kaiROS/sensor fusion testing/Excel files/UWAFT_EMC_Y3_ScenarioA15_2021-05-27_18-59-56_mobileye.csv");
     
     ifstream fin_mobileye(file_path.c_str());
     if (!fin_mobileye.is_open())
@@ -53,7 +52,7 @@ int main(int argc, char **argv)
 
     // Vehicle data CSV file path
     file_path = getenv("HOME");
-    file_path.append("/kaiROS/sensor fusion testing/Excel files/Approach1_vehicle.csv");
+    file_path.append("/kaiROS/sensor fusion testing/Excel files/UWAFT_EMC_Y3_ScenarioA15_2021-05-27_18-59-56_vehicle.csv");
     
     ifstream fin_vehicle(file_path.c_str());
     if (!fin_vehicle.is_open())
@@ -107,39 +106,39 @@ int main(int argc, char **argv)
         bag.write("Front_Radar_CAN_Rx", time, front_radar_data);
     }
 
-    // while (fin_mobileye)
-    // {
-    //     std::getline(fin_mobileye, line, '\n');
-    //     stringstream ss(line);
+    while (fin_mobileye)
+    {
+        std::getline(fin_mobileye, line, '\n');
+        stringstream ss(line);
 
-    //     std::getline(ss, word, ',');
-    //     double timestamp = atof(word.c_str());
+        std::getline(ss, word, ',');
+        double timestamp = atof(word.c_str());
 
-    //     ros::Time time(timestamp);
+        ros::Time time(timestamp);
 
-    //     common::mobileye_object_data mobileye_data;
+        common::mobileye_object_data mobileye_data;
 
-    //     // Change to 10 if there are 10 object messages
-    //     for(int obj_idx = 0; obj_idx < 1; obj_idx++)
-    //     {
-    //         mobileye_data.me_timestamp = timestamp;
-    //         mobileye_data.me_dx[obj_idx] = atof(parse_word(ss));
-    //         mobileye_data.me_dy[obj_idx] = atof(parse_word(ss));
-    //         mobileye_data.me_vx[obj_idx] = atof(parse_word(ss));
-    //         mobileye_data.me_ax[obj_idx] = atof(parse_word(ss));
-    //         mobileye_data.me_type[obj_idx] = atoi(parse_word(ss));
-    //         mobileye_data.me_status[obj_idx] = atoi(parse_word(ss));
-    //         mobileye_data.me_valid[obj_idx] = atoi(parse_word(ss));
-    //         mobileye_data.me_cut_in_cut_out[obj_idx] = atoi(parse_word(ss));
-    //         mobileye_data.me_age[obj_idx] = atof(parse_word(ss));
-    //         mobileye_data.me_lane[obj_idx] = atoi(parse_word(ss));
-    //         mobileye_data.me_cipv_flag[obj_idx] = to_bool(parse_word(ss));
-    //     }
-    //     if (time.toNSec() == 0) time = ros::TIME_MIN;
+        // Change to 10 if there are 10 object messages
+        for(int obj_idx = 0; obj_idx < 1; obj_idx++)
+        {
+            mobileye_data.me_timestamp = timestamp;
+            mobileye_data.me_dx[obj_idx] = atof(parse_word(ss));
+            mobileye_data.me_dy[obj_idx] = atof(parse_word(ss));
+            mobileye_data.me_vx[obj_idx] = atof(parse_word(ss));
+            mobileye_data.me_ax[obj_idx] = atof(parse_word(ss));
+            mobileye_data.me_type[obj_idx] = atoi(parse_word(ss));
+            mobileye_data.me_status[obj_idx] = atoi(parse_word(ss));
+            mobileye_data.me_valid[obj_idx] = atoi(parse_word(ss));
+            mobileye_data.me_cut_in_cut_out[obj_idx] = atoi(parse_word(ss));
+            mobileye_data.me_age[obj_idx] = atof(parse_word(ss));
+            mobileye_data.me_lane[obj_idx] = atoi(parse_word(ss));
+            mobileye_data.me_cipv_flag[obj_idx] = to_bool(parse_word(ss));
+        }
+        if (time.toNSec() == 0) time = ros::TIME_MIN;
 
-    //     // Write mobileye message along with timestamp to corresponding topic in bag file
-    //     bag.write("Mobileye_CAN_Rx", time, mobileye_data); 
-    // }
+        // Write mobileye message along with timestamp to corresponding topic in bag file
+        bag.write("Mobileye_CAN_Rx", time, mobileye_data); 
+    }
 
 
     while (fin_vehicle)
@@ -154,7 +153,10 @@ int main(int argc, char **argv)
         common::drive_ctrl_input_msg vehicle_data;
 
         vehicle_data.veh_spd = atof(parse_word(ss));
+        vehicle_data.acc_allowed = atoi(parse_word(ss));
         vehicle_data.str_ang = atof(parse_word(ss));
+        vehicle_data.acc_speed_set_point = atof(parse_word(ss));
+        vehicle_data.acc_activation = atoi(parse_word(ss));
 
         if (time.toNSec() == 0) time = ros::TIME_MIN;
 

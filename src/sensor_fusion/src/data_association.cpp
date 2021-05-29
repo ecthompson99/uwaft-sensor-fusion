@@ -111,11 +111,11 @@ std::vector<MobileyeObject> DataAssociation::filter_me(const common::mobileye_ob
             abs(recvd_data.me_dy[me_index]) > MAX_DY)
           continue;
 
-        //  COMMENT OUT FOR SIMULATION
-        if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
+        // //  COMMENT OUT FOR SIMULATION
+        // if (recvd_data.me_status[me_index] == 1 || recvd_data.me_status[me_index] == 5) continue;
 
         // Valid objects
-        if (recvd_data.me_valid[me_index] == 0) continue;
+        // if (recvd_data.me_valid[me_index] == 0) continue;
     
         MobileyeObject filtered_me_temp;
 

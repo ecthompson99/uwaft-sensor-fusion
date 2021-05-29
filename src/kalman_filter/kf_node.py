@@ -21,9 +21,9 @@ def determine_lane(dy):
         return 1, True
 
 def determine_lane_me(dy, dx):
-    if (dy/dx) < -0.14: # ratio threshold should be tuned/tested
+    if (dy/dx) < -0.15: # ratio threshold should be tuned/tested *(-0.14)
         return 2, False
-    elif (dy/dx) > 0.14:
+    elif (dy/dx) > 0.15: # 0.14
         return 3, False
     else:
         return 1, True
