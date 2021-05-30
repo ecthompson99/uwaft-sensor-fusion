@@ -179,7 +179,7 @@ int main(int argc, char **argv){
         drive_ctrl.aeb_activation = true;  
         drive_ctrl.lcc_activation = true;
         drive_ctrl.acc_gap_level = 1; // 1 = close (1.4s or 10m) / 2 = medium (1.8s or 12.5m) / 3 = far (2.3s or 15m)
-        // drive_ctrl.acc_speed_set_point = 11.1;  // (i.e. 40 kmph)
+        // drive_ctrl.acc_speed_set_point = 40;  // (i.e. 40 kmph)
 
         // std::cout << "PCM to CAV RC2: " << cav_in.pcm_rc2_decode << std::endl;
       }
