@@ -85,6 +85,7 @@ int main(int argc, char **argv)
       target_output.obj_dy = 0;
       target_output.obj_ax = 0;
       target_output.obj_path = false;
+      target_output.obj_vy = 0;
       target_output.obj_track_num = 0;
 
       if (time.toNSec() == 0) time = ros::TIME_MIN;
