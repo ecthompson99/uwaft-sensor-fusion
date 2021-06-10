@@ -35,14 +35,14 @@
 *.bin
 
 #Bag files
-*.bag
+#*.bag
 
 #Excel files
 *.xlsx
 
 #Matlab files
-*.mat
-*.asv
+#*.mat
+#*.asv
 
 #Avi files
 *.avi
