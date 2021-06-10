@@ -50,6 +50,9 @@
 #Excel files
 *.xlsx
 
+#BLFs
+*.blf
+
 # Build directories
 build/*
 devel/*
