@@ -51,7 +51,7 @@
 *.xlsx
 
 #BLFs
-*.blf
+#*.blf
 
 # Build directories
 build/*
