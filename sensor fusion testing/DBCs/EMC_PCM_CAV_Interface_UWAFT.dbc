@@ -58,7 +58,8 @@ BO_ 1074 PcmToCav_3: 8 PCM
  SG_ PcmToCav3_RC : 57|2@0+ (1,0) [0|3] ""  CAV
 
 BO_ 1073 PcmToCav_2: 8 PCM
- SG_ AccButtonStatus : 1|2@0+ (1,0) [0|0] ""  CAV
+ SG_ AccStSpd : 15|8@0- (1,0) [-64|63.5] "m/s" Vector__XXX
+ SG_ AccActive : 1|2@0+ (1,0) [0|0] ""  CAV
  SG_ PcmToCav2_RC : 57|2@0+ (1,0) [0|3] ""  CAV
 
 BO_ 1072 PcmToCav_1: 8 PCM

@@ -6,12 +6,12 @@ clear
 clc
 
 % Name of BLF file located in BLFs folder
-drive_cycle = "Approach1";
+drive_cycle = "UWAFT_EMC Y3_ScenarioA_15_2021-05-29_17-34-21";
 
 % Front radar is on channel 2
 candb_radar = canDatabase("./DBCs/XGU.dbc");
 data_radar = blfread(strcat("./BLFs/",drive_cycle,".blf"), 2,...
-                "Database", candb_radar, "CANStandardFilter", (1285:1598));
+                "Database", candb_radar, "CANStandardFilter", (1285:1596));
 time_in_sec = seconds(data_radar.Time);
 radar_final = addvars(data_radar,time_in_sec);
 
@@ -21,7 +21,7 @@ clear data_radar;
 writetimetable(radar_final,strcat("./Excel files/",drive_cycle,".xlsx"),'Sheet',1);
 
 % Mobileye is on channel 4
-candb_me = canDatabase('./DBCs/ext_log_data - Copy.dbc');
+candb_me = canDatabase('./DBCs/ext_log_data.dbc');
 data_me = blfread(strcat("./BLFs/",drive_cycle,".blf"), 4,...
                 "Database", candb_me,"CANStandardFilter", (1849:1851));
 time_in_sec = seconds(data_me.Time);
@@ -33,10 +33,9 @@ clear data_me;
 writetimetable(me_final, strcat("./Excel files/",drive_cycle,".xlsx"),'Sheet',2);
 
 % Vehicle data is on channel 1
-%candb_veh = canDatabase('./DBCs/GlobalAHS_GM_Confidential.dbc');
 candb_veh = canDatabase('./DBCs/EMC_PCM_CAV_Interface_UWAFT.dbc');
 data_veh = blfread(strcat("./BLFs/",drive_cycle,".blf"), 1,...
-                "Database", candb_veh,"CANStandardFilter", (1072));
+                "Database", candb_veh,"CANStandardFilter", (1072:1074));
 time_in_sec = seconds(data_veh.Time);
 veh_final = addvars(data_veh,time_in_sec);
 
@@ -120,13 +119,19 @@ for i = me_index:3:(height(me_final) - 3)
     
 end
 
-for i = veh_index:1:height(veh_final)
+for i = veh_index:3:(height(veh_final) - 3)
     time = veh_final.time_in_sec(i);
-    veh_entry = zeros(1, 2);
+    veh_entry = zeros(1, 1*5);
     
-    veh_entry(1,1) = veh_final.Signals{i,1}.Pcm_VehSpd; % vehicle speed         
-    veh_entry(1,2) = veh_final.Signals{i,1}.Pcm_StrAng; % steering angle         
-
+    fields_1_veh=fieldnames(veh_final.Signals{i,1});
+    fields_2_veh=fieldnames(veh_final.Signals{i+1,1});
+    fields_3_veh=fieldnames(veh_final.Signals{i+2,1});
+    
+    veh_entry(1,1) = veh_final.Signals{i,1}.(fields_1_veh{1}); % vehicle speed     
+    veh_entry(1,2) = veh_final.Signals{i,1}.(fields_1_veh{3}); % acc allowed
+    veh_entry(1,3) = veh_final.Signals{i,1}.(fields_1_veh{5}); % steering angle
+    veh_entry(1,4) = veh_final.Signals{i+1,1}.(fields_2_veh{1}); % set speed
+    veh_entry(1,5) = veh_final.Signals{i+1,1}.(fields_2_veh{2}); % acc active
     data_output_ = {time, veh_entry};
                 
     writecell(data_output_, strcat("./Excel files/",drive_cycle,"_vehicle.csv"), "WriteMode", "append");
