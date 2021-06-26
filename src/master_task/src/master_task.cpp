@@ -101,8 +101,11 @@ bool MasterTask::sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_C
 }
 common::can_comms_data_msg MasterTask::get_can_comms_msg() { return can_comms_msg; }
 
+/**
+ * If ACC is IN USE and any OFF condition is requested, 
+ * system shall remain at the target speed for a set time buffer before reverting to driver inputs
+ */
 void MasterTask::ACC_1_1() {
-    //buffer_time = 0.2 s
     if (!ACC_ACTIVATION || !ACC_ALLOWED || ACC_FAULT || !FRONT_RADAR || !LEFT_CORNER_RADAR || !RIGHT_CORNER_RADAR || !MOBILEYE)
     {
         ros::SteadyTime curr = ros::SteadyTime::now();
@@ -119,18 +122,28 @@ void MasterTask::ACC_1_1() {
     } 
 }
 
+/**
+ * If AEB is not functioning, ACC shall be in the OFF state
+ */
 void MasterTask::ACC_4() {
     if (!AEB_ALLOWED || !AEB_ACTIVATION || AEB_FAULT) {
         can_comms_msg.acc_valid = 0;
     }
 }
 
+/**
+ * A requested turn larger than 15 degrees shall instantly turn off ACC
+ */
 void MasterTask::ACC_15() {
-    if (LCC_STEER > 15) {
+    if (LCC_STEER > MAX_LCC_STEER) {
         can_comms_msg.acc_valid = 0;
     }
 }
 
+/**
+ * To ensure enable data is correct, 
+ * 500 ms of a continuously active Enable signal must pass between the enabling of the ACC and the actual ACC engagement
+ */
 void MasterTask::ACC_16() {
     if (ACC_ACTIVATION && ACC_ALLOWED) {
       ros::SteadyTime curr = ros::SteadyTime::now();
@@ -148,6 +161,11 @@ void MasterTask::ACC_16() {
     }
 }
 
+/**
+ * If the output ACC enable signal is in one state but  over a 300 ms period the initial signal is in the 
+ * opposite state for more than 120 ms cumulatively, 
+ * a signal error message shall be sent to the Jetson and the ACC shall be disabled until this condition has cleared
+ */
 void MasterTask::ACC_17() {
     if (!ACC_ACTIVATION) {
       ros::SteadyTime curr = ros::SteadyTime::now();
@@ -163,10 +181,11 @@ void MasterTask::ACC_17() {
     }  
 }
 
+/**
+ * signal error message sent to the Jetson + ACC disabled if, within period_max,
+ * signal (ACC_activatioin) is in the opposite state for more than 120 ms cumulatively
+ */
 void MasterTask::ACC_18() {
-  // arbitrary vars for time in ms:
-  // signal error message sent to the Jetson + ACC disabled if, within period_max,
-  // signal (ACC_activatioin) is in the opposite state for more than opposite_max*10 ms cumulatively
   ros::SteadyTime curr = ros::SteadyTime::now();
   // number of ms that have passed this period
   // first truncate milliseconds so we're able to put it into a long
@@ -197,12 +216,18 @@ void MasterTask::ACC_18() {
   }
 }
 
+/**
+ * ACC Allowed signal shall prevent the use of the ACC algorithm if it is not active
+ */
 void MasterTask::ACC_20() {
     if (!ACC_ALLOWED || !ACC_ACTIVATION) {
         can_comms_msg.acc_valid = 0;
     }
 }
 
+/**
+ * AEB requests shall always negate ACC requests
+ */
 void MasterTask::AEB_13() {
     if (AEB_ENGAGED) {
         can_comms_msg.long_accel = AEB_ACCEL;
@@ -212,12 +237,19 @@ void MasterTask::AEB_13() {
     }
 }
 
+/**
+ * AEB shall not be active if traveling under 15 km/h
+ */
 void MasterTask::AEB_22() {
-  if (VEHICLE_SPEED < MAX_STEERING_ANGLE) {
+  if (VEHICLE_SPEED < MAX_VEHICLE_SPEED) {
       can_comms_msg.aeb_valid = 0;
   }    
 }
 
+/**
+ * To ensure enable data is correct, 
+ * 500 ms of a continuously active Enable signal must pass between the enabling of the AEB and the actual AEB engagement
+ */
 void MasterTask::AEB_24() {
     if (AEB_ACTIVATION && AEB_ALLOWED) {
       ros::SteadyTime curr = ros::SteadyTime::now();
@@ -235,12 +267,18 @@ void MasterTask::AEB_24() {
     }
 }
 
+/**
+ * AEB Allowed signal shall prevent the use of the AEB algorithm if it is not active
+ */
 void MasterTask::AEB_26() {
     if (!AEB_ALLOWED || !AEB_ACTIVATION) {
         can_comms_msg.aeb_valid = 0;
     }  
 }
 
+/**
+ * If Mobileye appears non-functional, LCC, ACC and AEB shall be set to the OFF state
+ */
 void MasterTask::CAV_1_5() {
     if (!MOBILEYE) {
         can_comms_msg.acc_valid = 0;
@@ -249,6 +287,9 @@ void MasterTask::CAV_1_5() {
     }
 }
 
+/**
+ * If front MRR appears non-functional, ACC and AEB shall be set to the OFF state
+ */
 void MasterTask::CAV_1_6() {
     if (!FRONT_RADAR) {
         can_comms_msg.acc_valid = 0;
@@ -256,12 +297,18 @@ void MasterTask::CAV_1_6() {
     }
 }
 
+/**
+ * Automated braking commands cannot exceed 0.5 g deceleration
+ */
 void MasterTask::CAV_2_2() {
     if (abs(AEB_ACCEL) > 4.9) {
       can_comms_msg.long_accel = -4.9;
     }
 }
 
+/**
+ * CAVS rolling counter shall be sent every CAN frame
+ */
 void MasterTask::INT_1() {
     if (!(can_comms_msg.alive_rolling_counter == 15)) {
       can_comms_msg.alive_rolling_counter += 1;
@@ -272,6 +319,11 @@ void MasterTask::INT_1() {
     }
 }
 
+/**
+ * If the HSC alive rolling counter is not functioning as intended for 50 ms, 
+ * all signals being sent to the HSC shall be set to zero/default values until 
+ * the rolling counter is functioning properly for 100 ms
+ */
 void MasterTask::INT_2() {
   ros::SteadyTime curr = ros::SteadyTime::now();
   if (!first_RC && (alive_rolling_counter_MABx >= 0 && alive_rolling_counter_MABx <= 15) &&
@@ -315,6 +367,11 @@ void MasterTask::INT_2() {
   prev_time_rc = curr;
 }
 
+/**
+ * If the Jetson alive rolling counter is not functioning as intended for 50 ms, 
+ * all signals being sent to the CAVS controller shall be set to zero/default values until 
+ * the rolling counter is functioning properly for 100 ms
+ */
 void MasterTask::INT_7() {
   ros::SteadyTime curr = ros::SteadyTime::now();
 
@@ -350,6 +407,9 @@ void MasterTask::INT_7() {
   prev_time_rc_jetson = curr;
 }
 
+/**
+ * Steering angle limit shall be hard-coded into each system it is needed in
+ */
 void MasterTask::LCC_1() {
     if (LCC_STEER > 30) {
         can_comms_msg.lcc_steer = 30;
@@ -359,6 +419,9 @@ void MasterTask::LCC_1() {
     }
 }
 
+/**
+ * Vehicle acceleration past 2.5 m/s^2 shall temporarily disable LCC until acceleration is below 2.5 m/s^2
+ */
 void MasterTask::LCC_3() {
     curr_vel = VEHICLE_SPEED;
     ros::SteadyTime curr_time = ros::SteadyTime::now();
@@ -376,6 +439,9 @@ void MasterTask::LCC_3() {
     prev_vel = curr_vel;
 }
 
+/**
+ * To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the LCC and the actual LCC engagement
+ */
 void MasterTask::LCC_10() {
     if (LCC_ACTIVATION && LCC_ALLOWED) {
       ros::SteadyTime curr = ros::SteadyTime::now();
@@ -393,6 +459,9 @@ void MasterTask::LCC_10() {
     }
 }
 
+/**
+ * 	To avoid accidental disengagement of the function, the LCC enable switch shall be OFF for a continuous 200 ms period
+ */
 void MasterTask::LCC_11() {
     if (!LCC_ACTIVATION || !LCC_ALLOWED) {
       ros::SteadyTime curr = ros::SteadyTime::now();
@@ -408,6 +477,11 @@ void MasterTask::LCC_11() {
     }
 }
 
+/**
+ * If the output LCC enable signal is in one state but  over a 300 ms period the initial signal 
+ * is in the opposite state for more than 120 ms cumulatively, 
+ * a signal error message shall be sent to the Jetson and LCC shall be disabled until this condition has cleared
+ */
 void MasterTask::LCC_12() {
   ros::SteadyTime curr = ros::SteadyTime::now();
   // number of ms that have passed this period
@@ -441,17 +515,17 @@ void MasterTask::LCC_12() {
   }
 }
 
-// checks that the rolling counter functions have been called within the last 50 ms
-// otherwise, turn all signals to null
-// Since the rolling counter functions are called only in msg callbacks, we must also check
-// that they are called frequently
+/**
+ * checks that the rolling counter functions have been called within the last 50 ms
+ * otherwise, turn all signals to null
+ * Since the rolling counter functions are called only in msg callbacks, we must also check
+ * that they are called frequently
+ */
 void MasterTask::check_rolling_counters_called() {
   ros::SteadyTime curr = ros::SteadyTime::now();
   // Commenting this out for now since Jetson is not sending us any messages for Year 3
   // if (((curr - prev_time_rc) > ros::WallDuration(0.050)) || ((curr - prev_time_rc_jetson) > ros::WallDuration(0.050))) {
   if ((curr - prev_time_rc) > ros::WallDuration(0.050)) {
-
-    // std::cout << "HSC / Jetson time out" << std::endl;
     initial_HSC_alive = true;
     can_comms_msg.acc_valid = 0;
     can_comms_msg.aeb_valid = 0;

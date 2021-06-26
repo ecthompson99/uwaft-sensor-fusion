@@ -177,9 +177,10 @@ class MasterTask {
   ros::SteadyTime prev_time;
 
   // constants
-  unsigned int MAX_STEERING_ANGLE = 15; // AEB_22
+  unsigned int MAX_VEHICLE_SPEED = 15; // AEB_22 
   unsigned long PERIOD_MAX = 300; // ACC_18 and LCC_12
   unsigned long OPPOSITE_MAX = 12; // ACC_18 and LCC_12
+  unsigned int MAX_LCC_STEER = 15; // ACC_15
 };
 
 #endif  // __MASTER_TASK_H__
