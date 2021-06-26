@@ -25,15 +25,15 @@
 var NAVTREE =
 [
   [ "UWAFT_KAIROS", "index.html", [
-    [ "kaiROS", "md__r_e_a_d_m_e.html", [
-      [ "CircleCI build status", "md__r_e_a_d_m_e.html#autotoc_md1", null ],
-      [ "Instruction: From clone to build and run", "md__r_e_a_d_m_e.html#autotoc_md2", [
-        [ "Clone the repo", "md__r_e_a_d_m_e.html#autotoc_md3", null ],
-        [ "Install tools on your local machine", "md__r_e_a_d_m_e.html#autotoc_md4", null ],
-        [ "Build kaiROS for the first time", "md__r_e_a_d_m_e.html#autotoc_md5", null ]
+    [ "kaiROS", "md__s___engineering__u_w_a_f_t_kai_r_o_s__r_e_a_d_m_e.html", [
+      [ "CircleCI build status", "md__s___engineering__u_w_a_f_t_kai_r_o_s__r_e_a_d_m_e.html#autotoc_md1", null ],
+      [ "Instruction: From clone to build and run", "md__s___engineering__u_w_a_f_t_kai_r_o_s__r_e_a_d_m_e.html#autotoc_md2", [
+        [ "Clone the repo", "md__s___engineering__u_w_a_f_t_kai_r_o_s__r_e_a_d_m_e.html#autotoc_md3", null ],
+        [ "Install tools on your local machine", "md__s___engineering__u_w_a_f_t_kai_r_o_s__r_e_a_d_m_e.html#autotoc_md4", null ],
+        [ "Build kaiROS for the first time", "md__s___engineering__u_w_a_f_t_kai_r_o_s__r_e_a_d_m_e.html#autotoc_md5", null ]
       ] ]
     ] ],
-    [ "Can_TX_RX Package", "md_src__r_e_a_d_m_e.html", null ],
+    [ "Can_TX_RX Package", "md__s___engineering__u_w_a_f_t_kai_r_o_s_src__r_e_a_d_m_e.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
