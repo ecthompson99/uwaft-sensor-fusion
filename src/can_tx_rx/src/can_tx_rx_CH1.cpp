@@ -232,10 +232,10 @@ int main(int argc, char **argv){
       }
 
       // if longitudinal switch + 12V on
-      // if (drive_ctrl.acc_allowed || drive_ctrl.aeb_allowed) {
+      if (drive_ctrl.acc_allowed || drive_ctrl.aeb_allowed) {
       // ROS_INFO_STREAM("WRITING acc accel");
       canWrite(hnd, 1056, long_ctrl_msg, SIZE_OF_MSG, canOPEN_EXCLUSIVE);
-      // }
+      }
 
       mem1 = now;
     }

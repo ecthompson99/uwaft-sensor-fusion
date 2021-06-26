@@ -20,6 +20,7 @@
 #define TOPIC_DIAG "Mobileye_CAN_Diagnostics"
 #define CH4_SERVICE "sensor_diagnostic_CH4"
 
+/// Class pertaining to output of Mobileye
 class Mobileye_RX{
     public:
         ros::NodeHandle* node_handle;
@@ -28,12 +29,14 @@ class Mobileye_RX{
         ros::Publisher diag_pub;
         ros::ServiceClient client_ch4;
 
+        /// This node advertises Mobileye related output messages
         Mobileye_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
             mob_pub_obj = node_handle->advertise<common::mobileye_object_data>(TOPIC_RX_OBJ,TX_RX_MESSAGE_BUFFER_SIZE);
             diag_pub = node_handle ->advertise<common::sensor_diagnostic_data_msg>(TOPIC_DIAG,TX_RX_MESSAGE_BUFFER_SIZE);
             mob_pub_lane = node_handle->advertise<common::raw_lane_data>(TOPIC_RX_LANE,TX_RX_MESSAGE_BUFFER_SIZE);
             client_ch4 = node_handle->serviceClient<common::sensor_diagnostic_flag_CH4>(CH4_SERVICE);
         };
+        /// Mobileye object parameters. 
         struct mobileye_object{
             double obstacle_pos_x_decode;
             bool obstacle_pos_x_is_in_range; 
@@ -67,6 +70,7 @@ class Mobileye_RX{
             
         };
 
+        /// Mobileye lane parameters.
         struct mobileye_lane{
             double left_curvature_decode; 
             bool left_curvature_is_in_range; 
@@ -98,6 +102,7 @@ class Mobileye_RX{
             unsigned long time_stamp; 
         };
 
+        /// Mobileye diagnostic parameters
         struct mobileye_diagnostics{
             double headway_valid_decode; 
             bool headway_valid_is_in_range; 

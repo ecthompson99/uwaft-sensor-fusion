@@ -9,12 +9,14 @@
 
 #define TOPIC_SF "tracked_obj"
 
+/// Class for variables/members pertaining to sensor fusion object output.
 class Sensor_Fusion_TX{
   public:
     ros::NodeHandle* node_handle;
     ros::Subscriber sensor_fusion_sub; 
 
     Sensor_Fusion_TX(ros::NodeHandle* node_handle);
+    /// Tracked object parameter struct
     struct tracked_obj_out{
       double obj_id[3];
       double obj_dx[3]; 
@@ -29,6 +31,7 @@ class Sensor_Fusion_TX{
       int obj_track_num[3];
     };
     Sensor_Fusion_TX::tracked_obj_out fusion_out; 
+    /// Callback called when environment state publishes a tracked object
     void fusion_callback(const common::tracked_output_msg& recvd_data);
 
 };

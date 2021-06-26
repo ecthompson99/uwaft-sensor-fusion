@@ -1,0 +1,25 @@
+var obj__plot_8m =
+[
+    [ "close", "obj__plot_8m.html#aa3054d66096a099bd9d0b35cfffca5b6", null ],
+    [ "load", "obj__plot_8m.html#ad4c3295ee50d45813b10abc486d664ff", null ],
+    [ "load", "obj__plot_8m.html#a6f7db46355b7217e07db376051aad25a", null ],
+    [ "open", "obj__plot_8m.html#a8757c27aecb353ac4d8aa0b420b283ce", null ],
+    [ "plotDetection", "obj__plot_8m.html#aa481f526608e479868f23a95ecae8f26", null ],
+    [ "plotDetection", "obj__plot_8m.html#a073e4cd4e383ff49a61b9cd908c68477", null ],
+    [ "set", "obj__plot_8m.html#a3a9e0e17aeb82c201128369956e819ef", null ],
+    [ "title", "obj__plot_8m.html#a08bade1694826814423977b2efd6f4bf", null ],
+    [ "writeVideo", "obj__plot_8m.html#ad233a1e197f6106b59dc5707f56d25c2", null ],
+    [ "blazer_num_obj", "obj__plot_8m.html#ac1a898530c7d82acdcb706cca2285355", null ],
+    [ "blazer_positions", "obj__plot_8m.html#a165c7d006cc0d72f3e7adc989d5f8dbe", null ],
+    [ "blazerPlotter", "obj__plot_8m.html#ac3a1b4861ad8c7a6388c09b4032d7a88", null ],
+    [ "frame", "obj__plot_8m.html#a943f49763dd36e31fc7ea8604fcad789", null ],
+    [ "FrameRate", "obj__plot_8m.html#afbe38552f70e0678f7ad183a59576442", null ],
+    [ "gt_offset", "obj__plot_8m.html#ae0382d71cb81adccf98d8a13575f47e7", null ],
+    [ "i", "obj__plot_8m.html#a6f6ccfcf58b31cb6412107d9d5281426", null ],
+    [ "j", "obj__plot_8m.html#a8f47e0001258b78994326e2d07d7c51d", null ],
+    [ "newVid", "obj__plot_8m.html#a5e3758d554d1a82f6944791df9b4ee58", null ],
+    [ "on", "obj__plot_8m.html#ac88aa5a5c67076097e4a0e87a0709ea0", null ],
+    [ "Quality", "obj__plot_8m.html#a4d28ebdc514f0bd39811261be6b9e55f", null ],
+    [ "sf_positions", "obj__plot_8m.html#ae046429853f1b4586848e894355fcf6b", null ],
+    [ "sfPlotter", "obj__plot_8m.html#a196373eb51f5b23bdc8d821b0f22135a", null ]
+];
