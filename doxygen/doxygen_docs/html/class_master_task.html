@@ -126,50 +126,73 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf4e68d6a990768bc11ef4b7f7e6a759"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#abf4e68d6a990768bc11ef4b7f7e6a759">sensor_diagnostic_callback_CH4</a> (common::sensor_diagnostic_flag_CH4::Request &amp;req_CH4, common::sensor_diagnostic_flag_CH4::Response &amp;res_CH4)</td></tr>
 <tr class="separator:abf4e68d6a990768bc11ef4b7f7e6a759"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae266edfe0cab3bad17ce71d2314693bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#ae266edfe0cab3bad17ce71d2314693bd">ACC_1_1</a> ()</td></tr>
+<tr class="memdesc:ae266edfe0cab3bad17ce71d2314693bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">If ACC is IN USE and any OFF condition is requested, system shall remain at the target speed for a set time buffer before reverting to driver inputs.  <a href="class_master_task.html#ae266edfe0cab3bad17ce71d2314693bd">More...</a><br /></td></tr>
 <tr class="separator:ae266edfe0cab3bad17ce71d2314693bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64d51c178e93cf4d8ecd93d1713e61b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a64d51c178e93cf4d8ecd93d1713e61b8">ACC_4</a> ()</td></tr>
+<tr class="memdesc:a64d51c178e93cf4d8ecd93d1713e61b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If AEB is not functioning, ACC shall be in the OFF state.  <a href="class_master_task.html#a64d51c178e93cf4d8ecd93d1713e61b8">More...</a><br /></td></tr>
 <tr class="separator:a64d51c178e93cf4d8ecd93d1713e61b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a274adc45a2b2b44c2da520d0ab1f9c3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a274adc45a2b2b44c2da520d0ab1f9c3d">ACC_15</a> ()</td></tr>
+<tr class="memdesc:a274adc45a2b2b44c2da520d0ab1f9c3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A requested turn larger than 15 degrees shall instantly turn off ACC.  <a href="class_master_task.html#a274adc45a2b2b44c2da520d0ab1f9c3d">More...</a><br /></td></tr>
 <tr class="separator:a274adc45a2b2b44c2da520d0ab1f9c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cd0dd25e0a07f988d5a381db92ef8a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a5cd0dd25e0a07f988d5a381db92ef8a4">ACC_16</a> ()</td></tr>
+<tr class="memdesc:a5cd0dd25e0a07f988d5a381db92ef8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the ACC and the actual ACC engagement.  <a href="class_master_task.html#a5cd0dd25e0a07f988d5a381db92ef8a4">More...</a><br /></td></tr>
 <tr class="separator:a5cd0dd25e0a07f988d5a381db92ef8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4221a2e2ea102dc50ef8f3ea956542e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a4221a2e2ea102dc50ef8f3ea956542e5">ACC_17</a> ()</td></tr>
+<tr class="memdesc:a4221a2e2ea102dc50ef8f3ea956542e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the output ACC enable signal is in one state but over a 300 ms period the initial signal is in the opposite state for more than 120 ms cumulatively, a signal error message shall be sent to the Jetson and the ACC shall be disabled until this condition has cleared.  <a href="class_master_task.html#a4221a2e2ea102dc50ef8f3ea956542e5">More...</a><br /></td></tr>
 <tr class="separator:a4221a2e2ea102dc50ef8f3ea956542e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2f8b050fa527184c800c81b950bcd1d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#ab2f8b050fa527184c800c81b950bcd1d">ACC_18</a> ()</td></tr>
+<tr class="memdesc:ab2f8b050fa527184c800c81b950bcd1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">signal error message sent to the Jetson + ACC disabled if, within period_max, signal (ACC_activatioin) is in the opposite state for more than 120 ms cumulatively  <a href="class_master_task.html#ab2f8b050fa527184c800c81b950bcd1d">More...</a><br /></td></tr>
 <tr class="separator:ab2f8b050fa527184c800c81b950bcd1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd25177bebdea770920af64ca1a855d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#acd25177bebdea770920af64ca1a855d5">ACC_20</a> ()</td></tr>
+<tr class="memdesc:acd25177bebdea770920af64ca1a855d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">ACC Allowed signal shall prevent the use of the ACC algorithm if it is not active.  <a href="class_master_task.html#acd25177bebdea770920af64ca1a855d5">More...</a><br /></td></tr>
 <tr class="separator:acd25177bebdea770920af64ca1a855d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a866ffea20507f6d1d3dfb25c422b933a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a866ffea20507f6d1d3dfb25c422b933a">AEB_13</a> ()</td></tr>
+<tr class="memdesc:a866ffea20507f6d1d3dfb25c422b933a"><td class="mdescLeft">&#160;</td><td class="mdescRight">AEB requests shall always negate ACC requests.  <a href="class_master_task.html#a866ffea20507f6d1d3dfb25c422b933a">More...</a><br /></td></tr>
 <tr class="separator:a866ffea20507f6d1d3dfb25c422b933a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12cffa091984db07cbff3191f8397b25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a12cffa091984db07cbff3191f8397b25">AEB_22</a> ()</td></tr>
+<tr class="memdesc:a12cffa091984db07cbff3191f8397b25"><td class="mdescLeft">&#160;</td><td class="mdescRight">AEB shall not be active if traveling under 15 km/h.  <a href="class_master_task.html#a12cffa091984db07cbff3191f8397b25">More...</a><br /></td></tr>
 <tr class="separator:a12cffa091984db07cbff3191f8397b25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8a8bdbcd615b72e9d029c8b8e00bf2d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#af8a8bdbcd615b72e9d029c8b8e00bf2d">AEB_24</a> ()</td></tr>
+<tr class="memdesc:af8a8bdbcd615b72e9d029c8b8e00bf2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the AEB and the actual AEB engagement.  <a href="class_master_task.html#af8a8bdbcd615b72e9d029c8b8e00bf2d">More...</a><br /></td></tr>
 <tr class="separator:af8a8bdbcd615b72e9d029c8b8e00bf2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0b4547de7ef56a910a753d9696bc367"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#af0b4547de7ef56a910a753d9696bc367">AEB_26</a> ()</td></tr>
+<tr class="memdesc:af0b4547de7ef56a910a753d9696bc367"><td class="mdescLeft">&#160;</td><td class="mdescRight">AEB Allowed signal shall prevent the use of the AEB algorithm if it is not active.  <a href="class_master_task.html#af0b4547de7ef56a910a753d9696bc367">More...</a><br /></td></tr>
 <tr class="separator:af0b4547de7ef56a910a753d9696bc367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a242ce266ab075b83d7fff41b3ce5e0cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a242ce266ab075b83d7fff41b3ce5e0cc">CAV_1_5</a> ()</td></tr>
+<tr class="memdesc:a242ce266ab075b83d7fff41b3ce5e0cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">If Mobileye appears non-functional, LCC, ACC and AEB shall be set to the OFF state.  <a href="class_master_task.html#a242ce266ab075b83d7fff41b3ce5e0cc">More...</a><br /></td></tr>
 <tr class="separator:a242ce266ab075b83d7fff41b3ce5e0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ac4bf24918fe34fc1fb6b6c9c16fef3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a5ac4bf24918fe34fc1fb6b6c9c16fef3">CAV_1_6</a> ()</td></tr>
+<tr class="memdesc:a5ac4bf24918fe34fc1fb6b6c9c16fef3"><td class="mdescLeft">&#160;</td><td class="mdescRight">If front MRR appears non-functional, ACC and AEB shall be set to the OFF state.  <a href="class_master_task.html#a5ac4bf24918fe34fc1fb6b6c9c16fef3">More...</a><br /></td></tr>
 <tr class="separator:a5ac4bf24918fe34fc1fb6b6c9c16fef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5d6e1ade96ed95e785d377797ab41fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#af5d6e1ade96ed95e785d377797ab41fd">CAV_2_2</a> ()</td></tr>
+<tr class="memdesc:af5d6e1ade96ed95e785d377797ab41fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automated braking commands cannot exceed 0.5 g deceleration.  <a href="class_master_task.html#af5d6e1ade96ed95e785d377797ab41fd">More...</a><br /></td></tr>
 <tr class="separator:af5d6e1ade96ed95e785d377797ab41fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92f0d8f0f5ad9230c68045721618a854"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a92f0d8f0f5ad9230c68045721618a854">INT_1</a> ()</td></tr>
+<tr class="memdesc:a92f0d8f0f5ad9230c68045721618a854"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAVS rolling counter shall be sent every CAN frame.  <a href="class_master_task.html#a92f0d8f0f5ad9230c68045721618a854">More...</a><br /></td></tr>
 <tr class="separator:a92f0d8f0f5ad9230c68045721618a854"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefa0870f78b02ee66fb940c604538cbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#aefa0870f78b02ee66fb940c604538cbf">INT_2</a> ()</td></tr>
+<tr class="memdesc:aefa0870f78b02ee66fb940c604538cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the HSC alive rolling counter is not functioning as intended for 50 ms, all signals being sent to the HSC shall be set to zero/default values until the rolling counter is functioning properly for 100 ms.  <a href="class_master_task.html#aefa0870f78b02ee66fb940c604538cbf">More...</a><br /></td></tr>
 <tr class="separator:aefa0870f78b02ee66fb940c604538cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcc1ec13d066c37dc889fa10f2e3ef4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#abcc1ec13d066c37dc889fa10f2e3ef4b">INT_7</a> ()</td></tr>
+<tr class="memdesc:abcc1ec13d066c37dc889fa10f2e3ef4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the Jetson alive rolling counter is not functioning as intended for 50 ms, all signals being sent to the CAVS controller shall be set to zero/default values until the rolling counter is functioning properly for 100 ms.  <a href="class_master_task.html#abcc1ec13d066c37dc889fa10f2e3ef4b">More...</a><br /></td></tr>
 <tr class="separator:abcc1ec13d066c37dc889fa10f2e3ef4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89bb6487743b9198eb0aa34ac703acb0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a89bb6487743b9198eb0aa34ac703acb0">LCC_1</a> ()</td></tr>
+<tr class="memdesc:a89bb6487743b9198eb0aa34ac703acb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Steering angle limit shall be hard-coded into each system it is needed in.  <a href="class_master_task.html#a89bb6487743b9198eb0aa34ac703acb0">More...</a><br /></td></tr>
 <tr class="separator:a89bb6487743b9198eb0aa34ac703acb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a611ecac60392ed474a2fe8d16cc0c60f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a611ecac60392ed474a2fe8d16cc0c60f">LCC_3</a> ()</td></tr>
+<tr class="memdesc:a611ecac60392ed474a2fe8d16cc0c60f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vehicle acceleration past 2.5 m/s^2 shall temporarily disable LCC until acceleration is below 2.5 m/s^2.  <a href="class_master_task.html#a611ecac60392ed474a2fe8d16cc0c60f">More...</a><br /></td></tr>
 <tr class="separator:a611ecac60392ed474a2fe8d16cc0c60f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbc9d9433d01fd0e3ab8a9a89eaba19a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#abbc9d9433d01fd0e3ab8a9a89eaba19a">LCC_10</a> ()</td></tr>
+<tr class="memdesc:abbc9d9433d01fd0e3ab8a9a89eaba19a"><td class="mdescLeft">&#160;</td><td class="mdescRight">To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the LCC and the actual LCC engagement.  <a href="class_master_task.html#abbc9d9433d01fd0e3ab8a9a89eaba19a">More...</a><br /></td></tr>
 <tr class="separator:abbc9d9433d01fd0e3ab8a9a89eaba19a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa96f4442fdc9d188b9b5065e73dcb0e9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#aa96f4442fdc9d188b9b5065e73dcb0e9">LCC_11</a> ()</td></tr>
+<tr class="memdesc:aa96f4442fdc9d188b9b5065e73dcb0e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">To avoid accidental disengagement of the function, the LCC enable switch shall be OFF for a continuous 200 ms period.  <a href="class_master_task.html#aa96f4442fdc9d188b9b5065e73dcb0e9">More...</a><br /></td></tr>
 <tr class="separator:aa96f4442fdc9d188b9b5065e73dcb0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc3e66595360ee6ec4b3b09ff7022bdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#acc3e66595360ee6ec4b3b09ff7022bdd">LCC_12</a> ()</td></tr>
+<tr class="memdesc:acc3e66595360ee6ec4b3b09ff7022bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the output LCC enable signal is in one state but over a 300 ms period the initial signal is in the opposite state for more than 120 ms cumulatively, a signal error message shall be sent to the Jetson and LCC shall be disabled until this condition has cleared.  <a href="class_master_task.html#acc3e66595360ee6ec4b3b09ff7022bdd">More...</a><br /></td></tr>
 <tr class="separator:acc3e66595360ee6ec4b3b09ff7022bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a231972f9ce423f7f0210e50a025773c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#a231972f9ce423f7f0210e50a025773c0">check_rolling_counters_called</a> ()</td></tr>
+<tr class="memdesc:a231972f9ce423f7f0210e50a025773c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks that the rolling counter functions have been called within the last 50 ms otherwise, turn all signals to null Since the rolling counter functions are called only in msg callbacks, we must also check that they are called frequently  <a href="class_master_task.html#a231972f9ce423f7f0210e50a025773c0">More...</a><br /></td></tr>
 <tr class="separator:a231972f9ce423f7f0210e50a025773c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5152183e43145994c3d12e5762eec26"><td class="memItemLeft" align="right" valign="top">common::can_comms_data_msg&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_master_task.html#aa5152183e43145994c3d12e5762eec26">get_can_comms_msg</a> ()</td></tr>
 <tr class="separator:aa5152183e43145994c3d12e5762eec26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,6 +257,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>A requested turn larger than 15 degrees shall instantly turn off ACC. </p>
+
 </div>
 </div>
 <a id="a5cd0dd25e0a07f988d5a381db92ef8a4"></a>
@@ -250,6 +275,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the ACC and the actual ACC engagement. </p>
 
 </div>
 </div>
@@ -268,6 +295,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>If the output ACC enable signal is in one state but over a 300 ms period the initial signal is in the opposite state for more than 120 ms cumulatively, a signal error message shall be sent to the Jetson and the ACC shall be disabled until this condition has cleared. </p>
+
 </div>
 </div>
 <a id="ab2f8b050fa527184c800c81b950bcd1d"></a>
@@ -284,6 +313,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>signal error message sent to the Jetson + ACC disabled if, within period_max, signal (ACC_activatioin) is in the opposite state for more than 120 ms cumulatively </p>
 
 </div>
 </div>
@@ -302,6 +333,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>If ACC is IN USE and any OFF condition is requested, system shall remain at the target speed for a set time buffer before reverting to driver inputs. </p>
+
 </div>
 </div>
 <a id="acd25177bebdea770920af64ca1a855d5"></a>
@@ -319,6 +352,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>ACC Allowed signal shall prevent the use of the ACC algorithm if it is not active. </p>
+
 </div>
 </div>
 <a id="a64d51c178e93cf4d8ecd93d1713e61b8"></a>
@@ -335,6 +370,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>If AEB is not functioning, ACC shall be in the OFF state. </p>
 
 </div>
 </div>
@@ -371,6 +408,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>AEB requests shall always negate ACC requests. </p>
+
 </div>
 </div>
 <a id="a12cffa091984db07cbff3191f8397b25"></a>
@@ -387,6 +426,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>AEB shall not be active if traveling under 15 km/h. </p>
 
 </div>
 </div>
@@ -405,6 +446,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the AEB and the actual AEB engagement. </p>
+
 </div>
 </div>
 <a id="af0b4547de7ef56a910a753d9696bc367"></a>
@@ -421,6 +464,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>AEB Allowed signal shall prevent the use of the AEB algorithm if it is not active. </p>
 
 </div>
 </div>
@@ -457,6 +502,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>If Mobileye appears non-functional, LCC, ACC and AEB shall be set to the OFF state. </p>
+
 </div>
 </div>
 <a id="a5ac4bf24918fe34fc1fb6b6c9c16fef3"></a>
@@ -473,6 +520,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>If front MRR appears non-functional, ACC and AEB shall be set to the OFF state. </p>
 
 </div>
 </div>
@@ -491,6 +540,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Automated braking commands cannot exceed 0.5 g deceleration. </p>
+
 </div>
 </div>
 <a id="a231972f9ce423f7f0210e50a025773c0"></a>
@@ -507,6 +558,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>checks that the rolling counter functions have been called within the last 50 ms otherwise, turn all signals to null Since the rolling counter functions are called only in msg callbacks, we must also check that they are called frequently </p>
 
 </div>
 </div>
@@ -560,6 +613,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>CAVS rolling counter shall be sent every CAN frame. </p>
+
 </div>
 </div>
 <a id="aefa0870f78b02ee66fb940c604538cbf"></a>
@@ -576,6 +631,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>If the HSC alive rolling counter is not functioning as intended for 50 ms, all signals being sent to the HSC shall be set to zero/default values until the rolling counter is functioning properly for 100 ms. </p>
 
 </div>
 </div>
@@ -594,6 +651,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>If the Jetson alive rolling counter is not functioning as intended for 50 ms, all signals being sent to the CAVS controller shall be set to zero/default values until the rolling counter is functioning properly for 100 ms. </p>
+
 </div>
 </div>
 <a id="a89bb6487743b9198eb0aa34ac703acb0"></a>
@@ -610,6 +669,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Steering angle limit shall be hard-coded into each system it is needed in. </p>
 
 </div>
 </div>
@@ -628,6 +689,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the LCC and the actual LCC engagement. </p>
+
 </div>
 </div>
 <a id="aa96f4442fdc9d188b9b5065e73dcb0e9"></a>
@@ -644,6 +707,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>To avoid accidental disengagement of the function, the LCC enable switch shall be OFF for a continuous 200 ms period. </p>
 
 </div>
 </div>
@@ -662,6 +727,8 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>If the output LCC enable signal is in one state but over a 300 ms period the initial signal is in the opposite state for more than 120 ms cumulatively, a signal error message shall be sent to the Jetson and LCC shall be disabled until this condition has cleared. </p>
+
 </div>
 </div>
 <a id="a611ecac60392ed474a2fe8d16cc0c60f"></a>
@@ -678,6 +745,8 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Vehicle acceleration past 2.5 m/s^2 shall temporarily disable LCC until acceleration is below 2.5 m/s^2. </p>
 
 </div>
 </div>
