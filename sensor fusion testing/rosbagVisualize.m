@@ -3,7 +3,7 @@ clc
 clear
 i = 0;
 
-bag = rosbag('S:\Engineering\UWAFT\Personal Workspace\idk.bag');
+bag = rosbag('S:\Engineering\UWAFT\kaiROS\rosbags\29_A15.bag');
 bag.AvailableTopics;
 
 
@@ -12,6 +12,8 @@ driveCtrl_topic = select(bag, 'Topic', '/drive_ctrl_input');
 driveCtrl_struct = readMessages(driveCtrl_topic, 'DataFormat', 'struct');
 ego_Speed = cellfun(@(m) m.VehSpd, driveCtrl_struct);
 ego_Str = cellfun(@(m) m.StrAng, driveCtrl_struct);
+ego_SetSpeed = cellfun(@(m) m.AccSpeedSetPoint, driveCtrl_struct);
+ego_Gap = cellfun(@(m) m.AccGapLevel, driveCtrl_struct);
 
 i=i+1;
 figure(i);
@@ -21,6 +23,15 @@ plot(ego_Str);
 hold off;
 legend('Speed','Steering Angle')
 title('Drive Control Inputs')
+
+i=i+1;
+figure(i);
+plot(ego_SetSpeed);
+hold on;
+plot(ego_Gap);
+hold off;
+legend('Set Speed','Gap')
+title('Drive Control Inputs pt. 2')
 
 %% Mobileye
 me_topic = select(bag, 'Topic', '/Mobileye_CAN_Rx');
