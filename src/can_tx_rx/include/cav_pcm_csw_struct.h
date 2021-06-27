@@ -15,7 +15,9 @@
 #define TOPIC_RX "can_comms_data"
 #define TOPIC_TX "drive_ctrl_input"
 
-/// Class containing all relevant CAN TX and RX messages for CAVs.
+/**
+ * Class containing all relevant CAN TX and RX messages for CAVs. 
+ */
 class CAV_PCM_TX_RX{
     public: 
         ros::NodeHandle* node_handle;
@@ -23,9 +25,11 @@ class CAV_PCM_TX_RX{
         ros::Subscriber can_comms_sub;
 
         CAV_PCM_TX_RX(ros::NodeHandle* node_handle);
-        /// Input signals to Tank.
-        /// 
-        /// Messages read in from CANbus including from overhead switches, buttons, rolling counters etc.
+
+        /** \brief Input signals to Tank.
+        * 
+        * Messages read in from CANbus including from overhead switches, buttons, rolling counters etc.
+        */ 
         struct cav_pcm_csw_in{            
             double aeb_allowed_decode;
             bool aeb_allowed_is_in_range;
@@ -54,9 +58,11 @@ class CAV_PCM_TX_RX{
             uint8_t channel_number;
             unsigned long timestamp;
         };
-        /// Output signals from Tank.
-        /// 
-        /// Messages written to CANbus including calculated ACC values, fault signals etc.
+        
+        /** \brief  Output signals from Tank.
+        * 
+        * Messages written to CANbus including calculated ACC values, fault signals etc.
+        */
         struct cav_pcm_csw_out{
             double long_accel;
             double lcc_steer; 
@@ -78,10 +84,8 @@ class CAV_PCM_TX_RX{
             unsigned long timestamp;
         };
         CAV_PCM_TX_RX::cav_pcm_csw_out cav_out;
-        /// If signal detected return its value, else return 0.
-        double signals_in_range(double val, bool cond); 
-        /// Use CAN ID to if signal is packaged in drive control message 1, 2 or 3.
-        void get_nums(int id, uint8_t &case_num);
-        /// Callback called when can_comms_data is published to (i.e. from ACC node).
-        void can_callback(const common::can_comms_data_msg& recvd_data); 
+        
+        double signals_in_range(double val, bool cond); /*!< If signal detected return its value, else return 0. */
+        void get_nums(int id, uint8_t &case_num); /*!< Use CAN ID to check if signal is packaged in drive control message 1, 2 or 3. */
+        void can_callback(const common::can_comms_data_msg& recvd_data); /*!< Callback called when can_comms_data is published to (i.e. from ACC node). */
 };

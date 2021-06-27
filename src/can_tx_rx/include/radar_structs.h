@@ -21,7 +21,7 @@
 #define TOPIC_RX "drive_ctrl_input" // listen from vehicle speed
 #define CH2_SERVICE "sensor_diagnostic_CH2"
 
-/// Class pertaining to all incoming and outgoing messages for Bosch radars.
+/** Class pertaining to all incoming and outgoing messages for Bosch radarsss. */
 class Radar_RX{
   public:
     ros::NodeHandle* node_handle;
@@ -32,13 +32,13 @@ class Radar_RX{
 
     Radar_RX(ros::NodeHandle* node_handle);
     
-    /// Dynamic vehicle info input to radar.
+    /** Dynamic vehicle info input to radar. */
     struct dynamic_vehicle_info {
       double vehicle_speed;
       double steering_angle;
     };
 
-    /// Diagnostic message output from radar
+    /** Diagnostic message output from radar. */
     struct radar_diagnostic_response {
       double diagnostic_decode;
       bool diagnostic_is_in_range;
@@ -47,7 +47,7 @@ class Radar_RX{
       uint8_t radar_number;
     };
 
-    /// Mostly diagnostic info output from radar.
+    /** Mostly diagnostic info output from radar. */
     struct radar_information {
       double radar_timestamp_decode;
       bool radar_timestamp_is_in_range;
@@ -89,7 +89,7 @@ class Radar_RX{
       uint8_t channel_number;
     };
 
-    /// Radar output message for data about six target objects
+    /** Radar output message for data about six target objects. */
     struct target_tracking_info {
       double target_dx_decode;
       bool target_dx_is_in_range;
@@ -144,7 +144,7 @@ class Radar_RX{
       uint8_t target_object_number;
     };
 
-    /// Radar output message for data about 32 tracked objects
+    /** Radar output message for data about 32 tracked objects. */
     struct object_tracking_info {
       double dx_decode;
       bool dx_is_in_range;
@@ -199,18 +199,14 @@ class Radar_RX{
       uint8_t radar_number;
       uint8_t object_number;
     };
-    /// Assigns radar, frame and object numbers based on incoming CAN ID 
+    
     void get_nums(long int id, int &case_n, int &radar_n, int &frame_n, int &obj_n, int &target_obj_n,
-                  int channel_number);
-    double signals_in_range(double val, bool cond);
-    /// Get static vehicle measurements that will be written to radar
-    void get_static_veh_info(radar_input_mount_info_t &in_mount_info, radar_input_wheel_info_t &in_wheel_info, radar_input_veh_dim_t &in_veh_dim, int radar_num);
-    /// Get dynamic vehicle measurements that will be written to radar
-    void get_dynamic_veh_info(radar_input_veh_dyn_data_t &in_veh_dyn);
-    uint8_t crc8bit_calculation(uint8_t can1670signals[7], int f_len);
-    /// Clear all data after start and end messages seen for each cycle 
-    void clear_classes(common::radar_object_data &radar_obj, common::sensor_diagnostic_data_msg &diag_data,     Radar_RX::radar_diagnostic_response &diag_response, Radar_RX::radar_information &radar_info,Radar_RX::target_tracking_info &target_info, Radar_RX::object_tracking_info &object_info, uint8_t &tc_check, uint8_t &mc_check);
-    /// Assigns speed and steering angle once drive ctrl topic is published to (Channel 1)
-    void drive_ctrl_callback(const common::drive_ctrl_input_msg& recvd_data);
+                  int channel_number); /*!< Assigns radar, frame and object numbers based on incoming CAN ID.  */
+    double signals_in_range(double val, bool cond); /*!< If signal detected return its value, else return 0. */
+    void get_static_veh_info(radar_input_mount_info_t &in_mount_info, radar_input_wheel_info_t &in_wheel_info, radar_input_veh_dim_t &in_veh_dim, int radar_num); /*!< Get static vehicle measurements that will be written to radar. */
+    void get_dynamic_veh_info(radar_input_veh_dyn_data_t &in_veh_dyn); /*!< Get dynamic vehicle measurements that will be written to radar. */
+    uint8_t crc8bit_calculation(uint8_t can1670signals[7], int f_len); /*!< CRC bit check on CAN messages. */  
+    void clear_classes(common::radar_object_data &radar_obj, common::sensor_diagnostic_data_msg &diag_data, Radar_RX::radar_diagnostic_response &diag_response, Radar_RX::radar_information &radar_info,Radar_RX::target_tracking_info &target_info, Radar_RX::object_tracking_info &object_info, uint8_t &tc_check, uint8_t &mc_check); /*!< Clear all data after start and end messages seen for each cycle. */ 
+    void drive_ctrl_callback(const common::drive_ctrl_input_msg& recvd_data); /*!< Assigns speed and steering angle once drive ctrl topic is published to (Channel 1). */
     Radar_RX::dynamic_vehicle_info vehicle_data;
 };

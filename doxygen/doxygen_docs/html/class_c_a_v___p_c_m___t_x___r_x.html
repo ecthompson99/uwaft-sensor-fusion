@@ -122,13 +122,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a188c3d6d651beece7a8bf3049bfe44a7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_v___p_c_m___t_x___r_x.html#a188c3d6d651beece7a8bf3049bfe44a7">CAV_PCM_TX_RX</a> (ros::NodeHandle *<a class="el" href="class_c_a_v___p_c_m___t_x___r_x.html#a6233c07f9443d16faec15248c77422c3">node_handle</a>)</td></tr>
 <tr class="separator:a188c3d6d651beece7a8bf3049bfe44a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36c14ff52577b5b09ccec346efb558c6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_v___p_c_m___t_x___r_x.html#a36c14ff52577b5b09ccec346efb558c6">signals_in_range</a> (double val, bool cond)</td></tr>
-<tr class="memdesc:a36c14ff52577b5b09ccec346efb558c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">If signal detected return its value, else return 0.  <a href="class_c_a_v___p_c_m___t_x___r_x.html#a36c14ff52577b5b09ccec346efb558c6">More...</a><br /></td></tr>
 <tr class="separator:a36c14ff52577b5b09ccec346efb558c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac495aeae0ba2a3a8ea2fc8dc13b5e34c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_v___p_c_m___t_x___r_x.html#ac495aeae0ba2a3a8ea2fc8dc13b5e34c">get_nums</a> (int id, uint8_t &amp;case_num)</td></tr>
-<tr class="memdesc:ac495aeae0ba2a3a8ea2fc8dc13b5e34c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use CAN ID to if signal is packaged in drive control message 1, 2 or 3.  <a href="class_c_a_v___p_c_m___t_x___r_x.html#ac495aeae0ba2a3a8ea2fc8dc13b5e34c">More...</a><br /></td></tr>
 <tr class="separator:ac495aeae0ba2a3a8ea2fc8dc13b5e34c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0b413fc4ef0223e664a2ba1e867c771"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_a_v___p_c_m___t_x___r_x.html#ae0b413fc4ef0223e664a2ba1e867c771">can_callback</a> (const common::can_comms_data_msg &amp;recvd_data)</td></tr>
-<tr class="memdesc:ae0b413fc4ef0223e664a2ba1e867c771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback called when can_comms_data is published to (i.e. from ACC node).  <a href="class_c_a_v___p_c_m___t_x___r_x.html#ae0b413fc4ef0223e664a2ba1e867c771">More...</a><br /></td></tr>
 <tr class="separator:ae0b413fc4ef0223e664a2ba1e867c771"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -179,7 +176,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
 <p>Callback called when can_comms_data is published to (i.e. from ACC node). </p>
 
 </div>
@@ -209,8 +205,7 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Use CAN ID to if signal is packaged in drive control message 1, 2 or 3. </p>
+<p>Use CAN ID to check if signal is packaged in drive control message 1, 2 or 3. </p>
 
 </div>
 </div>
@@ -239,7 +234,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
 <p>If signal detected return its value, else return 0. </p>
 
 </div>

@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('class_radar___r_x.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 
-<p>Class pertaining to all incoming and outgoing messages for Bosch radars.  
+<p>Class pertaining to all incoming and outgoing messages for Bosch radarsss.  
  <a href="class_radar___r_x.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="radar__structs_8h_source.html">radar_structs.h</a>&gt;</code></p>
@@ -131,23 +131,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a91792b5aa133046a0691af3ab596c946"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radar___r_x.html#a91792b5aa133046a0691af3ab596c946">Radar_RX</a> (ros::NodeHandle *<a class="el" href="class_radar___r_x.html#a040d17b0bc68621c9a3b7b9ac51ed2f4">node_handle</a>)</td></tr>
 <tr class="separator:a91792b5aa133046a0691af3ab596c946"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa46623c150f5bf4814f4ee04228a27c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radar___r_x.html#aaa46623c150f5bf4814f4ee04228a27c">get_nums</a> (<a class="el" href="oxts__step2___t_t2_t_8m.html#a078d2debceff51246d4351b26a43cb5d">long</a> int id, int &amp;case_n, int &amp;radar_n, int &amp;frame_n, int &amp;obj_n, int &amp;target_obj_n, int channel_number)</td></tr>
-<tr class="memdesc:aaa46623c150f5bf4814f4ee04228a27c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns radar, frame and object numbers based on incoming CAN ID.  <a href="class_radar___r_x.html#aaa46623c150f5bf4814f4ee04228a27c">More...</a><br /></td></tr>
 <tr class="separator:aaa46623c150f5bf4814f4ee04228a27c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62efe280f73e3dae5e30223915f7cd53"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radar___r_x.html#a62efe280f73e3dae5e30223915f7cd53">signals_in_range</a> (double val, bool cond)</td></tr>
 <tr class="separator:a62efe280f73e3dae5e30223915f7cd53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad727eebd63323b98b35983af548d3969"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radar___r_x.html#ad727eebd63323b98b35983af548d3969">get_static_veh_info</a> (<a class="el" href="structradar__input__mount__info__t.html">radar_input_mount_info_t</a> &amp;in_mount_info, <a class="el" href="structradar__input__wheel__info__t.html">radar_input_wheel_info_t</a> &amp;in_wheel_info, <a class="el" href="structradar__input__veh__dim__t.html">radar_input_veh_dim_t</a> &amp;in_veh_dim, int radar_num)</td></tr>
-<tr class="memdesc:ad727eebd63323b98b35983af548d3969"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get static vehicle measurements that will be written to radar.  <a href="class_radar___r_x.html#ad727eebd63323b98b35983af548d3969">More...</a><br /></td></tr>
 <tr class="separator:ad727eebd63323b98b35983af548d3969"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f86bc16932d8628258415fe41ceafb5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radar___r_x.html#a5f86bc16932d8628258415fe41ceafb5">get_dynamic_veh_info</a> (<a class="el" href="structradar__input__veh__dyn__data__t.html">radar_input_veh_dyn_data_t</a> &amp;in_veh_dyn)</td></tr>
-<tr class="memdesc:a5f86bc16932d8628258415fe41ceafb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get dynamic vehicle measurements that will be written to radar.  <a href="class_radar___r_x.html#a5f86bc16932d8628258415fe41ceafb5">More...</a><br /></td></tr>
 <tr class="separator:a5f86bc16932d8628258415fe41ceafb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a535d2ad02e22492692556c8a6ce30a82"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radar___r_x.html#a535d2ad02e22492692556c8a6ce30a82">crc8bit_calculation</a> (uint8_t can1670signals[7], int f_len)</td></tr>
 <tr class="separator:a535d2ad02e22492692556c8a6ce30a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a658957320a2a746182169299427aea8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radar___r_x.html#a658957320a2a746182169299427aea8e">clear_classes</a> (common::radar_object_data &amp;<a class="el" href="step4__combined__2021_8m.html#adcbb44d6f761d2d44dc7b461ab65daf4">radar_obj</a>, common::sensor_diagnostic_data_msg &amp;diag_data, <a class="el" href="struct_radar___r_x_1_1radar__diagnostic__response.html">Radar_RX::radar_diagnostic_response</a> &amp;diag_response, <a class="el" href="struct_radar___r_x_1_1radar__information.html">Radar_RX::radar_information</a> &amp;radar_info, <a class="el" href="struct_radar___r_x_1_1target__tracking__info.html">Radar_RX::target_tracking_info</a> &amp;target_info, <a class="el" href="struct_radar___r_x_1_1object__tracking__info.html">Radar_RX::object_tracking_info</a> &amp;object_info, uint8_t &amp;tc_check, uint8_t &amp;mc_check)</td></tr>
-<tr class="memdesc:a658957320a2a746182169299427aea8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear all data after start and end messages seen for each cycle.  <a href="class_radar___r_x.html#a658957320a2a746182169299427aea8e">More...</a><br /></td></tr>
 <tr class="separator:a658957320a2a746182169299427aea8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a485164127b7f7c84a6ecb8c7c42d9a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radar___r_x.html#a485164127b7f7c84a6ecb8c7c42d9a6e">drive_ctrl_callback</a> (const common::drive_ctrl_input_msg &amp;recvd_data)</td></tr>
-<tr class="memdesc:a485164127b7f7c84a6ecb8c7c42d9a6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns speed and steering angle once drive ctrl topic is published to (Channel 1)  <a href="class_radar___r_x.html#a485164127b7f7c84a6ecb8c7c42d9a6e">More...</a><br /></td></tr>
 <tr class="separator:a485164127b7f7c84a6ecb8c7c42d9a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -166,7 +161,7 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a1e69c377336fb8910f006ab26d3a5adc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Class pertaining to all incoming and outgoing messages for Bosch radars. </p>
+<div class="textblock"><p>Class pertaining to all incoming and outgoing messages for Bosch radarsss. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a91792b5aa133046a0691af3ab596c946"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a91792b5aa133046a0691af3ab596c946">&#9670;&nbsp;</a></span>Radar_RX()</h2>
@@ -248,7 +243,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
 <p>Clear all data after start and end messages seen for each cycle. </p>
 
 </div>
@@ -278,6 +272,7 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>CRC bit check on CAN messages. </p>
 
 </div>
 </div>
@@ -296,8 +291,7 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Assigns speed and steering angle once drive ctrl topic is published to (Channel 1) </p>
+<p>Assigns speed and steering angle once drive ctrl topic is published to (Channel 1). </p>
 
 </div>
 </div>
@@ -316,7 +310,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
 <p>Get dynamic vehicle measurements that will be written to radar. </p>
 
 </div>
@@ -376,8 +369,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Assigns radar, frame and object numbers based on incoming CAN ID. </p>
+<p>Assigns radar, frame and object numbers based on incoming CAN ID. <br  />
+ </p>
 
 </div>
 </div>
@@ -418,7 +411,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
 <p>Get static vehicle measurements that will be written to radar. </p>
 
 </div>
@@ -448,6 +440,7 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>If signal detected return its value, else return 0. </p>
 
 </div>
 </div>
