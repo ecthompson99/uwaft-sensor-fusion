@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.0
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Thu Nov 12 19:11:42 2020
+// C/C++ source code generated on : Sun Jun 27 14:22:40 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -121,6 +121,34 @@ typedef struct {
   // MsgType=std_msgs/Header
   SL_Bus_ACC_std_msgs_Header Header;
 } SL_Bus_ACC_common_target_output_msg;
+
+#endif
+
+#ifndef DEFINED_TYPEDEF_FOR_struct_ECf3ZcX7QZBVymoYyKADRB_
+#define DEFINED_TYPEDEF_FOR_struct_ECf3ZcX7QZBVymoYyKADRB_
+
+typedef struct {
+  boolean_T acc_fault;
+  boolean_T aeb_fault;
+  boolean_T lcc_fault;
+  boolean_T cav_alive;
+  boolean_T radar_fault;
+  boolean_T mobileye_fault;
+  real_T veh_spd_thr;
+  real_T acc_accel_max;
+  real_T acc_accel_min_over;
+  real_T accel_min_under;
+  real_T acc_near_time;
+  real_T acc_near_dist;
+  real_T acc_med_time;
+  real_T acc_med_dist;
+  real_T acc_far_time;
+  real_T acc_far_dist;
+  real_T aeb_decel;
+  real_T lcc_str;
+  real_T lcc_max;
+  real_T lcc_min;
+} struct_ECf3ZcX7QZBVymoYyKADRB;
 
 #endif
 

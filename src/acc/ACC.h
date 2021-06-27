@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.0
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Thu Nov 12 19:11:42 2020
+// C/C++ source code generated on : Sun Jun 27 14:22:40 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -134,9 +134,9 @@ typedef struct {
   real_T PrevY;                        // '<S6>/Rate Limiter'
   int32_T chartAbsoluteTimeCounter;    // '<S6>/ACC Diagnostics'
   int32_T durationLastReferenceTick_1; // '<S6>/ACC Diagnostics'
-  int32_T durationLastReferenceTick_1_f;// '<S6>/ACC Diagnostics'
-  int32_T durationLastReferenceTick_1_b;// '<S6>/ACC Diagnostics'
-  int32_T durationLastReferenceTick_1_p;// '<S6>/ACC Diagnostics'
+  int32_T durationLastReferenceTick_1_h;// '<S6>/ACC Diagnostics'
+  int32_T durationLastReferenceTick_1_d;// '<S6>/ACC Diagnostics'
+  int32_T durationLastReferenceTick_1_n;// '<S6>/ACC Diagnostics'
   uint8_T is_active_c14_ACC;           // '<S6>/ACC Diagnostics'
   uint8_T is_c14_ACC;                  // '<S6>/ACC Diagnostics'
   uint8_T is_ACC;                      // '<S6>/ACC Diagnostics'
@@ -144,13 +144,26 @@ typedef struct {
   uint8_T is_ACC_Normal;               // '<S6>/ACC Diagnostics'
   boolean_T Memory_PreviousInput[98];  // '<S20>/Memory'
   boolean_T condWasTrueAtLastTimeStep_1;// '<S6>/ACC Diagnostics'
-  boolean_T condWasTrueAtLastTimeStep_1_e;// '<S6>/ACC Diagnostics'
-  boolean_T condWasTrueAtLastTimeStep_1_i;// '<S6>/ACC Diagnostics'
-  boolean_T condWasTrueAtLastTimeStep_1_o;// '<S6>/ACC Diagnostics'
+  boolean_T condWasTrueAtLastTimeStep_1_c;// '<S6>/ACC Diagnostics'
+  boolean_T condWasTrueAtLastTimeStep_1_c0;// '<S6>/ACC Diagnostics'
+  boolean_T condWasTrueAtLastTimeStep_1_d;// '<S6>/ACC Diagnostics'
 } DW_ACC_T;
 
 // Parameters (default storage)
 struct P_ACC_T_ {
+  struct_ECf3ZcX7QZBVymoYyKADRB data;  // Variable: data
+                                       //  Referenced by:
+                                       //    '<S7>/Constant'
+                                       //    '<S7>/Constant1'
+                                       //    '<S7>/Constant2'
+                                       //    '<S7>/Constant3'
+                                       //    '<S7>/Constant4'
+                                       //    '<S7>/Constant6'
+                                       //    '<S8>/Constant2'
+                                       //    '<S8>/Constant3'
+                                       //    '<S8>/Constant4'
+                                       //    '<S8>/Switch1'
+
   real_T CompareToConstant_const;      // Mask Parameter: CompareToConstant_const
                                        //  Referenced by: '<S16>/Constant'
 
@@ -175,47 +188,17 @@ struct P_ACC_T_ {
   real_T UseACCoutputconstant_Value;   // Expression: 0
                                        //  Referenced by: '<S1>/Use ACC output constant'
 
-  real_T Constant3_Value;              // Expression: -5
-                                       //  Referenced by: '<S8>/Constant3'
-
-  real_T Constant4_Value;              // Expression: -3.5
-                                       //  Referenced by: '<S8>/Constant4'
-
   real_T last_x_InitialCondition[4];   // Expression: lastx+xoff
                                        //  Referenced by: '<S20>/last_x'
 
   real_T last_mv_InitialCondition;     // Expression: lastu+uoff
                                        //  Referenced by: '<S20>/last_mv'
 
-  real_T Constant1_Value;              // Expression: 1.8
-                                       //  Referenced by: '<S7>/Constant1'
-
-  real_T Constant4_Value_g;            // Expression: 12.5
-                                       //  Referenced by: '<S7>/Constant4'
-
-  real_T Constant2_Value;              // Expression: 2.3
-                                       //  Referenced by: '<S7>/Constant2'
-
-  real_T Constant6_Value;              // Expression: 15
-                                       //  Referenced by: '<S7>/Constant6'
-
-  real_T Constant_Value_i;             // Expression: 1.4
-                                       //  Referenced by: '<S7>/Constant'
-
-  real_T Constant3_Value_i;            // Expression: 10
-                                       //  Referenced by: '<S7>/Constant3'
-
   real_T kmhtoms_Gain;                 // Expression: 1/3.6
                                        //  Referenced by: '<S1>/km//h to m//s'
 
-  real_T Switch1_Threshold;            // Expression: 20
-                                       //  Referenced by: '<S8>/Switch1'
-
   real_T umin_scale_Gain;              // Expression: RMVscale
                                        //  Referenced by: '<S20>/umin_scale'
-
-  real_T Constant2_Value_i;            // Expression: 5
-                                       //  Referenced by: '<S8>/Constant2'
 
   real_T umax_scale_Gain;              // Expression: RMVscale
                                        //  Referenced by: '<S20>/umax_scale'
@@ -256,7 +239,7 @@ struct P_ACC_T_ {
   real_T ymin_scale2_Gain;             // Expression: MDscale(:,ones(1,max(nCC,1)))'
                                        //  Referenced by: '<S20>/ymin_scale2'
 
-  real_T Constant1_Value_k;            // Expression: 1
+  real_T Constant1_Value;              // Expression: 1
                                        //  Referenced by: '<S1>/Constant1'
 
   real_T extmv_zero_Value;             // Expression: zeros(1,1)

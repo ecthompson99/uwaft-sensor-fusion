@@ -9,7 +9,7 @@
 //
 // Model version                  : 1.0
 // Simulink Coder version         : 9.0 (R2018b) 24-May-2018
-// C/C++ source code generated on : Thu Nov 12 19:11:42 2020
+// C/C++ source code generated on : Sun Jun 27 14:22:40 2021
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: Generic->Unspecified (assume 32-bit Generic)
@@ -21,6 +21,42 @@
 
 // Block parameters (default storage)
 P_ACC_T ACC_P = {
+  // Variable: data
+  //  Referenced by:
+  //    '<S7>/Constant'
+  //    '<S7>/Constant1'
+  //    '<S7>/Constant2'
+  //    '<S7>/Constant3'
+  //    '<S7>/Constant4'
+  //    '<S7>/Constant6'
+  //    '<S8>/Constant2'
+  //    '<S8>/Constant3'
+  //    '<S8>/Constant4'
+  //    '<S8>/Switch1'
+
+  {
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    20.0,
+    5.0,
+    -3.5,
+    -5.0,
+    1.4,
+    10.0,
+    1.8,
+    12.5,
+    2.3,
+    15.0,
+    0.0,
+    0.0,
+    180.0,
+    180.0
+  },
+
   // Mask Parameter: CompareToConstant_const
   //  Referenced by: '<S16>/Constant'
 
@@ -237,16 +273,6 @@ P_ACC_T ACC_P = {
 
   0.0,
 
-  // Expression: -5
-  //  Referenced by: '<S8>/Constant3'
-
-  -5.0,
-
-  // Expression: -3.5
-  //  Referenced by: '<S8>/Constant4'
-
-  -3.5,
-
   // Expression: lastx+xoff
   //  Referenced by: '<S20>/last_x'
 
@@ -257,55 +283,15 @@ P_ACC_T ACC_P = {
 
   0.0,
 
-  // Expression: 1.8
-  //  Referenced by: '<S7>/Constant1'
-
-  1.8,
-
-  // Expression: 12.5
-  //  Referenced by: '<S7>/Constant4'
-
-  12.5,
-
-  // Expression: 2.3
-  //  Referenced by: '<S7>/Constant2'
-
-  2.3,
-
-  // Expression: 15
-  //  Referenced by: '<S7>/Constant6'
-
-  15.0,
-
-  // Expression: 1.4
-  //  Referenced by: '<S7>/Constant'
-
-  1.4,
-
-  // Expression: 10
-  //  Referenced by: '<S7>/Constant3'
-
-  10.0,
-
   // Expression: 1/3.6
   //  Referenced by: '<S1>/km//h to m//s'
 
   0.27777777777777779,
 
-  // Expression: 20
-  //  Referenced by: '<S8>/Switch1'
-
-  20.0,
-
   // Expression: RMVscale
   //  Referenced by: '<S20>/umin_scale'
 
   0.1,
-
-  // Expression: 5
-  //  Referenced by: '<S8>/Constant2'
-
-  5.0,
 
   // Expression: RMVscale
   //  Referenced by: '<S20>/umax_scale'
