@@ -30,57 +30,135 @@ class MasterTask {
   bool sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request &req_CH2, common::sensor_diagnostic_flag_CH2::Response &res_CH2);
   bool sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request &req_CH3, common::sensor_diagnostic_flag_CH3::Response &res_CH3);
   bool sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request &req_CH4, common::sensor_diagnostic_flag_CH4::Response &res_CH4);
-  
-  // If the related diagnostic functions for CAV features are non-functional, the CAV features shall be turned off.
-  void ACC_1_1();
-  // If AEB is not functioning, ACC shall be in the OFF state
+
+  /**
+  * If ACC is IN USE and any OFF condition is requested, 
+  * system shall remain at the target speed for a set time buffer before reverting to driver inputs
+  */
+  void ACC_1_1(); 
+
+  /**
+  * If AEB is not functioning, ACC shall be in the OFF state
+  */
   void ACC_4();
-  // A requested turn larger than 15 degrees shall instantly turn off ACC
+
+  /**
+  * A requested turn larger than 15 degrees shall instantly turn off ACC
+  */
   void ACC_15();
-  // To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the ACC and the actual ACC engagement
+
+  /**
+  * To ensure enable data is correct, 
+  * 500 ms of a continuously active Enable signal must pass between the enabling of the ACC and the actual ACC engagement
+  */
   void ACC_16();
-  // not in RTM???
+
+  /**
+  * If the output ACC enable signal is in one state but  over a 300 ms period the initial signal is in the 
+  * opposite state for more than 120 ms cumulatively, 
+  * a signal error message shall be sent to the Jetson and the ACC shall be disabled until this condition has cleared
+  */
   void ACC_17();
-  // If the output ACC enable signal is in one state but  over a 300 ms period the initial signal is in the opposite state for more than 120 ms cumulatively, a signal error message shall be sent to the Jetson and the ACC shall be disabled until this condition has cleared
+
+  /**
+  * signal error message sent to the Jetson + ACC disabled if, within period_max,
+  * signal (ACC_activatioin) is in the opposite state for more than 120 ms cumulatively
+  */
   void ACC_18();
-  // ACC Allowed signal shall prevent the use of the ACC algorithm if it is not active
+
+  /**
+  * ACC Allowed signal shall prevent the use of the ACC algorithm if it is not active
+  */
   void ACC_20();
 
-  // AEB requests shall always negate ACC requests
+  /**
+  * AEB requests shall always negate ACC requests
+  */
   void AEB_13();
-  // AEB shall not be active if traveling under 15 km/h
+  
+  /**
+  * AEB shall not be active if traveling under 15 km/h
+  */
   void AEB_22();
-  // To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the AEB and the actual AEB engagement
+
+  /**
+  * To ensure enable data is correct, 
+  * 500 ms of a continuously active Enable signal must pass between the enabling of the AEB and the actual AEB engagement
+  */
   void AEB_24();
-  // AEB Allowed signal shall prevent the use of the AEB algorithm if it is not active
+
+  /**
+  * AEB Allowed signal shall prevent the use of the AEB algorithm if it is not active
+  */
   void AEB_26();
   
-  // If Mobileye appears non-functional, LCC, ACC and AEB shall be set to the OFF state
+  /**
+  * If Mobileye appears non-functional, LCC, ACC and AEB shall be set to the OFF state
+  */
   void CAV_1_5();
-  // If front MRR appears non-functional, ACC and AEB shall be set to the OFF state
+
+  /**
+  * If front MRR appears non-functional, ACC and AEB shall be set to the OFF state
+  */
   void CAV_1_6();
-  // Automated braking commands cannot exceed 0.5 g deceleration
+
+  /**
+  * Automated braking commands cannot exceed 0.5 g deceleration
+  */
   void CAV_2_2();
 
-  // CAVS rolling counter shall be sent every CAN frame
+  /**
+  * CAVS rolling counter shall be sent every CAN frame
+  */
   void INT_1();
-  // If the HSC alive rolling counter is not functioning as intended for 50 ms, all signals being sent to the HSC shall be set to zero/default values until the rolling counter is functioning properly for 100 ms
+  
+  /**
+  * If the HSC alive rolling counter is not functioning as intended for 50 ms, 
+  * all signals being sent to the HSC shall be set to zero/default values until 
+  * the rolling counter is functioning properly for 100 ms
+  */
   void INT_2();
-  // If the Jetson alive rolling counter is not functioning as intended for 50 ms, all signals being sent to the CAVS controller shall be set to zero/default values until the rolling counter is functioning properly for 100 ms
+
+  /**
+  * If the Jetson alive rolling counter is not functioning as intended for 50 ms, 
+  * all signals being sent to the CAVS controller shall be set to zero/default values until 
+  * the rolling counter is functioning properly for 100 ms
+  */
   void INT_7();
 
-  // Steering angle limit shall be hard-coded into each system it is needed in
+  /**
+  * Steering angle limit shall be hard-coded into each system it is needed in
+  */
   void LCC_1();
-  // Vehicle acceleration past 2.5 m/s^2 shall temporarily disable LCC until acceleration is below 2.5 m/s^2	
+
+  /**
+  * Vehicle acceleration past 2.5 m/s^2 shall temporarily disable LCC until acceleration is below 2.5 m/s^2
+  */
   void LCC_3();
-  // To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the LCC and the actual LCC engagement
+
+  /**
+  * To ensure enable data is correct, 500 ms of a continuously active Enable signal must pass between the enabling of the LCC and the actual LCC engagement
+  */
   void LCC_10();
-  // To avoid accidental disengagement of the function, the LCC enable switch shall be OFF for a continuous 200 ms period
+
+  /**
+  * 	To avoid accidental disengagement of the function, the LCC enable switch shall be OFF for a continuous 200 ms period
+  */
   void LCC_11();
-  // If the output LCC enable signal is in one state but  over a 300 ms period the initial signal is in the opposite state for more than 120 ms cumulatively, a signal error message shall be sent to the Jetson and LCC shall be disabled until this condition has cleared
+
+  /**
+  * If the output LCC enable signal is in one state but  over a 300 ms period the initial signal 
+  * is in the opposite state for more than 120 ms cumulatively, 
+  * a signal error message shall be sent to the Jetson and LCC shall be disabled until this condition has cleared
+  */
   void LCC_12();
 
-  // helper function for INT_2 AND INT_7 that checks that INT_2 has been called within a certain time period
+  /**
+  * checks that the rolling counter functions have been called within the last 50 ms
+  * otherwise, turn all signals to null
+  * Since the rolling counter functions are called only in msg callbacks, we must also check
+  * that they are called frequently
+  */
   void check_rolling_counters_called(); 
   
   common::can_comms_data_msg get_can_comms_msg();
