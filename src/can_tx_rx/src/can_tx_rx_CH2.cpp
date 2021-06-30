@@ -9,7 +9,7 @@ Radar_RX::Radar_RX(ros::NodeHandle* node_handle) : node_handle(node_handle){
 };
 
 void Radar_RX::drive_ctrl_callback(const common::drive_ctrl_input_msg& recvd_data) {
-  vehicle_data.vehicle_speed = recvd_data.veh_spd;
+  vehicle_data.vehicle_speed = recvd_data.veh_spd*3.6; // conversion from mps to kmph
   vehicle_data.steering_angle = recvd_data.str_ang;
 };
 

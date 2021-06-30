@@ -140,8 +140,8 @@ int main(int argc, char **argv){
         drive_ctrl.lcc_allowed = cav_rx.signals_in_range(cav_in.lcc_allowed_decode, cav_in.lcc_allowed_is_in_range);
         drive_ctrl.alive_rolling_counter_MABx =
             cav_rx.signals_in_range(cav_in.hsc_alive_decode, cav_in.hsc_alive_is_in_range);
-        drive_ctrl.veh_spd = cav_rx.signals_in_range(cav_in.veh_spd_decode, cav_in.veh_spd_is_in_range);
-        drive_ctrl.str_ang = cav_rx.signals_in_range(cav_in.str_ang_decode, cav_in.str_ang_is_in_range);
+        drive_ctrl.veh_spd = cav_rx.signals_in_range(cav_in.veh_spd_decode, cav_in.veh_spd_is_in_range); // in mps
+        drive_ctrl.str_ang = cav_rx.signals_in_range(cav_in.str_ang_decode, cav_in.str_ang_is_in_range); // in deg
         
 
         // std::cout << "\nPCM input--- ";
@@ -168,7 +168,7 @@ int main(int argc, char **argv){
         cav_in.acc_active_decode = emc_pcm_cav_interface_pcm_to_cav_2_acc_active_decode(pcm2.acc_active);
         cav_in.acc_active_is_in_range = emc_pcm_cav_interface_pcm_to_cav_2_acc_active_is_in_range(pcm2.acc_active);
 
-        cav_in.acc_st_speed_decode = emc_pcm_cav_interface_pcm_to_cav_2_acc_st_spd_decode(pcm2.acc_st_spd);
+        cav_in.acc_st_speed_decode = emc_pcm_cav_interface_pcm_to_cav_2_acc_st_spd_decode(pcm2.acc_st_spd); // in kmph
         cav_in.acc_st_speed_is_in_range = emc_pcm_cav_interface_pcm_to_cav_2_acc_st_spd_is_in_range(pcm2.acc_st_spd);
 
         drive_ctrl.acc_activation = cav_rx.signals_in_range(cav_in.acc_active_decode, cav_in.acc_active_is_in_range);
@@ -176,8 +176,8 @@ int main(int argc, char **argv){
         
         // Overrides for testing
         // drive_ctrl.acc_activation = true;
-        drive_ctrl.aeb_activation = true;  
-        drive_ctrl.lcc_activation = true;
+        // drive_ctrl.aeb_activation = true;  
+        // drive_ctrl.lcc_activation = true;
         drive_ctrl.acc_gap_level = 1; // 1 = close (1.4s or 10m) / 2 = medium (1.8s or 12.5m) / 3 = far (2.3s or 15m)
         // drive_ctrl.acc_speed_set_point = 40;  // (i.e. 40 kmph)
 

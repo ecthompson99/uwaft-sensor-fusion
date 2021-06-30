@@ -37,7 +37,7 @@ class CAV_PCM_TX_RX{
             bool acc_allowed_is_in_range;
             double lcc_allowed_decode;
             bool lcc_allowed_is_in_range;
-            double veh_spd_decode;
+            double veh_spd_decode; // mps
             bool veh_spd_is_in_range;
             double hsc_alive_decode;
             bool hsc_alive_is_in_range;
@@ -45,7 +45,7 @@ class CAV_PCM_TX_RX{
             bool str_ang_is_in_range;
             double acc_active_decode;
             bool acc_active_is_in_range;
-            double acc_st_speed_decode;
+            double acc_st_speed_decode; // kmph
             bool acc_st_speed_is_in_range;
 
             double pcm_rc1_decode;

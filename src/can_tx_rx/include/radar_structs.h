@@ -34,8 +34,8 @@ class Radar_RX{
     
     /** Dynamic vehicle info input to radar. */
     struct dynamic_vehicle_info {
-      double vehicle_speed;
-      double steering_angle;
+      double vehicle_speed; // in kmph
+      double steering_angle; // in deg
     };
 
     /** Diagnostic message output from radar. */
