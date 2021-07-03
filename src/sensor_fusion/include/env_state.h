@@ -21,20 +21,20 @@ class EnvironmentState {
   public:        
     EnvironmentState(ros::NodeHandle* env_state_node_handle);
     virtual ~EnvironmentState();
-    void publish_target_obj();
-    void publish_tracked_obj();
-    void publish_all_tracked_obj();
+    void publish_target_obj(); /*!< Publishes single target object in ego lane. */
+    void publish_tracked_obj(); /*!< Publishes target object in adjacent and ego lanes. */
+    void publish_all_tracked_obj(); /*!< Publishes all currently tracked objects. */
     void publish_binary_class();
-    void filtered_object_callback(const common::filtered_object_msg& filtered_msg);
+    void filtered_object_callback(const common::filtered_object_msg& filtered_msg); /*!< Called when KF publishes to filtered_object topic. */
     common::tracked_output_msg get_tracked_output_msg();
     common::target_output_msg get_target_output_msg();
 
-    void add_object(const ObjectState& tracked_msg);
-    void update_object(const ObjectState& tracked_msg, size_t index);
-    void check_tracked_time();
-    void update_env_state(const ObjectState& tracked_msg); 
+    void add_object(const ObjectState& tracked_msg); /*!< Add object to tracked objects vector. */
+    void update_object(const ObjectState& tracked_msg, size_t index); /*!< Update tracked object msg at specfied index. */
+    void check_tracked_time();  /*!< Check when object was last seen. If over threshold, erase. */
+    void update_env_state(const ObjectState& tracked_msg);  /*!< Update env state vector depending on object match or not. */
     // void find_target_object(const ObjectState& tracked_msg);
-    void find_target_object();
+    void find_target_object();  /*!< Assigns target object in each lane based on dx or ID match. */
     void reset_tracks();
 
     bool env_state_srv_callback(sensor_fusion::env_state_srv::Request &req, sensor_fusion::env_state_srv::Response &res);

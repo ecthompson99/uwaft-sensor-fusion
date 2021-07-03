@@ -158,7 +158,6 @@ void DataAssociation::pub_me_signals(common::associated_me_msg &associated_me_ms
     associated_me_msg.me_timestamp = me_obj.me_timestamp;
 }
 
-// Used to delete potential objects (in temporary array) if havn't seen for a long time
 void DataAssociation::delete_potential_objects() {
     for (unsigned i = 0; i < potential_objs.size(); i++){
       if ((global_clk - potential_objs[i].timestamp > secondsToDelete)) {
