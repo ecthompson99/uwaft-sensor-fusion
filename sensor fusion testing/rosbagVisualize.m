@@ -3,7 +3,7 @@ clc
 clear
 i = 0;
 
-bag = rosbag('S:\Engineering\UWAFT\kaiROS\rosbags\29_A15.bag');
+bag = rosbag('S:\Engineering\UWAFT\kaiROS\rosbags\ScenD_inputs_fixed_played.bag');
 bag.AvailableTopics;
 
 
@@ -14,6 +14,7 @@ ego_Speed = cellfun(@(m) m.VehSpd, driveCtrl_struct);
 ego_Str = cellfun(@(m) m.StrAng, driveCtrl_struct);
 ego_SetSpeed = cellfun(@(m) m.AccSpeedSetPoint, driveCtrl_struct);
 ego_Gap = cellfun(@(m) m.AccGapLevel, driveCtrl_struct);
+ego_AccActive = cellfun(@(m) m.AccActivation, driveCtrl_struct);
 
 i=i+1;
 figure(i);
@@ -29,8 +30,9 @@ figure(i);
 plot(ego_SetSpeed);
 hold on;
 plot(ego_Gap);
+plot(ego_AccActive);
 hold off;
-legend('Set Speed','Gap')
+legend('Set Speed','Gap','Acc Active')
 title('Drive Control Inputs pt. 2')
 
 %% Mobileye
@@ -225,6 +227,7 @@ target_topic = select(bag, 'Topic', '/target_output');
 target_struct = readMessages(target_topic, 'DataFormat', 'struct');
 obj_dx = cellfun(@(m) m.ObjDx, target_struct);
 obj_dy = cellfun(@(m) m.ObjDy, target_struct);
+obj_vx = cellfun(@(m) m.ObjVx, target_struct);
 time = cellfun(@(m) m.ObjTimestamp, target_struct);
 
 i=i+1;
@@ -236,6 +239,12 @@ hold off
 legend('obj_dx','obj_dy')
 ylim([0, 120]);
 title('Target Object time vs dx/dy')
+
+i=i+1;
+figure(i);
+scatter(time, obj_vx);
+legend('obj_vx')
+title('Target Object Vx')
 
 %% Acceleration
 
