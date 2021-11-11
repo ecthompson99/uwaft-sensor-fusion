@@ -27,11 +27,11 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
     rosbag::Bag bag;
     // Bag file to output combined data to
-    bag.open("ScenD_inputs_fixed_90_g3.bag", rosbag::bagmode::Write);
+    bag.open("ScenarioA_15_Sensor_Data.bag", rosbag::bagmode::Write);
 
     // Radar data CSV file path
     string file_path = getenv("HOME");
-    file_path.append("/kaiROS/sensor fusion testing/Excel files/UWAFT_EMC Y3_ScenarioD_5_2021-05-29_17-55-57_radar.csv");
+    file_path.append("/kaiROS/sensor fusion testing/Excel files/UWAFT_EMC Y3_ScenarioA_15_2021-05-29_17-34-21_radar.csv");
     ifstream fin_front_radar(file_path.c_str());
     if (!fin_front_radar.is_open())
     {
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 
     // Mobileye data CSV file path
     file_path = getenv("HOME");
-    file_path.append("/kaiROS/sensor fusion testing/Excel files/UWAFT_EMC Y3_ScenarioD_5_2021-05-29_17-55-57_mobileye.csv");
+    file_path.append("/kaiROS/sensor fusion testing/Excel files/UWAFT_EMC Y3_ScenarioA_15_2021-05-29_17-34-21_mobileye.csv");
     
     ifstream fin_mobileye(file_path.c_str());
     if (!fin_mobileye.is_open())
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 
     // Vehicle data CSV file path
     file_path = getenv("HOME");
-    file_path.append("/kaiROS/sensor fusion testing/Excel files/UWAFT_EMC Y3_ScenarioD_5_2021-05-29_17-55-57_vehicle.csv");
+    file_path.append("/kaiROS/sensor fusion testing/Excel files/UWAFT_EMC Y3_ScenarioA_15_2021-05-29_17-34-21_vehicle.csv");
     
     ifstream fin_vehicle(file_path.c_str());
     if (!fin_vehicle.is_open())
@@ -153,10 +153,10 @@ int main(int argc, char **argv)
         common::drive_ctrl_input_msg vehicle_data;
 
         vehicle_data.veh_spd = atof(parse_word(ss));
-        vehicle_data.acc_allowed = atoi(parse_word(ss));
+        vehicle_data.acc_allowed = atoi(parse_word(ss)); // From PCM, able to run ACC
         vehicle_data.str_ang = atof(parse_word(ss));
         vehicle_data.acc_speed_set_point = 90; //atof(parse_word(ss));
-        vehicle_data.acc_activation = true; //atoi(parse_word(ss));
+        vehicle_data.acc_activation = true; //atoi(parse_word(ss)); // From CAVs if ACC is active
         vehicle_data.acc_gap_level = 3; //atoi(parse_word(ss));
 
         if (time.toNSec() == 0) time = ros::TIME_MIN;

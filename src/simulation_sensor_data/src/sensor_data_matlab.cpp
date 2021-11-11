@@ -7,6 +7,7 @@
 #include <time.h>
 #include <common/mobileye_object_data.h>
 #include <common/radar_object_data.h>
+#include <common/drive_ctrl_input_msg.h>
 
 using namespace std;
 
@@ -69,7 +70,7 @@ void camera_data_parser(stringstream& ss, mobileye_data& camera)
 }
 
 void read_sensor_data_csv(string filename, vector<double>& time, vector<radar_data>& front_radar, vector<radar_data>& right_radar,
-                          vector<radar_data>& left_radar, vector<mobileye_data>& mobileye) 
+                          vector<radar_data>& left_radar, vector<mobileye_data>& mobileye, vector<float>& veh_speed) 
 {
     ifstream fin(filename.c_str());
     if (!fin.is_open())
@@ -100,6 +101,9 @@ void read_sensor_data_csv(string filename, vector<double>& time, vector<radar_da
         radar_data_parser(ss, right_radar[i]);
         radar_data_parser(ss, left_radar[i]);
         camera_data_parser(ss, mobileye[i]);
+
+        std::getline(ss, word, ',');
+        veh_speed.push_back(atof(word.c_str()));
         
         i++;
     }
@@ -110,17 +114,18 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "sensor_data_matlab");
     ros::NodeHandle nh;
     rosbag::Bag bag;
-    bag.open("sim_sensor_data.bag", rosbag::bagmode::Write);
+    bag.open("sim_sensor_data_20mph_moving.bag", rosbag::bagmode::Write);
     
     std::vector<double> time_stamps;
     std::vector<radar_data> front_radar;
     std::vector<radar_data> right_radar;
     std::vector<radar_data> left_radar;
     std::vector<mobileye_data> mobileye;
+    std::vector<float> veh_speed;
     
     string simulation_file_path = getenv("HOME");
-    simulation_file_path.append("/kaiROS/src/simulation_sensor_data/src/sim_sensor_output_stationary_approach.csv");
-    read_sensor_data_csv(simulation_file_path, time_stamps, front_radar, right_radar, left_radar, mobileye);
+    simulation_file_path.append("/kaiROS/src/simulation_sensor_data/src/sim_sensor_output_moving_approach.csv");
+    read_sensor_data_csv(simulation_file_path, time_stamps, front_radar, right_radar, left_radar, mobileye, veh_speed);
 
     for (size_t x = 0; x < time_stamps.size(); x++) 
     {
@@ -129,6 +134,7 @@ int main(int argc, char **argv)
         common::radar_object_data right_radar_data;
         common::radar_object_data left_radar_data;
         common::mobileye_object_data mobileye_data;
+        common::drive_ctrl_input_msg drive_ctrl;
 
         // Assign radar data to ROS radar_object_data messages
         for(int obj_idx = 0; obj_idx < 32; obj_idx++)
@@ -186,13 +192,27 @@ int main(int argc, char **argv)
             mobileye_data.me_valid[obj_idx] = 1;
         }
 
+        drive_ctrl.veh_spd = veh_speed[x];
+        drive_ctrl.acc_gap_level = 2;
+        drive_ctrl.acc_speed_set_point = 32;
+        drive_ctrl.acc_activation = true;
+        drive_ctrl.aeb_activation = false;
+        drive_ctrl.lcc_activation = false;
+        drive_ctrl.acc_allowed = true;
+        drive_ctrl.aeb_allowed = false;
+        drive_ctrl.lcc_allowed = false;
+        drive_ctrl.alive_rolling_counter_Jetson = 0;
+        drive_ctrl.alive_rolling_counter_MABx = 0;
+        drive_ctrl.str_ang = 0;
+
         if (time.toNSec() == 0) time = ros::TIME_MIN;
 
         // Write radar and mobileye messages along with timestamp to corresponding topics in bag file
         bag.write("Front_Radar_CAN_Rx", time, front_radar_data);
         bag.write("Right_Radar_CAN_Rx", time, right_radar_data);
         bag.write("Left_Radar_CAN_Rx", time, left_radar_data);
-        bag.write("Mobileye_CAN_Rx", time, mobileye_data);        
+        bag.write("Mobileye_CAN_Rx", time, mobileye_data); 
+        bag.write("drive_ctrl_input", time, drive_ctrl);       
     }
 
     bag.close();
