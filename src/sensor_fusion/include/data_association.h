@@ -36,7 +36,7 @@
 #define secondsToDelete 3
 #define MESSAGE_BUFFER_SIZE 10
 #define RADAR_OBJ 32
-#define ME_OBJ 1  // how many objects ME is set to track
+#define ME_OBJ 10  // how many objects ME is set to track
 // Values below for testing purposes
 #define MIN_DX 1.0   // Real value = 10.00
 #define MAX_DX 130.00  // Real value = 90.00
