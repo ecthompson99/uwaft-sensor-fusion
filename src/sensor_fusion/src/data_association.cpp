@@ -194,8 +194,8 @@ bool DataAssociation::objects_match_me(ObjectState obj, MobileyeObject& filtered
   // printf("Vx difference: %f\n", (abs(filtered.me_vx - obj.vx)));
 
   // New object must be within DT_TOL of filtered object to match
-  double dx = abs(filtered.radar_dx - obj.dx);
-  double dy = abs(filtered.radar_dy - obj.dy);
+  double dx = abs(filtered.me_dx - obj.dx);
+  double dy = abs(filtered.me_dy - obj.dy);
   double dtotal = sqrt(pow(dx, 2) + pow(dy, 2));
   if (dtotal < DT_TOL) {
     if ((abs(filtered.me_dx - obj.dx) < DX_TOL) && (abs(filtered.me_dy - obj.dy) < DY_TOL) &&
