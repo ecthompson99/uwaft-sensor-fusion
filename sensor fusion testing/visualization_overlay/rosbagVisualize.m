@@ -3,7 +3,7 @@ clc
 clear
 i = 0;
 
-bag = rosbag('S:\Engineering\UWAFT\kaiROS\rosbags\ScenD_inputs_fixed_played.bag');
+bag = rosbag('../Driving Scenario Designer/bag/scenario2-output.bag');
 bag.AvailableTopics;
 
 
@@ -38,25 +38,60 @@ title('Drive Control Inputs pt. 2')
 %% Mobileye
 me_topic = select(bag, 'Topic', '/Mobileye_CAN_Rx');
 me_struct = readMessages(me_topic, 'DataFormat', 'struct');
-me_dx = cellfun(@(m) m.MeDx(1), me_struct);
-me_dy = cellfun(@(m) m.MeDy(1), me_struct);
 me_timestamp = cellfun(@(m) m.MeTimestamp, me_struct);
 
-i=i+1;
-figure(i);
-scatter(me_timestamp, me_dx);
-hold on;
-scatter(me_timestamp, me_dy);
-hold off
-legend('me_dx','me_dy')
-title('ME Object time vs dx/dy')
+numcams = 10;
+numr = 2;
+numc = 5;
+for c=1:numcams
+    me_dx = cellfun(@(m) m.MeDx(c), me_struct);
+    subplot(numr, numc, c);
+    scatter(me_timestamp, me_dx);
+    title(sprintf('Object %d', c));
+end
 
-i=i+1;
+sgtitle(sprintf('Mobileye dx for %d/10 Objects', numcams)) 
+i = i+1;
 figure(i);
-me_ratio = me_dy ./ me_dx;
-scatter(me_timestamp, me_ratio);
-title('ME ratio (dy / dx)')
-avg_ratio = mean(me_ratio, 'omitnan');
+
+for c=1:numcams
+    me_dy = cellfun(@(m) m.MeDy(c), me_struct);
+    subplot(numr, numc, c);
+    scatter(me_timestamp, me_dy);
+    title(sprintf('Object %d', c));
+end
+sgtitle(sprintf('Mobileye dy for %d/10 Objects', numcams)) 
+i = i+1;
+figure(i);
+
+for c=1:numcams
+    me_dx = cellfun(@(m) m.MeDx(c), me_struct);
+    me_dy = cellfun(@(m) m.MeDy(c), me_struct);
+    me_dtotal = sqrt(me_dx.^2 + me_dy.^2);
+    subplot(numr, numc, c);
+    scatter(me_timestamp, me_dtotal);
+    title(sprintf('Object %d', c));
+end
+sgtitle(sprintf('Mobileye total distance for %d/10 Objects', numcams)) 
+i = i+1;
+figure(i);
+
+% For single vehicle detection
+% i=i+1;
+% figure(i);
+% scatter(me_timestamp, me_dx);
+% hold on;
+% scatter(me_timestamp, me_dy);
+% hold off
+% legend('me_dx','me_dy')
+% title('ME Object time vs dx/dy')
+% 
+% i=i+1;
+% figure(i);
+% me_ratio = me_dy ./ me_dx;
+% scatter(me_timestamp, me_ratio);
+% title('ME ratio (dy / dx)')
+% avg_ratio = mean(me_ratio, 'omitnan');
 
 % i=i+1;
 % figure(i);
@@ -93,28 +128,34 @@ fr_timestamp = cellfun(@(m) m.RadarTimestamp, fr_struct);
 
 i=i+1;
 figure(i);
-for c = 1:32
+numplots = 20;
+numr = 4;
+numc = 5;
+for c = 1:numplots
     frObjDx = cellfun(@(m) m.RadarDx(c), fr_struct);
-    subplot(4,8,c);
+    subplot(numr, numc, c);
     scatter(fr_timestamp, frObjDx);
+    title(sprintf('Object %d', c));
 end
-sgtitle('Front Radar dx for 32 Objects') 
+sgtitle(sprintf('Front Radar dx for %d/32 Objects', numplots)) 
 i = i+1;
 figure(i);
-for c = 1:32
+for c = 1:numplots
     frObjDz = cellfun(@(m) m.RadarDz(c), fr_struct);
-    subplot(4,8,c);
+    subplot(numr, numc, c);
     scatter(fr_timestamp, frObjDz);
+    title(sprintf('Object %d', c));
 end    
-sgtitle('Front Radar dz for 32 Objects')
+sgtitle(sprintf('Front Radar dz for %d/32 Objects', numplots)) 
 i = i+1;
 figure(i);
-for c = 1:32
+for c = 1:numplots
     frObjDy = cellfun(@(m) m.RadarDy(c), fr_struct);
-    subplot(4,8,c);
+    subplot(numr, numc, c);
     scatter(fr_timestamp, frObjDy);
+    title(sprintf('Object %d', c));
 end    
-sgtitle('Front Radar dy for 32 Objects') 
+sgtitle(sprintf('Front Radar dy for %d/32 Objects', numplots)) 
 
 selectedObj = 20;
 

@@ -1,8 +1,8 @@
 clear
 clc
 
-load('../Driving Scenario Designer/stationary_target_approach_100m_20mph_sensor_data.mat');
-detections = struct2table(sensor_data);
+load('../Driving Scenario Designer/sim_output/scenario2.mat');
+detections = struct2table(sensor_data_2);
 
 ground_truth = struct('Time', [], 'Objects', []);
 
@@ -20,4 +20,4 @@ for i = 1:height(detections)
 
 end
 
-save('../Mat Files/stationary_target_approach_100m_20mph_ground_truth.mat', 'ground_truth'); 
+% save('../Driving Scenario Designer/ground_truth/scenario3e_ground_truth.mat', 'ground_truth'); 

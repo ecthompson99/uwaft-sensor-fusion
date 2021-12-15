@@ -6,13 +6,12 @@ clc
 
 % Load ground truth
 file_path = strcat(pwd, '\simulation_gt.mat');
-temp = load(file_path);
+temp = load('../Driving Scenario Designer/ground_truth/scenario2_ground_truth.mat');
 ground_truth = temp.ground_truth;
 
 % Load sensor fusion output
 % bag_path = strcat(pwd, '\velocity_test_0707.bag');
-bag_path = '..\Rosbag Files\velocity_test_0707.bag';
-bag = rosbag(bag_path);
+bag = rosbag('../Driving Scenario Designer/bag/scenario2-output.bag');
 temp = select(bag, 'Topic', '/binary_class');
 output = readMessages(temp, 'DataFormat', 'struct');
 
@@ -23,12 +22,13 @@ TN = 0;
 
 total = 0;
 
-sf_offset = 6;
+sf_offset = 6; % Why is this 6?
+sf_offset = size(output,1) - size(ground_truth,2);
 
 THRESHOLD = 5;
 
 % Go through every timestep
-for i = 1:10:size(output,1)
+for i = 1:10:size(output,2)
     gt_ind = i+sf_offset;
     % Loop through ground truth objects
     num_gt = size(ground_truth(gt_ind).Objects,1);
