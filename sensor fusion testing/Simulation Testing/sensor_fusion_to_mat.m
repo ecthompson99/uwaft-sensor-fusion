@@ -2,7 +2,7 @@ clear all
 clc
 %% Load rosbag from SF output
 
-bag = rosbag('..\Rosbag Files\2021-02-23-01-23-47.bag');
+bag = rosbag('..\Driving Scenario Designer\bag\scenario3-output.bag');
 
 % Select tracked obj topic
 tracked_obj_bag = select(bag, 'Topic', 'binary_class'); 

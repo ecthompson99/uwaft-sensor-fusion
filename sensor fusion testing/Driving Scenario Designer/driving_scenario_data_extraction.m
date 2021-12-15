@@ -1,10 +1,12 @@
-load("driving_scenarios\stationary_target_approach_fast.mat");
+% load("sim_output\scenario2.mat");
 
+% save("./sim_output/scenario3e.mat", "sensor_data_3e")
 %load the exported data from scenario designer (1 x (#time_stamps))
 data = struct2table(sensor_data); % name of variable output from Driving Scenario Designer
 
 for i = 1:height(data)
     time = data{i, 'Time'};
+    disp(time);
     objects = data.ObjectDetections{i,1};
     
     egoPose = data.ActorPoses{i, 1};
@@ -75,6 +77,6 @@ for i = 1:height(data)
                     cam_dx_, cam_dy_, cam_vx_, ...
                     egoVelocity};
                 
-    writecell(data_output_, "sim_sensor_output_stationary_approach.csv", "WriteMode", "append");
+    writecell(data_output_, "./csv/scenario2_again.csv", "WriteMode", "append");
    
 end

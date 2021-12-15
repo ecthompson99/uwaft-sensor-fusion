@@ -1,0 +1,21 @@
+scenario 1:
+    - stationary vehicle, dx = 110, dy = 0
+    - ego vehicle, velocity = 4.4704 m/s
+
+scenario 2: Straight single-vehicle deceleration
+    - stationary target vehicle, dx = 55, dy = 0
+    - ego vehicle, start velocity = 40 kph, linear decrease, end velocity = 0 kph
+
+scenario 3: Straight Multi-vehicle
+    - straight road, 150 m
+    - 3 target vehicles
+        - left, fast, 25 m/s
+        - center, medium, 17.5 m/s
+        - right, slow, 10 m/s
+    - ego vehicle travels at 15 m/s constant
+
+scenario 3a: Scenario 3 with center + slow (right) vehicle
+scenario 3b: Scenario 3 with center + fast (left) vehicle
+scenario 3c: Scenario 3 with slow vehicle only
+scenario 3d: Scenario 3 with fast vehicle only
+scenario 3e: Scenario 3 with the center vehicle only
