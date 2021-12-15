@@ -1,0 +1,83 @@
+1. Message received from CAN
+    a) Radar Callback
+        - filter radar (make sure within bounds of min, max dx/dy)
+            - cannot be stationary
+            - if exist flag
+            - if radar valid flag
+        - read in all rosbag data (from radar service)
+        - for each radar object
+            - if obj in envState (within certin DX and DY of another, same object) they match
+                - publish filtered object
+            - if not in envState do some potential_objs matching and send to kf_node if it appears more than POTENTIAL_THRESHOLD times
+                - Need to see 5 of them within 3 seconds to be sent to kf_node
+            - if not in envState or potential_objs then add to potential_objs
+
+    b) ME Callback
+        - filter ME
+            - make sure within min/max dx/dy
+        - read in all camera data
+        - for each ME object
+            - for each object in envstate
+                - if the object is in envstate, publish object to kf node
+            - if not in env state check if matches any potential_objs in potential_objs array
+                - if so, increase count
+                - if count exceeds POTENTIAL_THRESHOLD then publish object to kf_node
+                - erase object from potential_objs
+            - if doesn't match any envstate of potential_objs, then add object to potentials
+        ** We learned that KF node receives object if it's in envState or if it is seen more than 5 times
+
+2. Receive filtered objects from ME and Radar Callback
+    a) Initialize dict of objects self.objects = {}
+    b) respond to publishing of ME callback by running me_association_callback
+        - get measurement of single object (dx,dy,vx)
+        - if ID not in self.objects -> add it to self.objects indexed by ID + timestamp 
+            - Add array(dx,dy) to its self.input_history
+            - Add array(dx,dy) to its self.output_history
+        - else
+            - Runs some KF filtering and uses built-in prediction method and updates the measurement value
+            - Cap the true dx and dy values
+            - Append the predicted dx and dy values to the input_history
+            - Append the predicted dx and dy values to the output_history
+        ** What is the difference between input and output_history
+        - Saves dx,dy,vx,vy,id,lane,ax,time values into object Message
+        - publish object
+
+    c) respond to published radar callback by running radar_association_callback
+        - Refer to b), same process but with radar data\
+    
+    d) respond to object_deletion_callback by deleting object in the self.objects, {}
+
+    ** Do objects have the same ID between ME and Radar?
+        - No object has the same ID, they are all unique (even if it is the same object)
+
+
+3. Environment state subscribes to "filtered_obj" topic published by kalman filter
+    a) When filtered object is published, receive it and call filtered_object_callback
+        - This receives both ME and Radar objects alike
+        - Call update_env_state() by passing along published message
+            - for every item in trackedObjects (will be empty initially)
+                - if published object is in trackedObjects
+                    - found = true
+                    - update index
+                    - update the object current position
+                - else
+                    add object to trackedObjects
+            - update msg_timestamp
+
+    b) Continuously run this function
+        - Call find_target_object()
+            - for every object in trackedObjects (filtered through DA and KF)
+                - get object lane
+                - if lane == 1: 
+                    - if new object dx < previous object dx or ID is the same:
+                        - update current lane 1 object
+                - if lane == 2 -> same as lane 1
+        - Every 0.01 seconds:
+            - publish target object
+            - publish tracked object
+            - publish all tracked objects
+            - publish binary class
+            - increment global_clk by 0.01
+
+--- Additional Notes
+- ID comes from the `next_id` global variable assigned in Data Association

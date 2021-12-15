@@ -169,13 +169,14 @@ class KF_Node(object):
             self.output_history[obj.obj_id] = np.append(self.output_history[obj.obj_id], [hashed.x], axis=0)
 
         result = filtered_object_msg()
+        # TODO: Does self.objects[obj.obj_id].x actually unwrap into 4 values??
         result.obj_dx, result.obj_dy, result.obj_vx, result.obj_vy = self.objects[obj.obj_id].x
         self.resource_lock.release()
         result.obj_id = obj.obj_id 
         result.obj_lane, result.obj_path = determine_lane(result.obj_dy)
         result.obj_ax = obj.radar_ax
         result.obj_timestamp = obj.radar_timestamp
-        result.obj_count = 30
+        result.obj_count = 30 # TODO: Do we just arbitrarily set this const??
 
         self.output.publish(result)
 

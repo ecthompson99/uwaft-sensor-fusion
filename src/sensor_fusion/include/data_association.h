@@ -1,16 +1,16 @@
 #ifndef __DATA_ASSOCIATION_H__
 #define __DATA_ASSOCIATION_H__
 
-#include "ros/ros.h"
+#include <vector>
+#include "mobileye_obj.h"
 #include "object_state_da.h"
 #include "radar_obj.h"
-#include "mobileye_obj.h"
-#include <vector>
+#include "ros/ros.h"
 
-#include "sensor_fusion/env_state_srv.h"
 #include "common/sensor_diagnostic_flag_CH2.h"
 #include "common/sensor_diagnostic_flag_CH3.h"
 #include "common/sensor_diagnostic_flag_CH4.h"
+#include "sensor_fusion/env_state_srv.h"
 
 #include "common/associated_me_msg.h"
 #include "common/associated_radar_msg.h"
@@ -31,85 +31,87 @@
 
 #define DX_TOL 60.0
 #define DY_TOL 5.0
+#define DT_TOL 5.0  // DT = dtotal (euclidean distance) representing the length of a car
 #define VX_TOL 20.0
 #define POTENTIAL_THRESHOLD 5
 #define secondsToDelete 3
 #define MESSAGE_BUFFER_SIZE 10
 #define RADAR_OBJ 32
-#define ME_OBJ 10  // how many objects ME is set to track
+#define ME_OBJ 2  // how many objects ME is set to track
 // Values below for testing purposes
-#define MIN_DX 1.0   // Real value = 10.00
+#define MIN_DX 1.0  // Real value = 10.00
+#define MIN_DX_ME 13.00
+#define MAX_DX_RADAR 30.00
 #define MAX_DX 130.00  // Real value = 90.00
 #define MAX_DY 12.00   // Real value = 2.00
-#define MAX_DZ 3.00 // Should tune with ratio
+#define MAX_DZ 3.00    // Should tune with ratio
 #define MIN_MOVING_VELOCITY 0.5
 #define EXIST 0.95
 
-
 class DataAssociation {
-	public:
-		DataAssociation(ros::NodeHandle* node_handle);
-		void delete_potential_objects();
+ public:
+  DataAssociation(ros::NodeHandle* node_handle);
+  void delete_potential_objects();
 
-		friend class ObjectState;
+  friend class ObjectState;
 
-		void sensor_radar_data_obj_callback(const common::radar_object_data& sensor_data);
-		void sensor_me_data_obj_callback(const common::mobileye_object_data& sensor_data);
-       
-        bool sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request& req, common::sensor_diagnostic_flag_CH2::Response &res);
-        bool sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request& req, common::sensor_diagnostic_flag_CH3::Response &res);
-        bool sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request& req, common::sensor_diagnostic_flag_CH4::Response &res);
+  void sensor_radar_data_obj_callback(const common::radar_object_data& sensor_data);
+  void sensor_me_data_obj_callback(const common::mobileye_object_data& sensor_data);
 
-        std::vector<ObjectState> potential_objs;
-        //std::vector<RadarObject> filtered_radar_obj;// = std::vector<RadarObject>(32);
-        std::vector<MobileyeObject> filtered_me_obj;// = std::vector<MobileyeObject>(10);
+  bool sensor_diagnostic_callback_CH2(common::sensor_diagnostic_flag_CH2::Request& req,
+                                      common::sensor_diagnostic_flag_CH2::Response& res);
+  bool sensor_diagnostic_callback_CH3(common::sensor_diagnostic_flag_CH3::Request& req,
+                                      common::sensor_diagnostic_flag_CH3::Response& res);
+  bool sensor_diagnostic_callback_CH4(common::sensor_diagnostic_flag_CH4::Request& req,
+                                      common::sensor_diagnostic_flag_CH4::Response& res);
 
-        bool objects_match_radar(ObjectState obj, RadarObject& filtered_data);
-        bool objects_match_me(ObjectState obj, MobileyeObject& filtered_data);
+  std::vector<ObjectState> potential_objs;
+  // std::vector<RadarObject> filtered_radar_obj;// = std::vector<RadarObject>(32);
+  std::vector<MobileyeObject> filtered_me_obj;  // = std::vector<MobileyeObject>(10);
 
-        std::vector<RadarObject> filter_radar(const common::radar_object_data& recvd_data);
-        std::vector<MobileyeObject> filter_me(const common::mobileye_object_data& recvd_data);
+  bool objects_match_radar(ObjectState obj, RadarObject& filtered_data);
+  bool objects_match_me(ObjectState obj, MobileyeObject& filtered_data);
 
-        void pub_radar_signals(common::associated_radar_msg &matched, RadarObject &r_obj);
-        void pub_me_signals(common::associated_me_msg &matched, MobileyeObject &me_obj);
+  std::vector<RadarObject> filter_radar(const common::radar_object_data& recvd_data);
+  std::vector<MobileyeObject> filter_me(const common::mobileye_object_data& recvd_data);
 
-        // for unit testing
-        void set_front_radar(bool fr){FRONT_RADAR = fr;}
-        void set_right_corner_radar(bool rc){RIGHT_CORNER_RADAR = rc;}
-        void set_left_corner_radar(bool lc){LEFT_CORNER_RADAR = lc;}
-        void set_me(bool me){MOBILEYE = me;}
-        common::associated_radar_msg get_associated_radar_msg();
-        common::associated_me_msg get_associated_me_msg();
-        
-        bool FRONT_RADAR;
-        bool LEFT_CORNER_RADAR;
-        bool RIGHT_CORNER_RADAR;
-        bool MOBILEYE;
+  void pub_radar_signals(common::associated_radar_msg& matched, RadarObject& r_obj);
+  void pub_me_signals(common::associated_me_msg& matched, MobileyeObject& me_obj);
 
-        double global_clk;
-        unsigned long long next_id;
+  // for unit testing
+  void set_front_radar(bool fr) { FRONT_RADAR = fr; }
+  void set_right_corner_radar(bool rc) { RIGHT_CORNER_RADAR = rc; }
+  void set_left_corner_radar(bool lc) { LEFT_CORNER_RADAR = lc; }
+  void set_me(bool me) { MOBILEYE = me; }
+  common::associated_radar_msg get_associated_radar_msg();
+  common::associated_me_msg get_associated_me_msg();
 
+  bool FRONT_RADAR;
+  bool LEFT_CORNER_RADAR;
+  bool RIGHT_CORNER_RADAR;
+  bool MOBILEYE;
 
-	private:
-		ros::NodeHandle* node_handle;
+  double global_clk;
+  unsigned long long next_id;
 
-		ros::ServiceClient client;
-        ros::ServiceServer srv_ch2;
-        ros::ServiceServer srv_ch3;
-        ros::ServiceServer srv_ch4;
+ private:
+  ros::NodeHandle* node_handle;
 
+  ros::ServiceClient client;
+  ros::ServiceServer srv_ch2;
+  ros::ServiceServer srv_ch3;
+  ros::ServiceServer srv_ch4;
 
-		ros::Publisher radar_to_kf_pub;
-		ros::Publisher me_to_kf_pub;
-        
-		ros::Subscriber sensor_front_radar_data_obj_sub;
-		ros::Subscriber sensor_left_corner_radar_sub;
-		ros::Subscriber sensor_right_corner_radar_sub;
-		ros::Subscriber sensor_me_data_obj_sub;
+  ros::Publisher radar_to_kf_pub;
+  ros::Publisher me_to_kf_pub;
 
-        common::associated_radar_msg associated_radar_msg;
-        common::associated_me_msg associated_me_msg;
-        
+  ros::Subscriber sensor_front_radar_data_obj_sub;
+  ros::Subscriber sensor_left_corner_radar_sub;
+  ros::Subscriber sensor_right_corner_radar_sub;
+  ros::Subscriber sensor_me_data_obj_sub;
+
+  common::associated_radar_msg associated_radar_msg;
+  common::associated_me_msg associated_me_msg;
 };
 
 #endif  // __DATA_ASSOCIATION_H__

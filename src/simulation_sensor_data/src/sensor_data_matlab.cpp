@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "sensor_data_matlab");
     ros::NodeHandle nh;
     rosbag::Bag bag;
-    bag.open("scenario3.bag", rosbag::bagmode::Write);
+    bag.open("scenario3e.bag", rosbag::bagmode::Write);
     
     std::vector<double> time_stamps;
     std::vector<radar_data> front_radar;
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
     std::vector<float> veh_speed;
     
     string simulation_file_path = getenv("HOME");
-    simulation_file_path.append("/kaiROS/src/simulation_sensor_data/csv/scenario3.csv");
+    simulation_file_path.append("/kaiROS/src/simulation_sensor_data/csv/scenario3e.csv");
     read_sensor_data_csv(simulation_file_path, time_stamps, front_radar, right_radar, left_radar, mobileye, veh_speed);
 
     for (size_t x = 0; x < time_stamps.size(); x++) 
