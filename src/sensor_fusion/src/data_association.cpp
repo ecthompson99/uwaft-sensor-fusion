@@ -173,16 +173,11 @@ void DataAssociation::delete_potential_objects() {
 bool DataAssociation::objects_match_radar(ObjectState obj, RadarObject& filtered) {
   // filter dx, dy, vx
   // New object must be within DT_TOL of filtered object to match
-  double dx = abs(filtered.radar_dx - obj.dx);
-  double dy = abs(filtered.radar_dy - obj.dy);
-  double dtotal = sqrt(pow(dx, 2) + pow(dy, 2));
-  if (dtotal < DT_TOL) {
-    if ((abs(filtered.radar_dx - obj.dx) < DX_TOL) && (abs(filtered.radar_dy - obj.dy) < DY_TOL) &&
-        (abs(filtered.radar_vx - obj.vx) < VX_TOL)) {
-      // printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n",
-      // filtered.radar_dx - obj.dx, filtered.radar_dy - obj.dy, filtered.radar_vx - obj.vx);
-      return 1;
-    }
+  if ((abs(filtered.radar_dx - obj.dx) < DX_TOL) && (abs(filtered.radar_dy - obj.dy) < DY_TOL) &&
+      (abs(filtered.radar_vx - obj.vx) < VX_TOL)) {
+    // printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n",
+    // filtered.radar_dx - obj.dx, filtered.radar_dy - obj.dy, filtered.radar_vx - obj.vx);
+    return 1;
   }
   return 0;
 }
@@ -194,16 +189,11 @@ bool DataAssociation::objects_match_me(ObjectState obj, MobileyeObject& filtered
   // printf("Vx difference: %f\n", (abs(filtered.me_vx - obj.vx)));
 
   // New object must be within DT_TOL of filtered object to match
-  double dx = abs(filtered.radar_dx - obj.dx);
-  double dy = abs(filtered.radar_dy - obj.dy);
-  double dtotal = sqrt(pow(dx, 2) + pow(dy, 2));
-  if (dtotal < DT_TOL) {
-    if ((abs(filtered.me_dx - obj.dx) < DX_TOL) && (abs(filtered.me_dy - obj.dy) < DY_TOL) &&
-        (abs(filtered.me_vx - obj.vx) < VX_TOL)) {
-      // printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n",
-      // filtered.me_dx - obj.dx, filtered.me_dy - obj.dy, filtered.me_vx - obj.vx);
-      return 1;
-    }
+  if ((abs(filtered.me_dx - obj.dx) < DX_TOL) && (abs(filtered.me_dy - obj.dy) < DY_TOL) &&
+      (abs(filtered.me_vx - obj.vx) < VX_TOL)) {
+    // printf("Object matched with dx of %.2f, dy of %.2f, and vx of %.2f\n",
+    // filtered.me_dx - obj.dx, filtered.me_dy - obj.dy, filtered.me_vx - obj.vx);
+    return 1;
   }
   return 0;
 }
