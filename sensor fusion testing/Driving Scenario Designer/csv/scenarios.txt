@@ -13,3 +13,12 @@ scenario 3: Straight Multi-vehicle
         - center, medium, 17.5 m/s
         - right, slow, 10 m/s
     - ego vehicle travels at 15 m/s constant
+
+scenario 3a: Scenario 3 only with center and right vehicle
+scenario 3b: Scenario 3 only with center and left vehicle
+scenario 3c: Scenario 3 only with right vehicle
+scenario 3d: Scenario 3 only with left vehicle
+scenario 3e: Scenario 3 only with center vehicle
+
+scenario 4: same as scenario 1 (for demo purposes)
+scenario 5: same as scenario 1 (for demo purposes)

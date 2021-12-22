@@ -19,3 +19,6 @@ scenario 3b: Scenario 3 with center + fast (left) vehicle
 scenario 3c: Scenario 3 with slow vehicle only
 scenario 3d: Scenario 3 with fast vehicle only
 scenario 3e: Scenario 3 with the center vehicle only
+
+scenario 4: 
+    - This is the same as scenario 1.

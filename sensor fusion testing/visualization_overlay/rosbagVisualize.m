@@ -3,7 +3,7 @@ clc
 clear
 i = 0;
 
-bag = rosbag('../Driving Scenario Designer/bag/scenario2-output.bag');
+bag = rosbag('../Driving Scenario Designer/bag/scenario5-output.bag');
 bag.AvailableTopics;
 
 

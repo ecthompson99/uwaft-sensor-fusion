@@ -1,3 +1,0 @@
-scenario 1:
-    - stationary vehicle, dx = 110, dy = 0
-    - ego vehicle, velocity = 4.4704 m/s
