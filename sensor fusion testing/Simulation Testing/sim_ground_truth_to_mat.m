@@ -1,8 +1,8 @@
 clear
 clc
 
-load('../Driving Scenario Designer/sim_output/scenario5.mat');
-detections = struct2table(sensor_data_5);
+load('../Driving Scenario Designer/sim_output/scenario2.mat');
+detections = struct2table(sensor_data_2);
 
 ground_truth = struct('Time', [], 'Objects', []);
 
@@ -20,4 +20,4 @@ for i = 1:height(detections)
 
 end
 
-save('../Driving Scenario Designer/ground_truth/scenario5_ground_truth.mat', 'ground_truth'); 
+save('../Driving Scenario Designer/ground_truth/scenario5_ground_truth_test.mat', 'ground_truth'); 

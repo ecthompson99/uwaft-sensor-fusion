@@ -1,6 +1,6 @@
-% load("sim_output\scenario2.mat"); % Sensor data from a previous sim
+load("sim_output\scenario5.mat"); % Sensor data from a previous sim
 
-save("./sim_output/scenario5.mat", "sensor_data_5")
+% save("./sim_output/scenario5.mat", "sensor_data_5")
 %load the exported data from scenario designer (1 x (#time_stamps))
 data = struct2table(sensor_data_5); % name of variable output from Driving Scenario Designer
 
@@ -77,6 +77,6 @@ for i = 1:height(data)
                     cam_dx_, cam_dy_, cam_vx_, ...
                     egoVelocity};
                 
-    writecell(data_output_, "./csv/scenario5.csv", "WriteMode", "append");
+%     writecell(data_output_, "./csv/scenario5.csv", "WriteMode", "append");
    
 end
